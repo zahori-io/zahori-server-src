@@ -534,7 +534,7 @@
 					<container>
 						<mainClass>io.zahori.server.ZahoriServerApp</mainClass>
 						<ports>
-							<port>8080</port>
+							<port>9090</port>
 						</ports>
 						<jvmFlags>
 							<jvmFlag>-Djava.security.egd=file:/dev/./urandom</jvmFlag>
