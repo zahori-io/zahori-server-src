@@ -23,7 +23,7 @@ INSERT INTO public.client_teams (client_id, team_id, "name", "admin", favorite) 
 
 INSERT INTO public.client_teams_users (client_id, team_id, user_id) VALUES(1, 1, 1);
 
-INSERT INTO public.processes ("name", client_id, team_id, proc_type_id, jenkins_token, jenkins_job, jenkins_job_parameter_name) VALUES('Search process', 1, 1, 1, '', '', '');
+INSERT INTO public.processes ("name", client_id, team_id, proc_type_id, jenkins_token, jenkins_job, jenkins_job_parameter_name) VALUES('Search Wikipedia', 1, 1, 1, '', '', '');
 
 INSERT INTO public.browsers (browser_name, icon, default_version, "order", active) VALUES('chrome', 'chrome.webp', '86.0', 1, true);
 INSERT INTO public.browsers (browser_name, icon, default_version, "order", active) VALUES('firefox', 'firefox.webp', '81.0', 2, true);
@@ -32,10 +32,10 @@ INSERT INTO public.browsers (browser_name, icon, default_version, "order", activ
 INSERT INTO public.browsers (browser_name, icon, default_version, "order", active) VALUES('opera', NULL, '71.0', 5, true);
 INSERT INTO public.browsers (browser_name, icon, default_version, "order", active) VALUES('NULLBROWSER', NULL, NULL, 6, false);
 
-INSERT INTO public.cases ("name", process_id, active, "data") VALUES('Weather in Madrid', 1, true, '{"Search": "weather in madrid","xxx": "otherValue"}');
-INSERT INTO public.cases ("name", process_id, active, "data") VALUES('Weather in Tarifa', 1, true, '{"Search": "weather in tarifa","xxx": "otherValue"}');
-INSERT INTO public.cases ("name", process_id, active, "data") VALUES('Nasdaq index', 1, true, '{"Search": "nasdaq index","xxx": "otherValue"}');
-INSERT INTO public.cases ("name", process_id, active, "data") VALUES('Dow jones index', 1, true, '{"Search": "dow jones index","xxx": "otherValue"}');
+INSERT INTO public.cases ("name", process_id, active, "data") VALUES('Search RPA', 1, true, '{"Search": "Robotic process automation","Language": "English"}');
+INSERT INTO public.cases ("name", process_id, active, "data") VALUES('Search test automation', 1, true, '{"Search": "Test automation","Language": "English"}');
+INSERT INTO public.cases ("name", process_id, active, "data") VALUES('Search viajes extraordinarios', 1, true, '{"Search": "Viajes extraordinarios","Language": "Español"}');
+INSERT INTO public.cases ("name", process_id, active, "data") VALUES('Search gastronomía España', 1, true, '{"Search": "Gastronomía de España","Language": "Español"}');
 
 INSERT INTO public.client_environments (client_id, "name", url, "order", active) VALUES(1, 'preproducción', 'https://pre.url', 1, true);
 INSERT INTO public.client_environments (client_id, "name", url, "order", active) VALUES(1, 'producción', 'https://pro.url', 2, true);
