@@ -1,0 +1,333 @@
+body {
+
+    padding: 0%;
+    margin: 0%;
+    width: 100%;
+}
+
+#HarViewer {
+
+    width: 100%;
+
+}
+
+#HarViewerForm {
+    display: block;
+    width: 100%;
+    padding: 5px;
+    margin: 0%;
+    /* Zahorí: modified value */
+    background-color: #e9ecef;
+}
+
+#HarViewerActions {
+    padding: 0%;
+    margin: 0%;
+    /* Zahorí: added */
+    width: 100%;
+}
+
+#HarViewerActions > img {
+    float: left;
+}
+
+#HarViewerSearch {
+    margin: auto;
+    float: left;
+    background-color: white;
+    padding: 5px;
+    padding-left: 20px;
+    font-size: 1em;
+    clear: left;
+}
+
+#HarViewerContent {
+    clear: left;
+    padding: 0%;
+    margin: 0%;
+    width: 100%;
+    background-color: #F2F2F2;
+}
+
+#HarViewerLeftPanel {
+    float: left;
+    /* Zahorí: modified */
+    width: 60%;
+    padding: 0%;
+    margin: 0%;
+    border-right: solid;
+    border-left: solid;
+    border-color:  	#000000;
+    border-width: 0px;
+}
+
+#HarViewerTable {
+
+    padding: 0%;
+    margin: 0%;
+    width: 100%;
+    border-bottom: solid;
+    border-color:  	#000000;
+    border-width: 0px;
+}
+
+#HarViewerTable a {
+    text-decoration: none;
+    font-style: oblique;
+    color: #2F4F4F;
+}
+
+.HarViewerTableRow, #HarViewerFilters {
+    overflow: hidden;
+    width: 100%;
+    padding: 0%;
+    margin: 0%;
+    border: none;
+    cursor: pointer;
+}
+
+#HarViewerFilters {
+    /* Zahorí: modified */
+    background-color: #e9ecef;
+    font-size: 1.1em;
+}
+
+.HarViewerTableRow {
+    border-top: solid;
+    border-color:  	#000000;
+    border-width: 0px;
+    width: 100%;
+    height: auto;
+    padding: 0%;
+    margin: 0%;
+}
+
+p {
+    font-size: 1em;
+}
+
+#HarViewerFilters > div, .HarViewerTableRow > div {
+    display: block;
+
+    float: left;
+    height: 0.5 cm;
+    padding: 0%;
+    margin: 0%;
+    margin-right: 1%;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    border: none;
+}
+
+.HarViewerFiltersName {
+    width: 30%;
+}
+
+.HarViewerFiltersURL {
+    width: 21%;
+}
+
+.HarViewerFiltersMethod {
+    width: 8%;
+}
+
+.HarViewerFiltersStatus {
+    width: 7%;
+}
+
+.HarViewerFiltersType {
+    width: 14%;
+}
+
+.HarViewerFiltersSize {
+    width: 8%;
+}
+
+.HarViewerFiltersTime {
+    width: 5%;
+}
+
+#HarViewerRightPanel {
+    float: right;
+    /* Zahorí: modified */
+    width: 39.5%;
+    padding: 0%;
+    margin: 0%;
+    border-right: solid;
+    border-left: solid;
+    border-color:  	#000000;
+    border-width: 0px;
+
+}
+
+.HarViewerTimeTh {
+    padding: 0%;
+    margin: 0%;
+    width: 100%;
+    overflow: hidden;
+}
+
+#HarViewerWaterFall {
+    text-indent: 0;
+    padding: 0%;
+    margin: 0%;
+    width: 100%;
+    overflow: hidden;
+
+}
+
+.HarViewerTimeHeader {
+    width: 9%;
+    text-align: left;
+    font-size: 1em;
+    padding: 0%;
+    margin: 0%;
+    margin-right: 1%;
+    float: left;
+
+
+}
+
+#HarViewerTimeTh {
+    padding: 0%;
+    margin: 0%;
+    font-size: 1.1em;
+    width: 100%;
+    border: none;
+    border-bottom: solid;
+    border-color:  	#000000;
+    border-width: 0px;
+    /* Zahorí: modified */
+    background-color: #e9ecef;
+    z-index: 3;
+}
+
+.HarViewerAllTimingBlock{
+    float:left;
+    padding: 0%;
+    margin: 0%;
+    border-style: solid;
+    border-radius: 5px;
+    border-color: #000000;
+    border-width: 0px;
+    height: 100%;
+    overflow: hidden;
+
+}
+
+.HarViewerTimingBlock{
+    float:left;
+    padding: 0%;
+    margin: 0%;
+    height: 100%;
+}
+
+.HarViewerWaterFallRow {
+    padding: 0%;
+    margin: 0%;
+    width: 100%;
+    clear: right;
+    clear: left;
+    border: none;
+    border-bottom: solid;
+    border-color:  	#000000;
+    border-width: 0px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+
+}
+
+.HarViewerTimingBlocked{
+    background-color: #87CEEB;
+}
+.HarViewerTimingDns{
+    background-color:  	#00BFFF;
+}
+.HarViewerTimingConnect{
+    background-color:  	#F0E68C;
+}
+.HarViewerTimingSend{
+    background-color: #BDB76B;
+}
+.HarViewerTimingWait{
+    background-color:  	#FA8072;
+}
+.HarViewerTimingReceive{
+    background-color: #D2691E;
+}
+
+#HarViewerDetails {
+    padding: 0%;
+    padding-left: 5px;
+    margin: 0%;
+    width: 100%;
+    overflow-y: scroll;
+    border-bottom: solid;
+    border-color:  	#000000;
+    border-width: 0px;
+    background-color: #F2F2F2;
+}
+
+#HarViewerActions {
+    cursor: pointer;
+}
+
+#HarViewerGlobalInformationsBar {
+    padding: 0%;
+    padding-left: 5px;
+    margin: 0%;
+    width: 100%;
+    /* Zahorí: modified */
+    background-color: #e9ecef;
+}
+
+#HarViewerGlobalInformationsBar p {
+    display: block;
+    padding: 2px;
+    margin: 0%;
+}
+
+.HarViewerTooltip{
+    display: inline;
+    position: relative;
+}
+
+
+
+.HarViewerTooltip:hover:after{
+    background: #333;
+    background: rgba(0,0,0,.8);
+    border-radius: 5px;
+    bottom: 26px;
+    color: #fff;
+    content: attr(title);
+    left: 20%;
+    padding: 5px 15px;
+    position: absolute;
+    z-index: 98;
+    width: 220px;
+}
+
+
+
+.HarViewerTooltip:hover:before{
+    border: solid;
+    border-color: #333 transparent;
+    border-width: 6px 6px 0 6px;
+    bottom: 20px;
+    content: "";
+    left: 50%;
+    position: absolute;
+    z-index: 99;
+}
+
+/* Zahorí: added */
+ul {
+    list-style: none;
+}
+
+
+li p {
+    margin-bottom: 0;
+}

@@ -1,0 +1,16 @@
+<div class="titLinea">
+  <h3>
+    <img alt="icono equipos" src="/assets/images/imgIcons/equipos.png" />
+    Equipos
+  </h3>
+</div>
+<div>
+  <button (click)="selectTeam(team)" type="button" class="btn btn-zahoriPill mb-2 mr-1" data-container="body"
+    data-toggle="popover" data-placement="top" *ngFor="
+      let team of dataService.client.clientTeams;
+      index as indexTeam;
+      last as lastTeam
+    ">
+    {{ team.name }}
+  </button>
+</div>

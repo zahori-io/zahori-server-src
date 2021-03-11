@@ -1,0 +1,287 @@
+<div class="sidebarZahoricontent " [ngClass]="showCapabilities ? 'reduce' : ''">
+
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div>Gestión de navegadores</div>
+            </div>
+        </div>
+    </div>
+
+    <h6>Desktop</h6>
+    <div class="row mt-3 ml-3 mb-5">
+
+        <div class="ml-2  col-2 d-flex">
+            <div class="custom-checkbox">
+                <input type="checkbox" id="Chrome" class="custom-control-input">
+                <label class=" custom-control-label align-middle" for="Chrome"></label>
+            </div>
+            <button id="btChrome" (click)="editCapabilities()"
+                class=" mr-2 btn-icon btn btn-zahoriV btnNav sidebarGreyCollapse"><i class="fab fa-chrome "
+                    aria-hidden="true"></i></button>
+            <select name="select" id="exampleSelect1" class="form-control mt-1 mr-1">
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+            </select>
+        </div>
+
+        <div class="ml-2 col-2 d-flex">
+            <div class="custom-checkbox">
+                <input type="checkbox" id="Firefox" class="custom-control-input">
+                <label class=" custom-control-label align-middle" for="Chrome"></label>
+            </div>
+            <button id="btFirefox" (click)="editCapabilities()"
+                class="mr-2 btn-icon btn btn-zahoriV btnNav sidebarGreyCollapse"><i class="fab fa-firefox "
+                    aria-hidden="true"></i></button>
+            <select name="select" id="exampleSelect2" class="form-control mt-1 mr-1">
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+            </select>
+        </div>
+
+        <div class="ml-2 col-2 d-flex">
+            <div class="custom-checkbox">
+                <input type="checkbox" id="Opera" class="custom-control-input">
+                <label class=" custom-control-label align-middle" for="Chrome"></label>
+            </div>
+            <button id="btOpera" (click)="editCapabilities()"
+                class="mr-2 btn-icon btn btn-zahoriV btnNav sidebarGreyCollapse"><i class="fab fa-safari "
+                    aria-hidden="true"></i></button>
+            <select name="select" id="exampleSelect3" class="form-control mt-1 mr-1">
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+            </select>
+        </div>
+
+        <div class="ml-2 col-2 d-flex">
+            <div class="custom-checkbox">
+                <input type="checkbox" id="Explorer" class="custom-control-input">
+                <label class=" custom-control-label align-middle" for="Chrome"></label>
+            </div>
+            <button id="btExplorer" (click)="editCapabilities()"
+                class="mr-2 btn-icon btn btn-zahoriV btnNav sidebarGreyCollapse"><i class="fab fa-edge"
+                    aria-hidden="true"></i></button>
+            <select name="select" id="exampleSelect4" class="form-control mt-1 mr-1">
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+            </select>
+        </div>
+
+        <div class="ml-2 col-2 d-flex">
+            <div class="custom-checkbox">
+                <input type="checkbox" id="Safari" class="custom-control-input">
+                <label class=" custom-control-label align-middle" for="Safari"></label>
+            </div>
+            <button id="btSafari" (click)="editCapabilities()"
+                class="mr-2 btn-icon btn btn-zahoriV btnNav sidebarGreyCollapse"><i class="fab fa-opera "
+                    aria-hidden="true"></i></button>
+            <select name="select" id="exampleSelect5" class="form-control mt-1 mr-1">
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+            </select>
+        </div>
+
+    </div>
+
+    <h6>Mobile</h6>
+    <div class="row mt-3 ml-3  mb-3">
+
+        <div class="ml-2  col-2 d-flex">
+            <div class="custom-checkbox">
+                <input type="checkbox" id="Chrome" class="custom-control-input">
+                <label class=" custom-control-label align-middle" for="Chrome"></label>
+            </div>
+            <button id="btChrome" (click)="editCapabilities()"
+                class=" mr-2 btn-icon btn btn-zahoriV btnNav sidebarGreyCollapse"><i class="fab fa-chrome "
+                    aria-hidden="true"></i></button>
+            <select name="select" id="exampleSelect1" class="form-control mt-1 mr-1">
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+            </select>
+        </div>
+
+        <div class="ml-2 col-2 d-flex">
+            <div class="custom-checkbox">
+                <input type="checkbox" id="Firefox" class="custom-control-input">
+                <label class=" custom-control-label align-middle" for="Chrome"></label>
+            </div>
+            <button id="btFirefox" (click)="editCapabilities()"
+                class="mr-2 btn-icon btn btn-zahoriV btnNav sidebarGreyCollapse"><i class="fab fa-firefox "
+                    aria-hidden="true"></i></button>
+            <select name="select" id="exampleSelect2" class="form-control mt-1 mr-1">
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+            </select>
+        </div>
+
+        <div class="ml-2 col-2 d-flex">
+            <div class="custom-checkbox">
+                <input type="checkbox" id="Opera" class="custom-control-input">
+                <label class=" custom-control-label align-middle" for="Chrome"></label>
+            </div>
+            <button id="btOpera" (click)="editCapabilities()"
+                class="mr-2 btn-icon btn btn-zahoriV btnNav sidebarGreyCollapse"><i class="fab fa-safari "
+                    aria-hidden="true"></i></button>
+            <select name="select" id="exampleSelect3" class="form-control mt-1 mr-1">
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+            </select>
+        </div>
+
+        <div class="ml-2 col-2 d-flex">
+            <div class="custom-checkbox">
+                <input type="checkbox" id="Explorer" class="custom-control-input">
+                <label class=" custom-control-label align-middle" for="Chrome"></label>
+            </div>
+            <button id="btExplorer" (click)="editCapabilities()"
+                class="mr-2 btn-icon btn btn-zahoriV btnNav sidebarGreyCollapse"><i class="fab fa-edge"
+                    aria-hidden="true"></i></button>
+            <select name="select" id="exampleSelect4" class="form-control mt-1 mr-1">
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+            </select>
+        </div>
+
+        <div class="ml-2 col-2 d-flex">
+            <div class="custom-checkbox">
+                <input type="checkbox" id="Safari" class="custom-control-input">
+                <label class=" custom-control-label align-middle" for="Safari"></label>
+            </div>
+            <button id="btSafari" (click)="editCapabilities()"
+                class="mr-2 btn-icon btn btn-zahoriV btnNav sidebarGreyCollapse"><i class="fab fa-opera "
+                    aria-hidden="true"></i></button>
+            <select name="select" id="exampleSelect5" class="form-control mt-1 mr-1">
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+                <option>100</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+<div id="sidebarGrey" class="sidebarZahoriGrey " [ngClass]="showCapabilities ? 'active' : ''">
+
+    <div class="drawer-content-wrapperGrey ps ps--active-x ps--active-y">
+        <div class="drawer-nav-btn">
+            <button (click)="closeCapabilities()" type="button" id="sidebarGreyCollapsed"
+                class="hamburger hamburger--elastic is-active sidebarGreyCollapsed">
+                <span class="hamburger-box"><span class="hamburger-inner"></span></span>
+            </button>
+        </div>
+
+        <div class="drawer-section">
+            <h4>Chrome</h4>
+
+            <div class="row mt-3">
+                <div class="col-6">
+                    <label for="exampleEmail" class="">Clave</label>
+                    <input name="Nombre" id="" placeholder="" type="text" class="form-control">
+                </div>
+                <div class="col-6">
+                    <label for="exampleEmail" class="">Valor</label>
+                    <input name="Valor" id="" placeholder="" type="text" class="form-control">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 mt-2">
+                    <input name="Nombre" id="" placeholder="" type="text" class="form-control">
+                </div>
+                <div class="col-6 mt-2">
+                    <input name="Nombre" id="" placeholder="" type="text" class="form-control">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 mt-2">
+                    <input name="Nombre" id="" placeholder="" type="text" class="form-control">
+                </div>
+                <div class="col-6 mt-2">
+                    <input name="Nombre" id="" placeholder="" type="text" class="form-control">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 mt-2">
+                    <input name="Nombre" id="" placeholder="" type="text" class="form-control">
+                </div>
+                <div class="col-6 mt-2">
+                    <input name="Nombre" id="" placeholder="" type="text" class="form-control">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 mt-2">
+                    <input name="Nombre" id="" placeholder="" type="text" class="form-control">
+                </div>
+                <div class="col-6 mt-2">
+                    <input name="Nombre" id="" placeholder="" type="text" class="form-control">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 mt-2">
+                    <input name="Nombre" id="" placeholder="" type="text" class="form-control">
+                </div>
+                <div class="col-6 mt-2">
+                    <input name="Nombre" id="" placeholder="" type="text" class="form-control">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 mt-2">
+                    <input name="Nombre" id="" placeholder="" type="text" class="form-control">
+                </div>
+                <div class="col-6 mt-2">
+                    <input name="Nombre" id="" placeholder="" type="text" class="form-control">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 mt-2">
+                    <input name="Nombre" id="" placeholder="" type="text" class="form-control">
+                </div>
+                <div class="col-6 mt-2">
+                    <input name="Nombre" id="" placeholder="" type="text" class="form-control">
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-center">
+            <button class="btn-wide mb-4 btn-icon btn btn-zahoriV btn-sm">
+                Guardar
+            </button>
+        </div>
+
+    </div>
+</div>

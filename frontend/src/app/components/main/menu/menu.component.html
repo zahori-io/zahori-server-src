@@ -1,0 +1,138 @@
+<!--MENU PRINCIPAL-->
+<div class="app-header header-shadow">
+  <div class="header__logo">
+    <div class="logo-src"></div>
+  </div>
+
+  <!-- LOGO EMPRESA CLIENTE
+    <div class="app-header__logo2">
+      <div class="logo-src"></div>
+    </div>
+  -->
+
+  <div class="app-header__content">
+    <div class="app-header-left">
+
+    </div>
+    <div class="app-header-right">
+      <div class="header-dots">
+
+        <div class="dropdown">
+          <a routerLink="dashboard" routerLinkActive="linkActive" class="p-0 mr-2 btn ">
+            <span class="icon-wrapper icon-wrapper-alt rounded-circle">
+              <span class="icon-wrapper-bg bg-primary"></span>
+              <i class="icon text-primary fas fa-desktop"></i>
+            </span>
+          </a>
+        </div>
+
+        <div class="dropdown">
+          <a routerLink="admin/platforms" routerLinkActive="linkActive" class="p-0 mr-2 btn ">
+            <span class="icon-wrapper icon-wrapper-alt rounded-circle">
+              <span class="icon-wrapper-bg bg-primary"></span>
+              <i class="icon text-primary fas fa-user-cog"></i>
+            </span>
+          </a>
+        </div>
+
+        <div class="dropdown">
+          <button (click)="showNotifications()" type="button" class="p-0 mr-2 btn open-right-drawer ">
+            <span class="icon-wrapper icon-wrapper-alt rounded-circle">
+              <span class="icon-wrapper-bg bg-primary"></span>
+              <i class="icon text-primary icon-anim-pulse ion-android-notifications"></i>
+              <span class="badge badge-dot badge-dot-sm badge-danger">Notificationes</span>
+            </span>
+          </button>
+        </div>
+
+        <div class="dropdown">
+          <button type="button" data-toggle="dropdown" class="p-0 mr-2 btn btn-link">
+            <span class="icon-wrapper icon-wrapper-alt rounded-circle">
+              <span class="icon-wrapper-bg bg-primary"></span>
+              <span class="language-icon opacity-8 flag large ES"></span>
+            </span>
+          </button>
+          <div tabindex="-1" role="menu" aria-hidden="true" class="rm-pointers dropdown-menu dropdown-menu-right">
+            <div class="dropdown-menu-header">
+              <div class="dropdown-menu-header-inner pt-4 pb-4 bg-focus">
+                <div class="menu-header-image opacity-05"></div>
+                <div class="menu-header-content text-center text-white">
+                  <h6 class="menu-header-subtitle mt-0">
+                    Idioma
+                  </h6>
+                </div>
+              </div>
+            </div>
+            <button type="button" tabindex="0" class="dropdown-item">
+              <span class="mr-3 opacity-8 flag large ES"></span>
+              Español
+            </button>
+            <button type="button" tabindex="0" class="dropdown-item">
+              <span class="mr-3 opacity-8 flag large GB"></span>
+              English
+            </button>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <a routerLink="help" routerLinkActive="linkActive" class="p-0 mr-2 btn ">
+            <span class="icon-wrapper icon-wrapper-alt rounded-circle">
+              <span class="icon-wrapper-bg bg-primary"></span>
+              <i class="icon text-primary fas fa-question"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+
+      <div class="header-btn-lg pr-0">
+        <div class="widget-content p-0">
+          <div class="widget-content-wrapper">
+            <div class="widget-content-left">
+              <div class="btn-group">
+                <a data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="p-0 btn">
+                  <img width="42" class="rounded-circle" src="/assets/images/avatars/1.jpg" alt="">
+                </a>
+                <div tabindex="-1" role="menu" aria-hidden="true"
+                  class="rm-pointers dropdown-menu-lg dropdown-menu dropdown-menu-right   bg-info">
+                  <div class="dropdown-menu-header m-0">
+                    <div class="dropdown-menu-header-inner">
+
+                      <div class="menu-header-content text-left">
+                        <div class="widget-content p-0">
+                          <div class="widget-content-wrapper">
+                            <div class="widget-content-left mr-3">
+                              <img width="42" class="rounded-circle" src="/assets/images/avatars/1.jpg" alt="">
+                            </div>
+                            <div class="widget-content-left">
+                              <div class="widget-heading">{{authService.getUsername()}}
+                              </div>
+                              <div class="widget-subheading opacity-8">Automation Engineer
+                              </div>
+                            </div>
+                            <div class="widget-content-right mr-2">
+                              <button class="btn-pill btn-shadow btn-shine btn btn-focus"
+                                (click)="logout();$event.preventDefault();$event.stopPropagation();">Salir
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="widget-content-left  ml-3 header-user-info">
+              <div class="widget-heading">
+                {{authService.getUsername()}}
+              </div>
+              <div class="widget-subheading">
+                Automation Engineer
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--FIN MENU PRINCIPAL-->

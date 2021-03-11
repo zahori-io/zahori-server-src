@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Har Viewer</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="HarViewer"></div>
+  <script src="jquery-2.2.3.min.js"></script>
+  <script src="HarViewer.js"></script>
+  <script>
+    harviewer = new HarViewer('HarViewer');
+    $.getJSON('https://raw.githubusercontent.com/nealith/HAR-Viewer/dev/sample.json', function(data){
+
+        harviewer.loadHar(data);
+
+    })
+
+    </script>
+</body>
+</html>

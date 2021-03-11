@@ -1,0 +1,220 @@
+<!-- SIDEBAR - EVIDENCES -->
+<div id="sidebarEvidencias" class="sidebarZahori active" *ngIf="caseExecution && caseExecution.caseExecutionId > 0">
+
+    <div class="drawer-content-wrapper">
+        <div class="scroll-area vh-80" style="height: auto;">
+            <div class="scrollbar-container ps--active-y ps">
+
+                <div class="drawer-nav-btn">
+                    <button type="button" (click)="hide()"
+                        class="hamburger hamburger--elastic is-active sidebarCollapsed">
+                        <span class="hamburger-box"><span class="hamburger-inner"></span></span>
+                    </button>
+                </div>
+
+                <h3 class="drawer-heading">Evidencias</h3>
+                <div class="drawer-section">
+                    <div class="scrollbar-container ps">
+
+                        <span>
+                            <i title="{{caseExecution.status}}" class="mr-1 fas " [ngClass]="{
+                                'fa-check text-success': caseExecution.status  === 'PASSED',
+                                'fa-times text-danger': caseExecution.status  === 'FAILED',
+                                'fa-exclamation-triangle': caseExecution.status  === 'Not executed',
+                                'fa-sync-alt': caseExecution.status  === 'Running'}">
+                            </i>
+                            <i title="{{caseExecution.browser.browserName}}"
+                                class="mr-1 fab fa fa-{{caseExecution.browser.browserName}}"></i>
+                            <h4 class="titVentana" style="display: inline-block;">{{caseExecution.cas.name}}</h4>
+                        </span>
+
+                        <div>
+                            <!-- Button trigger log modal -->
+                            <button type="button" *ngIf="caseExecution.log" (click)="getTextFile(caseExecution.log)"
+                                class="mb-2 mr-2 btn-pill btn btn-zahoriPill btn-sm" data-backdrop="false"
+                                data-toggle="modal" data-target="#logModal">Log</button>
+
+                            <button *ngIf="caseExecution.doc" (click)="getFile(caseExecution.doc)"
+                                class="mb-2 mr-2 btn-pill btn btn-zahoriPill btn-sm">Doc</button>
+                            <button *ngIf="caseExecution.video" (click)="getFile(caseExecution.video)"
+                                class="mb-2 mr-2 btn-pill btn btn-zahoriPill btn-sm">Vídeo</button>
+
+                            <!-- Button trigger log modal -->
+                            <button type="button" *ngIf="caseExecution.har" title="HTTP Archive"
+                                (click)="getHarFile(caseExecution.har)"
+                                class="mb-2 mr-2 btn-pill btn btn-zahoriPill btn-sm" data-backdrop="false"
+                                data-toggle="modal" data-target="#harModal">HAR</button>
+                        </div>
+
+                        <div *ngIf="downloading" title="Descargando fichero..."
+                            class="spinner-border spinner-border-sm text-primary"></div>
+                        <span class="sr-only">Descargando fichero...</span>
+
+                        <br />
+
+                        <h5>Pasos ejecutados</h5>
+                        <div *ngFor="let step of caseExecution.stepsJson">
+
+                            <div class="paso mb-3">
+                                <span class="font-weight-bold">
+                                    <i title="{{step.status}}" class="fas " [ngClass]="{
+                                        'fa-times text-danger': step.status  === 'Failed',
+                                        'fa-check text-success': step.status  === 'Passed',
+                                        'fa-exclamation-triangle': step.status  === 'Not executed',
+                                        'fa-sync-alt': step.status  === 'Running'}">
+                                    </i>
+                                    Paso {{step.name}}
+                                </span>
+
+                                <p>{{step.messageText}}</p>
+
+                                <div *ngFor="let attachment of step.attachments">
+                                    <a (click)="viewStepInModal(step)" href="javascript:void(0);" data-backdrop="false"
+                                        data-toggle="modal" data-target="#stepsModal">
+                                        <img class="w-100" alt="Imagen Evidencia" *ngIf="attachment"
+                                            [src]="getAttachmentUrl(attachment) | authImage | async" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="ps__rail-x" style="width: 0px; left: 0px; bottom: 0px;">
+                            <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                        </div>
+                        <div class="ps__rail-y" style="top: 0px; right: 0px;">
+                            <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 0px;"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ps__rail-x" style="width: 0px; left: 0px; bottom: 0px;">
+                    <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
+                </div>
+                <div class="ps__rail-y" style="top: 0px; height: 254px; right: 0px;">
+                    <div class="ps__thumb-y" tabindex="0" style="top: 0px; height: 40px;"></div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- Modal - LOG -->
+<div id="logModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="logModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" [ngClass]="modalMaximized ? 'modal-maximized' : ''"
+        role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Log: {{fileName}}</h5>
+
+                <div class="ml-auto">
+                    <button type="button" (click)="maximizeModal()" class="btn btn-default" aria-label="Left Align">
+                        <span class="far fa-window-maximize fa-lg" style="color: grey;" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn btn-default" aria-label="Left Align">
+                        <span class="fas fa-times fa-lg" style="color: grey;" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="modal-body">
+                <p *ngIf="downloading">Cargando...</p>
+                <!-- LOG -->
+                <pre *ngIf="textFileContent">{{textFileContent}}</pre>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-widemr-2 btn-icon btn btn-zahoriV" (click)="downloadFile()">
+                    <i class="fa fa-download mr-1 "></i>Descargar
+                </button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal - Steps -->
+<div id="stepsModal" *ngIf="caseExecution && stepModal" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="stepsModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" [ngClass]="modalMaximized ? 'modal-maximized' : ''"
+        role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <span>
+                        <i title="{{stepModal.status}}" class="fas " [ngClass]="{
+                        'fa-check text-success': stepModal.status  === 'Passed',
+                        'fa-times text-danger': stepModal.status  === 'Failed',
+                        'fa-exclamation-triangle': stepModal.status  === 'Not executed'}">
+                        </i>
+                        Paso {{stepModal.name}}
+                    </span>
+                </h5>
+
+                <div class="ml-auto">
+                    <button type="button" (click)="maximizeModal()" class="btn btn-default" aria-label="Left Align">
+                        <span class="far fa-window-maximize fa-lg" style="color: grey;" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn btn-default" aria-label="Left Align">
+                        <span class="fas fa-times fa-lg" style="color: grey;" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEPS -->
+            <div class="modal-body">
+                <div class="paso mb-3">
+                    <p>{{stepModal.messageText}}</p>
+
+                    <div *ngFor="let attachment of stepModal.attachments">
+                        <img class="w-100" alt="Imagen Evidencia" *ngIf="attachment"
+                            [src]="getAttachmentUrl(attachment) | authImage | async" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- Modal - HAR -->
+<div id="harModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="harModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" [ngClass]="modalMaximized ? 'modal-maximized' : ''"
+        role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">HTTP Requests: {{fileName}}</h5>
+
+                <div class="ml-auto">
+                    <button type="button" (click)="maximizeModal()" class="btn btn-default" aria-label="Left Align">
+                        <span class="far fa-window-maximize fa-lg" style="color: grey;" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn btn-default" aria-label="Left Align">
+                        <span class="fas fa-times fa-lg" style="color: grey;" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <p *ngIf="downloading">Cargando...</p>
+                <div id="HarViewer"></div>
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn-widemr-2 btn-icon btn btn-zahoriV" (click)="downloadFile()">
+                    <i class="fa fa-download mr-1 "></i>Descargar
+                </button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

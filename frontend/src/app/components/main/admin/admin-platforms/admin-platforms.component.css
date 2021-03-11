@@ -1,0 +1,20 @@
+:host {
+    width: 100%;
+}
+
+.sidebarZahoricontent.reduce {
+    width: 60%;
+    float: left;
+}
+
+.sidebarZahoriGrey {
+    display: none;
+}
+.sidebarZahoriGrey.active {
+    display: block;
+    width: 45%;
+    float: right;
+    height: fit-content;
+    margin: -140px -70px 0 0px;
+    min-width: auto;
+}

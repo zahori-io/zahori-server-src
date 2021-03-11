@@ -1,0 +1,110 @@
+<div class="app-container app-theme-white body-tabs-shadow">
+    <div class="app-container">
+        <div class="h-100">
+            <div class="h-100 no-gutters row">
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="slider-light">
+                        <div class="slick-slider">
+                            <div>
+                                <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-premium-dark"
+                                    tabindex="-1">
+                                    <div class="slide-img-bg"
+                                        style="background-image: url('assets/images/loginImg/login1.jpg');"></div>
+                                    <div class="slider-content">
+                                        <h3>Tus pruebas de software</h3>
+                                        <p>Podrás probar tus aplicaciones software en cualquier plataforma y
+                                            dispositivo, y reutilizar las pruebas automáticas para adaptarte de forma
+                                            ágil a los avances funcionales del software. Podrás además realizar
+                                            prototipados rápidos, regresivos y ágiles.
+                                            Reutiliza fácilmente tus pruebas. Automatiza una vez y prueba tanto como
+                                            necesites.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-premium-dark"
+                                    tabindex="-1">
+                                    <div class="slide-img-bg"
+                                        style="background-image: url('assets/images/loginImg/login2.jpg');"></div>
+                                    <div class="slider-content">
+                                        <h3>Tus procesos de transacciones on-line</h3>
+                                        <p>Podrás automatizar tus transacciones online: compra, carga de productos,
+                                            actualización de precios, comprobación de transacciones, bancarias y mucho
+                                            más.
+                                            Genera sondas que automáticamente comprueben la disponibilidad de tus
+                                            productos
+                                            Asegura que tus operaciones de negocio online sigan funcionando, aunque haya
+                                            cambios externos o internos.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-premium-dark"
+                                    tabindex="-1">
+                                    <div class="slide-img-bg"
+                                        style="background-image: url('assets/images/loginImg/login3.jpg');"></div>
+                                    <div class="slider-content">
+                                        <h3>Tus despliegues de aplicaciones</h3>
+                                        <p>Podrás aplicar prácticas DevOps y de Integración Continua, introduciendo
+                                            procesos automáticos en todo el ciclo de desarrollo del software, para
+                                            acelerar la velocidad de puesta en producción de nuevas funcionalidades, y
+                                            adaptarte mejor a las peticiones de tus usuarios.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="h-100 d-flex bg-white justify-content-center align-items-center col-md-12 col-lg-8">
+                    <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-9">
+                        <div class="app-logo"><img alt="Zahorí 0.9 202011051320" src="assets/images/LOGOz.png" /></div>
+                        <h4 class="mb-0">
+                            <span class="d-block">Bienvenido,</span>
+                            <span>Por favor, introduce tus datos para continuar.</span>
+                        </h4>
+                        <h6 class="mt-3">¿No tienes cuenta todavía? <a href="javascript:void(0);"
+                                class="text-primary">Regístrate</a></h6>
+                        <div class="divider row"></div>
+                        <div>
+                            <form (submit)="loginUser($event)">
+                                <div class="form-row">
+                                    <div class="col-md-6">
+                                        <div class="position-relative form-group">
+                                            <label for="exampleUsername" class="">Email</label>
+                                            <input name="username" id="username" ng-model="username"
+                                                placeholder="Nombre de usuario o correo electrónico..." type="email"
+                                                class="form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="position-relative form-group">
+                                            <label for="examplePassword" class="">Password</label>
+                                            <input name="password" id="password" ng-model="password"
+                                                placeholder="Password..." type="password" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="position-relative form-check">
+                                    <input name="check" id="exampleCheck" type="checkbox" class="form-check-input">
+                                    <label for="exampleCheck" class="form-check-label">Recuérdame</label>
+                                </div>
+                                <div class="divider row"></div>
+                                <div class="d-flex align-items-center">
+                                    <div class="ml-auto">
+                                        <a href="javascript:void(0);" class="btn-lg btn btn-link">Recuperar Password</a>
+                                        <button class="btn btn-primary btn-lg">Entrar</button>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <div *ngIf="error" class="ml-2 text-danger">{{error}}</div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

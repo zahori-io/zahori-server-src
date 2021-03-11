@@ -1,0 +1,199 @@
+<div class="app-main__inner2col">
+
+	<div class="Zahoricontent">
+
+		<div class="app-page-title">
+			<div class="page-title-wrapper">
+				<div class="page-title-heading">
+					<div>Casos a ejecutar</div>
+				</div>
+				<div class="page-title-actions d-flex">
+					<div class="menuPills m-auto">
+						<button class="mr-2 btn-pill btn btn-info btn-sm  disabled">REG BÁSICA</button>
+						<button class="mr-2 btn-pill btn btn-warning  btn-sm">REG EXTENDIDA</button>
+					</div>
+					<div class="search-wrapper ml-3">
+						<div class="input-holder">
+							<input type="text" class="search-input" placeholder="Type to search">
+							<button class="search-icon">
+								<span></span>
+							</button>
+						</div>
+						<button class="close"></button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<table class="mb-0 table">
+			<thead>
+				<tr>
+					<th></th>
+					<th>Id</th>
+					<th>Caso</th>
+					<th>Etiquetas</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let case of dataService.processCases; index as indexCase; last as lastCase;">
+					<td>
+						<div class="ml-2 custom-control custom-switch">
+							<input [(ngModel)]="case.selected" type="checkbox" id="selectCase-{{indexCase}}"
+								(change)="selectCase(case, $event)" class="custom-control-input">
+							<label for="selectCase-{{indexCase}}" class="custom-control-label"></label>
+						</div>
+					</td>
+					<td>{{case.caseId}}</td>
+					<td>{{case.name}}</td>
+					<td>
+						<span class="mr-2 badge badge-pill" [ngClass]="{
+								'badge-warning': tag.name  === 'REG EXTENDIDA',
+								'btn-info': tag.name  === 'REG BÁSICA'}"
+							*ngFor="let tag of case.clientTags; index as indexTags; last as lastTag;">
+							{{tag.name}}
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+	</div>
+
+	<div class="ZahoriZonaDcha">
+
+		<div id="ContDe" class="ps ps--active-x ps--active-y disabled">
+			<h5 class="drawer-heading">Ejecución</h5>
+			<div class="drawer-section">
+
+				<span>Casos</span>
+				<div class="d-flex mb-3" id="caseList">
+					<ng-template ngFor let-case [ngForOf]="dataService.processCases" let-isLast="last">
+						<button *ngIf="case.selected" class="mr-2 badge  btn btn-zahoriPill" title="{{case.name}}">{{case.name}}
+							<i class="fas fa-times-circle ml-1" (click)="deselectCase(case)"></i>
+						</button>
+					</ng-template>
+				</div>
+
+				<form class="">
+					<div class="position-relative form-group">
+						<label for="exampleEmail" class="">Nombre</label>
+						<input type="text" [(ngModel)]="execution.name" name="execution_name" class="form-control" />
+					</div>
+
+					<div class="position-relative form-group">
+						<label for="exampleSelect" class="">Configuración</label>
+						<select [(ngModel)]="execution.configuration.configurationId" name="execution_configurationId"
+							class="form-control">
+							<option *ngFor="let configuration of dataService.processConfigurations"
+								[value]="configuration.configurationId">
+								{{configuration.name}}
+							</option>
+						</select>
+					</div>
+
+					<div class="position-relative form-group" *ngIf="dataService.processSelected.processType.name == 'BROWSER'">
+						<label for="exampleCheckbox" class="">Navegadores</label>
+						<div>
+							<ng-template ngFor let-browser [ngForOf]="browsers" let-isLast="lastBrowser">
+								<div *ngIf="browser.browserName !== 'NULLBROWSER'" class="custom-checkbox custom-control custom-control-inline">
+									<input type="checkbox" [attr.id]="browser.browserName" class="custom-control-input"
+										value="{{browser.browserName}}" (change)="selectBrowser(browser, $event)" />
+									<label class="custom-control-label" [attr.for]="browser.browserName">
+										<i title="{{browser.browserName}}"
+											class="mr-1 fab fa fa-{{browser.browserName}}"></i>
+									</label>
+								</div>
+							</ng-template>
+						</div>
+					</div>
+
+					<div class="position-relative form-group">
+						<div class="d-flex">
+							<span>Periódica</span>
+							<div class="ml-2 custom-control custom-switch">
+								<input type="checkbox" class="custom-control-input" id="customSwitch1"
+									(change)="enablePeriodicExecution($event)">
+								<label class="custom-control-label " for="customSwitch1"></label>
+							</div>
+						</div>
+						<div class="d-flex mt-3" *ngIf="periodicExecutionEnabled">
+							<div class="position-relative form-group">
+								<label for="exampleTime"></label>
+								<input name="time" id="exampleTime" placeholder="time placeholder" type="time"
+									class="form-control">
+							</div>
+							<div class="mt-4 pt-3 ml-3 d-flex">
+								<div class="custom-checkbox custom-control  mr-2">
+									<input type="checkbox" id="DayCheckbox1" class="custom-control-input">
+									<label class="custom-control-label" for="DayCheckbox1">L</label>
+								</div>
+								<div class="custom-checkbox custom-control mr-2">
+									<input type="checkbox" id="DayCheckbox2" class="custom-control-input">
+									<label class="custom-control-label" for="DayCheckbox2">M</label>
+								</div>
+
+								<div class="custom-checkbox custom-control mr-2">
+									<input type="checkbox" id="DayCheckbox3" class="custom-control-input">
+									<label class="custom-control-label" for="DayCheckbox3">X</label>
+								</div>
+
+								<div class="custom-checkbox custom-control mr-2">
+									<input type="checkbox" id="DayCheckbox4" class="custom-control-input">
+									<label class="custom-control-label" for="DayCheckbox4">J</label>
+								</div>
+
+								<div class="custom-checkbox custom-control mr-2">
+									<input type="checkbox" id="DayCheckbox5" class="custom-control-input">
+									<label class="custom-control-label" for="DayCheckbox5">V</label>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="text-center">
+						<button class="btn-wide btn-icon btn btn-zahoriV btn-sm"
+							[disabled]="dataService.processCases.length <= 0 || !execution.name || (dataService.processSelected.processType.name == 'BROWSER' && browsersSelected.length <= 0) || !execution.configuration.configurationId || loading"
+							(click)="createExecution()">Crear</button>
+					</div>
+
+					<span *ngIf="loading">
+						<div class="text-center mt-2">
+							<span>Creando ejecución</span>
+							<span class="spinner-border spinner-border-sm text-primary ml-2" role="status"></span>
+						</div>
+					</span>
+
+					<span *ngIf="created">
+						<div class="text-center mt-2">
+							<div>
+								<span>Ejecución creada <i class="ml-2 fas fa-check text-success"
+										aria-hidden="true"></i></span>
+							</div>
+							<div>
+								<span>Puedes verla en
+									<a routerLink="../executions" routerLinkActive="linkActive"><strong>Últimas
+											ejecuciones</strong></a>
+								</span>
+							</div>
+						</div>
+					</span>
+
+					<span *ngIf="error != ''">
+						<div class="text-center mt-2">
+							<div>
+								<span>Error al crear la ejecución <i class="ml-2 fas fa-times text-danger"
+										aria-hidden="true"></i></span>
+							</div>
+							<div>
+								<span>{{error}}</span>
+							</div>
+						</div>
+					</span>
+					
+				</form>
+			</div>
+
+		</div>
+
+	</div>
+</div>

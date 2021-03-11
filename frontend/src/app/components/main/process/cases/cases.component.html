@@ -1,0 +1,68 @@
+<div class="app-main__inner">
+
+  <div class="app-page-title">
+    <div class="page-title-wrapper">
+      <div class="page-title-heading">
+        <div>Casos</div>
+        <button type="button" title="Crear un caso nuevo" (click)="createNewCase()"
+          class="ml-4 btn btn-zahoriPill btn-sm">Nuevo</button>
+      </div>
+    </div>
+  </div>
+
+  <table #dataTable class="mb-0 table table-hover" style="width:100%">
+
+    <thead>
+      <tr>
+        <th style="width: 20px;"></th>
+        <th>Caso</th>
+        <th>Etiquetas</th>
+        <th *ngFor="let data of dataService.processCases[0].dataMap | keyvalue">{{data.key}}</th>
+      </tr>
+    </thead>
+    
+    <tbody>
+
+      <tr *ngIf="newCase">
+        <td>
+          <i class="fa fa-trash fa-1 mr-2" title="Eliminar" (click)="cancelNewCase()" style="cursor: pointer;"></i>
+          <i class="fas fa-save fa-1" title="Guardar" style="cursor: pointer;"></i>
+        </td>
+        <td><input type="text"></td>
+        <td><input type="text"></td>
+        <td *ngFor="let data of newCase.dataMap | keyvalue">
+          <input type="text">
+        </td>
+      </tr>
+
+      <tr *ngFor="let case of dataService.processCases; index as indexCases; last as lastCase;">
+        <td>
+          <i class="fa fa-trash fa-1 mr-2" title="Eliminar" style="cursor: pointer; visibility: visible"></i>
+          <i class="fas fa-pencil-alt fa-1" title="Editar" style="cursor: pointer;"></i>
+        </td>
+        <td>{{case.name}}</td>
+        <td>
+          <div class="mb-2 mr-2 badge badge-dot" data-toggle="tooltip" data-placement="top" title="{{tag.name}}"
+            [attr.data-original-title]="tag.name"
+            [ngClass]="{'badge-warning': tag.name  === 'REG EXTENDIDA','btn-info': tag.name  === 'REG BÁSICA'}"
+            *ngFor="let tag of case.clientTags; index as indexTags; last as lastTag;">
+            {{tag.name}}
+          </div>
+        </td>
+        <td *ngFor="let data of case.dataMap | keyvalue">{{data.value}}</td>
+      </tr>
+      
+    </tbody>
+
+    <tfoot>
+      <tr>
+        <th style="width: 20px;"></th>
+        <th>Test Case</th>
+        <th>Etiquetas</th>
+        <th *ngFor="let data of dataService.processCases[0].dataMap | keyvalue">{{data.key}}</th>
+      </tr>
+    </tfoot>
+
+  </table>
+
+</div>

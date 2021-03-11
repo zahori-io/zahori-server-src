@@ -1,0 +1,26 @@
+<div class="app-container bodyInt" [ngClass]="hiddenMenu ? '' : 'closed-sidebar'">
+
+  <app-process-menu (onShowHideMenu)="showHideMenu()"></app-process-menu>
+
+  <div class="app-main">
+
+    <div class="app-sidebar">
+      <div class="scrollbar-sidebar">
+        <div class="app-sidebar__inner">
+          <div class="card-body p-0 mb-5 mt-3">
+            <app-client-teams></app-client-teams>
+          </div>
+          <div class="card-body p-0  mb-5 mt-3">
+            <app-client-teams-process (onProcessSelection)="processSelection()"></app-client-teams-process>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="app-main__outer">
+      <router-outlet></router-outlet>
+    </div>
+    
+  </div>
+
+</div>

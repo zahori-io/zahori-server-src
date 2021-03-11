@@ -1,0 +1,17 @@
+<div class="titLinea">
+  <h3>
+    <img alt="icono equipos" src="/assets/images/imgIcons/procesos.png" />
+    Procesos
+  </h3>
+</div>
+
+<div>
+  <button (click)="selectProcess(process)" type="button" class="btn btn-zahoriPillNar mb-2 mr-1" data-container="body"
+    data-toggle="popover" data-placement="top" *ngFor="
+      let process of dataService.teamSelectedInSelector.processes;
+      index as indexProcess;
+      last as lastProcess
+    ">
+    {{ process.name }}
+  </button>
+</div>

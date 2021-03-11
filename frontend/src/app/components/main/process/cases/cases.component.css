@@ -1,0 +1,9 @@
+.table thead th, .table tfoot th {
+    vertical-align: bottom;
+    border-bottom: 2px solid #e9ecef;
+    border-top: none;
+}
+
+td:hover i {
+    visibility: visible;
+}

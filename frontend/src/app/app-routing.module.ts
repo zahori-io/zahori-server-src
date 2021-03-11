@@ -1,0 +1,66 @@
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+
+import { LoginComponent } from './components/login/login.component';
+import { MainComponent } from './components/main/main.component';
+import { DashboardComponent } from './components/main/dashboard/dashboard.component';
+import { ExecutionsComponent } from './components/main/process/executions/executions.component';
+import { TriggerComponent } from './components/main/process/trigger/trigger.component';
+import { ConfiguratorComponent } from './components/main/process/configurator/configurator.component';
+import { CasesComponent } from './components/main/process/cases/cases.component';
+import { HelpComponent } from './components/main/help/help.component';
+import { ProfileComponent } from './components/main/profile/profile.component';
+import { AdminComponent } from './components/main/admin/admin.component';
+import { AdminPlatformsComponent } from './components/main/admin/admin-platforms/admin-platforms.component';
+import { AdminEnvironmentsComponent } from './components/main/admin/admin-environments/admin-environments.component';
+import { AdminExecutionsComponent } from './components/main/admin/admin-executions/admin-executions.component';
+import { AdminTagsComponent } from './components/main/admin/admin-tags/admin-tags.component';
+import { AdminTmsComponent } from './components/main/admin/admin-tms/admin-tms.component';
+import { AdminGroupsComponent } from './components/main/admin/admin-groups/admin-groups.component';
+import { AdminUsersComponent } from './components/main/admin/admin-users/admin-users.component';
+import { AuthGuard } from './guards/auth.guard';
+import { ProcessComponent } from './components/main/process/process.component';
+
+
+const routes: Routes = [
+  { path: '', component: LoginComponent },
+  { path: 'login', component: LoginComponent },
+  {
+    path: 'app', component: MainComponent, canActivate: [AuthGuard],
+    children: [
+      { path: '', component: DashboardComponent },
+      { path: 'dashboard', component: DashboardComponent },
+      {
+        path: 'process', component: ProcessComponent,
+        children: [
+          { path: 'executions', component: ExecutionsComponent },
+          { path: 'trigger', component: TriggerComponent },
+          { path: 'configurator', component: ConfiguratorComponent },
+          { path: 'cases', component: CasesComponent }
+        ]
+      },
+      {
+        path: 'admin', component: AdminComponent,
+        children: [
+          { path: '', component: AdminPlatformsComponent },
+          { path: 'platforms', component: AdminPlatformsComponent },
+          { path: 'environments', component: AdminEnvironmentsComponent },
+          { path: 'executions', component: AdminExecutionsComponent },
+          { path: 'tags', component: AdminTagsComponent },
+          { path: 'tms', component: AdminTmsComponent },
+          { path: 'groups', component: AdminGroupsComponent },
+          { path: 'users', component: AdminUsersComponent }
+        ]
+      },
+      { path: 'help', component: HelpComponent },
+      { path: 'profile', component: ProfileComponent }
+    ]
+  },
+  { path: '**', redirectTo: '', pathMatch: 'full' }
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes, {useHash: true})],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }

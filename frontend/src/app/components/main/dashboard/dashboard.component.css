@@ -1,0 +1,63 @@
+.circle {
+  width: 200px;
+  margin: 6px 6px 20px;
+  display: inline-block;
+  position: relative;
+  text-align: center;
+  line-height: 1.2;
+}
+
+.circle canvas {
+  vertical-align: top;
+}
+
+.circle strong {
+  position: absolute;
+  top: 65px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  line-height: 50px;
+  font-size: 40px;
+  color: #456f34;
+  font-weight: 300;
+}
+
+.circle span.titGrafica {
+  position: absolute;
+  top: 30px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  line-height: 10px;
+  font-size: 22px;
+  font-weight: 300;
+}
+
+.circle span.subtitGrafica {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  width: 100%;
+  text-align: center;
+  line-height: 10px;
+  font-size: 22px;
+  font-weight: 300;
+}
+
+.circle strong i {
+  display: none;
+  font-style: normal;
+  font-size: 0.6em;
+  font-weight: normal;
+}
+
+.circle span {
+  display: block;
+  color: #aaa;
+  margin-top: 12px;
+}
+
+.bg-zahori {
+  background: #3ac47d;
+}
