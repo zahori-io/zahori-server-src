@@ -51,7 +51,7 @@
 		<license.licenseResolver>${project.baseUri}/src/license</license.licenseResolver>
 		<spring.version>5.3.4</spring.version>
 		<jackson.version>2.12.1</jackson.version>
-		<spring-data.version>2.4.3</spring-data.version>
+		<spring-data.version>2.4.5</spring-data.version>
 		<spring-security.version>5.4.5</spring-security.version>
 		<spring-boot.version>2.4.3</spring-boot.version>
 	</properties>
@@ -111,7 +111,7 @@
 			<dependency>
 				<groupId>io.projectreactor</groupId>
 				<artifactId>reactor-core</artifactId>
-				<version>3.4.2</version>
+				<version>3.4.3</version>
 			</dependency>
 
 			<dependency>
@@ -149,7 +149,7 @@
 			<dependency>
 				<groupId>org.springframework.data</groupId>
 				<artifactId>spring-data-rest-core</artifactId>
-				<version>3.4.3</version>
+				<version>3.4.5</version>
 			</dependency>
 			<dependency>
 				<groupId>org.springframework.cloud</groupId>
