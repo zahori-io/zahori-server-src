@@ -19,7 +19,7 @@
     "@angular/platform-browser": "~11.2.5",
     "@angular/platform-browser-dynamic": "~11.2.5",
     "@angular/router": "~11.2.5",
-    "@fortawesome/fontawesome-free": "^5.15.1",
+    "@fortawesome/fontawesome-free": "^5.15.2",
     "@novnc/novnc": "^1.1.0",
     "datatables.net": "^1.10.23",
     "datatables.net-dt": "^1.10.23",
