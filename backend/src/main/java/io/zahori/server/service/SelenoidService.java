@@ -23,6 +23,11 @@ package io.zahori.server.service;
  * #L%
  */
 
+import io.zahori.server.model.CaseExecution;
+import io.zahori.server.model.Execution;
+import io.zahori.server.model.selenoid.SelenoidSession;
+import io.zahori.server.model.selenoid.SelenoidStatus;
+import io.zahori.server.repository.CaseExecutionsRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,7 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,12 +48,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import io.zahori.server.model.CaseExecution;
-import io.zahori.server.model.Execution;
-import io.zahori.server.model.selenoid.SelenoidSession;
-import io.zahori.server.model.selenoid.SelenoidStatus;
-import io.zahori.server.repository.CaseExecutionsRepository;
-
 /**
  * The type Selenoid service.
  */
@@ -58,10 +56,10 @@ public class SelenoidService {
 
     private static final Logger LOG = LoggerFactory.getLogger(SelenoidService.class);
 
-    @Value("${ZAHORI_SELENOID_UI_HOST}")
+    @Value("${ZAHORI_SELENOID_UI_INTERNAL_HOST}")
     private String selenoidUiHost;
 
-    @Value("${ZAHORI_SELENOID_UI_PORT}")
+    @Value("${ZAHORI_SELENOID_UI_INTERNAL_PORT}")
     private String selenoidUiPort;
 
     private CaseExecutionsRepository caseExecutionsRepository;

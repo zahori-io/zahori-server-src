@@ -23,12 +23,12 @@ package io.zahori.server.controller;
  * #L%
  */
 
+import io.zahori.server.utils.FilePath;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,14 +72,17 @@ public class EvidencesController {
 
         try {
             if (!StringUtils.endsWith(evidencesDir, File.separator)) {
-                evidencesDir = evidencesDir + evidencesDir;
+                evidencesDir = evidencesDir + File.separator;
             }
-            Path saveDir = Paths.get(evidencesDir + path);
+
+            Path saveDir = Paths.get(FilePath.normalize(evidencesDir + path));
             if (!Files.exists(saveDir)) {
                 Files.createDirectories(saveDir);
             }
 
-            Path fileName = Paths.get(file.getOriginalFilename()).getFileName();
+            String filePath = FilePath.normalize(Paths.get(file.getOriginalFilename()).toString());
+            String fileName = StringUtils.substringAfterLast(filePath, File.separator);
+
             Path pathToSave = Paths.get(saveDir + File.separator + fileName);
             Files.write(pathToSave, file.getBytes());
 

@@ -23,26 +23,7 @@ package io.zahori.server.service;
  * #L%
  */
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.reactive.function.client.WebClient;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import io.zahori.model.process.Step;
 import io.zahori.model.process.Test;
 import io.zahori.server.model.CaseExecution;
@@ -53,6 +34,22 @@ import io.zahori.server.model.jenkins.Build;
 import io.zahori.server.repository.CaseExecutionsRepository;
 import io.zahori.server.repository.ExecutionsRepository;
 import io.zahori.server.repository.ProcessesRepository;
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
@@ -374,19 +371,19 @@ public class ExecutionService {
                                             + caseExecution.getBrowser().getBrowserName() + ")";
                                     LOG.info("[<--] Process error '{}'", processCase);
 
+                                    casesExecuted.add(caseExecution);
                                     execution.setTotalFailed(execution.getTotalFailed() + 1);
                                     caseExecution.setStatus(FAILED);
                                     caseExecution.setNotes(err.getMessage());
                                     caseExecutionsRepository.save(caseExecution);
-                                    casesExecuted.add(caseExecution);
                                 }) //
                                 .doOnSuccess(resultCaseExecution -> {
                                     String processCase = process.getName() + "' -> case '" + caseExecution.getCas().getName() + "' ("
                                             + caseExecution.getBrowser().getBrowserName() + ")";
                                     LOG.info("[<--] Process finished '{}'", processCase);
-                                    updateTotals(execution, resultCaseExecution);
-                                    updateCaseExecution(caseExecution, resultCaseExecution);
                                     casesExecuted.add(resultCaseExecution);
+                                    updateTotals(execution, resultCaseExecution);
+                                    updateCaseExecution(resultCaseExecution);
                                 }) //
                 ) //
                 .sequential() //
@@ -422,7 +419,7 @@ public class ExecutionService {
                 .subscribe();
     }
 
-    private void updateCaseExecution(CaseExecution originalCaseExecution, CaseExecution resultCaseExecution) {
+    private void updateCaseExecution(CaseExecution resultCaseExecution) {
         Optional<CaseExecution> caseExecutionDBOpt = caseExecutionsRepository.findById(resultCaseExecution.getCaseExecutionId());
         if (caseExecutionDBOpt.isPresent()) {
             CaseExecution caseExecutionDB = caseExecutionDBOpt.get();

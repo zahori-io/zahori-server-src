@@ -99,6 +99,10 @@ export class DataService {
     return this.http.get<Browser[]>(this.url + "browser", {});
   }
 
+  public getSelenoidUiHostAndPort(): Observable<string> {
+    return this.http.get<string>(this.url + "selenoid/ui", { responseType: 'text' as 'json' });
+  }
+
   public createExecution(execution: Execution): Observable<Execution> {
     return this.http.post<Execution>(this.url + "process/" + this.processSelected.processId + "/executions", JSON.stringify(execution), {});
   }

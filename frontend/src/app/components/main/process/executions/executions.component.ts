@@ -15,8 +15,9 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
   caseExecutionVideoSelected: CaseExecution;
   loading: boolean = false;
   modalMaximized: boolean = false;
+  selenoidUiHostAndPort: string;
   rfb: RFB; // Vídeo streaming
-  ngClass: string
+  ngClass: string;
 
   constructor(public dataService: DataService) {
   }
@@ -29,6 +30,7 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
         console.log("new process selected");
         this.hideCaseExecutionDetails();
       });
+    this.getSelenoidUiHostAndPort();
   }
 
   ngAfterViewInit(): void {
@@ -103,6 +105,7 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   startVideoStreaming(caseExecution: CaseExecution) {
+    console.log("startVideoStreaming on " + this.selenoidUiHostAndPort);
     this.caseExecutionVideoSelected = caseExecution;
     var password = "selenoid";
 
@@ -113,8 +116,8 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
       protocol = 'ws://';
     }
 
-    // Creating a new RFB object will start a new connection
-    this.rfb = new RFB(document.getElementById("screen"), protocol+"localhost:8081/ws/vnc/" + caseExecution.selenoidId, {
+    // Create a new RFB object will start a new connection
+    this.rfb = new RFB(document.getElementById("screen"), protocol + this.selenoidUiHostAndPort + "/ws/vnc/" + caseExecution.selenoidId, {
       credentials: { password: password },
     });
     this.resizeVnc();
@@ -135,4 +138,14 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
   reload() {
     this.getProcessExecutions();
   }
+
+  getSelenoidUiHostAndPort() {
+    this.dataService.getSelenoidUiHostAndPort().subscribe(
+      hostAndPort => {
+        this.selenoidUiHostAndPort = hostAndPort;
+        console.log("getSelenoidUiHostAndPort -> " + this.selenoidUiHostAndPort);
+      }
+    );
+  }
+
 }

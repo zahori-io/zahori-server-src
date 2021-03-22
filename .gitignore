@@ -14,5 +14,6 @@
 /server/selenoid/config/logs/*
 /server/selenoid/config/video/*
 /src/main/resources/static/*
+backend/nbactions.xml
 *~
 

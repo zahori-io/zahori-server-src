@@ -23,10 +23,19 @@ package io.zahori.server.controller;
  * #L%
  */
 
+import io.zahori.server.model.Case;
+import io.zahori.server.model.Configuration;
+import io.zahori.server.model.Execution;
+import io.zahori.server.model.Process;
+import io.zahori.server.repository.CasesRepository;
+import io.zahori.server.repository.ConfigurationRepository;
+import io.zahori.server.repository.ProcessesRepository;
+import io.zahori.server.security.JWTUtils;
+import io.zahori.server.service.ExecutionService;
+import io.zahori.server.service.JenkinsService;
+import io.zahori.server.utils.FilePath;
 import java.io.File;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -45,17 +54,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import io.zahori.server.model.Case;
-import io.zahori.server.model.Configuration;
-import io.zahori.server.model.Execution;
-import io.zahori.server.model.Process;
-import io.zahori.server.repository.CasesRepository;
-import io.zahori.server.repository.ConfigurationRepository;
-import io.zahori.server.repository.ProcessesRepository;
-import io.zahori.server.security.JWTUtils;
-import io.zahori.server.service.ExecutionService;
-import io.zahori.server.service.JenkinsService;
 
 /**
  * The type Processes controller.
@@ -199,12 +197,12 @@ public class ProcessesController {
 
             Long clientId = JWTUtils.getClientId(request);
 
-            // TODO construir ruta donde está guardado el fichero en el volúmen
-            File evidenceFile = new File(evidencesDir + path);
+            String pathNormalized = FilePath.normalize(evidencesDir + path);
+            File evidenceFile = new File(pathNormalized);
             byte[] fileBytes = FileUtils.readFileToByteArray(evidenceFile);
             ByteArrayResource resource = new ByteArrayResource(fileBytes);
 
-            String filenameToDownload = StringUtils.substringAfterLast(path, "/");
+            String filenameToDownload = StringUtils.substringAfterLast(pathNormalized, File.separator);
 
             HttpHeaders headers = new HttpHeaders();
             headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + filenameToDownload);
