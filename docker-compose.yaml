@@ -2,7 +2,7 @@ version: '3'
 services:
 
   eureka-server:
-    image: zahoriaut/eureka-server:0.1.4
+    image: zahoriaut/eureka-server:0.1.5
     ports: 
       - "${ZAHORI_EUREKA_PORT}:8761"
     network_mode: bridge
