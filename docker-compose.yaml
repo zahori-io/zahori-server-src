@@ -90,7 +90,7 @@ services:
   selenoid-ui:
     image: "aerokube/selenoid-ui"
     ports:
-      - "${ZAHORI_SELENOID_UI_PORT}:8080"
+      - "${ZAHORI_SELENOID_UI_INTERNAL_PORT}:8080"
     command: ["--selenoid-uri", "http://selenoid:${ZAHORI_SELENOID_PORT}", "--allowed-origin", "*"]
     depends_on:
      - selenoid
