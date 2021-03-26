@@ -38,7 +38,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.4.3</version>
-        <relativePath />
+        <relativePath/>
     </parent>
 
 	<properties>
@@ -50,7 +50,7 @@
 		<license.licenseName>agpl_v3</license.licenseName>
 		<license.licenseResolver>${project.baseUri}/src/license</license.licenseResolver>
 		<spring.version>5.3.4</spring.version>
-		<jackson.version>2.12.1</jackson.version>
+		<jackson.version>2.12.2</jackson.version>
 		<spring-data.version>2.4.5</spring-data.version>
 		<spring-security.version>5.4.5</spring-security.version>
 		<spring-boot.version>2.4.3</spring-boot.version>
@@ -585,7 +585,7 @@
 								<id>enforce</id>
 								<configuration>
 									<rules>
-										<DependencyConvergence />
+										<DependencyConvergence/>
 										<requireMavenVersion>
 											<version>3.6.3</version>
 										</requireMavenVersion>
