@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, Subject } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
+
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { AutenticacionService } from './autenticacion.service';
@@ -10,6 +12,7 @@ import { Team } from '../model/team';
 import { Case } from '../model/case';
 import { Configuration } from '../model/configuration';
 import { Browser } from '../model/browser';
+import { Environment } from '../model/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -110,6 +113,10 @@ export class DataService {
   public getFile(fileUrl: string) {
     return this.http.get(this.url + "process/" + this.processSelected.processId + "/file?path=" + fileUrl, { responseType: 'blob' });
   }
+
+  public getEnvironments() : Observable<any>{
+    return this.http.get<any>(this.url + "environments"); 
+}
 
   // get Jenkins artifact
   //public getFile(fileUrl: string) {

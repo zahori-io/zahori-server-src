@@ -1,3 +1,8 @@
+<boot-alert
+      [alert]="alert"
+      (click) = closeAlert()>
+</boot-alert>
+
 <div class="sidebarZahoricontent">
 
     <div class="app-page-title">
@@ -10,49 +15,14 @@
 
     <div class="row mt-3">
         <div class="col-4">
-            <label for="exampleEmail" class="">Nombre</label>
-            <input name="Nombre" id="" placeholder="" type="text" class="form-control">
+            <label for="name" class="">Nombre</label>
         </div>
         <div class="col-6">
-            <label for="exampleEmail" class="">Url</label>
-            <input name="Valor" id="" placeholder="" type="text" class="form-control">
+            <label for="url" class="">Url</label>
         </div>
-        <a href="#">
-            <i class="fas fa-times mt-4 pt-3"></i>
-        </a>
     </div>
-
-    <div class="row mt-2">
-        <div class="col-4">
-            <input name="Nombre" id="" placeholder="" type="text" class="form-control">
-        </div>
-        <div class="col-6">
-            <input name="Valor" id="" placeholder="" type="text" class="form-control">
-        </div>
-        <a href="#">
-            <i class="fas fa-times mt-1 pt-2"></i>
-        </a>
-    </div>
-
-    <div class="row mt-2">
-        <div class="col-4">
-            <input name="Nombre" id="" placeholder="" type="text" class="form-control">
-        </div>
-        <div class="col-6">
-            <input name="Valor" id="" placeholder="" type="text" class="form-control">
-        </div>
-        <a href="#">
-            <i class="fas fa-times mt-1 pt-2"></i>
-        </a>
-    </div>
-
-    <div class="col-8 text-center mt-3">
-        <button class="btn-wide mt-2 btn-icon btn btn-zahoriV btn-sm mr-2 active">
-            Añadir
-        </button>
-        <button class="btn-wide mt-2 btn-icon btn btn-zahoriV btn-sm">
-            Guardar
-        </button>
-    </div>
+    
+    <environment id="test" *ngFor ="let env of envs" [environment] = env (updated) = updateEnv($event) env (deleted) = deleteEnv($event)></environment>
+    <environment [environment] = myenvironment (created) = createEnv($event)></environment>
 
 </div>
