@@ -44,7 +44,7 @@ public interface ClientEnvironmentsRepository extends CrudRepository<ClientEnvir
      * @param processId the process id
      * @return the set
      */
-    @Query("SELECT e FROM ClientEnvironment e WHERE e.client.clientId = :clientId and e.process.processId = :processId")
+    @Query("SELECT e FROM ClientEnvironment e WHERE e.client.clientId = :clientId and e.process.processId = :processId and e.active = true ORDER BY e.order ASC")
     Set<ClientEnvironment> findByClientIdAndProcessId(@Param("clientId") Long clientId, @Param("processId") Long processId);
 
 }

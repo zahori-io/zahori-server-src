@@ -52,6 +52,8 @@ public class ClientTag implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tagId;
 
+    private Boolean active;
+    
     // Note scape \" characters due to order is a JPA reserved word
     @Column(name = "\"order\"")
     private Long order;
@@ -99,6 +101,25 @@ public class ClientTag implements Serializable {
     public void setTagId(Long tagId) {
         this.tagId = tagId;
     }
+
+    /**
+     * Gets active.
+     *
+     * @return the active
+     */
+    public Boolean getActive() {
+        return this.active;
+    }
+
+    /**
+     * Sets active.
+     *
+     * @param active the active
+     */
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
 
     /**
      * Gets order.

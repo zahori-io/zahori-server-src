@@ -44,6 +44,6 @@ public interface ClientTagsRepository extends CrudRepository<ClientTag, Long> {
      * @param processId the process id
      * @return the set
      */
-    @Query("SELECT t FROM ClientTag t WHERE t.client.clientId = :clientId and t.process.processId = :processId")
+    @Query("SELECT t FROM ClientTag t WHERE t.client.clientId = :clientId and t.process.processId = :processId and t.active = true ORDER BY t.order ASC")
     Set<ClientTag> findByClientIdAndProcessId(@Param("clientId") Long clientId, @Param("processId") Long processId);
 }
