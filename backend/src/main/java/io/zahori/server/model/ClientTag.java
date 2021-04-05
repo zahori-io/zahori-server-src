@@ -23,9 +23,9 @@ package io.zahori.server.model;
  * #L%
  */
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,8 +37,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * The type Client tag.
@@ -54,6 +52,8 @@ public class ClientTag implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long tagId;
 
+    // Note scape \" characters due to order is a JPA reserved word
+    @Column(name = "\"order\"")
     private Long order;
 
     @Column(name = "name")
@@ -71,6 +71,11 @@ public class ClientTag implements Serializable {
     @JoinColumn(name = "client_id")
     private Client client;
 
+    @JsonBackReference(value = "process")
+    @ManyToOne
+    @JoinColumn(name = "process_id")
+    private Process process;
+        
     /**
      * Instantiates a new Client tag.
      */
@@ -167,4 +172,22 @@ public class ClientTag implements Serializable {
         this.client = client;
     }
 
+    /**
+     * Gets process.
+     *
+     * @return the process
+     */
+    public Process getProcess() {
+        return process;
+    }
+
+    /**
+     * Sets process.
+     *
+     * @param process the process
+     */
+    public void setProcess(Process process) {
+        this.process = process;
+    }
+    
 }
