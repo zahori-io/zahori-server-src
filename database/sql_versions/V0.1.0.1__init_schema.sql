@@ -335,31 +335,6 @@ ALTER TABLE public.accounts_roles OWNER TO ${zahori_db_user};
 GRANT ALL ON TABLE public.accounts_roles TO ${zahori_db_user};
 
 
--- public.client_environments definition
-
--- Drop table
-
--- DROP TABLE public.client_environments;
-
-CREATE TABLE public.client_environments (
-    environment_id serial NOT NULL,
-    client_id int8 NOT NULL,
-	process_id int8 NOT NULL,
-    "name" varchar NOT NULL,
-    url varchar NOT NULL,
-    "order" int8 NOT NULL,
-    active bool NOT NULL DEFAULT true,
-    CONSTRAINT client_environments_pk PRIMARY KEY (environment_id),
-    CONSTRAINT client_environments_fk FOREIGN KEY (client_id) REFERENCES clients(client_id),
-	CONSTRAINT client_environments_processes_fk FOREIGN KEY (process_id) REFERENCES processes(process_id)
-);
-
--- Permissions
-
-ALTER TABLE public.client_environments OWNER TO ${zahori_db_user};
-GRANT ALL ON TABLE public.client_environments TO ${zahori_db_user};
-
-
 -- public.client_evidence_cases definition
 
 -- Drop table
@@ -438,29 +413,6 @@ CREATE TABLE public.client_retries (
 
 ALTER TABLE public.client_retries OWNER TO ${zahori_db_user};
 GRANT ALL ON TABLE public.client_retries TO ${zahori_db_user};
-
-
--- public.client_tags definition
-
--- Drop table
-
--- DROP TABLE public.client_tags;
-
-CREATE TABLE public.client_tags (
-    tag_id serial NOT NULL,
-    client_id int8 NOT NULL,
-	process_id int8 NOT NULL,
-    "name" varchar NOT NULL,
-    "order" int8 NOT NULL,
-    CONSTRAINT client_tags_pk PRIMARY KEY (tag_id),
-    CONSTRAINT client_tags_fk FOREIGN KEY (client_id) REFERENCES clients(client_id),
-	CONSTRAINT client_tags_processes_fk FOREIGN KEY (process_id) REFERENCES processes(process_id)
-);
-
--- Permissions
-
-ALTER TABLE public.client_tags OWNER TO ${zahori_db_user};
-GRANT ALL ON TABLE public.client_tags TO ${zahori_db_user};
 
 
 -- public.client_teams definition
@@ -595,6 +547,56 @@ CREATE TABLE public.processes (
 
 ALTER TABLE public.processes OWNER TO ${zahori_db_user};
 GRANT ALL ON TABLE public.processes TO ${zahori_db_user};
+
+
+
+-- public.client_environments definition
+
+-- Drop table
+
+-- DROP TABLE public.client_environments;
+
+CREATE TABLE public.client_environments (
+    environment_id serial NOT NULL,
+    client_id int8 NOT NULL,
+	process_id int8 NOT NULL,
+    "name" varchar NOT NULL,
+    url varchar NOT NULL,
+    "order" int8 NOT NULL,
+    active bool NOT NULL DEFAULT true,
+    CONSTRAINT client_environments_pk PRIMARY KEY (environment_id),
+    CONSTRAINT client_environments_fk FOREIGN KEY (client_id) REFERENCES clients(client_id),
+	CONSTRAINT client_environments_processes_fk FOREIGN KEY (process_id) REFERENCES processes(process_id)
+);
+
+-- Permissions
+
+ALTER TABLE public.client_environments OWNER TO ${zahori_db_user};
+GRANT ALL ON TABLE public.client_environments TO ${zahori_db_user};
+
+
+-- public.client_tags definition
+
+-- Drop table
+
+-- DROP TABLE public.client_tags;
+
+CREATE TABLE public.client_tags (
+    tag_id serial NOT NULL,
+    client_id int8 NOT NULL,
+	process_id int8 NOT NULL,
+    "name" varchar NOT NULL,
+    "order" int8 NOT NULL,
+    active bool NOT NULL DEFAULT true,
+    CONSTRAINT client_tags_pk PRIMARY KEY (tag_id),
+    CONSTRAINT client_tags_fk FOREIGN KEY (client_id) REFERENCES clients(client_id),
+	CONSTRAINT client_tags_processes_fk FOREIGN KEY (process_id) REFERENCES processes(process_id)
+);
+
+-- Permissions
+
+ALTER TABLE public.client_tags OWNER TO ${zahori_db_user};
+GRANT ALL ON TABLE public.client_tags TO ${zahori_db_user};
 
 
 -- public.users definition

@@ -70,8 +70,8 @@ INSERT INTO public.client_retries (client_id, retry_id) VALUES(1, 0);
 INSERT INTO public.client_retries (client_id, retry_id) VALUES(1, 1);
 INSERT INTO public.client_retries (client_id, retry_id) VALUES(1, 2);
 
-INSERT INTO public.client_tags (client_id, process_id, "name", "order") VALUES(1, 1, 'Tag 1', 1);
-INSERT INTO public.client_tags (client_id, process_id, "name", "order") VALUES(1, 1, 'Tag 2', 2);
+INSERT INTO public.client_tags (client_id, process_id, "name", "order", active) VALUES(1, 1, 'Tag 1', 1, true);
+INSERT INTO public.client_tags (client_id, process_id, "name", "order", active) VALUES(1, 1, 'Tag 2', 2, true);
 
 INSERT INTO public.cases_tags (case_id, tag_id) VALUES(3, 1);
 INSERT INTO public.cases_tags (case_id, tag_id) VALUES(4, 1);
