@@ -22,7 +22,23 @@
         </div>
     </div>
     
-    <environment id="test" *ngFor ="let env of envs" [environment] = env (updated) = updateEnv($event) env (deleted) = deleteEnv($event)></environment>
-    <environment [environment] = myenvironment (created) = createEnv($event)></environment>
+    <div>
+        <environment id="test" *ngFor ="let env of envs" [environment] = env (updated) = updateEnv($event) env (deleted) = deleteEnv($event)></environment>
+        <environment [environment] = myenvironment (created) = createEnv($event) *ngIf= "showrow"></environment>
+    </div>
+    
+    
+    <div class="col-8 text-center mt-3">
+        <button class="btn-wide mt-2 btn-icon btn btn-zahoriV btn-sm" (click) = newEnv()>
+            <div *ngIf = "!showrow else hiderow">
+                Añadir entorno
+            </div>          
+        </button>
+        
+        
+        <ng-template #hiderow>
+            Ocultar
+        </ng-template>
+    </div>
 
 </div>

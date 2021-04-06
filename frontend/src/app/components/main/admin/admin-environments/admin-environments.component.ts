@@ -21,6 +21,7 @@ export class AdminEnvironmentsComponent implements OnInit {
   envs : Environment[] = [];
   myenvironment : Environment;
   alert: AlertOptions;
+  showrow : boolean = false;
 
   ngOnInit() {
     this.refresh();
@@ -51,17 +52,27 @@ export class AdminEnvironmentsComponent implements OnInit {
       this.alert = new AlertOptions(SUCCESS, "Se ha modificado el entorno " + env.name, SUCCESS_COLOR , true )
     }
   }
-
+  
   createEnv(env : Environment){
     if (env.name.length == 0 || env.url.length == 0){
+      
       this.alert = new AlertOptions(ERROR, "Todos los campos son obligatorios", ERROR_COLOR , true );
     }
     else{
       this.alert = new AlertOptions(SUCCESS, "Se ha creado el entorno " + env.name, SUCCESS_COLOR , true);
+      this.showrow = false;
     }
   }
 
   closeAlert(){
     this.alert = new AlertOptions;
+  }
+
+  newEnv(){
+    if (!this.showrow){
+      this.myenvironment = new Environment();
+    }
+      this.showrow = !this.showrow;
+  
   }
 }

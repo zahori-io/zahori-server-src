@@ -11,9 +11,10 @@ export class AlertComponent {
   @Input() 
   alert: AlertOptions;
 
+  show : boolean = false;
+
   constructor() { }
 
   ngOnInit(): void {
   }
-
 }
