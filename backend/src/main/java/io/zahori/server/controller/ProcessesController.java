@@ -24,10 +24,15 @@ package io.zahori.server.controller;
  */
 
 import io.zahori.server.model.Case;
+import io.zahori.server.model.Client;
+import io.zahori.server.model.ClientEnvironment;
+import io.zahori.server.model.ClientTag;
 import io.zahori.server.model.Configuration;
 import io.zahori.server.model.Execution;
 import io.zahori.server.model.Process;
 import io.zahori.server.repository.CasesRepository;
+import io.zahori.server.repository.ClientEnvironmentsRepository;
+import io.zahori.server.repository.ClientTagsRepository;
 import io.zahori.server.repository.ConfigurationRepository;
 import io.zahori.server.repository.ProcessesRepository;
 import io.zahori.server.security.JWTUtils;
@@ -35,6 +40,7 @@ import io.zahori.server.service.ExecutionService;
 import io.zahori.server.service.JenkinsService;
 import io.zahori.server.utils.FilePath;
 import java.io.File;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -47,6 +53,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -70,6 +77,12 @@ public class ProcessesController {
     @Autowired
     private CasesRepository casesRepository;
 
+    @Autowired
+    private ClientEnvironmentsRepository environmentsRepository;
+       
+    @Autowired
+    private ClientTagsRepository tagsRepository;
+    
     @Autowired
     private ConfigurationRepository configurationRepository;
 
@@ -254,6 +267,140 @@ public class ProcessesController {
             LOG.error(e.getMessage());
             return new ResponseEntity<>("Error downloading file " + url + " for process " + processId + ": " + e.getMessage(),
                     HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    /**
+     * Gets process environments.
+     *
+     * @return the environments
+     */
+    @GetMapping(path = "/{processId}/environments")
+    public ResponseEntity<Object> getEnvironments(@PathVariable Long processId, HttpServletRequest request) {
+        try {
+            LOG.info("get environments");
+            Iterable<ClientEnvironment> environments = environmentsRepository.findByClientIdAndProcessId(JWTUtils.getClientId(request), processId);
+            return new ResponseEntity<>(environments, HttpStatus.OK);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    /**
+     * Post process environments.
+     *
+     * @param processId the processId
+     * @param environments the environments
+     * @param request   the request
+     * @return the response entity
+     */
+    @PostMapping(path = "/{processId}/environments")
+    public ResponseEntity<Object> postEnvironments(@PathVariable Long processId, @RequestBody List<ClientEnvironment> environments, HttpServletRequest request) {
+        try {
+            LOG.info("save environments for process {}", processId);
+            Long clientId = JWTUtils.getClientId(request);
+            
+            if (environments == null){
+                return new ResponseEntity<>(environments, HttpStatus.BAD_REQUEST);
+            }
+            
+            // Set clientId and processId
+            for (ClientEnvironment environment: environments){
+                Process process = new Process();
+                process.setProcessId(processId);
+                environment.setProcess(process);
+                
+                Client client = new Client();
+                client.setClientId(clientId);
+                environment.setClient(client);
+            }
+            
+            Iterable<ClientEnvironment> envs = environmentsRepository.saveAll(environments);
+
+            return new ResponseEntity<>(envs, HttpStatus.OK);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @DeleteMapping(path = "/{processId}/environments")
+    public ResponseEntity<Object> deleteEnvironments(@PathVariable Long processId, @RequestBody List<ClientEnvironment> environments, HttpServletRequest request) {
+        try {
+            LOG.info("delete environments for process {}", processId);
+            environmentsRepository.deleteAll(environments);
+            return new ResponseEntity<>(environments, HttpStatus.OK);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    /**
+     * Gets process tags.
+     *
+     * @return the tags
+     */
+    @GetMapping(path = "/{processId}/tags")
+    public ResponseEntity<Object> getTags(@PathVariable Long processId, HttpServletRequest request) {
+        try {
+            LOG.info("get tags for process {}", processId);
+            Iterable<ClientTag> tags = tagsRepository.findByClientIdAndProcessId(JWTUtils.getClientId(request), processId);
+            return new ResponseEntity<>(tags, HttpStatus.OK);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    /**
+     * Post process tags.
+     *
+     * @param processId the processId
+     * @param tags the tags
+     * @param request   the request
+     * @return the response entity
+     */
+    @PostMapping(path = "/{processId}/tags")
+    public ResponseEntity<Object> postTags(@PathVariable Long processId, @RequestBody List<ClientTag> tags, HttpServletRequest request) {
+        try {
+            LOG.info("save tags for process {}", processId);
+            Long clientId = JWTUtils.getClientId(request);
+            
+            if (tags == null){
+                return new ResponseEntity<>(tags, HttpStatus.BAD_REQUEST);
+            }
+            
+            // Set clientId and processId
+            for (ClientTag tag: tags){
+                Process process = new Process();
+                process.setProcessId(processId);
+                tag.setProcess(process);
+                
+                Client client = new Client();
+                client.setClientId(clientId);
+                tag.setClient(client);
+            }
+            
+            Iterable<ClientTag> tagsSaved = tagsRepository.saveAll(tags);
+
+            return new ResponseEntity<>(tagsSaved, HttpStatus.OK);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
+    @DeleteMapping(path = "/{processId}/tags")
+    public ResponseEntity<Object> deleteTags(@PathVariable Long processId, @RequestBody List<ClientTag> tags, HttpServletRequest request) {
+        try {
+            LOG.info("delete tags for process {}", processId);
+            tagsRepository.deleteAll(tags);
+            return new ResponseEntity<>(tags, HttpStatus.OK);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
