@@ -37,8 +37,8 @@ INSERT INTO public.cases ("name", process_id, active, "data") VALUES('Search tes
 INSERT INTO public.cases ("name", process_id, active, "data") VALUES('Search viajes extraordinarios', 1, true, '{"Search": "Viajes extraordinarios","Language": "Español"}');
 INSERT INTO public.cases ("name", process_id, active, "data") VALUES('Search gastronomía España', 1, true, '{"Search": "Gastronomía de España","Language": "Español"}');
 
-INSERT INTO public.client_environments (client_id, "name", url, "order", active) VALUES(1, 'preproducción', 'https://pre.url', 1, true);
-INSERT INTO public.client_environments (client_id, "name", url, "order", active) VALUES(1, 'producción', 'https://pro.url', 2, true);
+INSERT INTO public.client_environments (client_id, process_id, "name", url, "order", active) VALUES(1, 1, 'preproducción', 'https://pre.url', 1, true);
+INSERT INTO public.client_environments (client_id, process_id, "name", url, "order", active) VALUES(1, 1, 'producción', 'https://pro.url', 2, true);
 
 INSERT INTO public.evidence_cases ("name", "order", active) VALUES('Nunca', 1, true);
 INSERT INTO public.evidence_cases ("name", "order", active) VALUES('Sólo si el proceso falla o tiene alertas', 2, true);
@@ -70,8 +70,8 @@ INSERT INTO public.client_retries (client_id, retry_id) VALUES(1, 0);
 INSERT INTO public.client_retries (client_id, retry_id) VALUES(1, 1);
 INSERT INTO public.client_retries (client_id, retry_id) VALUES(1, 2);
 
-INSERT INTO public.client_tags (client_id, "name", "order") VALUES(1, 'Tag 1', 1);
-INSERT INTO public.client_tags (client_id, "name", "order") VALUES(1, 'Tag 2', 2);
+INSERT INTO public.client_tags (client_id, process_id, "name", "order") VALUES(1, 1, 'Tag 1', 1);
+INSERT INTO public.client_tags (client_id, process_id, "name", "order") VALUES(1, 1, 'Tag 2', 2);
 
 INSERT INTO public.cases_tags (case_id, tag_id) VALUES(3, 1);
 INSERT INTO public.cases_tags (case_id, tag_id) VALUES(4, 1);

@@ -23,9 +23,9 @@ package io.zahori.server.model;
  * #L%
  */
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,8 +35,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * The type Client environment.
@@ -57,7 +55,8 @@ public class ClientEnvironment implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "order")
+    // Note scape \" characters due to order is a JPA reserved word
+    @Column(name = "\"order\"")
     private Long order;
 
     @Column(name = "url")
@@ -69,6 +68,11 @@ public class ClientEnvironment implements Serializable {
     @JoinColumn(name = "client_id")
     private Client client;
 
+    @JsonBackReference(value = "process")
+    @ManyToOne
+    @JoinColumn(name = "process_id")
+    private Process process;
+        
     // bi-directional many-to-one association to Configuration
     @JsonBackReference(value = "configurations")
     @OneToMany(mappedBy = "clientEnvironment")
@@ -186,6 +190,24 @@ public class ClientEnvironment implements Serializable {
      */
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    /**
+     * Gets process.
+     *
+     * @return the process
+     */
+    public Process getProcess() {
+        return process;
+    }
+
+    /**
+     * Sets process.
+     *
+     * @param process the process
+     */
+    public void setProcess(Process process) {
+        this.process = process;
     }
 
     /**
