@@ -344,12 +344,14 @@ GRANT ALL ON TABLE public.accounts_roles TO ${zahori_db_user};
 CREATE TABLE public.client_environments (
     environment_id serial NOT NULL,
     client_id int8 NOT NULL,
+	process_id int8 NOT NULL,
     "name" varchar NOT NULL,
     url varchar NOT NULL,
     "order" int8 NOT NULL,
     active bool NOT NULL DEFAULT true,
     CONSTRAINT client_environments_pk PRIMARY KEY (environment_id),
-    CONSTRAINT client_environments_fk FOREIGN KEY (client_id) REFERENCES clients(client_id)
+    CONSTRAINT client_environments_fk FOREIGN KEY (client_id) REFERENCES clients(client_id),
+	CONSTRAINT client_environments_processes_fk FOREIGN KEY (process_id) REFERENCES processes(process_id)
 );
 
 -- Permissions
@@ -447,10 +449,12 @@ GRANT ALL ON TABLE public.client_retries TO ${zahori_db_user};
 CREATE TABLE public.client_tags (
     tag_id serial NOT NULL,
     client_id int8 NOT NULL,
+	process_id int8 NOT NULL,
     "name" varchar NOT NULL,
     "order" int8 NOT NULL,
     CONSTRAINT client_tags_pk PRIMARY KEY (tag_id),
-    CONSTRAINT client_tags_fk FOREIGN KEY (client_id) REFERENCES clients(client_id)
+    CONSTRAINT client_tags_fk FOREIGN KEY (client_id) REFERENCES clients(client_id),
+	CONSTRAINT client_tags_processes_fk FOREIGN KEY (process_id) REFERENCES processes(process_id)
 );
 
 -- Permissions
