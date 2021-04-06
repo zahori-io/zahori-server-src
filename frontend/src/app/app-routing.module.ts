@@ -20,6 +20,7 @@ import { AdminGroupsComponent } from './components/main/admin/admin-groups/admin
 import { AdminUsersComponent } from './components/main/admin/admin-users/admin-users.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ProcessComponent } from './components/main/process/process.component';
+import { ProcessAdminComponent } from './components/main/process/process-admin/process-admin.component'
 
 
 const routes: Routes = [
@@ -36,7 +37,12 @@ const routes: Routes = [
           { path: 'executions', component: ExecutionsComponent },
           { path: 'trigger', component: TriggerComponent },
           { path: 'configurator', component: ConfiguratorComponent },
-          { path: 'cases', component: CasesComponent }
+          { path: 'cases', component: CasesComponent },
+          { path: 'admin', component: ProcessAdminComponent,
+            children:[
+              { path: 'environments', component: AdminEnvironmentsComponent },
+              { path: 'tags', component: AdminTagsComponent }
+            ]}
         ]
       },
       {

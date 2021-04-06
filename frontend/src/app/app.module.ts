@@ -29,6 +29,8 @@ import { AuthGuard } from './guards/auth.guard';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ProcessComponent } from './components/main/process/process.component';
 import { ProcessMenuComponent } from './components/main/process/process-menu/process-menu.component';
+import { ProcessAdminComponent } from './components/main/process/process-admin/process-admin.component';
+import { ProcessAdminMenuComponent } from './components/main/process/process-admin/process-admin-menu/process-admin-menu.component';
 import { TeamProcessSelectorComponent } from './components/main/team-process-selector/team-process-selector.component';
 import { AdminMenuComponent } from './components/main/admin/admin-menu/admin-menu.component';
 import { CaseExecutionDetailsComponent } from './components/main/process/case-execution-details/case-execution-details.component';
@@ -62,6 +64,8 @@ import { AlertComponent } from './components/main/admin/admin-environments/alert
     MainComponent,
     ProcessComponent,
     ProcessMenuComponent,
+    ProcessAdminComponent,
+    ProcessAdminMenuComponent,
     TeamProcessSelectorComponent,
     AdminMenuComponent,
     CaseExecutionDetailsComponent,

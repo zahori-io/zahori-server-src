@@ -59,8 +59,13 @@ export class EnvironmentComponent{
                 console.log("click on borrar");
                 this.submitted = true;
             } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire(
-                    'Acción cancelada',
+                Swal.fire({
+                    backdrop: `
+                        rgba(64, 69, 58,0.4)
+                        left top
+                        no-repeat`,                    
+                    title : 'Acción cancelada',
+                    }
                 )
             }
         })
