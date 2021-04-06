@@ -12,7 +12,7 @@ import { HelpComponent } from './components/main/help/help.component';
 import { ProfileComponent } from './components/main/profile/profile.component';
 import { AdminComponent } from './components/main/admin/admin.component';
 import { AdminPlatformsComponent } from './components/main/admin/admin-platforms/admin-platforms.component';
-import { AdminEnvironmentsComponent } from './components/main/admin/admin-environments/admin-environments.component';
+import { AdminEnvironmentsComponent } from './components/main/process/process-admin/admin-environments/admin-environments.component';
 import { AdminExecutionsComponent } from './components/main/admin/admin-executions/admin-executions.component';
 import { AdminTagsComponent } from './components/main/admin/admin-tags/admin-tags.component';
 import { AdminTmsComponent } from './components/main/admin/admin-tms/admin-tms.component';
@@ -40,6 +40,7 @@ const routes: Routes = [
           { path: 'cases', component: CasesComponent },
           { path: 'admin', component: ProcessAdminComponent,
             children:[
+              { path: '', component : AdminEnvironmentsComponent},
               { path: 'environments', component: AdminEnvironmentsComponent },
               { path: 'tags', component: AdminTagsComponent }
             ]}
@@ -50,9 +51,7 @@ const routes: Routes = [
         children: [
           { path: '', component: AdminPlatformsComponent },
           { path: 'platforms', component: AdminPlatformsComponent },
-          { path: 'environments', component: AdminEnvironmentsComponent },
           { path: 'executions', component: AdminExecutionsComponent },
-          { path: 'tags', component: AdminTagsComponent },
           { path: 'tms', component: AdminTmsComponent },
           { path: 'groups', component: AdminGroupsComponent },
           { path: 'users', component: AdminUsersComponent }

@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Environment } from '../../../../../model/environment';
+import { Environment } from '../../../../../../model/environment';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 @Component({

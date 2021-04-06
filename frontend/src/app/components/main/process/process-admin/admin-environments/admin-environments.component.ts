@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { Environment } from '../../../../model/environment';
-import { EnvironmentService } from './environmentComponent/environmentService';
-import { DataService } from '../../../../services/data.service'
+import { Environment } from '../../../../../model/environment';
+import { DataService } from '../../../../../services/data.service'
 import { AlertOptions } from './alert/alert'
 
 

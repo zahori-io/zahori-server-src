@@ -18,8 +18,8 @@ import { ProfileComponent } from './components/main/profile/profile.component';
 import { AdminComponent } from './components/main/admin/admin.component';
 import { AdminGroupsComponent } from './components/main/admin/admin-groups/admin-groups.component';
 import { AdminPlatformsComponent } from './components/main/admin/admin-platforms/admin-platforms.component';
-import { AdminEnvironmentsComponent } from './components/main/admin/admin-environments/admin-environments.component';
-import { EnvironmentComponent } from  './components/main/admin/admin-environments/environmentComponent/environmentComponent';
+import { AdminEnvironmentsComponent } from './components/main/process/process-admin/admin-environments/admin-environments.component';
+import { EnvironmentComponent } from  './components/main/process/process-admin/admin-environments/environmentComponent/environmentComponent';
 import { AdminExecutionsComponent } from './components/main/admin/admin-executions/admin-executions.component';
 import { AdminTagsComponent } from './components/main/admin/admin-tags/admin-tags.component';
 import { AdminUsersComponent } from './components/main/admin/admin-users/admin-users.component';
@@ -38,7 +38,7 @@ import { AuthImagePipe } from './pipes/auth-image-pipe';
 import { ClientTeamsComponent } from './components/main/client-teams/client-teams.component';
 import { ClientTeamsProcessComponent } from './components/main/client-teams-process/client-teams-process.component';
 import { NotificationsComponent } from './components/main/notifications/notifications.component';
-import { AlertComponent } from './components/main/admin/admin-environments/alert/alert.component';
+import { AlertComponent } from './components/main/process/process-admin/admin-environments/alert/alert.component';
 
 @NgModule({
   declarations: [
