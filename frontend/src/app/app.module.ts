@@ -18,7 +18,8 @@ import { ProfileComponent } from './components/main/profile/profile.component';
 import { AdminComponent } from './components/main/admin/admin.component';
 import { AdminGroupsComponent } from './components/main/admin/admin-groups/admin-groups.component';
 import { AdminPlatformsComponent } from './components/main/admin/admin-platforms/admin-platforms.component';
-import { AdminEnvironmentsComponent } from './components/main/admin/admin-environments/admin-environments.component';
+import { AdminEnvironmentsComponent } from './components/main/process/process-admin/admin-environments/admin-environments.component';
+import { EnvironmentComponent } from  './components/main/process/process-admin/admin-environments/environmentComponent/environmentComponent';
 import { AdminExecutionsComponent } from './components/main/admin/admin-executions/admin-executions.component';
 import { AdminTagsComponent } from './components/main/admin/admin-tags/admin-tags.component';
 import { AdminUsersComponent } from './components/main/admin/admin-users/admin-users.component';
@@ -28,6 +29,8 @@ import { AuthGuard } from './guards/auth.guard';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { ProcessComponent } from './components/main/process/process.component';
 import { ProcessMenuComponent } from './components/main/process/process-menu/process-menu.component';
+import { ProcessAdminComponent } from './components/main/process/process-admin/process-admin.component';
+import { ProcessAdminMenuComponent } from './components/main/process/process-admin/process-admin-menu/process-admin-menu.component';
 import { TeamProcessSelectorComponent } from './components/main/team-process-selector/team-process-selector.component';
 import { AdminMenuComponent } from './components/main/admin/admin-menu/admin-menu.component';
 import { CaseExecutionDetailsComponent } from './components/main/process/case-execution-details/case-execution-details.component';
@@ -35,6 +38,7 @@ import { AuthImagePipe } from './pipes/auth-image-pipe';
 import { ClientTeamsComponent } from './components/main/client-teams/client-teams.component';
 import { ClientTeamsProcessComponent } from './components/main/client-teams-process/client-teams-process.component';
 import { NotificationsComponent } from './components/main/notifications/notifications.component';
+import { BannerComponent } from './utils/banner/banner.component';
 
 @NgModule({
   declarations: [
@@ -51,6 +55,7 @@ import { NotificationsComponent } from './components/main/notifications/notifica
     AdminGroupsComponent,
     AdminPlatformsComponent,
     AdminEnvironmentsComponent,
+    EnvironmentComponent,
     AdminExecutionsComponent,
     AdminTagsComponent,
     AdminUsersComponent,
@@ -59,13 +64,16 @@ import { NotificationsComponent } from './components/main/notifications/notifica
     MainComponent,
     ProcessComponent,
     ProcessMenuComponent,
+    ProcessAdminComponent,
+    ProcessAdminMenuComponent,
     TeamProcessSelectorComponent,
     AdminMenuComponent,
     CaseExecutionDetailsComponent,
     AuthImagePipe,
     ClientTeamsComponent,
     ClientTeamsProcessComponent,
-    NotificationsComponent
+    NotificationsComponent,
+    BannerComponent
   ],
   imports: [
     BrowserModule,
