@@ -13,6 +13,7 @@ import { Case } from '../model/case';
 import { Configuration } from '../model/configuration';
 import { Browser } from '../model/browser';
 import { Environment } from '../model/environment';
+import { Tag } from '../model/tag';
 
 @Injectable({
   providedIn: 'root'
@@ -120,6 +121,14 @@ export class DataService {
 
   public setEnvironment(envs : Environment[], processId : string){
     return this.http.post(this.url + "process/" + processId + "/environments", JSON.stringify(envs));
+  }
+
+  public getTags(processId : String){
+    return this.http.get(this.url + "process/" + processId + "/tags");
+  }
+
+  public setTags(tags: Tag[], processId: string){
+    return this.http.post(this.url + "process/" + processId + "/tags", JSON.stringify(tags));
   }
 
   // get Jenkins artifact

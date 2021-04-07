@@ -41,7 +41,7 @@ export class AdminEnvironmentsComponent implements OnInit {
   deleteEnv(env: Environment){
     env.active = false;
     let envArray: Environment[] = [env];
-    this.sendPostPetition(envArray, new BannerOptions(SUCCESS, "El entorno " + env.name + " ha sido eliminado" + env.name, SUCCESS_COLOR , true ));
+    this.sendPostPetition(envArray, new BannerOptions(SUCCESS, "El entorno " + env.name + " ha sido eliminado", SUCCESS_COLOR , true ));
   }
 
   updateEnv(env : Environment){

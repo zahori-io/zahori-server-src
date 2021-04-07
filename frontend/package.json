@@ -25,11 +25,11 @@
     "datatables.net-dt": "^1.10.23",
     "jquery": "^3.6.0",
     "jquery-circle-progress": "^1.2.2",
+    "ngx-color-picker": "^11.0.0",
     "rxjs": "~6.6.6",
     "save": "^2.4.0",
-    "tslib": "^2.1.0",
     "sweetalert2": "^10.15.7",
-
+    "tslib": "^2.1.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {

@@ -1,31 +1,43 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Environment } from '../../../../../../model/environment';
+import { Tag } from '../../../../../../model/tag';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
+
 @Component({
-    selector: 'environment',
-    templateUrl: './environmentComponent.html'
+    selector: 'tag',
+    templateUrl: './tagComponent.html'
 })
 
-export class EnvironmentComponent{
+export class tagComponent{
+    public arrayColors: any = {
+        color1: '#2883e9',
+        color2: '#e920e9',
+        color3: 'rgb(255,245,0)',
+        color4: 'rgb(236,64,64)',
+        color5: 'rgba(45,208,45,1)'
+      };
+
+
     @Input()
-    environment : Environment;
+    tag : Tag;
 
     
     @Output()
-    deleted = new EventEmitter<Environment>();
+    deleted = new EventEmitter<Tag>();
     
     @Output()
-    updated = new EventEmitter<Environment>();
+    updated = new EventEmitter<Tag>();
     
     @Output()
-    created = new EventEmitter<Environment>();
+    created = new EventEmitter<Tag>();
     
     submitted : boolean = false;
 
-    deleteEnv(env : Environment) {
+
+
+    deleteTag(tag : Tag) {
         Swal.fire({
-            title: 'Borrar entorno ' + env.name,
+            title: 'Borrar etiqueta ' + tag.name,
             text: 'Esta acción no puede deshacerse',
             icon: 'warning',
             showCancelButton: true,
@@ -42,13 +54,13 @@ export class EnvironmentComponent{
                         rgba(64, 69, 58,0.4)
                         left top
                         no-repeat`,                    
-                    title: 'Eliminado el entorno ' + env.name,
-                    text : 'El entorno ha sido eliminado',
+                    title: 'Eliminada la etiqueta ' + tag.name,
+                    text : 'La etiqueta ha sido eliminada',
                     icon : 'success'
                     }
                 )
 
-                this.deleted.emit(env);
+                this.deleted.emit(tag);
                 console.log("click on borrar");
                 this.submitted = true;
             } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -64,20 +76,20 @@ export class EnvironmentComponent{
         })
     }
 
-    updateEnv(env : Environment){
-        this.updated.emit(env);
+    updateTag(tag : Tag){
+        this.updated.emit(tag);
         console.log("click on update");
         this.submitted = true;
     }
 
-    createEnv(env : Environment){
-        this.created.emit(env);
+    createTag(tag : Tag){
+        this.created.emit(tag);
         console.log("click on create");
         this.submitted = true;
     }
 
-    isNew(env : Environment){
-      return env.environmentId == 0;
+    isNew(tag : Tag){
+      return tag.tagId == 0;
   }
 
 

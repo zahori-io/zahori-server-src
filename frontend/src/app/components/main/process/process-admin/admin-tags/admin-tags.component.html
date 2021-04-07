@@ -1,0 +1,44 @@
+<banner
+      [banner]="banner"
+      (click) = closeBanner()>
+</banner>
+
+<div class="sidebarZahoricontent">
+
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div>Gestión de etiquetas</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-4">
+            <label for="name" class="">Nombre</label>
+        </div>
+        <div class="col-6">
+            <label for="url" class="">Url</label>
+        </div>
+    </div>
+    
+    <div>
+        <tag id="test" *ngFor ="let tag of tags" [tag] = tag (updated) = updateTag($event) tag (deleted) = deleteTag($event)></tag>
+        <tag [tag] = myTag (created) = createTag($event) *ngIf= "showrow"></tag>
+    </div>
+    
+    
+    <div class="col-8 text-center mt-3">
+        <button class="btn-wide mt-2 btn-icon btn btn-zahoriV btn-sm" (click) = newTag()>
+            <div *ngIf = "!showrow else hiderow">
+                Añadir etiqueta
+            </div>          
+        </button>
+        
+        
+        <ng-template #hiderow>
+            Ocultar
+        </ng-template>
+    </div>
+
+</div>
