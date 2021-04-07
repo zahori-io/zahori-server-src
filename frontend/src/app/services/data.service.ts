@@ -114,9 +114,13 @@ export class DataService {
     return this.http.get(this.url + "process/" + this.processSelected.processId + "/file?path=" + fileUrl, { responseType: 'blob' });
   }
 
-  public getEnvironments() : Observable<any>{
-    return this.http.get<any>(this.url + "environments"); 
-}
+  public getEnvironments(processId : string) : Observable<any>{
+    return this.http.get<any>(this.url + "process/" + processId + "/environments"); 
+  }
+
+  public setEnvironment(envs : Environment[], processId : string){
+    return this.http.post(this.url + "process/" + processId + "/environments", JSON.stringify(envs));
+  }
 
   // get Jenkins artifact
   //public getFile(fileUrl: string) {

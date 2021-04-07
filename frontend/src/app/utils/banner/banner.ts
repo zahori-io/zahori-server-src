@@ -1,4 +1,4 @@
-export class AlertOptions {
+export class BannerOptions {
     title: string;
     subtitle: string;
     color: string;

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DataService } from 'src/app/services/data.service';
+
 
 @Component({
   selector: 'app-adminprocess-menu',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProcessAdminMenuComponent implements OnInit {
 
-  constructor() { }
+  constructor(public dataService: DataService) {
+  }
 
   ngOnInit(): void {
+    console.log("processadmin --->", this.dataService.processSelected)
+
   }
 
 }

@@ -84,7 +84,7 @@ export class EnvironmentComponent{
     }
 
     isNew(env : Environment){
-      return env.order == 0;
+      return env.environmentId == 0;
   }
 
 

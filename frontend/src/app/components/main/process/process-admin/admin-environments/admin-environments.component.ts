@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { Environment } from '../../../../../model/environment';
 import { DataService } from '../../../../../services/data.service'
-import { AlertOptions } from './alert/alert'
+import { BannerOptions } from '../../../../../utils/banner/banner'
 
 
 const SUCCESS : string = "Operación realizada con éxito";
@@ -19,54 +20,71 @@ const ERROR_COLOR : string = "alert alert-danger";
 export class AdminEnvironmentsComponent implements OnInit {
   envs : Environment[] = [];
   myenvironment : Environment;
-  alert: AlertOptions;
+  banner: BannerOptions;
   showrow : boolean = false;
 
   ngOnInit() {
     this.refresh();
     this.myenvironment = new Environment();
-    this.alert = new AlertOptions();
+    this.banner = new BannerOptions();
   }  
   constructor(public dataService: DataService) {
   }
 
   refresh(){
-    this.dataService.getEnvironments().subscribe(
+    this.dataService.getEnvironments(String(this.dataService.processSelected.processId)).subscribe(
       (res : any) => {
-        this.envs = res.content;
-        console.log(res.content);
+        this.envs = res;
       });
   }
 
   deleteEnv(env: Environment){
-    this.alert = new AlertOptions(SUCCESS, "El entorno " + env.name + " ha sido eliminado", SUCCESS_COLOR , true )
-
+    env.active = false;
+    let envArray: Environment[] = [env];
+    this.sendPostPetition(envArray, new BannerOptions(SUCCESS, "El entorno " + env.name + " ha sido eliminado" + env.name, SUCCESS_COLOR , true ));
   }
 
   updateEnv(env : Environment){
     if (env.name.length == 0 || env.url.length == 0){
-      this.alert = new AlertOptions(ERROR, "Todos los campos son obligatorios", ERROR_COLOR , true )
+      this.banner = new BannerOptions(ERROR, "Todos los campos son obligatorios", ERROR_COLOR , true )
     }
     else{
-      this.alert = new AlertOptions(SUCCESS, "Se ha modificado el entorno " + env.name, SUCCESS_COLOR , true )
+      let envArray: Environment[] = [env];
+      this.sendPostPetition(envArray, new BannerOptions(SUCCESS, "Se ha modificado el entorno " + env.name, SUCCESS_COLOR , true ));
+    }
+    
+  }
+  
+  
+  createEnv(env : Environment){
+    
+    if (env.name.length == 0 || env.url.length == 0){
+      
+      this.banner = new BannerOptions(ERROR, "Todos los campos son obligatorios", ERROR_COLOR , true );
+    }
+    else{
+      let envArray: Environment[] = [env];
+      this.sendPostPetition(envArray, new BannerOptions(SUCCESS, "Se ha creado el entorno " + env.name, SUCCESS_COLOR , true ));
     }
   }
   
-  createEnv(env : Environment){
-    if (env.name.length == 0 || env.url.length == 0){
-      
-      this.alert = new AlertOptions(ERROR, "Todos los campos son obligatorios", ERROR_COLOR , true );
-    }
-    else{
-      this.alert = new AlertOptions(SUCCESS, "Se ha creado el entorno " + env.name, SUCCESS_COLOR , true);
-      this.showrow = false;
-    }
+  sendPostPetition(env : Environment[], banner : BannerOptions){
+    this.dataService.setEnvironment(env, String(this.dataService.processSelected.processId)).subscribe(
+      (res : any) => {
+        this.refresh();
+        this.banner = banner
+        this.showrow = false;
+      });
+      error => {
+        console.log("Error en la petición:" + error);
+        this.banner = new BannerOptions(ERROR, error, ERROR_COLOR , true )
+      }
   }
 
-  closeAlert(){
-    this.alert = new AlertOptions;
+  closeBanner(){
+    this.banner = new BannerOptions;
   }
-
+  
   newEnv(){
     if (!this.showrow){
       this.myenvironment = new Environment();

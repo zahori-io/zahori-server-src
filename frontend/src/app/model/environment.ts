@@ -1,7 +1,7 @@
 import { Link } from './link';
 
 export class Environment {
-    //environmentId: number;
+    environmentId: number;
     active: boolean;
     name: string;
     order: number;
@@ -10,7 +10,7 @@ export class Environment {
     content : any[];
 
     constructor() {
-     //   this.environmentId = 0;
+        this.environmentId = 0;
         this.active = true;
         this.name = "";
         this.order = 0;

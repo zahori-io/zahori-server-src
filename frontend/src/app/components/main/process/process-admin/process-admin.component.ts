@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { data } from 'jquery';
 
 @Component({
   selector: 'app-processAdmin',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProcessAdminComponent implements OnInit {
 
-  constructor() { }
-
-  ngOnInit(): void {
+  
+  ngOnInit(): void {  
+  }
+  
+  constructor() {
   }
 
 }
