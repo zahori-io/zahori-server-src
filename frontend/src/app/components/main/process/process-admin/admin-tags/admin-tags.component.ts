@@ -31,7 +31,6 @@ export class AdminTagsComponent implements OnInit {
   refresh(){
     this.dataService.getTags(String(this.dataService.processSelected.processId)).subscribe(
       (res : any) => {
-        console.log("______________________________" + res)
         this.tags = res;
       });
   }

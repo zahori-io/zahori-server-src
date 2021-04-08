@@ -1,7 +1,6 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewContainerRef } from '@angular/core';
 import { Tag } from '../../../../../../model/tag';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-
 
 @Component({
     selector: 'tag',
@@ -9,19 +8,9 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 })
 
 export class tagComponent{
-    public arrayColors: any = {
-        color1: '#2883e9',
-        color2: '#e920e9',
-        color3: 'rgb(255,245,0)',
-        color4: 'rgb(236,64,64)',
-        color5: 'rgba(45,208,45,1)'
-      };
-
-
+    
     @Input()
     tag : Tag;
-
-    
     @Output()
     deleted = new EventEmitter<Tag>();
     
@@ -32,8 +21,11 @@ export class tagComponent{
     created = new EventEmitter<Tag>();
     
     submitted : boolean = false;
+    public color1: string = '#2889e9';
 
-
+    public onEventLog(event: string, data: any): void {
+        console.log(event, data);
+    }
 
     deleteTag(tag : Tag) {
         Swal.fire({
@@ -79,6 +71,7 @@ export class tagComponent{
     updateTag(tag : Tag){
         this.updated.emit(tag);
         console.log("click on update");
+        console.log(this.color1);
         this.submitted = true;
     }
 

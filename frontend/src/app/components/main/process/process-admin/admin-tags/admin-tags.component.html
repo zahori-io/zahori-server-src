@@ -18,12 +18,12 @@
             <label for="name" class="">Nombre</label>
         </div>
         <div class="col-6">
-            <label for="url" class="">Url</label>
+            <label for="color" class="">Color</label>
         </div>
     </div>
     
     <div>
-        <tag id="test" *ngFor ="let tag of tags" [tag] = tag (updated) = updateTag($event) tag (deleted) = deleteTag($event)></tag>
+        <tag id="tagContainter" *ngFor ="let tag of tags" [tag] = tag (updated) = updateTag($event) tag (deleted) = deleteTag($event)></tag>
         <tag [tag] = myTag (created) = createTag($event) *ngIf= "showrow"></tag>
     </div>
     

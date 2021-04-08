@@ -40,7 +40,6 @@ import { ClientTeamsComponent } from './components/main/client-teams/client-team
 import { ClientTeamsProcessComponent } from './components/main/client-teams-process/client-teams-process.component';
 import { NotificationsComponent } from './components/main/notifications/notifications.component';
 import { BannerComponent } from './utils/banner/banner.component';
-import { ColorPickerModule } from 'ngx-color-picker';
 
 @NgModule({
   declarations: [
@@ -82,8 +81,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule,
-    ColorPickerModule
+    FormsModule
   ],
   providers: [
     AutenticacionService,

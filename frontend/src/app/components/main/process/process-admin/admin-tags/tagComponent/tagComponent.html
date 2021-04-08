@@ -5,8 +5,9 @@
     outline: 0 none;
     }
 </style>
+       
 
-    <div class="row mt-3 form-group">
+    <div class="row mt-2 form-group">
         <div class="col-4">
             <input #textInputId
             [class.error] = "(name.invalid ) && submitted"
@@ -19,7 +20,9 @@
             [(ngModel)] = "tag.name" 
             required>
         </div>   
-
+        <div class="col-2">
+            <input ejs-colorpicker type="color" id="colorpicker"  class="form-control" [(ngModel)] = "color1" />
+        </div>
         
         <a *ngIf= "!isNew(tag); else newEnv">
             <i class="fas fa-save mr-2" title = "Editar" style="cursor: pointer;" (click) = "updateTag(tag)"></i>
@@ -28,8 +31,8 @@
         
         <ng-template #newEnv>
             <a>
-                <i class="fas fa-save mr-2" title = "Guardar" style="cursor: pointer;" (click) = "createTag(tag); textInputId.value=''; textInputUrl.value='' "></i>
-                <i class="fas fa-times mt-2" title = "Borrar campos" style="cursor: pointer;" (click) = "textInputId.value=''; textInputUrl.value='' "></i>
+                <i class="fas fa-save mr-2" title = "Guardar" style="cursor: pointer;" (click) = "createTag(tag); textInputId.value='';"></i>
+                <i class="fas fa-times mt-2" title = "Borrar campos" style="cursor: pointer;" (click) = "textInputId.value='';"></i>
             </a>
         </ng-template>
     </div>
@@ -42,3 +45,4 @@
     </div>
 
 </div>
+
