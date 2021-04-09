@@ -21,7 +21,7 @@
             required>
         </div>   
         <div class="col-2">
-            <input ejs-colorpicker type="color" id="colorpicker"  class="form-control" [(ngModel)] = "color1" />
+            <input ejs-colorpicker type="color" id="colorpicker"  class="form-control" [(ngModel)] = "tag.color" list="listacoloresperfil"/>
         </div>
         
         <a *ngIf= "!isNew(tag); else newEnv">
@@ -46,3 +46,20 @@
 
 </div>
 
+
+<datalist id="listacoloresperfil">
+    <option value="#00ffff">
+    <option value="#ff00ff">
+    <option value="#ffff00">
+    <option value="#ffaa00">
+    <option value="#ff0000">
+    <option value="#cc0000">
+    <option value="#990000">
+    <option value="#660000">
+    <option value="#330000">
+    <option value="#00ff80">
+    <option value="#6600cc">
+    <option value="#ff9933">
+    <option value="#ff99cc">
+    <option value="#ccffff">
+</datalist>

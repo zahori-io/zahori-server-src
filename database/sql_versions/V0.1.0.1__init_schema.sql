@@ -586,6 +586,7 @@ CREATE TABLE public.client_tags (
     client_id int8 NOT NULL,
 	process_id int8 NOT NULL,
     "name" varchar NOT NULL,
+	"color" varchar NOT NULL,
     "order" int8 NOT NULL,
     active bool NOT NULL DEFAULT true,
     CONSTRAINT client_tags_pk PRIMARY KEY (tag_id),
