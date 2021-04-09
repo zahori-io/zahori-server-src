@@ -1,2 +1,2 @@
 #!/bin/sh
-docker run -p 8080:8080 zahoriaut/zahori-server:0.1.1
+docker run -p 9090:9090 zahoriaut/zahori-server:0.1.2

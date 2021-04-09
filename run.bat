@@ -1,2 +1,2 @@
 @echo off
-docker run -p 8080:8080 zahoriaut:0.1.0
+docker run -p 9090:9090 zahoriaut:0.1.2

@@ -10,7 +10,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 export class EnvironmentComponent{
     @Input()
     environment : Environment;
-   
+
     @Output()
     deleted = new EventEmitter<Environment>();
     
@@ -22,6 +22,7 @@ export class EnvironmentComponent{
 
     @Output()
     erased = new EventEmitter<Environment>();
+
     submitted : boolean = false;
 
     testdeleteEnv(env : Environment){
@@ -49,6 +50,7 @@ export class EnvironmentComponent{
                 console.log("click on borrar");
                 this.submitted = true;
             } 
+
         })
     }
 
