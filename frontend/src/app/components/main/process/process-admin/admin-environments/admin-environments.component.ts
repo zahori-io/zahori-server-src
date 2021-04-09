@@ -4,7 +4,6 @@ import { Environment } from '../../../../../model/environment';
 import { DataService } from '../../../../../services/data.service'
 import { BannerOptions } from '../../../../utils/banner/banner'
 
-
 const SUCCESS : string = "Operación realizada con éxito";
 const ERROR: string = "Algo ha ido mal";
 const SUCCESS_COLOR : string = "alert alert-success";
@@ -16,18 +15,13 @@ const ERROR_COLOR : string = "alert alert-danger";
   styleUrls: ['./admin-environments.component.css']
 })
 
-
 export class AdminEnvironmentsComponent implements OnInit {
   envs : Environment[] = [];
   myEnvs : Environment[] = [];
-
-  myenvironment : Environment;
   banner: BannerOptions;
-  showrow : boolean = false;
 
   ngOnInit() {
     this.refresh();
-    this.myenvironment = new Environment();
     this.banner = new BannerOptions();
   }  
   constructor(public dataService: DataService) {
@@ -57,9 +51,7 @@ export class AdminEnvironmentsComponent implements OnInit {
     
   }
   
-  
-  createEnv(env : Environment){
-    
+  createEnv(env : Environment){  
     if (env.name.length == 0 || env.url.length == 0){
       
       this.banner = new BannerOptions(ERROR, "Todos los campos son obligatorios", ERROR_COLOR , true );

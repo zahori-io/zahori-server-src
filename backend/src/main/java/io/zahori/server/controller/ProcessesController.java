@@ -269,10 +269,12 @@ public class ProcessesController {
                     HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
     /**
-     * Gets process environments.
+     * Gets environments.
      *
+     * @param processId the process id
+     * @param request   the request
      * @return the environments
      */
     @GetMapping(path = "/{processId}/environments")
@@ -286,13 +288,13 @@ public class ProcessesController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
     /**
-     * Post process environments.
+     * Post environments response entity.
      *
-     * @param processId the processId
+     * @param processId    the process id
      * @param environments the environments
-     * @param request   the request
+     * @param request      the request
      * @return the response entity
      */
     @PostMapping(path = "/{processId}/environments")
@@ -324,7 +326,15 @@ public class ProcessesController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
+    /**
+     * Delete environments response entity.
+     *
+     * @param processId    the process id
+     * @param environments the environments
+     * @param request      the request
+     * @return the response entity
+     */
     @DeleteMapping(path = "/{processId}/environments")
     public ResponseEntity<Object> deleteEnvironments(@PathVariable Long processId, @RequestBody List<ClientEnvironment> environments, HttpServletRequest request) {
         try {
@@ -336,10 +346,12 @@ public class ProcessesController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
     /**
-     * Gets process tags.
+     * Gets tags.
      *
+     * @param processId the process id
+     * @param request   the request
      * @return the tags
      */
     @GetMapping(path = "/{processId}/tags")
@@ -353,12 +365,12 @@ public class ProcessesController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
     /**
-     * Post process tags.
+     * Post tags response entity.
      *
-     * @param processId the processId
-     * @param tags the tags
+     * @param processId the process id
+     * @param tags      the tags
      * @param request   the request
      * @return the response entity
      */
@@ -391,7 +403,15 @@ public class ProcessesController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
+    /**
+     * Delete tags response entity.
+     *
+     * @param processId the process id
+     * @param tags      the tags
+     * @param request   the request
+     * @return the response entity
+     */
     @DeleteMapping(path = "/{processId}/tags")
     public ResponseEntity<Object> deleteTags(@PathVariable Long processId, @RequestBody List<ClientTag> tags, HttpServletRequest request) {
         try {
