@@ -39,7 +39,8 @@ import { AuthImagePipe } from './pipes/auth-image-pipe';
 import { ClientTeamsComponent } from './components/main/client-teams/client-teams.component';
 import { ClientTeamsProcessComponent } from './components/main/client-teams-process/client-teams-process.component';
 import { NotificationsComponent } from './components/main/notifications/notifications.component';
-import { BannerComponent } from './utils/banner/banner.component';
+import { BannerComponent } from './components/utils/banner/banner.component';
+
 
 @NgModule({
   declarations: [

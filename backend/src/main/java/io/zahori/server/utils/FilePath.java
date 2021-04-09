@@ -27,12 +27,16 @@ import org.apache.commons.io.FilenameUtils;
  * #L%
  */
 
+/**
+ * The type File path.
+ */
 public class FilePath {
-    
+
     /**
-     * Normalizes path according to current Operating System
-     * @param rawPath
-     * @return 
+     * Normalize string.
+     *
+     * @param rawPath the raw path
+     * @return the string
      */
     public static String normalize(String rawPath) {
         Path path = Paths.get(rawPath);
