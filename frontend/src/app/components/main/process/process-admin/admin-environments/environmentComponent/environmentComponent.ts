@@ -10,8 +10,7 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 export class EnvironmentComponent{
     @Input()
     environment : Environment;
-
-    
+   
     @Output()
     deleted = new EventEmitter<Environment>();
     
@@ -20,7 +19,9 @@ export class EnvironmentComponent{
     
     @Output()
     created = new EventEmitter<Environment>();
-    
+
+    @Output()
+    erased = new EventEmitter<Environment>();
     submitted : boolean = false;
 
     testdeleteEnv(env : Environment){
@@ -32,42 +33,22 @@ export class EnvironmentComponent{
 
     deleteEnv(env : Environment) {
         Swal.fire({
-            title: 'Borrar entorno ' + env.name,
+            title: 'Borrar entorno: ' + env.name,
             text: 'Esta acción no puede deshacerse',
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Ok',
-            cancelButtonText: 'No',
+            confirmButtonText: 'Borrar',
+            cancelButtonText: 'Cancelar',
             backdrop: `
                 rgba(64, 69, 58,0.4)
                 left top
                 no-repeat`
         }).then((result) => {
-            if (result.value) {
-                Swal.fire({
-                    backdrop: `
-                        rgba(64, 69, 58,0.4)
-                        left top
-                        no-repeat`,                    
-                    title: 'Eliminado el entorno ' + env.name,
-                    text : 'El entorno ha sido eliminado',
-                    icon : 'success'
-                    }
-                )
-
+            if (result.value) {       
                 this.deleted.emit(env);
                 console.log("click on borrar");
                 this.submitted = true;
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire({
-                    backdrop: `
-                        rgba(64, 69, 58,0.4)
-                        left top
-                        no-repeat`,                    
-                    title : 'Acción cancelada',
-                    }
-                )
-            }
+            } 
         })
     }
 
@@ -81,6 +62,10 @@ export class EnvironmentComponent{
         this.created.emit(env);
         console.log("click on create");
         this.submitted = true;
+    }
+
+    deleteFromArray(env : Environment){
+        this.erased.emit(env);
     }
 
     isNew(env : Environment){

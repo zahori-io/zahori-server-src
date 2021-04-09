@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Environment } from 'src/app/model/environment';
 import { Configuration } from '../../../../model/configuration';
 import { DataService } from '../../../../services/data.service';
 
@@ -12,6 +13,7 @@ declare var $: any;
 export class ConfiguratorComponent implements OnInit {
 
   selectedConfiguration: Configuration = new Configuration();
+  envs : Environment[] = [];
 
   constructor(
     public dataService: DataService
@@ -19,6 +21,14 @@ export class ConfiguratorComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.getProcessConfigurations();
+    this.getEnvironments();
+  }
+
+  getEnvironments(){
+    this.dataService.getEnvironments(String(this.dataService.processSelected.processId)).subscribe(
+      (res : any) => {
+        this.envs = res;
+      });
   }
 
   selectConfiguration(configuration: Configuration) {
