@@ -2,8 +2,7 @@ FROM adoptopenjdk/maven-openjdk11 as javabuilder
 
 COPY pom.xml /code/
 WORKDIR /code
-RUN mvn dependency:resolve-plugins
-RUN mvn dependency:resolve
+RUN mvn dependency:go-offline package -B
 
 COPY . /code/
 RUN mvn clean package
