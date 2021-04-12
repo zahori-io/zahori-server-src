@@ -75,13 +75,7 @@
               <label for="environmentName" class="">Entornos</label>
               <select [(ngModel)]="selectedConfiguration.clientEnvironment.name" name="environmentName"
                 id="environmentName" class="form-control">
-                <option>preproducción</option>
-                <option>producción</option>
-                <!--
-                <option *ngFor="let configuration of dataService.processConfigurations" [value]="configuration.configurationId">
-                  {{configuration.name}}
-                </option>
-                -->
+                <option [value] = "env" *ngFor = "let env of envs">{{env.name}}</option>
               </select>
             </div>
             <div class="col-6">

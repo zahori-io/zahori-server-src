@@ -40,7 +40,7 @@
         <ng-template #newEnv>
             <a>
                 <i class="fas fa-save mr-2" title = "Guardar" style="cursor: pointer;" (click) = "createEnv(environment); textInputId.value=''; textInputUrl.value='' "></i>
-                <i class="fas fa-times mt-2" title = "Borrar campos" style="cursor: pointer;" (click) = "textInputId.value=''; textInputUrl.value='' "></i>
+                <i class="fas fa-times mt-2" title = "Eliminar" style="cursor: pointer;" (click) = deleteFromArray(environment)></i>
             </a>
         </ng-template>
     </div>

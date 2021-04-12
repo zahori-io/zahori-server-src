@@ -2,8 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { Environment } from '../../../../../model/environment';
 import { DataService } from '../../../../../services/data.service'
-import { BannerOptions } from '../../../../../utils/banner/banner'
-
+import { BannerOptions } from '../../../../utils/banner/banner'
 
 const SUCCESS : string = "Operación realizada con éxito";
 const ERROR: string = "Algo ha ido mal";
@@ -16,16 +15,13 @@ const ERROR_COLOR : string = "alert alert-danger";
   styleUrls: ['./admin-environments.component.css']
 })
 
-
 export class AdminEnvironmentsComponent implements OnInit {
   envs : Environment[] = [];
-  myenvironment : Environment;
+  myEnvs : Environment[] = [];
   banner: BannerOptions;
-  showrow : boolean = false;
 
   ngOnInit() {
     this.refresh();
-    this.myenvironment = new Environment();
     this.banner = new BannerOptions();
   }  
   constructor(public dataService: DataService) {
@@ -41,7 +37,7 @@ export class AdminEnvironmentsComponent implements OnInit {
   deleteEnv(env: Environment){
     env.active = false;
     let envArray: Environment[] = [env];
-    this.sendPostPetition(envArray, new BannerOptions(SUCCESS, "El entorno " + env.name + " ha sido eliminado" + env.name, SUCCESS_COLOR , true ));
+    this.sendPostPetition(envArray, new BannerOptions(SUCCESS, "El entorno " + env.name + " ha sido eliminado", SUCCESS_COLOR , true ));
   }
 
   updateEnv(env : Environment){
@@ -55,9 +51,7 @@ export class AdminEnvironmentsComponent implements OnInit {
     
   }
   
-  
-  createEnv(env : Environment){
-    
+  createEnv(env : Environment){  
     if (env.name.length == 0 || env.url.length == 0){
       
       this.banner = new BannerOptions(ERROR, "Todos los campos son obligatorios", ERROR_COLOR , true );
@@ -65,6 +59,14 @@ export class AdminEnvironmentsComponent implements OnInit {
     else{
       let envArray: Environment[] = [env];
       this.sendPostPetition(envArray, new BannerOptions(SUCCESS, "Se ha creado el entorno " + env.name, SUCCESS_COLOR , true ));
+      this.deleteFromArray(env);
+    }
+  }
+
+  deleteFromArray(env : Environment){
+    let index : number = this.myEnvs.indexOf(env);
+    if (index !== -1){
+      this.myEnvs.splice(index, 1);
     }
   }
   
@@ -73,7 +75,6 @@ export class AdminEnvironmentsComponent implements OnInit {
       (res : any) => {
         this.refresh();
         this.banner = banner
-        this.showrow = false;
       });
       error => {
         console.log("Error en la petición:" + error);
@@ -86,10 +87,6 @@ export class AdminEnvironmentsComponent implements OnInit {
   }
   
   newEnv(){
-    if (!this.showrow){
-      this.myenvironment = new Environment();
-    }
-      this.showrow = !this.showrow;
-  
+    this.myEnvs.push(new Environment)
   }
 }

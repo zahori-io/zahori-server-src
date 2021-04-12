@@ -1,12 +1,6 @@
-<banner
-      [banner]="banner"
-      (click) = closeBanner()>
-</banner>
-
-
+<banner [banner]="banner"(click) = closeBanner()></banner>
 
 <div class="sidebarZahoricontent">
-
     <div class="app-page-title">
         <div class="page-title-wrapper">
             <div class="page-title-heading">
@@ -26,21 +20,14 @@
     
     <div>
         <environment id="test" *ngFor ="let env of envs" [environment] = env (updated) = updateEnv($event) env (deleted) = deleteEnv($event)></environment>
-        <environment [environment] = myenvironment (created) = createEnv($event) *ngIf= "showrow"></environment>
+        <environment id = "newTests" *ngFor = "let newEnv of myEnvs" [environment] = newEnv (created) = createEnv($event) env (erased) = deleteFromArray($event)></environment>
+
     </div>
     
     
     <div class="col-8 text-center mt-3">
         <button class="btn-wide mt-2 btn-icon btn btn-zahoriV btn-sm" (click) = newEnv()>
-            <div *ngIf = "!showrow else hiderow">
-                Añadir entorno
-            </div>          
+            Añadir entorno
         </button>
-        
-        
-        <ng-template #hiderow>
-            Ocultar
-        </ng-template>
-    </div>
-
+    <div>
 </div>
