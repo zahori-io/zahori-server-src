@@ -19,7 +19,6 @@ export class EnvironmentComponent{
     
     @Output()
     created = new EventEmitter<Environment>();
-
     @Output()
     erased = new EventEmitter<Environment>();
 
