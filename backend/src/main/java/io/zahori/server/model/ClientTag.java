@@ -60,6 +60,9 @@ public class ClientTag implements Serializable {
 
     @Column(name = "name")
     private String name;
+    
+    @Column(name = "color")
+    private String color;
 
     // bi-directional many-to-many association to Cas
     @JsonBackReference(value = "cases")
@@ -157,6 +160,24 @@ public class ClientTag implements Serializable {
         this.name = name;
     }
 
+    
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
+    public String getcolor() {
+        return this.color;
+    }
+
+    /**
+     * Sets color.
+     *
+     * @param color the color
+     */
+    public void setcolor(String color) {
+        this.color = color;
+    }
     /**
      * Gets cases.
      *

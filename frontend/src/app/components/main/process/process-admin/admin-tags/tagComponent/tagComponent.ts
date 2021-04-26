@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter, ViewContainerRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ViewContainerRef, Directive } from '@angular/core';
 import { Tag } from '../../../../../../model/tag';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { Direct } from 'protractor/built/driverProviders';
 
 @Component({
     selector: 'tag',
@@ -11,6 +12,7 @@ export class tagComponent{
     
     @Input()
     tag : Tag;
+
     @Output()
     deleted = new EventEmitter<Tag>();
     
@@ -19,6 +21,9 @@ export class tagComponent{
     
     @Output()
     created = new EventEmitter<Tag>();
+
+    @Output()
+    erased = new EventEmitter<Tag>();
     
     submitted : boolean = false;
     public color1: string = '#2889e9';
@@ -41,29 +46,9 @@ export class tagComponent{
                 no-repeat`
         }).then((result) => {
             if (result.value) {
-                Swal.fire({
-                    backdrop: `
-                        rgba(64, 69, 58,0.4)
-                        left top
-                        no-repeat`,                    
-                    title: 'Eliminada la etiqueta ' + tag.name,
-                    text : 'La etiqueta ha sido eliminada',
-                    icon : 'success'
-                    }
-                )
-
                 this.deleted.emit(tag);
                 console.log("click on borrar");
                 this.submitted = true;
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire({
-                    backdrop: `
-                        rgba(64, 69, 58,0.4)
-                        left top
-                        no-repeat`,                    
-                    title : 'Acción cancelada',
-                    }
-                )
             }
         })
     }
@@ -81,9 +66,15 @@ export class tagComponent{
         this.submitted = true;
     }
 
+    deleteFromArray(tag : Tag){
+        this.erased.emit(tag);
+        console.log("click on erase");
+    }
+
     isNew(tag : Tag){
       return tag.tagId == 0;
   }
+
 
 
 

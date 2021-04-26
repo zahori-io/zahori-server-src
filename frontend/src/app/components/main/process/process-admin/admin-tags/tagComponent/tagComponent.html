@@ -19,9 +19,17 @@
             class="form-control" 
             [(ngModel)] = "tag.name" 
             required>
+
         </div>   
         <div class="col-2">
-            <input ejs-colorpicker type="color" id="colorpicker"  class="form-control" [(ngModel)] = "tag.color" list="listacoloresperfil"/>
+            <input ejs-colorpicker type="color"
+            ngModel name="color" 
+             id="colorpicker"
+             size = 2  
+             class="form-control" 
+             [(ngModel)] = "tag.color" 
+             list="listacoloresperfil"
+             />
         </div>
         
         <a *ngIf= "!isNew(tag); else newEnv">
@@ -32,7 +40,7 @@
         <ng-template #newEnv>
             <a>
                 <i class="fas fa-save mr-2" title = "Guardar" style="cursor: pointer;" (click) = "createTag(tag); textInputId.value='';"></i>
-                <i class="fas fa-times mt-2" title = "Borrar campos" style="cursor: pointer;" (click) = "textInputId.value='';"></i>
+                <i class="fas fa-times mt-2" title = "Borrar campos" style="cursor: pointer;" (click) = "deleteFromArray(tag)"></i>
             </a>
         </ng-template>
     </div>

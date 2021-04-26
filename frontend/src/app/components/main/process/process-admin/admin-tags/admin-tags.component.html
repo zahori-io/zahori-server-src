@@ -24,21 +24,16 @@
     
     <div>
         <tag id="tagContainter" *ngFor ="let tag of tags" [tag] = tag (updated) = updateTag($event) tag (deleted) = deleteTag($event)></tag>
-        <tag [tag] = myTag (created) = createTag($event) *ngIf= "showrow"></tag>
+        <tag id= "newTags" *ngFor = "let newTag of myTags" [tag] = newTag (created) = createTag($event) newtag (erased) = deleteFromArray($event)></tag>
     </div>
     
     
     <div class="col-8 text-center mt-3">
         <button class="btn-wide mt-2 btn-icon btn btn-zahoriV btn-sm" (click) = newTag()>
-            <div *ngIf = "!showrow else hiderow">
+            <div>
                 Añadir etiqueta
             </div>          
         </button>
-        
-        
-        <ng-template #hiderow>
-            Ocultar
-        </ng-template>
     </div>
 
 </div>
