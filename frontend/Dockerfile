@@ -1,7 +1,7 @@
 # base image
-FROM node:14.16.0 as angularbuilder
+FROM node:14.16.1-alpine as angularbuilder
 
-RUN npm install -g @angular/cli@11.2.4
+RUN npm install -g @angular/cli@11.2.8  
 
 COPY package.json /code/package.json
 WORKDIR /code
