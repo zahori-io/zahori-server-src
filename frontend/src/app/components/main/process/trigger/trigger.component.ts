@@ -8,6 +8,8 @@ import { Execution } from '../../../../model/excution';
 import { Process } from '../../../../model/process';
 import { DataService } from '../../../../services/data.service';
 import { ViewEncapsulation } from '@angular/core';
+import { Tag } from '../../../../model/tag';
+
 
 @Component({
   selector: 'app-trigger',
@@ -25,6 +27,8 @@ export class TriggerComponent implements OnInit {
   browsersSelected: Browser[] = [];
   periodicExecutionEnabled: boolean = false;
 
+  tags : Tag[] = [];
+
   constructor(
     public dataService: DataService,
     private router: Router
@@ -33,10 +37,18 @@ export class TriggerComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.getProcessCases();
     this.getBrowsers();
+    this.getTags()
     this.newExecution();
     this.error = "";
     this.loading = false;
     this.created = false;
+  }
+
+  getTags(){
+    this.dataService.getTags(String(this.dataService.processSelected.processId)).subscribe(
+      (res : any) => {
+        this.tags = res;
+      });
   }
 
   getBrowsers() {
