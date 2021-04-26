@@ -53,7 +53,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -118,14 +117,15 @@ public class ProcessesController {
      * Gets cases.
      *
      * @param processId the process id
+     * @param request
      * @return the cases
      */
     @GetMapping(path = "/{processId}/cases")
-    public ResponseEntity<Object> getCases(@PathVariable Long processId) {
+    public ResponseEntity<Object> getCases(@PathVariable Long processId, HttpServletRequest request) {
         try {
             LOG.info("get cases for process: " + processId);
 
-            Iterable<Case> cases = casesRepository.findByProcessId(processId);
+            Iterable<Case> cases = casesRepository.findByClientIdAndProcessId(JWTUtils.getClientId(request), processId);
 
             return new ResponseEntity<>(cases, HttpStatus.OK);
         } catch (Exception e) {
@@ -134,6 +134,27 @@ public class ProcessesController {
         }
     }
 
+    @PostMapping(path = "/{processId}/cases")
+    public ResponseEntity<Object> postCases(@PathVariable Long processId, @RequestBody List<Case> cases, HttpServletRequest request) {
+        try {
+            LOG.info("save cases for process {}", processId);
+            
+            if (!cases.isEmpty()){
+                for (Case cas: cases){
+                    Process process = new Process();
+                    process.setProcessId(processId);
+                    cas.setProcess(process);
+                }
+            }
+            Iterable<Case> savedCases = casesRepository.saveAll(cases);
+
+            return new ResponseEntity<>(savedCases, HttpStatus.OK);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    
     /**
      * Gets configuration.
      *
@@ -328,26 +349,6 @@ public class ProcessesController {
     }
 
     /**
-     * Delete environments response entity.
-     *
-     * @param processId    the process id
-     * @param environments the environments
-     * @param request      the request
-     * @return the response entity
-     */
-    @DeleteMapping(path = "/{processId}/environments")
-    public ResponseEntity<Object> deleteEnvironments(@PathVariable Long processId, @RequestBody List<ClientEnvironment> environments, HttpServletRequest request) {
-        try {
-            LOG.info("delete environments for process {}", processId);
-            environmentsRepository.deleteAll(environments);
-            return new ResponseEntity<>(environments, HttpStatus.OK);
-        } catch (Exception e) {
-            LOG.error(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    /**
      * Gets tags.
      *
      * @param processId the process id
@@ -403,24 +404,5 @@ public class ProcessesController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    /**
-     * Delete tags response entity.
-     *
-     * @param processId the process id
-     * @param tags      the tags
-     * @param request   the request
-     * @return the response entity
-     */
-    @DeleteMapping(path = "/{processId}/tags")
-    public ResponseEntity<Object> deleteTags(@PathVariable Long processId, @RequestBody List<ClientTag> tags, HttpServletRequest request) {
-        try {
-            LOG.info("delete tags for process {}", processId);
-            tagsRepository.deleteAll(tags);
-            return new ResponseEntity<>(tags, HttpStatus.OK);
-        } catch (Exception e) {
-            LOG.error(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+    
 }

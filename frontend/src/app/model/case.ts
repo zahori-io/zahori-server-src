@@ -5,7 +5,6 @@ export class Case {
     active: boolean;
     name: string;
     clientTags: Tag[];
-    data: string;
-    dataMap: Map<string, string> = new Map();
+    data: Map<string, string> = new Map();
     selected: boolean;
 }

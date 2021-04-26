@@ -7,3 +7,37 @@
 td:hover i {
     visibility: visible;
 }
+
+.showOnHover:hover .hide {
+    visibility: visible;
+  }
+.hide {
+    visibility: hidden;
+}
+
+a:not([href]) {
+    cursor: pointer;
+    color: #84986B;
+}
+
+i:hover {
+    color: #84986B;
+}
+
+.tableInput {
+    border: 0;
+    outline: none;
+}
+
+.swal2-validation-message {
+    margin: 0;
+}
+
+banner {
+    position: fixed;
+    left: 0px;
+    width: 50%;
+    margin-left: 25%;
+    text-align: center !important;
+    z-index: 9999;
+}

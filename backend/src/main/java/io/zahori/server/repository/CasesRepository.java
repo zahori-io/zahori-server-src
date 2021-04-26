@@ -46,4 +46,16 @@ public interface CasesRepository extends CrudRepository<Case, Long> {
      */
     @Query("SELECT c FROM Case c WHERE c.process.processId = :processId")
     Set<Case> findByProcessId(@Param("processId") Long processId);
+    
+    
+        /**
+     * Find cases by clientId and processId.
+     *
+     * @param clientId the client id
+     * @param processId the process id
+     * @return the set
+     */
+    @Query("SELECT c FROM Case c WHERE c.process.client.clientId = :clientId and c.process.processId = :processId and c.active = true")
+    Set<Case> findByClientIdAndProcessId(@Param("clientId") Long clientId, @Param("processId") Long processId);
+
 }

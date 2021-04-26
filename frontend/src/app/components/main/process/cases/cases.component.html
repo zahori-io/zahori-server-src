@@ -1,68 +1,71 @@
 <div class="app-main__inner">
 
+  <banner [banner]="banner" (click)=closeBanner()></banner>
+
   <div class="app-page-title">
     <div class="page-title-wrapper">
       <div class="page-title-heading">
         <div>Casos</div>
-        <button type="button" title="Crear un caso nuevo" (click)="createNewCase()"
-          class="ml-4 btn btn-zahoriPill btn-sm">Nuevo</button>
+        <button type="button" title="Guardar casos" (click)="saveCases()" class="mt-2 ml-5 btn btn-zahoriPill btn-sm">Guardar</button>
       </div>
     </div>
   </div>
 
-  <table #dataTable class="mb-0 table table-hover" style="width:100%">
+  <table class="mb-0 table table-hover" style="width:100%">
+    <ng-container *ngIf="!loading && !thereAreActiveCases()">
+      <thead>
+        <tr>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-center">
+            Aún no hay casos definidos. <a (click)="createNewCase()"><b>Crear uno</b></a>
+          </td>
+        </tr>
+      </tbody>
+    </ng-container>
 
-    <thead>
-      <tr>
-        <th style="width: 20px;"></th>
-        <th>Caso</th>
-        <th>Etiquetas</th>
-        <th *ngFor="let data of dataService.processCases[0].dataMap | keyvalue">{{data.key}}</th>
-      </tr>
-    </thead>
-    
-    <tbody>
+    <ng-container *ngIf="!loading && thereAreActiveCases()">
+      <thead>
+        <tr>
+          <th><i title="Añadir caso" class="fa fa-plus fa-1" style="cursor: pointer;" (click)="createNewCase()"></i></th>
+          <th>Caso</th>
+          <th>Etiquetas</th>
 
-      <tr *ngIf="newCase">
-        <td>
-          <i class="fa fa-trash fa-1 mr-2" title="Eliminar" (click)="cancelNewCase()" style="cursor: pointer;"></i>
-          <i class="fas fa-save fa-1" title="Guardar" style="cursor: pointer;"></i>
-        </td>
-        <td><input type="text"></td>
-        <td><input type="text"></td>
-        <td *ngFor="let data of newCase.dataMap | keyvalue">
-          <input type="text">
-        </td>
-      </tr>
+          <ng-container *ngFor="let field Of tableData[0] | keyvalue">
+            <th *ngIf="isVariableField(field.key)" class="showOnHover">
+              {{field.key}}
+              <i title="Cambiar nombre" class="fas fa-pen fa-1 hide ml-3" style="cursor: pointer;" (click)="editField(tableData, field.key)"></i>
+              <i title="Eliminar campo" class="fa fa-trash fa-1 hide ml-2" style="cursor: pointer;" (click)="removeField(tableData, field.key, fixedFields)"></i>
+            </th>
+          </ng-container>
 
-      <tr *ngFor="let case of dataService.processCases; index as indexCases; last as lastCase;">
-        <td>
-          <i class="fa fa-trash fa-1 mr-2" title="Eliminar" style="cursor: pointer; visibility: visible"></i>
-          <i class="fas fa-pencil-alt fa-1" title="Editar" style="cursor: pointer;"></i>
-        </td>
-        <td>{{case.name}}</td>
-        <td>
-          <div class="mb-2 mr-2 badge badge-dot" data-toggle="tooltip" data-placement="top" title="{{tag.name}}"
-            [attr.data-original-title]="tag.name"
-            [ngClass]="{'badge-warning': tag.name  === 'REG EXTENDIDA','btn-info': tag.name  === 'REG BÁSICA'}"
-            *ngFor="let tag of case.clientTags; index as indexTags; last as lastTag;">
-            {{tag.name}}
-          </div>
-        </td>
-        <td *ngFor="let data of case.dataMap | keyvalue">{{data.value}}</td>
-      </tr>
-      
-    </tbody>
+          <th><i title="Añadir campo" class="fa fa-plus fa-1" style="cursor: pointer;" (click)="addField(tableData)"></i></th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let case of tableData">
+          <tr *ngIf="case.active == true" class="showOnHover">
+            <td>
+              <i class="hide fa fa-trash fa-1" title="Eliminar caso" (click)="removeCase(tableData, case)" style="cursor: pointer;"></i>
+            </td>
+            <td contenteditable="true" [textContent]="case.name" (input)="case.name = $event.target.textContent"></td>
+            <td>
+              <span *ngFor="let tag of case.clientTags" class="mr-2">{{tag.name}}</span>
+            </td>
 
-    <tfoot>
-      <tr>
-        <th style="width: 20px;"></th>
-        <th>Test Case</th>
-        <th>Etiquetas</th>
-        <th *ngFor="let data of dataService.processCases[0].dataMap | keyvalue">{{data.key}}</th>
-      </tr>
-    </tfoot>
+            <ng-container *ngFor="let field Of case | keyvalue; trackBy: avoidLosingFocus">
+              <td *ngIf="isVariableField(field.key)" contenteditable="true" [textContent]="case[field.key]" (input)="case[field.key] = $event.target.textContent"></td>
+            </ng-container>
 
+            <td></td>
+          </tr>
+
+        </ng-container>
+      </tbody>
+    </ng-container>
   </table>
 
 </div>
