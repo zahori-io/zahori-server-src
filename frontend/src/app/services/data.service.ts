@@ -94,6 +94,14 @@ export class DataService {
     return this.http.get<Case[]>(this.url + "process/" + this.processSelected.processId + "/cases", {});
   }
 
+  public getCasesJson(): Observable<string> {
+    return this.http.get<string>(this.url + "process/" + this.processSelected.processId + "/cases", { responseType: 'text' as 'json' });
+  }
+
+  public saveCases(cases: {}[]): Observable<any> {
+    return this.http.post(this.url + "process/" + this.processSelected.processId + "/cases", cases, { responseType: 'text' as 'json' });
+  }
+
   private getConfigurations(): Observable<Configuration[]> {
     return this.http.get<Configuration[]>(this.url + "process/" + this.processSelected.processId + "/configurations", {});
   }
@@ -114,11 +122,11 @@ export class DataService {
     return this.http.get(this.url + "process/" + this.processSelected.processId + "/file?path=" + fileUrl, { responseType: 'blob' });
   }
 
-  public getEnvironments(processId : string) : Observable<any>{
-    return this.http.get<any>(this.url + "process/" + processId + "/environments"); 
+  public getEnvironments(processId: string): Observable<any> {
+    return this.http.get<any>(this.url + "process/" + processId + "/environments");
   }
 
-  public setEnvironment(envs : Environment[], processId : string){
+  public setEnvironment(envs: Environment[], processId: string) {
     return this.http.post(this.url + "process/" + processId + "/environments", JSON.stringify(envs));
   }
 

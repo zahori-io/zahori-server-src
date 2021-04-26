@@ -23,12 +23,15 @@ package io.zahori.server.model;
  * #L%
  */
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -40,14 +43,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * The type Case.
@@ -70,9 +68,6 @@ public class Case implements Serializable {
     private String name;
 
     private String data;
-
-    @Transient
-    private Map<String, String> dataMap = new HashMap<>();
 
     // bi-directional many-to-one association to Process
     @JsonBackReference(value = "process")
@@ -154,8 +149,18 @@ public class Case implements Serializable {
      *
      * @return the data
      */
-    public String getData() {
-        return data;
+    public Map<String, String> getData() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            if (!StringUtils.isBlank(data)) {
+                TypeReference<HashMap<String,String>> typeRef = new TypeReference<HashMap<String,String>>() {};
+                return mapper.readValue(data, typeRef);
+            }
+        } catch (IOException e) {
+            LOG.error("Error reading case data: " + e.getMessage());
+        }
+        
+        return new HashMap<>();
     }
 
     /**
@@ -163,35 +168,13 @@ public class Case implements Serializable {
      *
      * @param data the data
      */
-    public void setData(String data) {
-        this.data = data;
-    }
-
-    /**
-     * Gets data map.
-     *
-     * @return the data map
-     */
-    public Map<String, String> getDataMap() {
+    public void setData(Map<String, String> data) {
         ObjectMapper mapper = new ObjectMapper();
         try {
-            if (!StringUtils.isBlank(data)) {
-                dataMap = mapper.readValue(data, Map.class);
-            }
-        } catch (IOException e) {
-            LOG.error("Error reading case data: " + e.getMessage());
+            this.data = mapper.writeValueAsString(data);
+        } catch (JsonProcessingException ex) {
+            this.data = "Error parsing data map: " + ex.getMessage();
         }
-
-        return dataMap;
-    }
-
-    /**
-     * Sets data map.
-     *
-     * @param dataMap the data map
-     */
-    public void setDataMap(Map<String, String> dataMap) {
-        this.dataMap = dataMap;
     }
 
     /**
