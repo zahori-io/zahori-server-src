@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { NgSelectModule } from '@ng-select/ng-select'; 
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './components/app.component';
@@ -21,7 +22,8 @@ import { AdminPlatformsComponent } from './components/main/admin/admin-platforms
 import { AdminEnvironmentsComponent } from './components/main/process/process-admin/admin-environments/admin-environments.component';
 import { EnvironmentComponent } from  './components/main/process/process-admin/admin-environments/environmentComponent/environmentComponent';
 import { AdminExecutionsComponent } from './components/main/admin/admin-executions/admin-executions.component';
-import { AdminTagsComponent } from './components/main/admin/admin-tags/admin-tags.component';
+import { AdminTagsComponent } from './components/main/process/process-admin/admin-tags/admin-tags.component';
+import { tagComponent} from './components/main/process/process-admin/admin-tags/tagComponent/tagComponent';
 import { AdminUsersComponent } from './components/main/admin/admin-users/admin-users.component';
 import { AdminTmsComponent } from './components/main/admin/admin-tms/admin-tms.component';
 import { AutenticacionService } from './services/autenticacion.service';
@@ -39,7 +41,6 @@ import { ClientTeamsComponent } from './components/main/client-teams/client-team
 import { ClientTeamsProcessComponent } from './components/main/client-teams-process/client-teams-process.component';
 import { NotificationsComponent } from './components/main/notifications/notifications.component';
 import { BannerComponent } from './components/utils/banner/banner.component';
-
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { BannerComponent } from './components/utils/banner/banner.component';
     EnvironmentComponent,
     AdminExecutionsComponent,
     AdminTagsComponent,
+    tagComponent,
     AdminUsersComponent,
     AdminTmsComponent,
     MenuComponent,
@@ -80,7 +82,8 @@ import { BannerComponent } from './components/utils/banner/banner.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    NgSelectModule 
   ],
   providers: [
     AutenticacionService,

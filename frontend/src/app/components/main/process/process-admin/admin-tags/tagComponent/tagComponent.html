@@ -1,0 +1,73 @@
+<style>
+    .error{
+        border-color: rgb(255, 72, 0);
+    box-shadow: 0 1px 1px rgba(229, 103, 23, 0.075)inset, 0 0 8px rgba(255, 81, 0, 0.966);
+    outline: 0 none;
+    }
+</style>
+       
+
+    <div class="row mt-2 form-group">
+        <div class="col-4">
+            <input #textInputId
+            [class.error] = "(name.invalid ) && submitted"
+            ngModel name="name"  
+            #name="ngModel" 
+            id="name" 
+            placeholder="Introduzca nombre de la etiqueta" 
+            type="text" 
+            class="form-control" 
+            [(ngModel)] = "tag.name" 
+            required>
+
+        </div>   
+        <div class="col-2">
+            <input ejs-colorpicker type="color"
+            ngModel name="color" 
+             id="colorpicker"
+             size = 2  
+             class="form-control" 
+             [(ngModel)] = "tag.color" 
+             list="listacoloresperfil"
+             />
+        </div>
+        
+        <a *ngIf= "!isNew(tag); else newEnv">
+            <i class="fas fa-save mr-2" title = "Editar" style="cursor: pointer;" (click) = "updateTag(tag)"></i>
+            <i class="fas fa-times mt-2" title = "Eliminar" style="cursor: pointer;" (click) = deleteTag(tag)></i>
+        </a>
+        
+        <ng-template #newEnv>
+            <a>
+                <i class="fas fa-save mr-2" title = "Guardar" style="cursor: pointer;" (click) = "createTag(tag); textInputId.value='';"></i>
+                <i class="fas fa-times mt-2" title = "Borrar campos" style="cursor: pointer;" (click) = "deleteFromArray(tag)"></i>
+            </a>
+        </ng-template>
+    </div>
+    
+    <div class="row mt-3">
+    <div class="col-4">
+        <div  *ngIf="name.invalid && submitted" class="alert alert-danger">
+            El campo es obligatorio
+        </div>
+    </div>
+
+</div>
+
+
+<datalist id="listacoloresperfil">
+    <option value="#00ffff">
+    <option value="#ff00ff">
+    <option value="#ffff00">
+    <option value="#ffaa00">
+    <option value="#ff0000">
+    <option value="#cc0000">
+    <option value="#990000">
+    <option value="#660000">
+    <option value="#330000">
+    <option value="#00ff80">
+    <option value="#6600cc">
+    <option value="#ff9933">
+    <option value="#ff99cc">
+    <option value="#ccffff">
+</datalist>

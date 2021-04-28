@@ -14,7 +14,7 @@ import { AdminComponent } from './components/main/admin/admin.component';
 import { AdminPlatformsComponent } from './components/main/admin/admin-platforms/admin-platforms.component';
 import { AdminEnvironmentsComponent } from './components/main/process/process-admin/admin-environments/admin-environments.component';
 import { AdminExecutionsComponent } from './components/main/admin/admin-executions/admin-executions.component';
-import { AdminTagsComponent } from './components/main/admin/admin-tags/admin-tags.component';
+import { AdminTagsComponent } from './components/main/process/process-admin/admin-tags/admin-tags.component';
 import { AdminTmsComponent } from './components/main/admin/admin-tms/admin-tms.component';
 import { AdminGroupsComponent } from './components/main/admin/admin-groups/admin-groups.component';
 import { AdminUsersComponent } from './components/main/admin/admin-users/admin-users.component';

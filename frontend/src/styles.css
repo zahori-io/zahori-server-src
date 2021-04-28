@@ -3,6 +3,9 @@
  * ZAHORI  - v1.0.0
  =========================================================
  */
+
+ @import "~@ng-select/ng-select/themes/default.theme.css";
+
 .app-theme-white .app-header{background: #6a6a6a}
 
 .app-header{z-index: 20;}
