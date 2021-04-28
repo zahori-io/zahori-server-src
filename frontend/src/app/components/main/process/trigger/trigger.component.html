@@ -10,7 +10,7 @@
 				</div>
 				<div class="page-title-actions d-flex">
 					<div class="menuPills m-auto" *ngFor ="let tag of tags">
-						<button id = "tag" class="mr-2 btn-pill btn btn-info btn-sm" [ngStyle] = "{backgroundColor: tag.color, borderColor: tag.color}">{{tag.name}}</button>
+						<button id = "tag" class="mr-2 btn-pill btn btn-info btn-sm" [ngStyle] = "{backgroundColor: tag.color, borderColor: tag.color}" style="color: black;">{{tag.name}}</button>
 					</div>
 
 					<div class="search-wrapper ml-3">
@@ -47,11 +47,10 @@
 					<td>{{case.caseId}}</td>
 					<td>{{case.name}}</td>
 					<td>
-						<span class="mr-2 btn-pill btn btn-info btn-sm"
+						<button class="btn-circle mt-2"
 							*ngFor="let tag of case.clientTags; index as indexTags; last as lastTag;"
 							[ngStyle] = "{backgroundColor: tag.color, borderColor: tag.color}">
-							{{tag.name}}
-						</span>
+					</button>
 					</td>
 				</tr>
 			</tbody>
