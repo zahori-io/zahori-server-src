@@ -43,6 +43,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -68,6 +69,9 @@ public class Case implements Serializable {
     private String name;
 
     private String data;
+
+    @Transient
+    private Map<String, String> dataMap = new HashMap<>();
 
     // bi-directional many-to-one association to Process
     @JsonBackReference(value = "process")
@@ -177,6 +181,35 @@ public class Case implements Serializable {
         }
     }
 
+        /**
+     * Gets data map.
+     *
+     * @return the data map
+     */
+    public Map<String, String> getDataMap() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            if (!StringUtils.isBlank(data)) {
+                TypeReference<HashMap<String,String>> typeRef = new TypeReference<HashMap<String,String>>() {};
+                return mapper.readValue(data, typeRef);
+            }
+        } catch (IOException e) {
+            LOG.error("Error reading case data: " + e.getMessage());
+        }
+        
+        return new HashMap<>();
+    }
+
+    /**
+     * Sets data map.
+     *
+     * @param dataMap the data map
+     */
+    public void setDataMap(Map<String, String> dataMap) {
+        this.dataMap = dataMap;
+    }
+
+    
     /**
      * Gets process.
      *
