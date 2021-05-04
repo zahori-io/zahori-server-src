@@ -38,6 +38,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
@@ -85,7 +86,11 @@ public class Case implements Serializable {
     private List<CaseExecution> casesExecutions;
 
     // bi-directional many-to-many association to ClientTag
-    @ManyToMany(mappedBy = "cases")
+    @ManyToMany
+    @JoinTable(
+    		name = "cases_tags", 
+    		joinColumns = {@JoinColumn(name = "case_id")}, 
+    		inverseJoinColumns = {@JoinColumn(name = "tag_id")})
     private List<ClientTag> clientTags;
 
     /**

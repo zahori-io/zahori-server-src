@@ -13,6 +13,7 @@ import { DashboardComponent } from './components/main/dashboard/dashboard.compon
 import { ExecutionsComponent } from './components/main/process/executions/executions.component';
 import { TriggerComponent } from './components/main/process/trigger/trigger.component';
 import { ConfiguratorComponent } from './components/main/process/configurator/configurator.component';
+import { ConfiguratorFormComponent } from './components/main/process/configurator/configuratorForm/configuratorForm.component';
 import { CasesComponent } from './components/main/process/cases/cases.component';
 import { HelpComponent } from './components/main/help/help.component';
 import { ProfileComponent } from './components/main/profile/profile.component';
@@ -76,7 +77,8 @@ import { BannerComponent } from './components/utils/banner/banner.component';
     ClientTeamsComponent,
     ClientTeamsProcessComponent,
     NotificationsComponent,
-    BannerComponent
+    BannerComponent,
+    ConfiguratorFormComponent
   ],
   imports: [
     BrowserModule,

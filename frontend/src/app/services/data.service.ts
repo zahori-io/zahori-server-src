@@ -14,6 +14,7 @@ import { Configuration } from '../model/configuration';
 import { Browser } from '../model/browser';
 import { Environment } from '../model/environment';
 import { Tag } from '../model/tag';
+import { EvidenceCase } from '../model/evidence-case';
 
 @Injectable({
   providedIn: 'root'
@@ -76,6 +77,7 @@ export class DataService {
     this.getConfigurations().subscribe(
       configurations => {
         this.processConfigurations = configurations;
+        console.log(JSON.stringify(this.processConfigurations))
       }
     );
   }
@@ -91,8 +93,12 @@ export class DataService {
     return this.http.get<Execution[]>(this.url + "process/" + this.processSelected.processId + "/executions", {});
   }
 
-  private getCases(): Observable<Case[]> {
+  public getCases(): Observable<Case[]> {
     return this.http.get<Case[]>(this.url + "process/" + this.processSelected.processId + "/cases", {});
+  }
+
+  public getEviCases(): Observable<EvidenceCase[]> {
+    return this.http.get<EvidenceCase[]>(this.url + "evidenceCase", {});
   }
 
   public getCasesJson(): Observable<string> {
@@ -137,6 +143,10 @@ export class DataService {
 
   public setTags(tags: Tag[], processId: string){
     return this.http.post(this.url + "process/" + processId + "/tags", JSON.stringify(tags));
+  }
+
+  public getTestRepositories(){
+    return this.http.get(this.url + "repositories");
   }
 
   // get Jenkins artifact

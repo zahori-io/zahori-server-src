@@ -57,7 +57,7 @@
             <td>
               <i class="hide fa fa-trash fa-1" title="Eliminar caso" (click)="removeCase(tableData, case)" style="cursor: pointer;"></i>
             </td>
-            <td contenteditable="true" [textContent]="case.name" (input)="case.name = $event.target.textContent"></td>
+            <td contenteditable="true"  [textContent]="case.name" (blur)="case.name = $event.target.textContent"></td>
             <td>
               <ng-select 
                 [items]="tags"
@@ -80,7 +80,7 @@
             </td>
       
             <ng-container *ngFor="let field Of case | keyvalue; trackBy: avoidLosingFocus">
-              <td *ngIf="isVariableField(field.key)" contenteditable="true" [textContent]="case[field.key]" (input)="case[field.key] = $event.target.textContent"></td>
+              <td *ngIf="isVariableField(field.key)" contenteditable [textContent]="case[field.key]" (blur)="case[field.key] = $event.target.textContent"></td>
             </ng-container>
 
             <td></td>

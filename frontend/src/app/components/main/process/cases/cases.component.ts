@@ -232,6 +232,7 @@ export class CasesComponent implements OnInit {
 
   formatCases(casesFromTable: any, fixedFields: string[]) {
     var casesFromTableCopy = JSON.parse(JSON.stringify(casesFromTable));
+    console.log(casesFromTable);
     var formattedCases = [];
 
     for (const caseRow of casesFromTableCopy) {
@@ -309,10 +310,7 @@ export class CasesComponent implements OnInit {
 
     $.map(this.tags, function(aTag){
       let index : number = tags.indexOf(aTag);
-      console.log(JSON.stringify(tags)) 
-      console.log(JSON.stringify(aTag)+ "----->" + index) 
       if(index === -1){
-        console.log(JSON.stringify(aTag)) 
         inputOptions[aTag.tagId] = aTag.name
       }
     })
@@ -328,7 +326,6 @@ export class CasesComponent implements OnInit {
         return new Promise((resolve) => {
           tags = tags.concat([inputOptions[value]])
           resolve(null)     
-          console.log(JSON.stringify(tags)) 
         })
       }
     })
