@@ -13,8 +13,8 @@ import { Case } from '../model/case';
 import { Configuration } from '../model/configuration';
 import { Browser } from '../model/browser';
 import { Environment } from '../model/environment';
-import { Tag } from '../model/tag';
-import { EvidenceCase } from '../model/evidence-case';
+import {ClientTestRepo} from '../model/clientTestRepo';
+import {TestRepository} from '../model/test-repository';
 
 @Injectable({
   providedIn: 'root'
@@ -77,7 +77,6 @@ export class DataService {
     this.getConfigurations().subscribe(
       configurations => {
         this.processConfigurations = configurations;
-        console.log(JSON.stringify(this.processConfigurations))
       }
     );
   }
@@ -93,12 +92,8 @@ export class DataService {
     return this.http.get<Execution[]>(this.url + "process/" + this.processSelected.processId + "/executions", {});
   }
 
-  public getCases(): Observable<Case[]> {
+  private getCases(): Observable<Case[]> {
     return this.http.get<Case[]>(this.url + "process/" + this.processSelected.processId + "/cases", {});
-  }
-
-  public getEviCases(): Observable<EvidenceCase[]> {
-    return this.http.get<EvidenceCase[]>(this.url + "evidenceCase", {});
   }
 
   public getCasesJson(): Observable<string> {
@@ -134,21 +129,27 @@ export class DataService {
   }
 
   public setEnvironment(envs: Environment[], processId: string) {
-    return this.http.post(this.url + "process/" + processId + "/environments", JSON.stringify(envs));
+    return this.http.post(this.url + 'process/' + processId + '/environments', JSON.stringify(envs));
+  }
+  //TMS
+  public getClientTestRepo(): Observable<ClientTestRepo[]>{
+    return this.http.get<ClientTestRepo[]>(this.url + 'clienttestrepo/', {});
   }
 
-  public getTags(processId : String){
-    return this.http.get(this.url + "process/" + processId + "/tags");
+  public setClientTestRepo(clientTestRepo: ClientTestRepo){
+    console.log(clientTestRepo);
+    return this.http.post(this.url + 'clienttestrepo/upgrade/', JSON.stringify(clientTestRepo));
   }
-
-  public setTags(tags: Tag[], processId: string){
-    return this.http.post(this.url + "process/" + processId + "/tags", JSON.stringify(tags));
+  public getTestRepository(testId: string): Observable<TestRepository>{
+    return this.http.get<TestRepository>(this.url + 'testrepo/' + testId,{});
   }
+  public setTestRepository(testRepo: TestRepository): Observable<TestRepository>{
 
-  public getTestRepositories(){
-    return this.http.get(this.url + "repositories");
+    return this.http.post<TestRepository>(this.url + 'testrepo/upgrade/', JSON.stringify(testRepo));
   }
-
+  public deleteTestRepository(testRepo: TestRepository): Observable<TestRepository>{
+    return this.http.post<TestRepository>(this.url + 'testrepo/delete/', JSON.stringify(testRepo));
+  }
   // get Jenkins artifact
   //public getFile(fileUrl: string) {
   //  return this.http.get(this.url + "process/" + this.processSelected.processId + "/artifact?url=" + fileUrl, { responseType: 'blob' });

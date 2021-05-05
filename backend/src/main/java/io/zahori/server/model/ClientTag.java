@@ -38,7 +38,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
-
 /**
  * The type Client tag.
  */
@@ -61,13 +60,11 @@ public class ClientTag implements Serializable {
 
     @Column(name = "name")
     private String name;
-    
-    @Column(name = "color")
-    private String color;
 
     // bi-directional many-to-many association to Cas
-    @ManyToMany(mappedBy = "clientTags")
-    @JsonBackReference(value = "clientTags")
+    @JsonBackReference(value = "cases")
+    @ManyToMany
+    @JoinTable(name = "cases_tags", joinColumns = { @JoinColumn(name = "tag_id") }, inverseJoinColumns = { @JoinColumn(name = "case_id") })
     private List<Case> cases;
 
     // bi-directional many-to-one association to Client
@@ -160,24 +157,6 @@ public class ClientTag implements Serializable {
         this.name = name;
     }
 
-    
-    /**
-     * Gets name.
-     *
-     * @return the name
-     */
-    public String getcolor() {
-        return this.color;
-    }
-
-    /**
-     * Sets color.
-     *
-     * @param color the color
-     */
-    public void setcolor(String color) {
-        this.color = color;
-    }
     /**
      * Gets cases.
      *

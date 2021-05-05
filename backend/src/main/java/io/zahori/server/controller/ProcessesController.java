@@ -94,7 +94,6 @@ public class ProcessesController {
     @Value("${zahori.evidences.dir}")
     private String evidencesDir;
 
-
     /**
      * Gets processes.
      *
@@ -170,40 +169,6 @@ public class ProcessesController {
             Iterable<Configuration> configurations = configurationRepository.findByProcessId(processId);
 
             return new ResponseEntity<>(configurations, HttpStatus.OK);
-        } catch (Exception e) {
-            LOG.error(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-    
-  
-   /**
-    *  
-    * @param processId
-    * @param configurations
-    * @param request
-    * @return
-    */
-
-    @PostMapping(path = "/{processId}/configurations")
-    public ResponseEntity<Object> postConfiguration(@PathVariable Long processId, @RequestBody List<Configuration> configurations, HttpServletRequest request) {
-        try {
-            LOG.info("save conf for process {}", processId);
-            
-            if (configurations == null){
-                return new ResponseEntity<>(configurations, HttpStatus.BAD_REQUEST);
-            }
-            
-            // processId
-            for (Configuration configuration: configurations){
-                Process process = new Process();
-                process.setProcessId(processId);
-                configuration.setProcess(process);
-            }
-            
-            Iterable<Configuration> envs = configurationRepository.saveAll(configurations);
-
-            return new ResponseEntity<>(envs, HttpStatus.OK);
         } catch (Exception e) {
             LOG.error(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

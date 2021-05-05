@@ -67,9 +67,9 @@ public class Configuration implements Serializable {
     private ClientEnvironment clientEnvironment;
 
     // bi-directional many-to-one association to EvidenceCas
-    @ManyToOne
-    @JoinColumn(name = "evi_case_id")
-    private EvidenceCase evidenceCase;
+//    @ManyToOne
+//    @JoinColumn(name = "evi_case_id")
+//    private EvidenceCas evidenceCas;
 
     // bi-directional many-to-one association to Process
     @JsonBackReference(value = "process")
@@ -270,11 +270,4 @@ public class Configuration implements Serializable {
         this.testRepositories = testRepositories;
     }
 
-	public EvidenceCase getEvidenceCase() {
-		return evidenceCase;
-	}
-
-	public void setEvidenceCase(EvidenceCase evidenceCase) {
-		this.evidenceCase = evidenceCase;
-	}
 }

@@ -52,7 +52,7 @@ public class ClientTestRepo implements Serializable {
     @Column(name = "url")
     private String url;
 
-    @Column(name = "user")
+    @Column(name = "\"user\"")
     private String user;
 
     // bi-directional many-to-one association to Client
