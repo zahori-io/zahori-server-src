@@ -6,9 +6,8 @@ import {TestRepository} from '../../../../../model/test-repository';
 
 @Component({
     selector: 'configuratorForm',
-    templateUrl: './configuratorForm.Component.html'
+    templateUrl: './configuratorForm.component.html'
 })
-
 export class ConfiguratorFormComponent{
     @Input()
     configuration : Configuration;
