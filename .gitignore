@@ -15,6 +15,5 @@
 /server/selenoid/config/video/*
 /src/main/resources/static/*
 backend/nbactions.xml
-docker-compose.yaml
 *~
 
