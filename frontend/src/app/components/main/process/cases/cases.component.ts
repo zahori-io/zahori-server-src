@@ -248,6 +248,9 @@ export class CasesComponent implements OnInit {
       Object.keys(caseRow).forEach(function (prop) {
         formattedCase.data[prop] = caseRow[prop];
       });
+      
+      // TO-DO: remove dataMap. Also in server and process sides
+      formattedCase["dataMap"] = JSON.parse(JSON.stringify(formattedCase.data));
 
       formattedCases.push(formattedCase);
     }
@@ -264,8 +267,8 @@ export class CasesComponent implements OnInit {
         this.banner = new BannerOptions("Casos guardados", "", SUCCESS_COLOR, true);
       },
       (error) => {
-        console.error("Error saving cases: " + error);
-        this.banner = new BannerOptions("Error al guardar los casos: " + error, "", ERROR_COLOR, true);
+        console.error("Error saving cases: " + error.message);
+        this.banner = new BannerOptions("Error al guardar los casos: " + error.message, "", ERROR_COLOR, true);
       }
     );
   }
