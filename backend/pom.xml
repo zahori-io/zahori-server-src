@@ -51,7 +51,7 @@
 		<license.licenseName>agpl_v3</license.licenseName>
 		<license.licenseResolver>${project.baseUri}/src/license</license.licenseResolver>
 		<spring.version>5.3.5</spring.version>
-		<jackson.version>2.12.2</jackson.version>
+		<jackson.version>2.12.3</jackson.version>
 		<spring-data.version>2.4.7</spring-data.version>
 		<spring-security.version>5.4.5</spring-security.version>
 		<spring-boot.version>2.4.4</spring-boot.version>
