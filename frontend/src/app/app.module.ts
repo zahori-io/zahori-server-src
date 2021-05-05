@@ -2,7 +2,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { NgSelectModule } from '@ng-select/ng-select'; 
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './components/app.component';
@@ -13,7 +12,6 @@ import { DashboardComponent } from './components/main/dashboard/dashboard.compon
 import { ExecutionsComponent } from './components/main/process/executions/executions.component';
 import { TriggerComponent } from './components/main/process/trigger/trigger.component';
 import { ConfiguratorComponent } from './components/main/process/configurator/configurator.component';
-import { ConfiguratorFormComponent } from './components/main/process/configurator/configuratorForm/configuratorForm.component';
 import { CasesComponent } from './components/main/process/cases/cases.component';
 import { HelpComponent } from './components/main/help/help.component';
 import { ProfileComponent } from './components/main/profile/profile.component';
@@ -23,8 +21,7 @@ import { AdminPlatformsComponent } from './components/main/admin/admin-platforms
 import { AdminEnvironmentsComponent } from './components/main/process/process-admin/admin-environments/admin-environments.component';
 import { EnvironmentComponent } from  './components/main/process/process-admin/admin-environments/environmentComponent/environmentComponent';
 import { AdminExecutionsComponent } from './components/main/admin/admin-executions/admin-executions.component';
-import { AdminTagsComponent } from './components/main/process/process-admin/admin-tags/admin-tags.component';
-import { tagComponent} from './components/main/process/process-admin/admin-tags/tagComponent/tagComponent';
+import { AdminTagsComponent } from './components/main/admin/admin-tags/admin-tags.component';
 import { AdminUsersComponent } from './components/main/admin/admin-users/admin-users.component';
 import { AdminTmsComponent } from './components/main/admin/admin-tms/admin-tms.component';
 import { AutenticacionService } from './services/autenticacion.service';
@@ -42,6 +39,7 @@ import { ClientTeamsComponent } from './components/main/client-teams/client-team
 import { ClientTeamsProcessComponent } from './components/main/client-teams-process/client-teams-process.component';
 import { NotificationsComponent } from './components/main/notifications/notifications.component';
 import { BannerComponent } from './components/utils/banner/banner.component';
+
 
 @NgModule({
   declarations: [
@@ -61,7 +59,6 @@ import { BannerComponent } from './components/utils/banner/banner.component';
     EnvironmentComponent,
     AdminExecutionsComponent,
     AdminTagsComponent,
-    tagComponent,
     AdminUsersComponent,
     AdminTmsComponent,
     MenuComponent,
@@ -77,15 +74,13 @@ import { BannerComponent } from './components/utils/banner/banner.component';
     ClientTeamsComponent,
     ClientTeamsProcessComponent,
     NotificationsComponent,
-    BannerComponent,
-    ConfiguratorFormComponent
+    BannerComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule,
-    NgSelectModule 
+    FormsModule
   ],
   providers: [
     AutenticacionService,

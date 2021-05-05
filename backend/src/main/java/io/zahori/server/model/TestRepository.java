@@ -56,7 +56,7 @@ public class TestRepository implements Serializable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "order")
+    @Column(name = "\"order\"")
     private Long order;
 
     // bi-directional many-to-one association to ClientTestRepo
