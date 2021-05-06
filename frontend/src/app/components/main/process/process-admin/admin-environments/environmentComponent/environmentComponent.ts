@@ -19,10 +19,18 @@ export class EnvironmentComponent{
     
     @Output()
     created = new EventEmitter<Environment>();
+
     @Output()
     erased = new EventEmitter<Environment>();
 
     submitted : boolean = false;
+
+    testdeleteEnv(env : Environment){
+        this.deleted.emit(env);
+        console.log("click on borrar");
+        this.submitted = true;
+
+    }
 
     deleteEnv(env : Environment) {
         Swal.fire({

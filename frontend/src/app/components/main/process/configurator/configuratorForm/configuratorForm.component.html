@@ -1,0 +1,90 @@
+<h5 class="drawer-heading" *ngIf="configuration.configurationId == 0">Crear configuración</h5>
+<h5 class="drawer-heading" *ngIf="configuration.configurationId > 0">Editar configuración</h5>
+
+<div class=" drawer-section">
+    <form class="mt-4">
+
+      <div class="col-6 position-relative form-group">
+        <label for="configName" class="">Nombre</label>
+        <input name="Nombre" id="configName" placeholder="" type="text" class="form-control"
+          [ngModel]="configuration.name">
+      </div>
+
+      <!-- TODO: no tiene sentido poder cambiar el tipo de proceso según distintas configuraciones, el tipo de proceso seguirá siendo el mismo ¿?
+      <div class="col-6  position-relative form-group">
+        <label for="ProcessType" class="">Tipo de Proceso</label>
+        <select name="processType" id="ProcessType" class="form-control">
+          <option selected>SQA</option>
+        </select>
+      </div>
+      -->
+
+      <div class="d-flex  position-relative form-group">
+        <div class="col-6">
+          <label for="environmentName" class="">Entornos</label>
+          <select [(ngModel)]="configuration.clientEnvironment.name" name="environmentName"
+            id="environmentName" class="form-control">
+            <option [ngValue] = "env.name"
+                    *ngFor = "let env of envs">{{env.name}}</option>
+          </select>
+        </div>
+        <div class="col-6">
+          <label for="numberOfRetries" class="">Reintentos</label>
+          <select [(ngModel)]="configuration.retry.retryId" name="numberOfRetries" id="numberOfRetries"
+            class="form-control">
+            <option>0</option>
+            <option>1</option>
+            <option>2</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="d-flex  position-relative form-group">
+        <div class="col-6">
+          <label for="saveResults" class="">¿Guardar Resultados?</label>
+          <input type="checkbox" data-toggle="toggle" [checked]="configuration.uploadResults"
+            data-onstyle="success">
+        </div>
+
+        <div>
+          <label for="testRepository" class="">Generar Evidencias</label>
+          <ng-select
+          [items]="testRepositories"
+          [multiple]="true"
+          bindLabel="name"
+          class = "custom"
+          style= "width: auto;"
+          [clearable] = "true"
+          [(ngModel)]="configuration.testRepositories">
+            <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
+              {{item.name}}
+            </ng-template>
+        </ng-select>
+        </div>
+      </div>
+
+      <div class="col-6  position-relative form-group">
+        <label for="generateEvidence" class="">Generar Evidencias</label>
+        <select name="generateEvidence" id="generateEvidence" class="form-control" 
+        [(ngModel)] = "configuration.evidenceCase.name">
+          <option [ngValue] = "eviCase.name"
+            *ngFor = "let eviCase of evidenceCases">{{eviCase.name}}</option>>
+        </select>
+      </div>
+
+        <div class="col-12 mt-3 position-relative form-group">
+            <div class="col-2 custom-checkbox custom-control custom-control-inline" *ngFor= "let evidence of typeOfEvidences">
+                <input type="checkbox" class="custom-control-input" id="evidence" [checked] = "getTypeOfEvidences(evidence)">
+                <label  class="custom-control-label" for=evidence>{{evidence}}</label>
+            </div>
+        </div>
+
+
+
+      <div class="text-center">
+        <button class="btn-wide mt-3 mb-3 btn-icon btn btn-zahoriV btn-sm" (click) = saveConf(configuration)>Guardar</button>
+      </div>
+
+    </form>
+
+  </div>
