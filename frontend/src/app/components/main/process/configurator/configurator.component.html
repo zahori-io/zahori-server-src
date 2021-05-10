@@ -46,121 +46,13 @@
 
   </div>
 
-  <div class="ZahoriZonaDcha w-50">
+  <div class="ZahoriZonaDcha w-50" *ngIf="hide">
     <div id="ContDe" class="ps ps--active-x ps--active-y disabled">
 
-      <h5 class="drawer-heading" *ngIf="selectedConfiguration.configurationId == 0">Crear configuración</h5>
-      <h5 class="drawer-heading" *ngIf="selectedConfiguration.configurationId > 0">Editar configuración</h5>
-
-      <div class=" drawer-section">
-        <form class="mt-4">
-
-          <div class="col-6 position-relative form-group">
-            <label for="configName" class="">Nombre</label>
-            <input name="Nombre" id="configName" placeholder="" type="text" class="form-control"
-              [ngModel]="selectedConfiguration.name">
-          </div>
-
-          <!-- TODO: no tiene sentido poder cambiar el tipo de proceso según distintas configuraciones, el tipo de proceso seguirá siendo el mismo ¿?
-          <div class="col-6  position-relative form-group">
-            <label for="ProcessType" class="">Tipo de Proceso</label>
-            <select name="processType" id="ProcessType" class="form-control">
-              <option selected>SQA</option>
-            </select>
-          </div>
-          -->
-
-          <div class="d-flex  position-relative form-group">
-            <div class="col-6">
-              <label for="environmentName" class="">Entornos</label>
-              <select [(ngModel)]="selectedConfiguration.clientEnvironment.name" name="environmentName"
-                id="environmentName" class="form-control">
-                <option [value] = "env" *ngFor = "let env of envs">{{env.name}}</option>
-              </select>
-            </div>
-            <div class="col-6">
-              <label for="numberOfRetries" class="">Reintentos</label>
-              <select [(ngModel)]="selectedConfiguration.retry.retryId" name="numberOfRetries" id="numberOfRetries"
-                class="form-control">
-                <option>0</option>
-                <option>1</option>
-                <option>2</option>
-              </select>
-            </div>
-          </div>
-
-          <div class="d-flex  position-relative form-group">
-            <div class="col-6">
-              <label for="saveResults" class="">¿Guardar Resultados?</label>
-              <input type="checkbox" data-toggle="toggle" [checked]="selectedConfiguration.uploadResults"
-                data-onstyle="success">
-            </div>
-            <div class="col-6">
-              <label for="testRepository" class="">Repositorios de Pruebas</label>
-              <select name="testRepository" id="testRepository" class="form-control">
-                <option
-                  [attr.selected]="selectedConfiguration.testRepositories && selectedConfiguration.testRepositories.length > 0 && selectedConfiguration.testRepositories[0].name == 'Xray Server' ? true : null">
-                  Xray Server</option>
-                <option
-                  [attr.selected]="selectedConfiguration.testRepositories && selectedConfiguration.testRepositories.length > 0 && selectedConfiguration.testRepositories[0].name == 'Xray Cloud' ? true : null">
-                  Xray Cloud</option>
-                <option
-                  [attr.selected]="selectedConfiguration.testRepositories && selectedConfiguration.testRepositories.length > 0 && selectedConfiguration.testRepositories[0].name == 'Azure Test Plans' ? true : null">
-                  Azure Test Plans</option>
-                <option
-                  [attr.selected]="selectedConfiguration.testRepositories && selectedConfiguration.testRepositories.length > 0 && selectedConfiguration.testRepositories[0].name == 'Testlink' ? true : null">
-                  Testlink</option>
-                <option
-                  [attr.selected]="selectedConfiguration.testRepositories && selectedConfiguration.testRepositories.length > 0 && selectedConfiguration.testRepositories[0].name == 'Hp Alm' ? true : null">
-                  Hp Alm</option>
-
-                <!-- 
-                <option *ngFor="let testRepository of selectedConfiguration.testRepositories;" [value]="testRepository.name">
-                  {{testRepository.name}}
-                </option>
-                -->
-              </select>
-            </div>
-          </div>
-
-          <div class="col-6  position-relative form-group">
-            <label for="generateEvidence" class="">Generar Evidencias</label>
-            <select name="generateEvidence" id="generateEvidence" class="form-control">
-              <option>No</option>
-              <option [attr.selected]="selectedConfiguration.configurationId ? true : null">Si, TestFailed y Warning
-              </option>
-              <option>Si, TestFailed</option>
-              <option>Si, Warning</option>
-            </select>
-          </div>
-
-          <div class="col-12 mt-3 position-relative form-group">
-            <div>
-              <div class="col-2 custom-checkbox custom-control custom-control-inline">
-                <input type="checkbox" class="custom-control-input" id="video">
-                <label class="custom-control-label" for="video">Vídeo</label>
-              </div>
-              <div class="col-2 custom-checkbox custom-control custom-control-inline">
-                <input type="checkbox" class="custom-control-input" id="log" checked="checked">
-                <label class="custom-control-label" for="log">Log</label>
-              </div>
-              <div class="col-2 custom-checkbox custom-control custom-control-inline">
-                <input type="checkbox" class="custom-control-input" id="Screenshot" checked="checked">
-                <label class="custom-control-label" for="Screenshot">Screenshot</label>
-              </div>
-              <div class="col-2 custom-checkbox custom-control custom-control-inline">
-                <input type="checkbox" class="custom-control-input" id="Doc">
-                <label class="custom-control-label" for="Doc">Doc</label>
-              </div>
-            </div>
-          </div>
-
-          <div class="text-center">
-            <button class="btn-wide mt-3 mb-3 btn-icon btn btn-zahoriV btn-sm">Guardar</button>
-          </div>
-
-        </form>
-
-      </div>
+    <configuratorForm [configuration] = selectedConfiguration 
+                    [envs] = envs 
+                    [evidenceCases] = evidenceCases 
+                    [testRepositories] = testRepositories>
+    </configuratorForm>
     </div>
   </div>

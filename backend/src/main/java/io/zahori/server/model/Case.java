@@ -23,31 +23,33 @@ package io.zahori.server.model;
  * #L%
  */
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * The type Case.
@@ -86,11 +88,7 @@ public class Case implements Serializable {
     private List<CaseExecution> casesExecutions;
 
     // bi-directional many-to-many association to ClientTag
-    @ManyToMany
-    @JoinTable(
-    		name = "cases_tags", 
-    		joinColumns = {@JoinColumn(name = "case_id")}, 
-    		inverseJoinColumns = {@JoinColumn(name = "tag_id")})
+    @ManyToMany(mappedBy = "cases")
     private List<ClientTag> clientTags;
 
     /**
@@ -162,13 +160,14 @@ public class Case implements Serializable {
         ObjectMapper mapper = new ObjectMapper();
         try {
             if (!StringUtils.isBlank(data)) {
-                TypeReference<HashMap<String,String>> typeRef = new TypeReference<HashMap<String,String>>() {};
+                TypeReference<HashMap<String, String>> typeRef = new TypeReference<HashMap<String, String>>() {
+                };
                 return mapper.readValue(data, typeRef);
             }
         } catch (IOException e) {
             LOG.error("Error reading case data: " + e.getMessage());
         }
-        
+
         return new HashMap<>();
     }
 
@@ -186,22 +185,23 @@ public class Case implements Serializable {
         }
     }
 
-        /**
-     * Gets data map.
-     *
-     * @return the data map
-     */
+    /**
+    * Gets data map.
+    *
+    * @return the data map
+    */
     public Map<String, String> getDataMap() {
         ObjectMapper mapper = new ObjectMapper();
         try {
             if (!StringUtils.isBlank(data)) {
-                TypeReference<HashMap<String,String>> typeRef = new TypeReference<HashMap<String,String>>() {};
+                TypeReference<HashMap<String, String>> typeRef = new TypeReference<HashMap<String, String>>() {
+                };
                 return mapper.readValue(data, typeRef);
             }
         } catch (IOException e) {
             LOG.error("Error reading case data: " + e.getMessage());
         }
-        
+
         return new HashMap<>();
     }
 
@@ -214,7 +214,6 @@ public class Case implements Serializable {
         this.dataMap = dataMap;
     }
 
-    
     /**
      * Gets process.
      *

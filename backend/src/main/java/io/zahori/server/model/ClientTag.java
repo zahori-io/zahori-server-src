@@ -1,5 +1,20 @@
 package io.zahori.server.model;
 
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
+
 /*-
  * #%L
  * zahori-server
@@ -24,19 +39,6 @@ package io.zahori.server.model;
  */
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import java.io.Serializable;
-import java.util.List;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 
 /**
  * The type Client tag.
@@ -53,13 +55,16 @@ public class ClientTag implements Serializable {
     private Long tagId;
 
     private Boolean active;
-    
+
     // Note scape \" characters due to order is a JPA reserved word
     @Column(name = "\"order\"")
     private Long order;
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "color")
+    private String color;
 
     // bi-directional many-to-many association to Cas
     @JsonBackReference(value = "cases")
@@ -77,7 +82,7 @@ public class ClientTag implements Serializable {
     @ManyToOne
     @JoinColumn(name = "process_id")
     private Process process;
-        
+
     /**
      * Instantiates a new Client tag.
      */
@@ -120,7 +125,6 @@ public class ClientTag implements Serializable {
         this.active = active;
     }
 
-
     /**
      * Gets order.
      *
@@ -155,6 +159,24 @@ public class ClientTag implements Serializable {
      */
     public void setName(String name) {
         this.name = name;
+    }
+
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
+    public String getcolor() {
+        return this.color;
+    }
+
+    /**
+     * Sets color.
+     *
+     * @param color the color
+     */
+    public void setcolor(String color) {
+        this.color = color;
     }
 
     /**
@@ -210,5 +232,5 @@ public class ClientTag implements Serializable {
     public void setProcess(Process process) {
         this.process = process;
     }
-    
+
 }

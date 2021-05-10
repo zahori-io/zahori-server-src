@@ -2,6 +2,7 @@ import { Environment } from "./environment";
 import { EvidenceType } from "./evidence-type";
 import { Retry } from "./retry";
 import { TestRepository } from "./test-repository";
+import { EvidenceCase } from "./evidence-case";
 
 export class Configuration {
   processType: string;
@@ -13,6 +14,7 @@ export class Configuration {
   retry: Retry;
   evidenceTypes: EvidenceType[];
   testRepositories: TestRepository[];
+  evidenceCase : EvidenceCase;
 
   constructor() {
     this.processType = "SQA";

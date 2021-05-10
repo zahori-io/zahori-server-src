@@ -1,3 +1,4 @@
+
 <div class="app-main__inner2col">
 
 	<div class="Zahoricontent">
@@ -8,10 +9,10 @@
 					<div>Casos a ejecutar</div>
 				</div>
 				<div class="page-title-actions d-flex">
-					<div class="menuPills m-auto">
-						<button class="mr-2 btn-pill btn btn-info btn-sm  disabled">REG BÁSICA</button>
-						<button class="mr-2 btn-pill btn btn-warning  btn-sm">REG EXTENDIDA</button>
+					<div class="menuPills m-auto" *ngFor ="let tag of tags">
+						<button id = "tag" class="mr-2 btn-pill btn btn-info btn-sm" [ngStyle] = "{backgroundColor: tag.color, borderColor: tag.color}" style="color: black;">{{tag.name}}</button>
 					</div>
+
 					<div class="search-wrapper ml-3">
 						<div class="input-holder">
 							<input type="text" class="search-input" placeholder="Type to search">
@@ -46,12 +47,10 @@
 					<td>{{case.caseId}}</td>
 					<td>{{case.name}}</td>
 					<td>
-						<span class="mr-2 badge badge-pill" [ngClass]="{
-								'badge-warning': tag.name  === 'REG EXTENDIDA',
-								'btn-info': tag.name  === 'REG BÁSICA'}"
-							*ngFor="let tag of case.clientTags; index as indexTags; last as lastTag;">
-							{{tag.name}}
-						</span>
+						<button class="btn-circle mt-2"
+							*ngFor="let tag of case.clientTags; index as indexTags; last as lastTag;"
+							[ngStyle] = "{backgroundColor: tag.color, borderColor: tag.color}">
+					</button>
 					</td>
 				</tr>
 			</tbody>

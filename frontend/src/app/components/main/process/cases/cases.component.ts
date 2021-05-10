@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { Tag } from 'src/app/model/tag';
 import { BannerOptions } from 'src/app/utils/banner/banner';
 import Swal from 'sweetalert2';
 import { DataService } from '../../../../services/data.service';
@@ -14,9 +15,12 @@ const ERROR_COLOR: string = "alert alert-danger";
 export class CasesComponent implements OnInit {
 
   fixedFields: string[] = [];
+  tags : Tag[];
   tableData: {}[] = [];
   loading: boolean = true;
   banner: BannerOptions;
+  tag : Tag;
+  isHidden : Boolean = true
 
   constructor(
     public dataService: DataService
@@ -26,6 +30,15 @@ export class CasesComponent implements OnInit {
     console.log("ngOnInit");
     this.getCases();
     this.banner = new BannerOptions();
+    this.getTags()
+  }
+
+  getTags(){
+    this.dataService.getTags(String(this.dataService.processSelected.processId)).subscribe(
+      (res : any) => {
+        console.log(JSON.stringify(res))
+        this.tags = res;
+      });
   }
 
   getCases() {
@@ -219,6 +232,7 @@ export class CasesComponent implements OnInit {
 
   formatCases(casesFromTable: any, fixedFields: string[]) {
     var casesFromTableCopy = JSON.parse(JSON.stringify(casesFromTable));
+    console.log(casesFromTable);
     var formattedCases = [];
 
     for (const caseRow of casesFromTableCopy) {
@@ -287,4 +301,36 @@ export class CasesComponent implements OnInit {
     return false;
   }
 
+  deleteTag(tag: Tag, tags: Tag[]){
+    let index : number = tags.indexOf(tag);
+    if (index !== -1){
+      tags.splice(index, 1);
+    }
+  }
+
+  setTag(tags: Tag[]){
+    let inputOptions = {}
+
+    $.map(this.tags, function(aTag){
+      let index : number = tags.indexOf(aTag);
+      if(index === -1){
+        inputOptions[aTag.tagId] = aTag.name
+      }
+    })
+
+    
+    Swal.fire({
+      title: 'Seleccionar etiqueta',
+      input: 'select',
+      inputOptions: inputOptions,
+      inputPlaceholder: 'Seleccione etiqueta',
+      showCancelButton: true,
+      inputValidator: (value) => {
+        return new Promise((resolve) => {
+          tags = tags.concat([inputOptions[value]])
+          resolve(null)     
+        })
+      }
+    })
+  }
 }
