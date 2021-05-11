@@ -118,7 +118,7 @@ public class ProcessesController {
      * Gets cases.
      *
      * @param processId the process id
-     * @param request
+     * @param request   the request
      * @return the cases
      */
     @GetMapping(path = "/{processId}/cases")
@@ -135,6 +135,14 @@ public class ProcessesController {
         }
     }
 
+    /**
+     * Post cases response entity.
+     *
+     * @param processId the process id
+     * @param cases     the cases
+     * @param request   the request
+     * @return the response entity
+     */
     @PostMapping(path = "/{processId}/cases")
     public ResponseEntity<Object> postCases(@PathVariable Long processId, @RequestBody List<Case> cases, HttpServletRequest request) {
         try {
@@ -155,7 +163,7 @@ public class ProcessesController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
     /**
      * Gets configuration.
      *
@@ -175,16 +183,16 @@ public class ProcessesController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
-  
-   /**
-    *  
-    * @param processId
-    * @param configurations
-    * @param request
-    * @return
-    */
 
+
+    /**
+     * Post configuration response entity.
+     *
+     * @param processId      the process id
+     * @param configurations the configurations
+     * @param request        the request
+     * @return response entity
+     */
     @PostMapping(path = "/{processId}/configurations")
     public ResponseEntity<Object> postConfiguration(@PathVariable Long processId, @RequestBody List<Configuration> configurations, HttpServletRequest request) {
         try {
