@@ -40,6 +40,9 @@ import io.zahori.server.model.EvidenceCase;
 import io.zahori.server.repository.EvidenceCaseRepository;
 import io.zahori.server.security.JWTUtils;
 
+/**
+ * The type Evidence case controller.
+ */
 @RestController
 @RequestMapping("/api/evidenceCase")
 public class EvidenceCaseController {
@@ -50,9 +53,10 @@ public class EvidenceCaseController {
     private EvidenceCaseRepository evidenceCasesRepository;
 
     /**
-     * Gets evidencecases.
+     * Gets evidence cases.
      *
-     * @return the cases
+     * @param request the request
+     * @return the evidence cases
      */
     @GetMapping()
     public ResponseEntity<Object> getEvidenceCases(HttpServletRequest request) {
