@@ -47,7 +47,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 //@NamedQuery(name="Configuration.findAll", query="SELECT c FROM Configuration c")
 public class Configuration implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -4972391261398417130L;
 
     @Id
     @Column(name = "configuration_id")
@@ -81,6 +81,11 @@ public class Configuration implements Serializable {
     @ManyToOne
     @JoinColumn(name = "retry_id")
     private Retry retry;
+
+    // bi-directional many-to-one association to Retry
+    @ManyToOne
+    @JoinColumn(name = "timeout_id")
+    private Timeout timeout;
 
     // bi-directional many-to-many association to EvidenceType
     @ManyToMany
@@ -190,13 +195,13 @@ public class Configuration implements Serializable {
         this.clientEnvironment = clientEnvironment;
     }
 
-//    public EvidenceCas getEvidenceCas() {
-//        return this.evidenceCas;
-//    }
-//
-//    public void setEvidenceCas(EvidenceCas evidenceCas) {
-//        this.evidenceCas = evidenceCas;
-//    }
+    //    public EvidenceCas getEvidenceCas() {
+    //        return this.evidenceCas;
+    //    }
+    //
+    //    public void setEvidenceCas(EvidenceCas evidenceCas) {
+    //        this.evidenceCas = evidenceCas;
+    //    }
 
     /**
      * Gets process.
@@ -270,11 +275,11 @@ public class Configuration implements Serializable {
         this.testRepositories = testRepositories;
     }
 
-	public EvidenceCase getEvidenceCase() {
-		return evidenceCase;
-	}
+    public EvidenceCase getEvidenceCase() {
+        return evidenceCase;
+    }
 
-	public void setEvidenceCase(EvidenceCase evidenceCase) {
-		this.evidenceCase = evidenceCase;
-	}
+    public void setEvidenceCase(EvidenceCase evidenceCase) {
+        this.evidenceCase = evidenceCase;
+    }
 }

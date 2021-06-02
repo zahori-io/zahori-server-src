@@ -4,7 +4,7 @@
     <div class="app-page-title">
       <div class="page-title-wrapper">
         <div class="page-title-heading">
-          <div>Configurador</div>
+          <div>Configuraciones</div>
         </div>
         <div class="page-title-actions d-flex">
           <div class="search-wrapper ml-3">
@@ -17,29 +17,26 @@
         </div>
       </div>
     </div>
-
+    
     <table class="mb-0 table">
       <tbody>
+        <tr *ngIf="dataService.processConfigurations.length == 0">
+          <td class="text-center">Aún no hay configuraciones para este proceso, puedes crear una en la parte derecha.</td>
+        </tr>
         <tr *ngFor="let configuration of dataService.processConfigurations; index as i">
-          <td>
-            <div class="ml-2 custom-control custom-switch">
-              <input [checked]="configuration.active" type="checkbox" id="activate-config-{{i}}"
-                class="custom-control-input">
-              <label for="activate-config-{{i}}" class="custom-control-label"></label>
-            </div>
-          </td>
+
           <td>{{configuration.name}}</td>
           <td class="text-right">
             <button class="btn-wide  btn-icon btn btn-zahoriV btn-sm mr-1"
-              (click)="selectConfiguration(configuration)">Editar <i class="far fa-edit"></i></button>
-            <button class="btn-wide  btn-icon btn btn-zahoriAz btn-sm">Eliminar <i
+              (click)="editConfiguration(configuration)">Editar <i class="far fa-edit"></i></button>
+            <button class="btn-wide  btn-icon btn btn-zahoriAz btn-sm" (click)="removeConfiguration(configuration)">Eliminar <i
                 class="far fa-trash-alt"></i></button>
           </td>
         </tr>
       </tbody>
     </table>
 
-    <div class="text-center">
+    <div *ngIf="dataService.processConfigurations.length > 0" class="text-center">
       <button (click)="newConfiguration()" class="btn-wide mt-5 mb-5 btn-icon btn btn-zahoriV btn-sm">Nueva
         Configuración</button>
     </div>
@@ -49,10 +46,13 @@
   <div class="ZahoriZonaDcha w-50" *ngIf="hide">
     <div id="ContDe" class="ps ps--active-x ps--active-y disabled">
 
-    <configuratorForm [configuration] = selectedConfiguration 
-                    [envs] = envs 
-                    [evidenceCases] = evidenceCases 
-                    [testRepositories] = testRepositories>
+    <configuratorForm [configuration]="selectedConfiguration" 
+                    [envs]="envs" 
+                    [evidenceCases]="evidenceCases" 
+                    [evidenceTypes]="evidenceTypes" 
+                    [testRepositories]="testRepositories"
+                    [retries]="retries"
+                    [timeouts]="timeouts">
     </configuratorForm>
     </div>
   </div>

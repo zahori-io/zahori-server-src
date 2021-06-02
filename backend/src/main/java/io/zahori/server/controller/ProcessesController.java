@@ -1,5 +1,29 @@
 package io.zahori.server.controller;
 
+import java.io.File;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 /*-
  * #%L
  * zahori-server
@@ -39,27 +63,6 @@ import io.zahori.server.security.JWTUtils;
 import io.zahori.server.service.ExecutionService;
 import io.zahori.server.service.JenkinsService;
 import io.zahori.server.utils.FilePath;
-import java.io.File;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The type Processes controller.
@@ -78,10 +81,10 @@ public class ProcessesController {
 
     @Autowired
     private ClientEnvironmentsRepository environmentsRepository;
-       
+
     @Autowired
     private ClientTagsRepository tagsRepository;
-    
+
     @Autowired
     private ConfigurationRepository configurationRepository;
 
@@ -93,7 +96,6 @@ public class ProcessesController {
 
     @Value("${zahori.evidences.dir}")
     private String evidencesDir;
-
 
     /**
      * Gets processes.
@@ -147,9 +149,9 @@ public class ProcessesController {
     public ResponseEntity<Object> postCases(@PathVariable Long processId, @RequestBody List<Case> cases, HttpServletRequest request) {
         try {
             LOG.info("save cases for process {}", processId);
-            
-            if (!cases.isEmpty()){
-                for (Case cas: cases){
+
+            if (!cases.isEmpty()) {
+                for (Case cas : cases) {
                     Process process = new Process();
                     process.setProcessId(processId);
                     cas.setProcess(process);
@@ -177,13 +179,13 @@ public class ProcessesController {
 
             Iterable<Configuration> configurations = configurationRepository.findByProcessId(processId);
 
-            return new ResponseEntity<>(configurations, HttpStatus.OK);
+            ResponseEntity<Object> re = new ResponseEntity<>(configurations, HttpStatus.OK);
+            return re;
         } catch (Exception e) {
             LOG.error(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 
     /**
      * Post configuration response entity.
@@ -197,18 +199,18 @@ public class ProcessesController {
     public ResponseEntity<Object> postConfiguration(@PathVariable Long processId, @RequestBody List<Configuration> configurations, HttpServletRequest request) {
         try {
             LOG.info("save conf for process {}", processId);
-            
-            if (configurations == null){
+
+            if (configurations == null) {
                 return new ResponseEntity<>(configurations, HttpStatus.BAD_REQUEST);
             }
-            
+
             // processId
-            for (Configuration configuration: configurations){
+            for (Configuration configuration : configurations) {
                 Process process = new Process();
                 process.setProcessId(processId);
                 configuration.setProcess(process);
             }
-            
+
             Iterable<Configuration> envs = configurationRepository.saveAll(configurations);
 
             return new ResponseEntity<>(envs, HttpStatus.OK);
@@ -362,26 +364,27 @@ public class ProcessesController {
      * @return the response entity
      */
     @PostMapping(path = "/{processId}/environments")
-    public ResponseEntity<Object> postEnvironments(@PathVariable Long processId, @RequestBody List<ClientEnvironment> environments, HttpServletRequest request) {
+    public ResponseEntity<Object> postEnvironments(@PathVariable Long processId, @RequestBody List<ClientEnvironment> environments,
+            HttpServletRequest request) {
         try {
             LOG.info("save environments for process {}", processId);
             Long clientId = JWTUtils.getClientId(request);
-            
-            if (environments == null){
+
+            if (environments == null) {
                 return new ResponseEntity<>(environments, HttpStatus.BAD_REQUEST);
             }
-            
+
             // Set clientId and processId
-            for (ClientEnvironment environment: environments){
+            for (ClientEnvironment environment : environments) {
                 Process process = new Process();
                 process.setProcessId(processId);
                 environment.setProcess(process);
-                
+
                 Client client = new Client();
                 client.setClientId(clientId);
                 environment.setClient(client);
             }
-            
+
             Iterable<ClientEnvironment> envs = environmentsRepository.saveAll(environments);
 
             return new ResponseEntity<>(envs, HttpStatus.OK);
@@ -423,22 +426,22 @@ public class ProcessesController {
         try {
             LOG.info("save tags for process {}", processId);
             Long clientId = JWTUtils.getClientId(request);
-            
-            if (tags == null){
+
+            if (tags == null) {
                 return new ResponseEntity<>(tags, HttpStatus.BAD_REQUEST);
             }
-            
+
             // Set clientId and processId
-            for (ClientTag tag: tags){
+            for (ClientTag tag : tags) {
                 Process process = new Process();
                 process.setProcessId(processId);
                 tag.setProcess(process);
-                
+
                 Client client = new Client();
                 client.setClientId(clientId);
                 tag.setClient(client);
             }
-            
+
             Iterable<ClientTag> tagsSaved = tagsRepository.saveAll(tags);
 
             return new ResponseEntity<>(tagsSaved, HttpStatus.OK);
@@ -447,5 +450,5 @@ public class ProcessesController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    
+
 }

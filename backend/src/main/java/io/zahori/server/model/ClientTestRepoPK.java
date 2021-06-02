@@ -33,8 +33,8 @@ import javax.persistence.Embeddable;
  */
 @Embeddable
 public class ClientTestRepoPK implements Serializable {
-    // default serial version id, required for serializable classes.
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -6494104813807221747L;
 
     @Column(name = "client_id")
     private Long clientId;

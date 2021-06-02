@@ -1,5 +1,18 @@
 package io.zahori.server.model;
 
+import java.io.Serializable;
+import java.util.Set;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 /*-
  * #%L
  * zahori-server
@@ -24,17 +37,6 @@ package io.zahori.server.model;
  */
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import java.io.Serializable;
-import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 /**
  * The type Client environment.
@@ -43,7 +45,8 @@ import javax.persistence.Table;
 @Table(name = "client_environments")
 //@NamedQuery(name = "ClientEnvironment.findAll", query = "SELECT c FROM ClientEnvironment c")
 public class ClientEnvironment implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 5742276307732716759L;
 
     @Id
     @Column(name = "environment_id")
@@ -72,7 +75,7 @@ public class ClientEnvironment implements Serializable {
     @ManyToOne
     @JoinColumn(name = "process_id")
     private Process process;
-        
+
     // bi-directional many-to-one association to Configuration
     @JsonBackReference(value = "configurations")
     @OneToMany(mappedBy = "clientEnvironment")

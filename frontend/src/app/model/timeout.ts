@@ -1,9 +1,9 @@
-export class Retry {
-    retryId: number;
+export class Timeout {
+    timeoutId: number;
     active: boolean;
 
     constructor() {
-        this.retryId = null;
+        this.timeoutId = null;
         this.active = true;
     }
 }

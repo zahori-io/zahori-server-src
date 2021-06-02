@@ -43,7 +43,8 @@ import javax.persistence.Table;
 @Table(name = "periodic_executions")
 @NamedQuery(name = "PeriodicExecution.findAll", query = "SELECT p FROM PeriodicExecution p")
 public class PeriodicExecution implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -4460535018526307592L;
 
     @Id
     @Column(name = "periodic_execution_id")

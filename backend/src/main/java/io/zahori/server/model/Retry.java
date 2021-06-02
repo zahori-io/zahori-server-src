@@ -44,7 +44,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "retries")
 //@NamedQuery(name = "Retry.findAll", query = "SELECT r FROM Retry r")
 public class Retry implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 4854155657321806908L;
 
     @Id
     @Column(name = "retry_id")
@@ -52,101 +53,52 @@ public class Retry implements Serializable {
 
     private Boolean active;
 
-    // bi-directional many-to-many association to Client
-    @JsonBackReference(value = "clients")
+    //bi-directional many-to-many association to Client
+    @JsonBackReference(value = "client")
     @ManyToMany
     @JoinTable(name = "client_retries", joinColumns = { @JoinColumn(name = "retry_id") }, inverseJoinColumns = { @JoinColumn(name = "client_id") })
     private Set<Client> clients;
 
-    // bi-directional many-to-one association to Configuration
+    //bi-directional many-to-one association to Configuration
     @JsonBackReference(value = "configurations")
     @OneToMany(mappedBy = "retry")
     private Set<Configuration> configurations;
 
-    /**
-     * Instantiates a new Retry.
-     */
     public Retry() {
     }
 
-    /**
-     * Gets retry id.
-     *
-     * @return the retry id
-     */
     public Integer getRetryId() {
         return this.retryId;
     }
 
-    /**
-     * Sets retry id.
-     *
-     * @param retryId the retry id
-     */
     public void setRetryId(Integer retryId) {
         this.retryId = retryId;
     }
 
-    /**
-     * Gets active.
-     *
-     * @return the active
-     */
     public Boolean getActive() {
         return this.active;
     }
 
-    /**
-     * Sets active.
-     *
-     * @param active the active
-     */
     public void setActive(Boolean active) {
         this.active = active;
     }
 
-    /**
-     * Gets clients.
-     *
-     * @return the clients
-     */
     public Set<Client> getClients() {
         return this.clients;
     }
 
-    /**
-     * Sets clients.
-     *
-     * @param clients the clients
-     */
     public void setClients(Set<Client> clients) {
         this.clients = clients;
     }
 
-    /**
-     * Gets configurations.
-     *
-     * @return the configurations
-     */
     public Set<Configuration> getConfigurations() {
         return this.configurations;
     }
 
-    /**
-     * Sets configurations.
-     *
-     * @param configurations the configurations
-     */
     public void setConfigurations(Set<Configuration> configurations) {
         this.configurations = configurations;
     }
 
-    /**
-     * Add configuration configuration.
-     *
-     * @param configuration the configuration
-     * @return the configuration
-     */
     public Configuration addConfiguration(Configuration configuration) {
         getConfigurations().add(configuration);
         configuration.setRetry(this);
@@ -154,12 +106,6 @@ public class Retry implements Serializable {
         return configuration;
     }
 
-    /**
-     * Remove configuration configuration.
-     *
-     * @param configuration the configuration
-     * @return the configuration
-     */
     public Configuration removeConfiguration(Configuration configuration) {
         getConfigurations().remove(configuration);
         configuration.setRetry(null);

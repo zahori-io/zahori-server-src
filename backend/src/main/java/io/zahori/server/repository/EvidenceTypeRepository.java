@@ -23,28 +23,12 @@ package io.zahori.server.repository;
  * #L%
  */
 
-import java.util.Set;
-
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import io.zahori.server.model.Configuration;
+import io.zahori.server.model.EvidenceType;
 
-/**
- * The interface Configuration repository.
- */
-//@Repository
-@RepositoryRestResource(path = "configurations")
-public interface ConfigurationRepository extends CrudRepository<Configuration, Long> {
+@RepositoryRestResource(path = "evidenceTypes")
+public interface EvidenceTypeRepository extends CrudRepository<EvidenceType, Long> {
 
-    /**
-     * Find by process id set.
-     *
-     * @param processId the process id
-     * @return the set
-     */
-    @Query("SELECT c FROM Configuration c WHERE c.process.processId = :processId and c.active = true")
-    Set<Configuration> findByProcessId(@Param("processId") Long processId);
 }

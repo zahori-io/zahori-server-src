@@ -44,7 +44,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "test_repositories")
 //@NamedQuery(name = "TestRepository.findAll", query = "SELECT t FROM TestRepository t")
 public class TestRepository implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 121192983245034817L;
 
     @Id
     @Column(name = "test_repo_id")

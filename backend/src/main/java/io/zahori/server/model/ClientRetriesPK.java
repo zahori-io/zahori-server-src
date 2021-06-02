@@ -1,5 +1,8 @@
 package io.zahori.server.model;
 
+import java.io.Serializable;
+import java.util.Objects;
+
 /*-
  * #%L
  * zahori-server
@@ -23,8 +26,6 @@ package io.zahori.server.model;
  * #L%
  */
 
-import java.io.Serializable;
-
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
@@ -32,75 +33,59 @@ import javax.persistence.Embeddable;
  * The type Client team pk.
  */
 @Embeddable
-public class ClientTeamPK implements Serializable {
+public class ClientRetriesPK implements Serializable {
 
-    private static final long serialVersionUID = 458713317555240178L;
+    private static final long serialVersionUID = -8803153208831143322L;
 
     @Column(name = "client_id")
     private Long clientId;
 
-    @Column(name = "team_id")
-    private Long teamId;
+    @Column(name = "retry_id")
+    private Integer retryId;
 
     /**
      * Instantiates a new Client team pk.
      */
-    public ClientTeamPK() {
+    public ClientRetriesPK() {
     }
 
-    /**
-     * Gets client id.
-     *
-     * @return the client id
-     */
     public Long getClientId() {
-        return this.clientId;
+        return clientId;
     }
 
-    /**
-     * Sets client id.
-     *
-     * @param clientId the client id
-     */
     public void setClientId(Long clientId) {
         this.clientId = clientId;
     }
 
-    /**
-     * Gets team id.
-     *
-     * @return the team id
-     */
-    public Long getTeamId() {
-        return this.teamId;
+    public Integer getRetryId() {
+        return retryId;
     }
 
-    /**
-     * Sets team id.
-     *
-     * @param teamId the team id
-     */
-    public void setTeamId(Long teamId) {
-        this.teamId = teamId;
+    public void setRetryId(Integer retryId) {
+        this.retryId = retryId;
     }
 
-    public boolean equals(Object other) {
-        if (this == other) {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o)
             return true;
-        }
-        if (!(other instanceof ClientTeamPK)) {
+        if (o == null || getClass() != o.getClass())
             return false;
-        }
-        ClientTeamPK castOther = (ClientTeamPK) other;
-        return this.clientId.equals(castOther.clientId) && this.teamId.equals(castOther.teamId);
+        ClientRetriesPK that = (ClientRetriesPK) o;
+        return clientId.equals(that.clientId) && retryId.equals(that.retryId);
     }
 
+    @Override
     public int hashCode() {
-        final int prime = 31;
-        int hash = 17;
-        hash = hash * prime + this.clientId.hashCode();
-        hash = hash * prime + this.teamId.hashCode();
+        return Objects.hash(clientId, retryId);
+    }
 
-        return hash;
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ClientRetriesPK{");
+        sb.append("clientId=").append(clientId);
+        sb.append(", retryId=").append(retryId);
+        sb.append('}');
+        return sb.toString();
     }
 }

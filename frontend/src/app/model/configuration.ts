@@ -3,6 +3,7 @@ import { EvidenceType } from "./evidence-type";
 import { Retry } from "./retry";
 import { TestRepository } from "./test-repository";
 import { EvidenceCase } from "./evidence-case";
+import { Timeout } from "./timeout";
 
 export class Configuration {
   processType: string;
@@ -12,6 +13,7 @@ export class Configuration {
   uploadResults: boolean;
   clientEnvironment: Environment;
   retry: Retry;
+  timeout: Timeout;
   evidenceTypes: EvidenceType[];
   testRepositories: TestRepository[];
   evidenceCase : EvidenceCase;
@@ -24,7 +26,9 @@ export class Configuration {
     this.uploadResults = false;
     this.clientEnvironment = new Environment();
     this.retry = new Retry();
+    this.timeout = new Timeout();
     this.evidenceTypes = [];
-    this.testRepositories = [];
+    this.testRepositories = [new TestRepository()];
+    this.evidenceCase = new EvidenceCase();
   }
 }
