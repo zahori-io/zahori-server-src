@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { environment } from 'src/environments/environment';
 import { Environment } from '../../../../../model/environment';
 import { DataService } from '../../../../../services/data.service'
 import { BannerOptions } from '../../../../utils/banner/banner'
