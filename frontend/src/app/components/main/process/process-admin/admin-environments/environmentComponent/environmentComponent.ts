@@ -24,6 +24,18 @@ export class EnvironmentComponent{
 
     submitted : boolean = false;
 
+    createEnv(env : Environment){
+        this.created.emit(env);
+        console.log("click on create");
+        this.submitted = true;
+    }
+
+    updateEnv(env : Environment){
+        this.updated.emit(env);
+        console.log("click on update");
+        this.submitted = true;
+    }
+
     deleteEnv(env : Environment) {
         Swal.fire({
             title: 'Borrar entorno: ' + env.name,
@@ -45,19 +57,7 @@ export class EnvironmentComponent{
 
         })
     }
-
-    updateEnv(env : Environment){
-        this.updated.emit(env);
-        console.log("click on update");
-        this.submitted = true;
-    }
-
-    createEnv(env : Environment){
-        this.created.emit(env);
-        console.log("click on create");
-        this.submitted = true;
-    }
-
+    
     deleteFromArray(env : Environment){
         this.erased.emit(env);
     }

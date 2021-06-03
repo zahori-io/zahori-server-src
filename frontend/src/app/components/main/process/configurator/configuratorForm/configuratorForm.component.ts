@@ -1,5 +1,4 @@
-import { newArray } from '@angular/compiler/src/util';
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { Configuration } from '../../../../../model/configuration';
 import { Environment } from '../../../../../model/environment';
 import { EvidenceCase } from '../../../../../model/evidence-case';
@@ -8,17 +7,20 @@ import { Retry } from '../../../../../model/retry';
 import { TestRepository } from '../../../../../model/test-repository';
 import { Timeout } from '../../../../../model/timeout';
 import { DataService } from '../../../../../services/data.service';
+import { BannerOptions } from '../../../../utils/banner/banner';
 
+const SUCCESS_COLOR: string = "alert alert-success";
+const ERROR_COLOR: string = "alert alert-danger";
 @Component({
     selector: 'configuratorForm',
     templateUrl: './configuratorForm.component.html'
 })
 
-export class ConfiguratorFormComponent {
+export class ConfiguratorFormComponent implements OnInit, OnChanges {
     @Input()
     configuration: Configuration;
     @Input()
-    envs: Environment[]; 
+    envs: Environment[];
     @Input()
     evidenceCases: EvidenceCase[];
     @Input()
@@ -30,9 +32,19 @@ export class ConfiguratorFormComponent {
     @Input()
     timeouts: Timeout[] = [];
 
+    banner: BannerOptions;
+
     constructor(
         public dataService: DataService
     ) { }
+
+    ngOnInit(): void {
+        this.banner = new BannerOptions();
+    }
+
+    ngOnChanges() {
+        this.closeBanner();
+    }
 
     saveConf(configuration: Configuration) {
         let configurations: Configuration[] = [configuration];
@@ -40,26 +52,26 @@ export class ConfiguratorFormComponent {
             (configurationsSaved) => {
                 console.log("Configuration saved");
                 this.dataService.getProcessConfigurations();
+                this.banner = new BannerOptions("", "Configuración guardada", SUCCESS_COLOR, true);
             },
             (error) => {
-                //this.error = error.error;
-                //this.loading = false;
+                this.banner = new BannerOptions("", "Error: " + error.message, ERROR_COLOR, true);
             }
         );
     }
 
     changeEvidenceType(evidenceType: EvidenceType, event: any): void {
         if (event.currentTarget.checked) {
-            this.configuration.evidenceTypes.push(evidenceType);    
+            this.configuration.evidenceTypes.push(evidenceType);
         } else {
             this.removeEvidenceType(evidenceType);
         }
     }
 
     removeEvidenceType(evidenceType: EvidenceType) {
-        for( var i = 0; i < this.configuration.evidenceTypes.length; i++) { 
+        for (var i = 0; i < this.configuration.evidenceTypes.length; i++) {
             if (this.configuration.evidenceTypes[i].eviTypeId === evidenceType.eviTypeId) {
-                this.configuration.evidenceTypes.splice(i, 1); 
+                this.configuration.evidenceTypes.splice(i, 1);
             }
         }
     }
@@ -73,4 +85,7 @@ export class ConfiguratorFormComponent {
         return false;
     }
 
+    closeBanner() {
+        this.banner = new BannerOptions;
+    }
 }

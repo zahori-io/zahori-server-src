@@ -4,12 +4,13 @@ import { EvidenceCase } from 'src/app/model/evidence-case';
 import { TestRepository } from 'src/app/model/test-repository';
 import { Configuration } from '../../../../model/configuration';
 import { DataService } from '../../../../services/data.service';
-import { stringify } from '@angular/compiler/src/util';
 import { Retry } from '../../../../model/retry';
 import { Timeout } from '../../../../model/timeout';
 import { EvidenceType } from '../../../../model/evidence-type';
+import { BannerOptions } from '../../../utils/banner/banner';
 
-declare var $: any;
+const SUCCESS_COLOR : string = "alert alert-success";
+const ERROR_COLOR : string = "alert alert-danger";
 
 @Component({
   selector: 'app-configurator',
@@ -25,7 +26,8 @@ export class ConfiguratorComponent implements OnInit {
   testRepositories: TestRepository[] = []
   retries: Retry[] = [];
   timeouts: Timeout[] = [];
-  hide: boolean = true;
+
+  banner: BannerOptions;
 
   constructor(
     public dataService: DataService
@@ -39,6 +41,8 @@ export class ConfiguratorComponent implements OnInit {
     this.getRetries();
     this.getTimeouts();
     this.dataService.getProcessConfigurations();
+
+    this.banner = new BannerOptions();
   }
 
   getEnvironments() {
@@ -85,18 +89,16 @@ export class ConfiguratorComponent implements OnInit {
 
   editConfiguration(configuration: Configuration) {
     this.selectedConfiguration = configuration;
-    this.hide = true;
   }
 
   newConfiguration() {
     this.selectedConfiguration = new Configuration();
-    this.hide = true;
   }
 
   removeConfiguration(configuration: Configuration) {
     configuration.active = false;
 
-    let configurations: Configuration[] = [configuration];
+    let configurations: Configuration[] = [configuration]; 
     this.dataService.saveConfigurations(configurations).subscribe(
       (configurationRemoved) => {
         console.log("Configuration removed");
