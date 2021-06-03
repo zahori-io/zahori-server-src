@@ -8,9 +8,10 @@ import { Retry } from '../../../../model/retry';
 import { Timeout } from '../../../../model/timeout';
 import { EvidenceType } from '../../../../model/evidence-type';
 import { BannerOptions } from '../../../utils/banner/banner';
+import Swal from 'sweetalert2';
 
-const SUCCESS_COLOR : string = "alert alert-success";
-const ERROR_COLOR : string = "alert alert-danger";
+const SUCCESS_COLOR: string = "alert alert-success";
+const ERROR_COLOR: string = "alert alert-danger";
 
 @Component({
   selector: 'app-configurator',
@@ -96,19 +97,37 @@ export class ConfiguratorComponent implements OnInit {
   }
 
   removeConfiguration(configuration: Configuration) {
-    configuration.active = false;
-
-    let configurations: Configuration[] = [configuration]; 
-    this.dataService.saveConfigurations(configurations).subscribe(
-      (configurationRemoved) => {
-        console.log("Configuration removed");
-        this.dataService.getProcessConfigurations();
-      },
-      (error) => {
-        //this.error = error.error;
-        //this.loading = false;
+    Swal.fire({
+      title: 'Borrar configuración: ' + configuration.name,
+      text: 'Esta acción no podrá deshacerse',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Borrar',
+      cancelButtonText: 'Cancelar',
+      backdrop: `
+          rgba(64, 69, 58,0.4)
+          left top
+          no-repeat`
+    }).then((result) => {
+      if (result.value) {
+        configuration.active = false;
+        let configurations: Configuration[] = [configuration];
+        this.dataService.saveConfigurations(configurations).subscribe(
+          (configurationRemoved) => {
+            console.log("Configuration removed");
+            // this.banner = new BannerOptions("", "Configuración eliminada", SUCCESS_COLOR, true);
+            this.dataService.getProcessConfigurations();
+          },
+          (error) => {
+            this.banner = new BannerOptions("", "Error: " + error.message, ERROR_COLOR, true);
+          }
+        );
       }
-    );
+    })
+  }
+
+  closeBanner() {
+    this.banner = new BannerOptions;
   }
 
 }
