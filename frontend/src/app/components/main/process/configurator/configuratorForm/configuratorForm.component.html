@@ -21,10 +21,17 @@
 
       <div class="d-flex  position-relative form-group">
         <div class="col-6">
-          <label for="environmentId" class="">Entornos</label>
-          <select [(ngModel)]="configuration.clientEnvironment.environmentId" name="environmentId" class="form-control">
-            <option [value]="env.environmentId" *ngFor="let env of envs">{{env.name}}</option>
-          </select>
+          <label for="environmentId" class="">Entorno</label>
+          <div class="input-group">
+            <select [(ngModel)]="configuration.clientEnvironment.environmentId" name="environmentId" class="form-control">
+              <option [value]="env.environmentId" *ngFor="let env of envs">{{env.name}}</option>
+            </select>
+            <div class="input-group-prepend" title="Editar entornos" style="cursor: pointer;">
+              <div class="input-group-text" data-backdrop="false" data-toggle="modal" data-target="#environmentsModal">
+                <i class="fas fa-pen fa-1" style="color: #969696;" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
         </div>
         
         <div class="col-6">
@@ -84,3 +91,19 @@
     </form>
 
   </div>
+
+  <!-- Modal - Environments -->
+<div id="environmentsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="environmentsModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+      <div class="modal-content">
+
+          <div class="modal-body">
+            <app-admin-environments></app-admin-environments>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-light" data-dismiss="modal" (click)="closeEditEnvironmentsModal()">Cerrar</button>
+          </div>
+      </div>
+  </div>
+</div>

@@ -53,7 +53,8 @@
                     [evidenceTypes]="evidenceTypes" 
                     [testRepositories]="testRepositories"
                     [retries]="retries"
-                    [timeouts]="timeouts">
+                    [timeouts]="timeouts"
+                    (environmentsChange)="getEnvironments()">
     </configuratorForm>
     </div>
   </div>

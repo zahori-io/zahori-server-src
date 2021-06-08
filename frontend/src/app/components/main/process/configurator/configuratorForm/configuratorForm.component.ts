@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { Configuration } from '../../../../../model/configuration';
 import { Environment } from '../../../../../model/environment';
 import { EvidenceCase } from '../../../../../model/evidence-case';
@@ -31,6 +31,9 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
     retries: Retry[] = [];
     @Input()
     timeouts: Timeout[] = [];
+
+    @Output()
+    environmentsChange = new EventEmitter<any>();
 
     banner: BannerOptions;
 
@@ -87,5 +90,9 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
 
     closeBanner() {
         this.banner = new BannerOptions;
+    }
+
+    closeEditEnvironmentsModal(){
+        this.environmentsChange.next();
     }
 }
