@@ -24,10 +24,11 @@
           <label for="environmentId" class="">Entorno</label>
           <div class="input-group">
             <select [(ngModel)]="configuration.clientEnvironment.environmentId" name="environmentId" class="form-control">
+              <option *ngIf="envs.length == 0" [value]="0" selected disabled>No hay entornos, crea uno</option>
               <option [value]="env.environmentId" *ngFor="let env of envs">{{env.name}}</option>
             </select>
             <div class="input-group-prepend" title="Editar entornos" style="cursor: pointer;">
-              <div class="input-group-text" data-backdrop="false" data-toggle="modal" data-target="#environmentsModal">
+              <div (click)="emitEventOpenEnvironmentComponent()" class="input-group-text" data-backdrop="false" data-toggle="modal" data-target="#environmentsModal">
                 <i class="fas fa-pen fa-1" style="color: #969696;" aria-hidden="true"></i>
               </div>
             </div>
@@ -58,7 +59,7 @@
 
       <div class="d-flex  position-relative form-group">
         <div class="col-6">
-          <label for="generateEvidence">Generar Evidencias</label>
+          <label for="generateEvidence">Generar evidencias</label>
           <select name="generateEvidence" class="form-control" [(ngModel)]="configuration.evidenceCase.eviCaseId">
             <option [value]="eviCase.eviCaseId" *ngFor="let eviCase of evidenceCases">{{eviCase.name}}</option>
           </select>
@@ -75,15 +76,22 @@
         </div>
       </div>
 
-      <div class="col-12 mt-3 position-relative form-group">
-        <div class="col-2 custom-checkbox custom-control custom-control-inline" *ngFor="let evidenceType of evidenceTypes; let i = index">
-            <input type="checkbox" (change)="changeEvidenceType(evidenceType, $event)" [checked]="isSelectedEvidenceType(evidenceType)" class="custom-control-input" name="evidenceType_{{evidenceType.eviTypeId}}" id="evidenceType_{{evidenceType.eviTypeId}}">
-            <label class="custom-control-label" for="evidenceType_{{evidenceType.eviTypeId}}">{{evidenceType.name}}</label>
+      <div>
+        <div class="col-12">
+          <label for="generateEvidence">Tipos de evidencias</label>
+        </div>
+      </div>
+      <div class="d-flex  position-relative form-group">
+        <div class="col-12 position-relative form-group">
+          <div class="col-2 custom-checkbox custom-control custom-control-inline" *ngFor="let evidenceType of evidenceTypes; let i = index">
+              <input type="checkbox" (change)="changeEvidenceType(evidenceType, $event)" [checked]="isSelectedEvidenceType(evidenceType)" class="custom-control-input" name="evidenceType_{{evidenceType.eviTypeId}}" id="evidenceType_{{evidenceType.eviTypeId}}">
+              <label class="custom-control-label" for="evidenceType_{{evidenceType.eviTypeId}}">{{evidenceType.name}}</label>
+          </div>
         </div>
       </div>
       
       <div class="text-center">
-        <button class="btn-wide mt-3 mb-3 btn-icon btn btn-zahoriV btn-sm" (click)="saveConf(configuration)">Guardar</button>
+        <input type="submit" value="Guardar" class="btn-wide mt-3 mb-3 btn-icon btn btn-zahoriV btn-sm" (click)="saveConf(configuration)" />
       </div>
 
       <banner [banner]="banner" (click)="closeBanner()"></banner>
@@ -98,7 +106,7 @@
       <div class="modal-content">
 
           <div class="modal-body">
-            <app-admin-environments></app-admin-environments>
+            <app-admin-environments [eventOpenCompononent]="eventInstantiateEnvironmentCompononent.asObservable()"></app-admin-environments>
           </div>
 
           <div class="modal-footer">

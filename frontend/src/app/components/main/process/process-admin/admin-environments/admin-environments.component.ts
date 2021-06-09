@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { Observable, Subscription } from 'rxjs';
 import { Environment } from '../../../../../model/environment';
 import { DataService } from '../../../../../services/data.service'
 import { BannerOptions } from '../../../../utils/banner/banner'
 
-const SUCCESS : string = "Operación realizada con éxito";
-const ERROR: string = "Algo ha ido mal";
+const ERROR: string = "Error: ";
 const SUCCESS_COLOR : string = "alert alert-success";
 const ERROR_COLOR : string = "alert alert-danger";
 
@@ -19,10 +19,20 @@ export class AdminEnvironmentsComponent implements OnInit {
   myEnvs : Environment[] = [];
   banner: BannerOptions;
 
+  eventOpenCompononentSubscription: Subscription;
+  @Input() eventOpenCompononent: Observable<void>;
+
   ngOnInit() {
     this.refresh();
-    this.banner = new BannerOptions();
+    this.eventOpenCompononentSubscription = this.eventOpenCompononent.subscribe(
+      () => {
+          console.log("detected component opened");
+          this.refresh();
+          this.myEnvs = [];
+        }
+    );
   }  
+  
   constructor(public dataService: DataService) {
   }
 
@@ -31,12 +41,14 @@ export class AdminEnvironmentsComponent implements OnInit {
       (res : any) => {
         this.envs = res;
       });
+
+    this.banner = new BannerOptions()
   }
 
   deleteEnv(env: Environment){
     env.active = false;
     let envArray: Environment[] = [env];
-    this.sendPostPetition(envArray, new BannerOptions(SUCCESS, "El entorno " + env.name + " ha sido eliminado", SUCCESS_COLOR , true ));
+    this.sendPostPetition(envArray, new BannerOptions("Entorno eliminado: " + env.name, "", SUCCESS_COLOR , true ));
   }
 
   updateEnv(env : Environment){
@@ -45,7 +57,7 @@ export class AdminEnvironmentsComponent implements OnInit {
     }
     else{
       let envArray: Environment[] = [env];
-      this.sendPostPetition(envArray, new BannerOptions(SUCCESS, "Se ha modificado el entorno " + env.name, SUCCESS_COLOR , true ));
+      this.sendPostPetition(envArray, new BannerOptions("Entorno modificado: " + env.name, "", SUCCESS_COLOR , true ));
     }
     
   }
@@ -57,7 +69,7 @@ export class AdminEnvironmentsComponent implements OnInit {
     }
     else{
       let envArray: Environment[] = [env];
-      this.sendPostPetition(envArray, new BannerOptions(SUCCESS, "Se ha creado el entorno " + env.name, SUCCESS_COLOR , true ));
+      this.sendPostPetition(envArray, new BannerOptions("Entorno creado: " + env.name, "", SUCCESS_COLOR , true ));
       this.deleteFromArray(env);
     }
   }
@@ -82,10 +94,11 @@ export class AdminEnvironmentsComponent implements OnInit {
   }
 
   closeBanner(){
-    this.banner = new BannerOptions;
+    this.banner = new BannerOptions();
   }
   
   newEnv(){
-    this.myEnvs.push(new Environment)
+    console.log("newEnv()");
+    this.myEnvs.push(new Environment());
   }
 }

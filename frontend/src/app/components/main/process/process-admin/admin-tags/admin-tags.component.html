@@ -7,30 +7,29 @@
             <div class="page-title-heading">
                 <div>Gestión de etiquetas</div>
             </div>
-        </div>
+        </div> 
     </div>
 
-    <div class="row mt-3">
+    <div class="col-12" *ngIf="tags.length == 0 && myTags.length == 0">
+        No hay etiquetas definidos.
+    </div>
+
+    <div *ngIf="tags.length > 0 || myTags.length > 0" class="row mt-3">
         <div class="col-4">
             <label for="name" class="">Nombre</label>
         </div>
         <div class="col-6">
             <label for="color" class="">Color</label>
         </div>
+
+        <tag id="tagContainter" *ngFor="let tag of tags" [tag]="tag" (updated)="updateTag($event)"
+            (deleted)="deleteTag($event)" class="col-12"></tag>
+        <tag id="newTags" *ngFor="let newTag of myTags" [tag]="newTag" (created)="createTag($event)"
+            (erased)="deleteFromArray($event)" class="col-12"></tag>
     </div>
-    
-    <div>
-        <tag id="tagContainter" *ngFor ="let tag of tags" [tag] = tag (updated) = updateTag($event) tag (deleted) = deleteTag($event)></tag>
-        <tag id= "newTags" *ngFor = "let newTag of myTags" [tag] = newTag (created) = createTag($event) newtag (erased) = deleteFromArray($event)></tag>
-    </div>
-    
-    
+
     <div class="col-8 text-center mt-3">
-        <button class="btn-wide mt-2 btn-icon btn btn-zahoriV btn-sm" (click) = newTag()>
-            <div>
-                Añadir etiqueta
-            </div>          
-        </button>
+        <button class="btn-wide mt-2 btn-icon btn btn-zahoriV btn-sm" (click)="newTag()">Añadir etiqueta</button>
     </div>
 
 </div>

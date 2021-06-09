@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
+import { Subject } from 'rxjs';
 import { Configuration } from '../../../../../model/configuration';
 import { Environment } from '../../../../../model/environment';
 import { EvidenceCase } from '../../../../../model/evidence-case';
@@ -35,6 +36,11 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
     @Output()
     environmentsChange = new EventEmitter<any>();
 
+    public eventInstantiateEnvironmentCompononent: Subject<void> = new Subject<void>();
+    emitEventOpenEnvironmentComponent() {
+        this.eventInstantiateEnvironmentCompononent.next();
+    }
+
     banner: BannerOptions;
 
     constructor(
@@ -50,6 +56,16 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
     }
 
     saveConf(configuration: Configuration) {
+        let errorMessage = this.validateConfig(configuration);
+        if (errorMessage){
+            this.banner = new BannerOptions("", errorMessage, ERROR_COLOR, true);
+            return;
+        }
+
+        if (configuration.testRepositories.length > 0 && configuration.testRepositories[0].testRepoId == 0){
+            configuration.testRepositories = [];
+        }
+        
         let configurations: Configuration[] = [configuration];
         this.dataService.saveConfigurations(configurations).subscribe(
             (configurationsSaved) => {
@@ -63,6 +79,21 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
         );
     }
 
+    validateConfig(configuration: Configuration): string {
+        if (configuration.name == "") {
+            return "Escribe el nombre de la configuración";
+        }
+        if (!configuration.clientEnvironment.environmentId) {
+            return "Selecciona un entorno";
+        }
+        if (!configuration.retry.retryId) {
+            return "Selecciona el número de reintentos";
+        }
+        if (!configuration.evidenceCase.eviCaseId) {
+            return "Selecciona cuando se generarán evidencias";
+        }
+        return null;
+    }
     changeEvidenceType(evidenceType: EvidenceType, event: any): void {
         if (event.currentTarget.checked) {
             this.configuration.evidenceTypes.push(evidenceType);

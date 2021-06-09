@@ -5,8 +5,7 @@ import { BannerOptions } from '../../../../../utils/banner/banner'
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 
-const SUCCESS : string = "Operación realizada con éxito";
-const ERROR: string = "Algo ha ido mal";
+const ERROR: string = "Error: ";
 const SUCCESS_COLOR : string = "alert alert-success";
 const ERROR_COLOR : string = "alert alert-danger";
 
@@ -40,7 +39,7 @@ export class AdminTagsComponent implements OnInit {
   deleteTag(tag: Tag){
     tag.active = false;
     let tagArray: Tag[] = [tag];
-    this.sendPostPetition(tagArray, new BannerOptions(SUCCESS, "El entorno " + tag.name + " ha sido eliminado", SUCCESS_COLOR , true ));
+    this.sendPostPetition(tagArray, new BannerOptions("Etiqueta eliminada: " + tag.name, "", SUCCESS_COLOR , true ));
 
     }
 
@@ -49,31 +48,31 @@ export class AdminTagsComponent implements OnInit {
       this.banner = new BannerOptions(ERROR, "Todos los campos son obligatorios", ERROR_COLOR , true )
     }
     else if (this.tags.filter(candidate => candidate.name === tag.name).length > 1){
-      this.banner = new BannerOptions(ERROR, "El tag \"" + tag.name + "\" ya existe. elija un nombre distinto", ERROR_COLOR , true )
+      this.banner = new BannerOptions(ERROR, "La etiqueta \"" + tag.name + "\" ya existe, elige otro nombre.", ERROR_COLOR , true )
     }
     else if (this.tags.filter(candidate => candidate.color === tag.color).length > 1){
-      this.banner = new BannerOptions(ERROR, "El color para el tag \"" + tag.name + "\" ya está asignado a otro tag. Por favor, elija un color distinto", ERROR_COLOR , true )
+      this.banner = new BannerOptions(ERROR, "El color para la etiqueta \"" + tag.name + "\" ya se está usando en otra etiqueta, elige otro color.", ERROR_COLOR , true )
     }
     else{
       let tagArray: Tag[] = [tag];
-      this.sendPostPetition(tagArray, new BannerOptions(SUCCESS, "Se ha modificado la etiqueta " + tag.name, SUCCESS_COLOR , true ));
+      this.sendPostPetition(tagArray, new BannerOptions("Etiqueta modificada: " + tag.name, "", SUCCESS_COLOR , true ));
     }
     
   }
   
   createTag(tag : Tag){    
     if (tag.name.length == 0){
-      this.banner = new BannerOptions(ERROR, "Todos los campos son obligatorios", ERROR_COLOR , true );
+      this.banner = new BannerOptions("Todos los campos son obligatorios", "", ERROR_COLOR , true );
     } 
     else if (this.tags.filter(candidate => candidate.name === tag.name).length > 0){
-      this.banner = new BannerOptions(ERROR, "El tag \"" + tag.name + "\" ya existe. elija un nombre distinto", ERROR_COLOR , true )
+      this.banner = new BannerOptions(ERROR, "La etiqueta \"" + tag.name + "\" ya existe, elige otro nombre.", ERROR_COLOR , true )
     }
     else if (this.tags.filter(candidate => candidate.color === tag.color).length > 0){
-      this.banner = new BannerOptions(ERROR, "El color para el tag \"" + tag.name + "\" ya está asignado a otro tag. Por favor, elija un color distinto", ERROR_COLOR , true )
+      this.banner = new BannerOptions(ERROR, "El color para la etiqueta \"" + tag.name + "\" ya se está usando en otra etiqueta. elige otro color.", ERROR_COLOR , true )
     }
     else{
       let tagArray: Tag[] = [tag];
-      this.sendPostPetition(tagArray, new BannerOptions(SUCCESS, "Se ha creado la etiqueta " + tag.name, SUCCESS_COLOR , true ));
+      this.sendPostPetition(tagArray, new BannerOptions("Etiqueta creada: " + tag.name, "", SUCCESS_COLOR , true ));
       this.deleteFromArray(tag);
     }
     
@@ -82,7 +81,7 @@ export class AdminTagsComponent implements OnInit {
   duplicateElement(tag : Tag){
        Swal.fire({
           title: 'La etiqueta ' + tag.name + ' ya existe',
-          text: 'Por favor, elija un nombre distinto',
+          text: 'Elige otro nombre distinto',
           icon: 'warning',
           confirmButtonText: 'Ok',
           backdrop: `
@@ -120,10 +119,10 @@ export class AdminTagsComponent implements OnInit {
       }  }
 
   closeBanner(){
-    this.banner = new BannerOptions;
+    this.banner = new BannerOptions();
   }
   
   newTag(){
-    this.myTags.push(new Tag);
+    this.myTags.push(new Tag());
   }
 }

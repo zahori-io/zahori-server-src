@@ -81,13 +81,19 @@
 
 					<div class="position-relative form-group">
 						<label for="exampleSelect" class="">Configuración</label>
-						<select [(ngModel)]="execution.configuration.configurationId" name="execution_configurationId"
+						<select *ngIf="dataService.processConfigurations.length > 0" [(ngModel)]="execution.configuration.configurationId" name="execution_configurationId"
 							class="form-control">
 							<option *ngFor="let configuration of dataService.processConfigurations"
 								[value]="configuration.configurationId">
 								{{configuration.name}}
 							</option>
 						</select>
+						<div *ngIf="dataService.processConfigurations.length == 0">
+							<span class="text-danger"><strong>Aún no hay configuraciones</strong></span><span>, crea una 
+								<a routerLink="../configurator" routerLinkActive="linkActive"><strong>aquí</strong></a>
+							</span>
+						</div>
+						
 					</div>
 
 					<div class="position-relative form-group" *ngIf="dataService.processSelected.processType.name == 'BROWSER'">

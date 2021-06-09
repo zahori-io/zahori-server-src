@@ -9,25 +9,25 @@
         </div>
     </div>
 
-    <div class="row mt-3">
+    <div class="col-12" *ngIf="envs.length == 0 && myEnvs.length == 0">
+        No hay entornos definidos.
+    </div>
+
+    <div *ngIf="envs.length > 0 || myEnvs.length > 0" class="row mt-3">
         <div class="col-4">
             <label for="name" class="">Nombre</label>
         </div>
         <div class="col-6">
             <label for="url" class="">Url</label>
         </div>
-    </div>
-    
-    <div>
-        <environment id="test" *ngFor ="let env of envs" [environment] = env (updated) = updateEnv($event) env (deleted) = deleteEnv($event)></environment>
-        <environment id = "newTests" *ngFor = "let newEnv of myEnvs" [environment] = newEnv (created) = createEnv($event) env (erased) = deleteFromArray($event)></environment>
 
+        <environment env class="col-12" id="test" *ngFor="let env of envs" [environment]="env" (updated)="updateEnv($event)"
+            (deleted)="deleteEnv($event)"></environment>
+        <environment env class="col-12" id="newTests" *ngFor="let newEnv of myEnvs" [environment]="newEnv"
+            (created)="createEnv($event)" (erased)="deleteFromArray($event)"></environment>
     </div>
-    
-    
+
     <div class="col-8 text-center mt-3">
-        <button class="btn-wide mt-2 btn-icon btn btn-zahoriV btn-sm" (click) = newEnv()>
-            Añadir entorno
-        </button>
+        <button class="btn-wide mt-2 btn-icon btn btn-zahoriV btn-sm" (click)="newEnv()">Añadir entorno</button>
     <div>
 </div>

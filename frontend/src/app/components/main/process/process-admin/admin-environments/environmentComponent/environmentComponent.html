@@ -33,14 +33,14 @@
         </div>
         
         <a *ngIf= "!isNew(environment); else newEnv">
-            <i class="fas fa-save mr-2" title = "Editar" style="cursor: pointer;" (click) = "updateEnv(environment)"></i>
-            <i class="fas fa-times mt-2" title = "Eliminar" style="cursor: pointer;" (click) = deleteEnv(environment)></i>
+            <i class="fas fa-save mr-2" title="Editar" style="cursor: pointer;" (click)="updateEnv(environment)"></i>
+            <i class="fas fa-times mt-2" title="Eliminar" style="cursor: pointer;" (click)="deleteEnv(environment)"></i>
         </a>
         
         <ng-template #newEnv>
             <a>
-                <i class="fas fa-save mr-2" title = "Guardar" style="cursor: pointer;" (click) = "createEnv(environment); textInputId.value=''; textInputUrl.value='' "></i>
-                <i class="fas fa-times mt-2" title = "Eliminar" style="cursor: pointer;" (click) = deleteFromArray(environment)></i>
+                <i class="fas fa-save mr-2" title="Guardar" style="cursor: pointer;" (click)="createEnv(environment); textInputId.value=''; textInputUrl.value='';"></i>
+                <i class="fas fa-times mt-2" title="Eliminar" style="cursor: pointer;" (click)="deleteFromArray(environment)"></i>
             </a>
         </ng-template>
     </div>
