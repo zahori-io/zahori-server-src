@@ -56,6 +56,8 @@ public class ClientTestRepo implements Serializable {
     @Column(name = "\"user\"")
     private String user;
 
+    private Boolean active;
+
     // bi-directional many-to-one association to Client
     @JsonBackReference(value = "client")
     @ManyToOne
@@ -144,6 +146,20 @@ public class ClientTestRepo implements Serializable {
      */
     public void setUser(String user) {
         this.user = user;
+    }
+
+    /**
+     * @return the active
+     */
+    public Boolean getActive() {
+        return active;
+    }
+
+    /**
+     * @param active the active to set
+     */
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     /**

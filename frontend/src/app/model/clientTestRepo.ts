@@ -5,11 +5,13 @@ export class ClientTestRepo {
     user: string;
     password: string;
     url: string;
+    active: boolean;
 
     constructor() {
         this.id = new ClientTestRepoId();
         this.user = "";
         this.password = "";
         this.url = "";
+        this.active = true;
     }
 }

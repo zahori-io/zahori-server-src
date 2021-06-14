@@ -1,5 +1,7 @@
 package io.zahori.server.controller;
 
+import javax.servlet.http.HttpServletRequest;
+
 /*-
  * #%L
  * zahori-server
@@ -34,6 +36,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.zahori.server.model.TestRepository;
 import io.zahori.server.repository.TestRepoRepository;
+import io.zahori.server.security.JWTUtils;
 
 @RestController
 @RequestMapping("/api/repositories")
@@ -50,11 +53,11 @@ public class TestRepoController {
      * @return the test repositories
      */
     @GetMapping()
-    public ResponseEntity<Object> getRepositories() {
+    public ResponseEntity<Object> getRepositories(HttpServletRequest request) {
         try {
             LOG.info("get cases");
 
-            Iterable<TestRepository> repos = trRepository.findAll();
+            Iterable<TestRepository> repos = trRepository.findByClientId(JWTUtils.getClientId(request));
 
             return new ResponseEntity<>(repos, HttpStatus.OK);
         } catch (Exception e) {

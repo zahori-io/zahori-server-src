@@ -174,9 +174,8 @@ export class DataService {
     return this.http.get<ClientTestRepo[]>(this.url + 'clienttestrepo/', {});
   }
 
-  public setClientTestRepo(clientTestRepo: ClientTestRepo) {
-    console.log(clientTestRepo);
-    return this.http.post(this.url + 'clienttestrepo/upgrade/', JSON.stringify(clientTestRepo));
+  public setClientTestRepo(clientTestRepo: ClientTestRepo): Observable<ClientTestRepo> {
+    return this.http.post<ClientTestRepo>(this.url + 'clienttestrepo/upgrade/', JSON.stringify(clientTestRepo));
   }
 
   public getTestRepository(testId: string): Observable<TestRepository> {

@@ -15,7 +15,7 @@ export class Configuration {
   retry: Retry;
   timeout: Timeout;
   evidenceTypes: EvidenceType[];
-  testRepositories: TestRepository[];
+  testRepository: TestRepository;
   evidenceCase : EvidenceCase;
 
   constructor() {
@@ -28,7 +28,7 @@ export class Configuration {
     this.retry = new Retry();
     this.timeout = new Timeout();
     this.evidenceTypes = [];
-    this.testRepositories = [new TestRepository()];
+    this.testRepository = new TestRepository();
     this.evidenceCase = new EvidenceCase();
   }
 }

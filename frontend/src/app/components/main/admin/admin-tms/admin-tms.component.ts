@@ -59,8 +59,8 @@ export class AdminTmsComponent implements OnInit {
     this.clientTestRepo.push(clientTestRepo);
     this.testRepo.set(clientTestRepo.id.testRepoId, new TestRepository());
   }
-  activateSwitch(testRepoId: number, event: any): void {
-    event.currentTarget.checked ? this.activate(testRepoId) : this.desactivate(testRepoId);
+  activateSwitch(clientTestRepo: ClientTestRepo, event: any): void {
+    event.currentTarget.checked ? this.activate(clientTestRepo) : this.desactivate(clientTestRepo);
   }
   save(testRepoId: number, index: number): void{
     const testRepo: TestRepository = this.testRepo.get(testRepoId);
@@ -88,7 +88,7 @@ export class AdminTmsComponent implements OnInit {
       },
     );
   }
-  private activate(testRepoId: number): void{
+  private activate(clientTestRepo: ClientTestRepo): void{
     Swal.fire({
       title: 'Activar Repositorio',
       text: 'Esta acción reactivara el repositorio quedando disponible',
@@ -102,9 +102,9 @@ export class AdminTmsComponent implements OnInit {
                 no-repeat`
     }).then((result) => {
       if (result.value) {
-        this.dataService.setTestRepository(this.testRepo.get(testRepoId)).subscribe(
-          (testRepo: TestRepository) => {
-            this.testRepo.set(testRepo.testRepoId, testRepo);
+        this.dataService.setClientTestRepo(clientTestRepo).subscribe(
+          (clientTestRepoReturned: ClientTestRepo) => {
+            clientTestRepo = clientTestRepoReturned;
           },
           (error) => {
             this.banner = new BannerOptions('Error al activar el repositorio:', error, ERROR_COLOR, true);
@@ -113,11 +113,11 @@ export class AdminTmsComponent implements OnInit {
           }
         );
       }else{
-        this.testRepo.get(testRepoId).active = false;
+        clientTestRepo.active = false;
       }
     });
   }
-  private desactivate(testRepoId: number): void{
+  private desactivate(clientTestRepo: ClientTestRepo): void{
     Swal.fire({
       title: 'Desactivar Repositorio',
       text: 'Esta acción desactivara el repositorio',
@@ -131,10 +131,10 @@ export class AdminTmsComponent implements OnInit {
                 no-repeat`
     }).then((result) => {
       if (result.value) {
-        this.testRepo.get(testRepoId).active = false;
-        this.dataService.deleteTestRepository(this.testRepo.get(testRepoId)).subscribe(
-          (testRepo: TestRepository) => {
-            this.testRepo.set(testRepo.testRepoId, testRepo);
+        clientTestRepo.active = false;
+        this.dataService.setClientTestRepo(clientTestRepo).subscribe(
+          (clientTestRepoReturned: ClientTestRepo) => {
+            clientTestRepo = clientTestRepoReturned;
           },
           (error) => {
             this.banner = new BannerOptions('Error al desactivar el repositorio:', error, ERROR_COLOR, true);
@@ -143,7 +143,7 @@ export class AdminTmsComponent implements OnInit {
           }
         );
       }else{
-        this.testRepo.get(testRepoId).active = true;
+        clientTestRepo.active = true;
       }
     });
   }

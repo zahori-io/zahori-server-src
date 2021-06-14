@@ -42,14 +42,14 @@
         <div *ngFor="let elem of clientTestRepo; let i = index" class="row ml-1  mb-2">
 
             <div class="col-1 d-flex custom-control custom-switch">
-                <input [(ngModel)]="testRepo.get(elem.id.testRepoId).active" type="checkbox"
-                    id="active-{{elem.id.testRepoId}}" (change)="activateSwitch(elem.id.testRepoId, $event)"
+                <input [(ngModel)]="elem.active" type="checkbox"
+                    id="active-{{elem.id.testRepoId}}" (change)="activateSwitch(elem, $event)"
                     class="custom-control-input">
                 <label for="active-{{elem.id.testRepoId}}" class="custom-control-label"></label>
             </div>
             <div class="col-2 d-flex">
                 <select name="reponame" id="{{'reponame-'+elem.id.testRepoId}}" class="form-control"
-                    [disabled]="!testRepo.get(elem.id.testRepoId).active"
+                    [disabled]="!elem.active"
                     [(ngModel)]="testRepo.get(elem.id.testRepoId).name">
                     <option [selected]="testRepo.get(elem.id.testRepoId).name==='Xray Server'">Xray Server</option>
                     <option [selected]="testRepo.get(elem.id.testRepoId).name==='Xray Cloud'">Xray Cloud</option>
@@ -64,22 +64,22 @@
         </div>-->
             <div class="col-4 d-flex">
                 <input name="url" id="{{'url-'+elem.id.testRepoId}}" placeholder="{{elem.url}}"
-                    [disabled]="!testRepo.get(elem.id.testRepoId).active" [(ngModel)]="elem.url" type="text"
+                    [disabled]="!elem.active" [(ngModel)]="elem.url" type="text"
                     class="form-control">
             </div>
             <div class="col-2 d-flex">
                 <input name="user" id="{{'user-'+elem.id.testRepoId}}" placeholder="{{elem.user}}"
-                    [disabled]="!testRepo.get(elem.id.testRepoId).active" [(ngModel)]="elem.user" type="text"
+                    [disabled]="!elem.active" [(ngModel)]="elem.user" type="text"
                     class="form-control">
             </div>
             <div class="col-2 d-flex">
                 <input name="password" id="{{'password-'+elem.id.testRepoId}}" placeholder="{{elem.password}}"
-                    [disabled]="!testRepo.get(elem.id.testRepoId).active" [(ngModel)]="elem.password"
+                    [disabled]="!elem.active" [(ngModel)]="elem.password"
                     ng-model="password" type="password" class="form-control">
             </div>
             <div class="col-1 d-flex p-2 mt-1">
                 <a (click)="save(elem.id.testRepoId, i)" title="Guardar"
-                    [hidden]="!testRepo.get(elem.id.testRepoId).active">
+                    [hidden]="!elem.active">
                     <i class="fas fa-save mr-2"></i>
                 </a>
             </div>

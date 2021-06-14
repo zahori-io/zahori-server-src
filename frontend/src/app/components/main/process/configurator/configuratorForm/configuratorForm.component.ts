@@ -52,18 +52,22 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges() {
+        if (!this.configuration.testRepository){
+            this.configuration.testRepository = new TestRepository();
+        }
         this.closeBanner();
     }
 
     saveConf(configuration: Configuration) {
+        this.banner = new BannerOptions();
         let errorMessage = this.validateConfig(configuration);
         if (errorMessage){
             this.banner = new BannerOptions("", errorMessage, ERROR_COLOR, true);
             return;
         }
 
-        if (configuration.testRepositories.length > 0 && configuration.testRepositories[0].testRepoId == 0){
-            configuration.testRepositories = [];
+        if (configuration.testRepository.testRepoId == 0){
+            configuration.testRepository = null;
         }
         
         let configurations: Configuration[] = [configuration];
@@ -72,6 +76,7 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
                 console.log("Configuration saved");
                 this.dataService.getProcessConfigurations();
                 this.banner = new BannerOptions("", "Configuración guardada", SUCCESS_COLOR, true);
+                this.configuration = new Configuration();
             },
             (error) => {
                 this.banner = new BannerOptions("", "Error: " + error.message, ERROR_COLOR, true);
@@ -86,12 +91,20 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
         if (!configuration.clientEnvironment.environmentId) {
             return "Selecciona un entorno";
         }
-        if (!configuration.retry.retryId) {
+        if (!configuration.retry || configuration.retry.retryId == null) {
             return "Selecciona el número de reintentos";
+        }
+        if (!configuration.timeout.timeoutId) {
+            return "Selecciona los segundos para el timeout";
         }
         if (!configuration.evidenceCase.eviCaseId) {
             return "Selecciona cuando se generarán evidencias";
         }
+
+        if (configuration.uploadResults && configuration.testRepository.testRepoId == 0){
+            return "Selecciona un repositorio";
+        }
+
         return null;
     }
     changeEvidenceType(evidenceType: EvidenceType, event: any): void {

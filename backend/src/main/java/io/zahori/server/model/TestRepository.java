@@ -31,7 +31,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -64,9 +63,9 @@ public class TestRepository implements Serializable {
     @OneToMany(mappedBy = "testRepository")
     private Set<ClientTestRepo> clientTestRepos;
 
-    // bi-directional many-to-many association to Configuration
+    // bi-directional many-to-one association to Configuration
     @JsonBackReference(value = "configurations")
-    @ManyToMany(mappedBy = "testRepositories")
+    @OneToMany(mappedBy = "clientEnvironment")
     private Set<Configuration> configurations;
 
     /**
