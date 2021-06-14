@@ -41,7 +41,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "client_test_repos")
 //@NamedQuery(name="ClientTestRepo.findAll", query="SELECT c FROM ClientTestRepo c")
 public class ClientTestRepo implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -8047179212309181277L;
 
     @EmbeddedId
     private ClientTestRepoPK id;
@@ -54,6 +55,8 @@ public class ClientTestRepo implements Serializable {
 
     @Column(name = "\"user\"")
     private String user;
+
+    private Boolean active;
 
     // bi-directional many-to-one association to Client
     @JsonBackReference(value = "client")
@@ -143,6 +146,20 @@ public class ClientTestRepo implements Serializable {
      */
     public void setUser(String user) {
         this.user = user;
+    }
+
+    /**
+     * @return the active
+     */
+    public Boolean getActive() {
+        return active;
+    }
+
+    /**
+     * @param active the active to set
+     */
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
     /**

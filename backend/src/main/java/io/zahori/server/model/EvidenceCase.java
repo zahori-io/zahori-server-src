@@ -43,66 +43,66 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Entity
 @Table(name = "evidence_cases")
 public class EvidenceCase {
-	  private static final long serialVersionUID = 1L;
 
-	    @Id
-	    @Column(name = "evi_case_id")
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long eviCaseId;
+    @Id
+    @Column(name = "evi_case_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long eviCaseId;
 
-	    private Boolean active;
+    private Boolean active;
 
-	    @Column(name = "name")
-	    private String name;
+    @Column(name = "name")
+    private String name;
 
-	    @Column(name = "order")
-	    private Long order;
-	    
-	    // bi-directional many-to-many association to Client
-	    @JsonBackReference(value = "clients")
-	    @ManyToMany
-	    @JoinTable(name = "client_evidence_cases", joinColumns = { @JoinColumn(name = "evi_case_id") }, inverseJoinColumns = { @JoinColumn(name = "client_id") })
-	    private Set<Client> clients;
+    @Column(name = "order")
+    private Long order;
 
-	    public EvidenceCase() {}
+    // bi-directional many-to-many association to Client
+    @JsonBackReference(value = "clients")
+    @ManyToMany
+    @JoinTable(name = "client_evidence_cases", joinColumns = { @JoinColumn(name = "evi_case_id") }, inverseJoinColumns = { @JoinColumn(name = "client_id") })
+    private Set<Client> clients;
 
-		public Long getEviCaseId() {
-			return eviCaseId;
-		}
+    public EvidenceCase() {
+    }
 
-		public void setEviCaseId(Long eviCaseId) {
-			this.eviCaseId = eviCaseId;
-		}
+    public Long getEviCaseId() {
+        return eviCaseId;
+    }
 
-		public Boolean getActive() {
-			return active;
-		}
+    public void setEviCaseId(Long eviCaseId) {
+        this.eviCaseId = eviCaseId;
+    }
 
-		public void setActive(Boolean active) {
-			this.active = active;
-		}
+    public Boolean getActive() {
+        return active;
+    }
 
-		public String getName() {
-			return name;
-		}
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 
-		public void setName(String name) {
-			this.name = name;
-		}
+    public String getName() {
+        return name;
+    }
 
-		public Long getOrder() {
-			return order;
-		}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-		public void setOrder(Long order) {
-			this.order = order;
-		}
+    public Long getOrder() {
+        return order;
+    }
 
-		public Set<Client> getClients() {
-			return clients;
-		}
+    public void setOrder(Long order) {
+        this.order = order;
+    }
 
-		public void setClients(Set<Client> clients) {
-			this.clients = clients;
-		}
+    public Set<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(Set<Client> clients) {
+        this.clients = clients;
+    }
 }

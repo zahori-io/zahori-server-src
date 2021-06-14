@@ -8,6 +8,6 @@ export class EvidenceCase{
         this.eviCaseId = 0;
         this.active = true;
         this.name = "";
-        this.order = 0;;
+        this.order = 0;
     }
 }

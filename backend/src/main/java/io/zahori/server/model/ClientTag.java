@@ -46,7 +46,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "client_tags")
 @NamedQuery(name = "ClientTag.findAll", query = "SELECT c FROM ClientTag c")
 public class ClientTag implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -3122506344503400645L;
 
     @Id
     @Column(name = "tag_id")

@@ -60,7 +60,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @NamedQuery(name = "Case.findAll", query = "SELECT c FROM Case c")
 public class Case implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 6216951137885144104L;
     private static final Logger LOG = LoggerFactory.getLogger(Case.class);
 
     @Id

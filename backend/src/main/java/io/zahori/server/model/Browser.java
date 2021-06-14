@@ -41,7 +41,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "browsers")
 //@NamedQuery(name = "Browser.findAll", query = "SELECT b FROM Browser b")
 public class Browser implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = 8341351366554054141L;
 
     @Id
     @Column(name = "browser_name")
@@ -64,8 +65,8 @@ public class Browser implements Serializable {
     private List<CaseExecution> casesExecutions;
 
     // bi-directional many-to-one association to PlatformBrowsersVersion
-//	@OneToMany(mappedBy="browser")
-//	private List<PlatformBrowsersVersion> platformBrowsersVersions;
+    //	@OneToMany(mappedBy="browser")
+    //	private List<PlatformBrowsersVersion> platformBrowsersVersions;
 
     /**
      * Instantiates a new Browser.
@@ -207,12 +208,12 @@ public class Browser implements Serializable {
         return casesExecution;
     }
 
-//	public List<PlatformBrowsersVersion> getPlatformBrowsersVersions() {
-//		return this.platformBrowsersVersions;
-//	}
-//
-//	public void setPlatformBrowsersVersions(List<PlatformBrowsersVersion> platformBrowsersVersions) {
-//		this.platformBrowsersVersions = platformBrowsersVersions;
-//	}
+    //	public List<PlatformBrowsersVersion> getPlatformBrowsersVersions() {
+    //		return this.platformBrowsersVersions;
+    //	}
+    //
+    //	public void setPlatformBrowsersVersions(List<PlatformBrowsersVersion> platformBrowsersVersions) {
+    //		this.platformBrowsersVersions = platformBrowsersVersions;
+    //	}
 
 }

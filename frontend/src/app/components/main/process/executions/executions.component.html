@@ -193,7 +193,7 @@
             </ng-template>
             
             <tr *ngIf="!loading && dataService.processExecutions.length == 0">
-              <td colspan="8" class="text-center">
+              <td colspan="9" class="text-center">
                 <span>Aún no hay ejecuciones de este proceso. Puedes crear una nueva en la página 
 									<a routerLink="../trigger"><strong>Disparador</strong></a>
 								</span>
@@ -201,11 +201,12 @@
             </tr>
 
             <tr *ngIf="loading">
-              <td colspan="8" class="text-center">Cargando...</td>
+              <td colspan="9" class="text-center">Cargando...</td>
             </tr>
 
           </tbody>
 
+          <!--
           <tfoot>
             <tr>
               <th>#</th>
@@ -219,6 +220,7 @@
               <th class="text-center">Tipo</th>
             </tr>
           </tfoot>
+          -->
 
         </table>
         <!-- Fin de Tabla de Datos-->

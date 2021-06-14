@@ -53,7 +53,7 @@ import io.zahori.model.process.Step;
 @Table(name = "cases_executions")
 public class CaseExecution implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -3115372415270134079L;
     private static final Logger LOG = LoggerFactory.getLogger(CaseExecution.class);
 
     @Id

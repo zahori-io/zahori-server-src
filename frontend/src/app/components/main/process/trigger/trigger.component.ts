@@ -27,7 +27,7 @@ export class TriggerComponent implements OnInit {
   browsersSelected: Browser[] = [];
   periodicExecutionEnabled: boolean = false;
 
-  tags : Tag[] = [];
+  tags: Tag[] = [];
 
   constructor(
     public dataService: DataService,
@@ -44,9 +44,9 @@ export class TriggerComponent implements OnInit {
     this.created = false;
   }
 
-  getTags(){
+  getTags() {
     this.dataService.getTags(String(this.dataService.processSelected.processId)).subscribe(
-      (res : any) => {
+      (res: any) => {
         this.tags = res;
       });
   }
@@ -152,6 +152,26 @@ export class TriggerComponent implements OnInit {
         this.loading = false;
       }
     );
+  }
+
+  invalidForm(): boolean {
+    return (
+      !this.thereAreCasesSelected()
+      || this.dataService.processCases.length == 0
+      || !this.execution.name
+      || (this.dataService.processSelected.processType.name == 'BROWSER' && this.browsersSelected.length <= 0)
+      || !this.execution.configuration.configurationId
+      || this.loading
+    );
+  }
+  
+  thereAreCasesSelected() : boolean {
+    for (var i = 0; i < this.dataService.processCases.length; i++) {
+      if (this.dataService.processCases[i].selected){
+        return true;
+      }
+    }
+    return false;
   }
 
   clearSelections() {

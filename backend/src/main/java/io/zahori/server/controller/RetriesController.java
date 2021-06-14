@@ -1,7 +1,5 @@
 package io.zahori.server.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 /*-
  * #%L
  * zahori-server
@@ -34,30 +32,29 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.zahori.server.model.TestRepository;
-import io.zahori.server.repository.TestRepoRepository;
-import io.zahori.server.security.JWTUtils;
+import io.zahori.server.model.Retry;
+import io.zahori.server.repository.RetriesRepository;
 
 @RestController
-@RequestMapping("/api/repositories")
-public class TestRepoController {
+@RequestMapping("/api/retries")
+public class RetriesController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TestRepoController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(RetriesController.class);
 
     @Autowired
-    private TestRepoRepository trRepository;
+    private RetriesRepository retriesRepository;
 
     /**
-     * Gets repositories.
+     * Gets retries.
      *
-     * @return the test repositories
+     * @return the retries
      */
     @GetMapping()
-    public ResponseEntity<Object> getRepositories(HttpServletRequest request) {
+    public ResponseEntity<Object> getRetries() {
         try {
-            LOG.info("get cases");
+            LOG.info("get retries");
 
-            Iterable<TestRepository> repos = trRepository.findByClientId(JWTUtils.getClientId(request));
+            Iterable<Retry> repos = retriesRepository.findAll();
 
             return new ResponseEntity<>(repos, HttpStatus.OK);
         } catch (Exception e) {

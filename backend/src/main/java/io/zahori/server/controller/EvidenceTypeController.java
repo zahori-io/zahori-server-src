@@ -1,7 +1,5 @@
 package io.zahori.server.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 /*-
  * #%L
  * zahori-server
@@ -25,6 +23,8 @@ import javax.servlet.http.HttpServletRequest;
  * #L%
  */
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,32 +34,35 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.zahori.server.model.TestRepository;
-import io.zahori.server.repository.TestRepoRepository;
-import io.zahori.server.security.JWTUtils;
+import io.zahori.server.model.EvidenceType;
+import io.zahori.server.repository.EvidenceTypeRepository;
 
+/**
+ * The type Evidence type controller.
+ */
 @RestController
-@RequestMapping("/api/repositories")
-public class TestRepoController {
+@RequestMapping("/api/evidenceType")
+public class EvidenceTypeController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TestRepoController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(EvidenceTypeController.class);
 
     @Autowired
-    private TestRepoRepository trRepository;
+    private EvidenceTypeRepository evidenceTypeRepository;
 
     /**
-     * Gets repositories.
+     * Gets evidence types.
      *
-     * @return the test repositories
+     * @param request the request
+     * @return the evidence types
      */
     @GetMapping()
-    public ResponseEntity<Object> getRepositories(HttpServletRequest request) {
+    public ResponseEntity<Object> getEvidenceCases(HttpServletRequest request) {
         try {
-            LOG.info("get cases");
+            LOG.info("get evidence types");
 
-            Iterable<TestRepository> repos = trRepository.findByClientId(JWTUtils.getClientId(request));
+            Iterable<EvidenceType> evidenceTypes = evidenceTypeRepository.findAll();
 
-            return new ResponseEntity<>(repos, HttpStatus.OK);
+            return new ResponseEntity<>(evidenceTypes, HttpStatus.OK);
         } catch (Exception e) {
             LOG.error(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

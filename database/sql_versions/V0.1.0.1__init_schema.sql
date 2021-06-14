@@ -746,6 +746,7 @@ CREATE TABLE public.configurations (
     "name" varchar NOT NULL,
     process_id int8 NOT NULL,
     retry_id int8 NOT NULL,
+    timeout_id int8 NOT NULL,
     environment_id int8 NOT NULL,
     upload_results bool NOT NULL DEFAULT false,
     evi_case_id int8 NOT NULL,
@@ -754,7 +755,8 @@ CREATE TABLE public.configurations (
     CONSTRAINT configurations_fk FOREIGN KEY (process_id) REFERENCES processes(process_id),
     CONSTRAINT environments_fk FOREIGN KEY (environment_id) REFERENCES client_environments(environment_id),
     CONSTRAINT evidence_cases_fk FOREIGN KEY (evi_case_id) REFERENCES evidence_cases(evi_case_id),
-    CONSTRAINT retries_fk FOREIGN KEY (retry_id) REFERENCES retries(retry_id)
+    CONSTRAINT retries_fk FOREIGN KEY (retry_id) REFERENCES retries(retry_id),
+    CONSTRAINT configurations_timeouts_fk FOREIGN KEY (timeout_id) REFERENCES timeouts(timeout_id)
 );
 
 -- Permissions

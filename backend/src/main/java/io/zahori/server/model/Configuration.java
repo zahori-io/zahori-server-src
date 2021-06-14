@@ -47,7 +47,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 //@NamedQuery(name="Configuration.findAll", query="SELECT c FROM Configuration c")
 public class Configuration implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -4972391261398417130L;
 
     @Id
     @Column(name = "configuration_id")
@@ -71,6 +71,11 @@ public class Configuration implements Serializable {
     @JoinColumn(name = "evi_case_id")
     private EvidenceCase evidenceCase;
 
+    // bi-directional many-to-one association to EvidenceCas
+    @ManyToOne
+    @JoinColumn(name = "test_repo_id")
+    private TestRepository testRepository;
+
     // bi-directional many-to-one association to Process
     @JsonBackReference(value = "process")
     @ManyToOne
@@ -82,17 +87,16 @@ public class Configuration implements Serializable {
     @JoinColumn(name = "retry_id")
     private Retry retry;
 
+    // bi-directional many-to-one association to Retry
+    @ManyToOne
+    @JoinColumn(name = "timeout_id")
+    private Timeout timeout;
+
     // bi-directional many-to-many association to EvidenceType
     @ManyToMany
     @JoinTable(name = "configurations_evidence_types", joinColumns = { @JoinColumn(name = "configuration_id") }, inverseJoinColumns = {
             @JoinColumn(name = "evi_type_id") })
     private Set<EvidenceType> evidenceTypes;
-
-    // bi-directional many-to-many association to TestRepository
-    @ManyToMany
-    @JoinTable(name = "configurations_test_repositories", joinColumns = { @JoinColumn(name = "configuration_id") }, inverseJoinColumns = {
-            @JoinColumn(name = "test_repo_id") })
-    private Set<TestRepository> testRepositories;
 
     /**
      * Instantiates a new Configuration.
@@ -190,13 +194,13 @@ public class Configuration implements Serializable {
         this.clientEnvironment = clientEnvironment;
     }
 
-//    public EvidenceCas getEvidenceCas() {
-//        return this.evidenceCas;
-//    }
-//
-//    public void setEvidenceCas(EvidenceCas evidenceCas) {
-//        this.evidenceCas = evidenceCas;
-//    }
+    //    public EvidenceCas getEvidenceCas() {
+    //        return this.evidenceCas;
+    //    }
+    //
+    //    public void setEvidenceCas(EvidenceCas evidenceCas) {
+    //        this.evidenceCas = evidenceCas;
+    //    }
 
     /**
      * Gets process.
@@ -252,29 +256,27 @@ public class Configuration implements Serializable {
         this.evidenceTypes = evidenceTypes;
     }
 
-    /**
-     * Gets test repositories.
-     *
-     * @return the test repositories
-     */
-    public Set<TestRepository> getTestRepositories() {
-        return this.testRepositories;
+    public EvidenceCase getEvidenceCase() {
+        return evidenceCase;
     }
 
-    /**
-     * Sets test repositories.
-     *
-     * @param testRepositories the test repositories
-     */
-    public void setTestRepositories(Set<TestRepository> testRepositories) {
-        this.testRepositories = testRepositories;
+    public void setEvidenceCase(EvidenceCase evidenceCase) {
+        this.evidenceCase = evidenceCase;
     }
 
-	public EvidenceCase getEvidenceCase() {
-		return evidenceCase;
-	}
+    public TestRepository getTestRepository() {
+        return testRepository;
+    }
 
-	public void setEvidenceCase(EvidenceCase evidenceCase) {
-		this.evidenceCase = evidenceCase;
-	}
+    public void setTestRepository(TestRepository testRepository) {
+        this.testRepository = testRepository;
+    }
+
+    public Timeout getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(Timeout timeout) {
+        this.timeout = timeout;
+    }
 }

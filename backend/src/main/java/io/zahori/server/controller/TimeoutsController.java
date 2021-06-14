@@ -1,7 +1,5 @@
 package io.zahori.server.controller;
 
-import javax.servlet.http.HttpServletRequest;
-
 /*-
  * #%L
  * zahori-server
@@ -34,32 +32,31 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.zahori.server.model.TestRepository;
-import io.zahori.server.repository.TestRepoRepository;
-import io.zahori.server.security.JWTUtils;
+import io.zahori.server.model.Timeout;
+import io.zahori.server.repository.TimeoutRepository;
 
 @RestController
-@RequestMapping("/api/repositories")
-public class TestRepoController {
+@RequestMapping("/api/timeouts")
+public class TimeoutsController {
 
-    private static final Logger LOG = LoggerFactory.getLogger(TestRepoController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(TimeoutsController.class);
 
     @Autowired
-    private TestRepoRepository trRepository;
+    private TimeoutRepository timeoutRepository;
 
     /**
-     * Gets repositories.
+     * Gets timeouts.
      *
-     * @return the test repositories
+     * @return the timeouts
      */
     @GetMapping()
-    public ResponseEntity<Object> getRepositories(HttpServletRequest request) {
+    public ResponseEntity<Object> getTimeouts() {
         try {
-            LOG.info("get cases");
+            LOG.info("get timeouts");
 
-            Iterable<TestRepository> repos = trRepository.findByClientId(JWTUtils.getClientId(request));
+            Iterable<Timeout> timeouts = timeoutRepository.findAll();
 
-            return new ResponseEntity<>(repos, HttpStatus.OK);
+            return new ResponseEntity<>(timeouts, HttpStatus.OK);
         } catch (Exception e) {
             LOG.error(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

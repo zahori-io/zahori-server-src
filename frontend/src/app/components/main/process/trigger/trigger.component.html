@@ -36,6 +36,9 @@
 				</tr>
 			</thead>
 			<tbody>
+				<tr *ngIf="dataService.processCases.length == 0">
+					<td class="text-center" colspan="4">No hay casos definidos, puedes crealos en la página de <a routerLink="../cases"><strong>casos</strong></a></td>
+				</tr>
 				<tr *ngFor="let case of dataService.processCases; index as indexCase; last as lastCase;">
 					<td>
 						<div class="ml-2 custom-control custom-switch">
@@ -64,8 +67,9 @@
 			<h5 class="drawer-heading">Ejecución</h5>
 			<div class="drawer-section">
 
-				<span>Casos</span>
+				<span>Casos a ejecutar *</span>
 				<div class="d-flex mb-3" id="caseList">
+					<span *ngIf="!thereAreCasesSelected()" class="text-danger">Selecciona los casos a ejecutar</span>
 					<ng-template ngFor let-case [ngForOf]="dataService.processCases" let-isLast="last">
 						<button *ngIf="case.selected" class="mr-2 badge  btn btn-zahoriPill" title="{{case.name}}">{{case.name}}
 							<i class="fas fa-times-circle ml-1" (click)="deselectCase(case)"></i>
@@ -75,23 +79,29 @@
 
 				<form class="">
 					<div class="position-relative form-group">
-						<label for="exampleEmail" class="">Nombre</label>
+						<label for="exampleEmail" class="">Nombre *</label>
 						<input type="text" [(ngModel)]="execution.name" name="execution_name" class="form-control" />
 					</div>
 
 					<div class="position-relative form-group">
-						<label for="exampleSelect" class="">Configuración</label>
-						<select [(ngModel)]="execution.configuration.configurationId" name="execution_configurationId"
+						<label for="exampleSelect" class="">Configuración *</label>
+						<select *ngIf="dataService.processConfigurations.length > 0" [(ngModel)]="execution.configuration.configurationId" name="execution_configurationId"
 							class="form-control">
 							<option *ngFor="let configuration of dataService.processConfigurations"
 								[value]="configuration.configurationId">
 								{{configuration.name}}
 							</option>
 						</select>
+						<div *ngIf="dataService.processConfigurations.length == 0">
+							<span class="text-danger"><strong>Aún no hay configuraciones</strong></span><span>, crea una 
+								<a routerLink="../configurator" routerLinkActive="linkActive"><strong>aquí</strong></a>
+							</span>
+						</div>
+						
 					</div>
 
 					<div class="position-relative form-group" *ngIf="dataService.processSelected.processType.name == 'BROWSER'">
-						<label for="exampleCheckbox" class="">Navegadores</label>
+						<label for="exampleCheckbox" class="">Navegadores *</label>
 						<div>
 							<ng-template ngFor let-browser [ngForOf]="browsers" let-isLast="lastBrowser">
 								<div *ngIf="browser.browserName !== 'NULLBROWSER'" class="custom-checkbox custom-control custom-control-inline">
@@ -151,7 +161,8 @@
 
 					<div class="text-center">
 						<button class="btn-wide btn-icon btn btn-zahoriV btn-sm"
-							[disabled]="dataService.processCases.length <= 0 || !execution.name || (dataService.processSelected.processType.name == 'BROWSER' && browsersSelected.length <= 0) || !execution.configuration.configurationId || loading"
+							[title]="invalidForm() ? 'Rellena los campos obligatorios' : ''"
+							[disabled]="invalidForm()"
 							(click)="createExecution()">Crear</button>
 					</div>
 

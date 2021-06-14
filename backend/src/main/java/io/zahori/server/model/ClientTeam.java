@@ -46,7 +46,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 // @NamedQuery(name = "ClientTeam.findAll", query = "SELECT c FROM ClientTeam
 // c")
 public class ClientTeam implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -5119693116698951187L;
 
     @EmbeddedId
     private ClientTeamPK id;

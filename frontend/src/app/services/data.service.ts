@@ -14,8 +14,11 @@ import { Configuration } from '../model/configuration';
 import { Browser } from '../model/browser';
 import { Environment } from '../model/environment';
 import { Tag } from '../model/tag';
-import { EvidenceCase } from '../model/evidence-case';import {ClientTestRepo} from '../model/clientTestRepo';
-import {TestRepository} from '../model/test-repository';
+import { EvidenceCase } from '../model/evidence-case'; import { ClientTestRepo } from '../model/clientTestRepo';
+import { TestRepository } from '../model/test-repository';
+import { Retry } from '../model/retry';
+import { Timeout } from '../model/timeout';
+import { EvidenceType } from '../model/evidence-type';
 
 @Injectable({
   providedIn: 'root'
@@ -78,7 +81,7 @@ export class DataService {
     this.getConfigurations().subscribe(
       configurations => {
         this.processConfigurations = configurations;
-        console.log(JSON.stringify(this.processConfigurations))
+        //console.log(JSON.stringify(this.processConfigurations))
       }
     );
   }
@@ -102,6 +105,10 @@ export class DataService {
     return this.http.get<EvidenceCase[]>(this.url + "evidenceCase", {});
   }
 
+  public getEvidenceTypes(): Observable<EvidenceType[]> {
+    return this.http.get<EvidenceType[]>(this.url + "evidenceType", {});
+  }
+
   public getCasesJson(): Observable<string> {
     return this.http.get<string>(this.url + "process/" + this.processSelected.processId + "/cases", { responseType: 'text' as 'json' });
   }
@@ -112,6 +119,10 @@ export class DataService {
 
   private getConfigurations(): Observable<Configuration[]> {
     return this.http.get<Configuration[]>(this.url + "process/" + this.processSelected.processId + "/configurations", {});
+  }
+
+  public saveConfigurations(configurations: Configuration[]) : Observable<Configuration[]> {
+    return this.http.post<Configuration[]>(this.url + "process/" + this.processSelected.processId + "/configurations", JSON.stringify(configurations));
   }
 
   public getBrowsers(): Observable<Browser[]> {
@@ -138,37 +149,47 @@ export class DataService {
     return this.http.post(this.url + "process/" + processId + "/environments", JSON.stringify(envs));
   }
 
-  public getTags(processId : String){
+  public getTags(processId: String) {
     return this.http.get(this.url + "process/" + processId + "/tags");
   }
 
-  public setTags(tags: Tag[], processId: string){
+  public setTags(tags: Tag[], processId: string) {
     return this.http.post(this.url + "process/" + processId + "/tags", JSON.stringify(tags));
   }
 
-  public getTestRepositories(){
+  public getTestRepositories() {
     return this.http.get(this.url + "repositories");
   }
 
-    //TMS
-    public getClientTestRepo(): Observable<ClientTestRepo[]>{
-      return this.http.get<ClientTestRepo[]>(this.url + 'clienttestrepo/', {});
-    }
-  
-    public setClientTestRepo(clientTestRepo: ClientTestRepo){
-      console.log(clientTestRepo);
-      return this.http.post(this.url + 'clienttestrepo/upgrade/', JSON.stringify(clientTestRepo));
-    }
-    public getTestRepository(testId: string): Observable<TestRepository>{
-      return this.http.get<TestRepository>(this.url + 'testrepo/' + testId,{});
-    }
-    public setTestRepository(testRepo: TestRepository): Observable<TestRepository>{
-  
-      return this.http.post<TestRepository>(this.url + 'testrepo/upgrade/', JSON.stringify(testRepo));
-    }
-    public deleteTestRepository(testRepo: TestRepository): Observable<TestRepository>{
-      return this.http.post<TestRepository>(this.url + 'testrepo/delete/', JSON.stringify(testRepo));
-    }
+  public getRetries(): Observable<Retry[]> {
+    return this.http.get<Retry[]>(this.url + "retries");
+  }
+
+  public getTimeouts(): Observable<Timeout[]> {
+    return this.http.get<Timeout[]>(this.url + "timeouts");
+  }
+
+  //TMS
+  public getClientTestRepo(): Observable<ClientTestRepo[]> {
+    return this.http.get<ClientTestRepo[]>(this.url + 'clienttestrepo/', {});
+  }
+
+  public setClientTestRepo(clientTestRepo: ClientTestRepo): Observable<ClientTestRepo> {
+    return this.http.post<ClientTestRepo>(this.url + 'clienttestrepo/upgrade/', JSON.stringify(clientTestRepo));
+  }
+
+  public getTestRepository(testId: string): Observable<TestRepository> {
+    return this.http.get<TestRepository>(this.url + 'testrepo/' + testId, {});
+  }
+
+  public setTestRepository(testRepo: TestRepository): Observable<TestRepository> {
+    return this.http.post<TestRepository>(this.url + 'testrepo/upgrade/', JSON.stringify(testRepo));
+  }
+
+  public deleteTestRepository(testRepo: TestRepository): Observable<TestRepository> {
+    return this.http.post<TestRepository>(this.url + 'testrepo/delete/', JSON.stringify(testRepo));
+  }
+
   // get Jenkins artifact
   //public getFile(fileUrl: string) {
   //  return this.http.get(this.url + "process/" + this.processSelected.processId + "/artifact?url=" + fileUrl, { responseType: 'blob' });

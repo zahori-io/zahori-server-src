@@ -2,89 +2,125 @@
 <h5 class="drawer-heading" *ngIf="configuration.configurationId > 0">Editar configuración</h5>
 
 <div class=" drawer-section">
-    <form class="mt-4">
+  <form class="mt-4">
 
-      <div class="col-6 position-relative form-group">
-        <label for="configName" class="">Nombre</label>
-        <input name="Nombre" id="configName" placeholder="" type="text" class="form-control"
-          [ngModel]="configuration.name">
+    <div class="d-flex position-relative form-group">
+
+      <div class="col-6">
+        <label for="name" class="">Nombre</label>
+        <input name="name" placeholder="" type="text" class="form-control" [(ngModel)]="configuration.name">
       </div>
 
-      <!-- TODO: no tiene sentido poder cambiar el tipo de proceso según distintas configuraciones, el tipo de proceso seguirá siendo el mismo ¿?
-      <div class="col-6  position-relative form-group">
-        <label for="ProcessType" class="">Tipo de Proceso</label>
-        <select name="processType" id="ProcessType" class="form-control">
-          <option selected>SQA</option>
-        </select>
-      </div>
-      -->
-
-      <div class="d-flex  position-relative form-group">
-        <div class="col-6">
-          <label for="environmentName" class="">Entornos</label>
-          <select [(ngModel)]="configuration.clientEnvironment.name" name="environmentName"
-            id="environmentName" class="form-control">
-            <option [ngValue] = "env.name"
-                    *ngFor = "let env of envs">{{env.name}}</option>
+      <div class="col-6">
+        <label for="environmentId" class="">Entorno</label>
+        <div class="input-group">
+          <select [(ngModel)]="configuration.clientEnvironment.environmentId" name="environmentId" class="form-control">
+            <option *ngIf="envs.length == 0" [value]="0" selected disabled>No hay entornos, crea uno</option>
+            <option [value]="env.environmentId" *ngFor="let env of envs">{{env.name}}</option>
           </select>
-        </div>
-        <div class="col-6">
-          <label for="numberOfRetries" class="">Reintentos</label>
-          <select [(ngModel)]="configuration.retry.retryId" name="numberOfRetries" id="numberOfRetries"
-            class="form-control">
-            <option>0</option>
-            <option>1</option>
-            <option>2</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="d-flex  position-relative form-group">
-        <div class="col-6">
-          <label for="saveResults" class="">¿Guardar Resultados?</label>
-          <input type="checkbox" data-toggle="toggle" [checked]="configuration.uploadResults"
-            data-onstyle="success">
-        </div>
-
-        <div>
-          <label for="testRepository" class="">Generar Evidencias</label>
-          <ng-select
-          [items]="testRepositories"
-          [multiple]="true"
-          bindLabel="name"
-          class = "custom"
-          style= "width: auto;"
-          [clearable] = "true"
-          [(ngModel)]="configuration.testRepositories">
-            <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
-              {{item.name}}
-            </ng-template>
-        </ng-select>
-        </div>
-      </div>
-
-      <div class="col-6  position-relative form-group">
-        <label for="generateEvidence" class="">Generar Evidencias</label>
-        <select name="generateEvidence" id="generateEvidence" class="form-control" 
-        [(ngModel)] = "configuration.evidenceCase.name">
-          <option [ngValue] = "eviCase.name"
-            *ngFor = "let eviCase of evidenceCases">{{eviCase.name}}</option>>
-        </select>
-      </div>
-
-        <div class="col-12 mt-3 position-relative form-group">
-            <div class="col-2 custom-checkbox custom-control custom-control-inline" *ngFor= "let evidence of typeOfEvidences">
-                <input type="checkbox" class="custom-control-input" id="evidence" [checked] = "getTypeOfEvidences(evidence)">
-                <label  class="custom-control-label" for=evidence>{{evidence}}</label>
+          <div class="input-group-prepend" title="Editar entornos" style="cursor: pointer;">
+            <div (click)="emitEventOpenEnvironmentComponent()" class="input-group-text" data-backdrop="false"
+              data-toggle="modal" data-target="#environmentsModal">
+              <i class="fas fa-pen fa-1" style="color: #969696;" aria-hidden="true"></i>
             </div>
+          </div>
         </div>
-
-
-
-      <div class="text-center">
-        <button class="btn-wide mt-3 mb-3 btn-icon btn btn-zahoriV btn-sm" (click) = saveConf(configuration)>Guardar</button>
       </div>
 
-    </form>
+    </div>
 
+    <div class="d-flex  position-relative form-group">
+
+      <div class="col-6">
+        <label for="retryId" class="">Reintentos</label>
+        <select [(ngModel)]="configuration.retry.retryId" name="retryId" class="form-control">
+          <option [value]="retry.retryId" *ngFor="let retry of retries">{{retry.retryId}}</option>
+        </select>
+      </div>
+      retr: {{configuration.retry | json}}
+
+      <div class="col-6">
+        <label for="timeout" class="">Timeout</label>
+        <div class="input-group">
+          <select [(ngModel)]="configuration.timeout.timeoutId" name="timeout" class="form-control">
+            <option [value]="timeout.timeoutId" *ngFor="let timeout of timeouts">{{timeout.timeoutId}}</option>
+          </select>
+          <div class="input-group-prepend">
+            <div class="input-group-text">
+              segundos
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="d-flex  position-relative form-group">
+      <div class="col-6">
+        <label for="generateEvidence">Generar evidencias</label>
+        <select name="generateEvidence" class="form-control" [(ngModel)]="configuration.evidenceCase.eviCaseId">
+          <option [value]="eviCase.eviCaseId" *ngFor="let eviCase of evidenceCases">{{eviCase.name}}</option>
+        </select>
+      </div>
+
+      <div class="col-6">
+        <div class="ml-2 custom-control custom-switch">
+          <input [(ngModel)]="configuration.uploadResults" name="uploadResults" id="uploadResults" type="checkbox"
+            class="custom-control-input">
+          <label for="uploadResults" class="custom-control-label" style="margin-bottom: .5rem;">Guardar resultados en
+            repositorio</label>
+        </div>
+        <select [(ngModel)]="configuration.testRepository.testRepoId" [disabled]="!configuration.uploadResults"
+          name="testRepoId" class="form-control">
+          <option [value]="testRepo.testRepoId" *ngFor="let testRepo of testRepositories">{{testRepo.name}}</option>
+        </select>
+      </div>
+    </div>
+
+    <div>
+      <div class="col-12">
+        <label for="generateEvidence">Tipos de evidencias</label>
+      </div>
+    </div>
+    <div class="d-flex  position-relative form-group">
+      <div class="col-12 position-relative form-group">
+        <div class="col-2 custom-checkbox custom-control custom-control-inline"
+          *ngFor="let evidenceType of evidenceTypes; let i = index">
+          <input type="checkbox" (change)="changeEvidenceType(evidenceType, $event)"
+            [checked]="isSelectedEvidenceType(evidenceType)" class="custom-control-input"
+            name="evidenceType_{{evidenceType.eviTypeId}}" id="evidenceType_{{evidenceType.eviTypeId}}">
+          <label class="custom-control-label"
+            for="evidenceType_{{evidenceType.eviTypeId}}">{{evidenceType.name}}</label>
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center">
+      <input type="submit" value="Guardar" class="btn-wide mt-3 mb-3 btn-icon btn btn-zahoriV btn-sm"
+        (click)="saveConf(configuration)" />
+    </div>
+
+    <banner [banner]="banner" (click)="closeBanner()"></banner>
+
+  </form>
+
+</div>
+
+<!-- Modal - Environments -->
+<div id="environmentsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="environmentsModal"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-xl" role="document">
+    <div class="modal-content">
+
+      <div class="modal-body">
+        <app-admin-environments [eventOpenCompononent]="eventInstantiateEnvironmentCompononent.asObservable()">
+        </app-admin-environments>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-light" data-dismiss="modal"
+          (click)="closeEditEnvironmentsModal()">Cerrar</button>
+      </div>
+    </div>
   </div>
+</div>

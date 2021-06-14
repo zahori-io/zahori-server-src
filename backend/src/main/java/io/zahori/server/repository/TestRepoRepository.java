@@ -1,5 +1,9 @@
 package io.zahori.server.repository;
 
+import java.util.Set;
+
+import org.springframework.data.jpa.repository.Query;
+
 /*-
  * #%L
  * zahori-server
@@ -24,11 +28,14 @@ package io.zahori.server.repository;
  */
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import io.zahori.server.model.TestRepository;
 
 @RepositoryRestResource(path = "testRepositories")
-public interface TestRepoRepository extends CrudRepository<TestRepository, Long>{
+public interface TestRepoRepository extends CrudRepository<TestRepository, Long> {
 
+    @Query("SELECT tr from TestRepository tr, ClientTestRepo ctr where tr.testRepoId = ctr.testRepository.testRepoId and ctr.client.clientId = :clientId and ctr.active = true")
+    Set<TestRepository> findByClientId(@Param("clientId") Long clientId);
 }

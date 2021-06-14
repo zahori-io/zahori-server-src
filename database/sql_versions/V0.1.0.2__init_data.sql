@@ -49,9 +49,9 @@ INSERT INTO public.client_evidence_cases (client_id, evi_case_id) VALUES(1, 1);
 INSERT INTO public.client_evidence_cases (client_id, evi_case_id) VALUES(1, 2);
 INSERT INTO public.client_evidence_cases (client_id, evi_case_id) VALUES(1, 3);
 
-INSERT INTO public.evidence_types ("name", "order", active) VALUES('Video', 1, true);
-INSERT INTO public.evidence_types ("name", "order", active) VALUES('Log', 2, true);
-INSERT INTO public.evidence_types ("name", "order", active) VALUES('Screenshot', 3, true);
+INSERT INTO public.evidence_types ("name", "order", active) VALUES('Log', 1, true);
+INSERT INTO public.evidence_types ("name", "order", active) VALUES('Screenshot', 2, true);
+INSERT INTO public.evidence_types ("name", "order", active) VALUES('Video', 3, true);
 INSERT INTO public.evidence_types ("name", "order", active) VALUES('Doc', 4, true);
 INSERT INTO public.evidence_types ("name", "order", active) VALUES('Har', 5, true);
 
@@ -78,10 +78,10 @@ INSERT INTO public.cases_tags (case_id, tag_id) VALUES(4, 1);
 INSERT INTO public.cases_tags (case_id, tag_id) VALUES(4, 2);
 
 INSERT INTO public.test_repositories ("name", "order", active) VALUES('Xray Server', 1, true);
-INSERT INTO public.test_repositories ("name", "order", active) VALUES('Azure Test Plans', 3, true);
-INSERT INTO public.test_repositories ("name", "order", active) VALUES('Testlink', 5, true);
-INSERT INTO public.test_repositories ("name", "order", active) VALUES('Hp Alm', 4, true);
 INSERT INTO public.test_repositories ("name", "order", active) VALUES('Xray Cloud', 2, true);
+INSERT INTO public.test_repositories ("name", "order", active) VALUES('Azure Test Plans', 3, true);
+INSERT INTO public.test_repositories ("name", "order", active) VALUES('Hp Alm', 4, true);
+INSERT INTO public.test_repositories ("name", "order", active) VALUES('Testlink', 5, true);
 
 INSERT INTO public.client_test_repos (client_id, test_repo_id, url, "user", "password") VALUES(1, 2, 'https://your-company.atlassian.net/', 'my-user', 'my-pass');
 INSERT INTO public.client_test_repos (client_id, test_repo_id, url, "user", "password") VALUES(1, 5, 'https://testlink.your-company.com', 'my-pass', 'my-pass');
@@ -98,7 +98,7 @@ INSERT INTO public.timeouts (timeout_id, active) VALUES(120, true);
 
 INSERT INTO public.client_timeouts (client_id, timeout_id) VALUES(1, 120);
 
-INSERT INTO public.configurations ("name", process_id, retry_id, environment_id, upload_results, evi_case_id, active) VALUES('Config example', 1, 0, 2, false, 1, true);
+INSERT INTO public.configurations ("name", process_id, retry_id, timeout_id, environment_id, upload_results, evi_case_id, active) VALUES('Config example', 1, 0, 5, 2, false, 1, true);
 
 INSERT INTO public.configurations_test_repositories (configuration_id, test_repo_id) VALUES(1, 5);
 

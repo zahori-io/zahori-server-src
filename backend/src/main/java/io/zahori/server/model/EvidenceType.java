@@ -45,7 +45,8 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Table(name = "evidence_types")
 //@NamedQuery(name = "EvidenceType.findAll", query = "SELECT e FROM EvidenceType e")
 public class EvidenceType implements Serializable {
-    private static final long serialVersionUID = 1L;
+
+    private static final long serialVersionUID = -4801642444331577192L;
 
     @Id
     @Column(name = "evi_type_id")
