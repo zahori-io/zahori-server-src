@@ -50,7 +50,7 @@
 					<td>{{case.caseId}}</td>
 					<td>{{case.name}}</td>
 					<td>
-						<button class="btn-circle mt-2"
+						<button class="btn-circle mt-2" [title]="tag.name"
 							*ngFor="let tag of case.clientTags; index as indexTags; last as lastTag;"
 							[ngStyle] = "{backgroundColor: tag.color, borderColor: tag.color}">
 					</button>
