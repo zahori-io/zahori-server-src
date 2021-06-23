@@ -276,6 +276,9 @@ public class ProcessesController {
 
             Long clientId = JWTUtils.getClientId(request);
 
+            if (!StringUtils.endsWith(evidencesDir, File.separator)) {
+                evidencesDir = evidencesDir + File.separator;
+            }
             String pathNormalized = FilePath.normalize(evidencesDir + path);
             File evidenceFile = new File(pathNormalized);
             byte[] fileBytes = FileUtils.readFileToByteArray(evidenceFile);

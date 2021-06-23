@@ -102,6 +102,9 @@ public class CaseExecution implements Serializable {
     @JoinColumn(name = "case_id")
     private Case cas;
 
+    @Transient
+    io.zahori.model.process.Configuration configuration;
+
     /**
      * Instantiates a new Case execution.
      */
@@ -406,4 +409,13 @@ public class CaseExecution implements Serializable {
     public void setCas(Case cas) {
         this.cas = cas;
     }
+
+    public io.zahori.model.process.Configuration getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(io.zahori.model.process.Configuration configuration) {
+        this.configuration = configuration;
+    }
+
 }

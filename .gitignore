@@ -10,7 +10,7 @@
 */allure-results/*
 */target/*
 /server/database/postgres-data/*
-/evidences
+/backend/evidences
 /server/selenoid/config/logs/*
 /server/selenoid/config/video/*
 /src/main/resources/static/*

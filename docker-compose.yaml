@@ -55,9 +55,8 @@ services:
      - ZAHORI_SELENOID_UI_INTERNAL_PORT=${ZAHORI_SELENOID_UI_INTERNAL_PORT}
      - ZAHORI_SELENOID_UI_EXTERNAL_HOST=${ZAHORI_SELENOID_UI_EXTERNAL_HOST}
      - ZAHORI_SELENOID_UI_EXTERNAL_PORT=${ZAHORI_SELENOID_UI_EXTERNAL_PORT}
-     
     volumes:
-     - ./evidences:/usr/app/evidences
+     - ./backend/evidences:/usr/app/evidences
     depends_on:
      - flyway
      - eureka-server

@@ -1,5 +1,24 @@
 package io.zahori.server.service;
 
+import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.client.WebClient;
+
 /*-
  * #%L
  * zahori-server
@@ -24,32 +43,21 @@ package io.zahori.server.service;
  */
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.zahori.model.process.Step;
 import io.zahori.model.process.Test;
 import io.zahori.server.model.CaseExecution;
+import io.zahori.server.model.ClientTestRepo;
+import io.zahori.server.model.Configuration;
+import io.zahori.server.model.EvidenceType;
 import io.zahori.server.model.Execution;
 import io.zahori.server.model.Process;
 import io.zahori.server.model.jenkins.Artifact;
 import io.zahori.server.model.jenkins.Build;
 import io.zahori.server.repository.CaseExecutionsRepository;
+import io.zahori.server.repository.ConfigurationRepository;
 import io.zahori.server.repository.ExecutionsRepository;
 import io.zahori.server.repository.ProcessesRepository;
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
@@ -78,6 +86,7 @@ public class ExecutionService {
     private JenkinsService jenkinsService;
     private SelenoidService selenoidService;
     private CaseExecutionsRepository caseExecutionsRepository;
+    private ConfigurationRepository configurationRepository;
 
     /**
      * Instantiates a new Execution service.
@@ -91,13 +100,15 @@ public class ExecutionService {
      */
     @Autowired
     public ExecutionService(ExecutionsRepository executionsRepository, ProcessesRepository processesRepository, EurekaService eurekaService,
-            JenkinsService jenkinsService, SelenoidService selenoidService, CaseExecutionsRepository caseExecutionsRepository) {
+            JenkinsService jenkinsService, SelenoidService selenoidService, CaseExecutionsRepository caseExecutionsRepository,
+            ConfigurationRepository configurationRepository) {
         this.executionsRepository = executionsRepository;
         this.processesRepository = processesRepository;
         this.eurekaService = eurekaService;
         this.jenkinsService = jenkinsService;
         this.selenoidService = selenoidService;
         this.caseExecutionsRepository = caseExecutionsRepository;
+        this.configurationRepository = configurationRepository;
     }
 
     /**
@@ -350,7 +361,49 @@ public class ExecutionService {
         return execution;
     }
 
+    private io.zahori.model.process.Configuration getExecutionConfiguration(Execution execution) {
+        Long configurationId = execution.getConfiguration().getConfigurationId();
+        Optional<Configuration> configOpt = configurationRepository.findById(configurationId);
+        Configuration configuration = configOpt.get();
+
+        // Create configuration DTO for the process
+        io.zahori.model.process.Configuration execConfiguration = new io.zahori.model.process.Configuration();
+        execConfiguration.setName(configuration.getName());
+        execConfiguration.setEnvironmentName(configuration.getClientEnvironment().getName());
+        execConfiguration.setEnvironmentUrl(configuration.getClientEnvironment().getUrl());
+        execConfiguration.setRetries(configuration.getRetry().getRetryId());
+        execConfiguration.setTimeout(configuration.getTimeout().getTimeoutId());
+
+        execConfiguration.setGenerateEvidences(configuration.getEvidenceCase().getName());
+        for (EvidenceType evidenceType : configuration.getEvidenceTypes()) {
+            execConfiguration.getGenerateEvidencesTypes().add(evidenceType.getName());
+        }
+
+        execConfiguration.setUploadResults(configuration.getUploadResults());
+        if (execConfiguration.isUploadResults()) {
+            execConfiguration.setUploadRepositoryName(configuration.getTestRepository().getName());
+            if (configuration.getTestRepository().getClientTestRepos() != null && !configuration.getTestRepository().getClientTestRepos().isEmpty()) {
+                Iterator<ClientTestRepo> iterator = configuration.getTestRepository().getClientTestRepos().iterator();
+                ClientTestRepo firstClientTestRepo = iterator.next();
+
+                execConfiguration.setUploadRepositoryUrl(firstClientTestRepo.getUrl());
+                execConfiguration.setUploadRepositoryUser(firstClientTestRepo.getUser());
+                execConfiguration.setUploadRepositoryPass(firstClientTestRepo.getPassword());
+            }
+        }
+
+        return execConfiguration;
+
+    }
+
     private void runProcess(String processUrl, Process process, Execution execution) {
+
+        // Set configuration for each caseExecution
+        io.zahori.model.process.Configuration execConfig = getExecutionConfiguration(execution);
+        for (CaseExecution caseExecution : execution.getCasesExecutions()) {
+            caseExecution.setConfiguration(execConfig);
+        }
+
         List<CaseExecution> casesExecuted = new ArrayList<>();
         long startExecutionTime = System.currentTimeMillis();
 
