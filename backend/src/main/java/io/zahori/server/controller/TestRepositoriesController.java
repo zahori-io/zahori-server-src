@@ -53,6 +53,13 @@ public class TestRepositoriesController {
     @Autowired
     private TestRepositoriesRepository testRepositoriesRepository;
 
+    /**
+     * Gets test repository.
+     *
+     * @param testId  the test id
+     * @param request the request
+     * @return the test repository
+     */
     @GetMapping("{testId}")
     public ResponseEntity<Object> getTestRepository(@PathVariable Long testId,HttpServletRequest request) {
         try{
@@ -65,6 +72,14 @@ public class TestRepositoriesController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * Save test repository response entity.
+     *
+     * @param testRepository the test repository
+     * @param request        the request
+     * @return the response entity
+     */
     @PostMapping("upgrade")
     public ResponseEntity<Object> saveTestRepository (@RequestBody TestRepository testRepository, HttpServletRequest request){
         try{
@@ -78,6 +93,14 @@ public class TestRepositoriesController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    /**
+     * Delete test repository response entity.
+     *
+     * @param testRepository the test repository
+     * @param request        the request
+     * @return the response entity
+     */
     @PostMapping("delete")
     public ResponseEntity<Object> deleteTestRepository(@RequestBody TestRepository testRepository, HttpServletRequest request){
         try{
