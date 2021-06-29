@@ -19,6 +19,7 @@ import { TestRepository } from '../model/test-repository';
 import { Retry } from '../model/retry';
 import { Timeout } from '../model/timeout';
 import { EvidenceType } from '../model/evidence-type';
+import { ServerVersions } from '../model/serverVersions';
 
 @Injectable({
   providedIn: 'root'
@@ -188,6 +189,10 @@ export class DataService {
 
   public deleteTestRepository(testRepo: TestRepository): Observable<TestRepository> {
     return this.http.post<TestRepository>(this.url + 'testrepo/delete/', JSON.stringify(testRepo));
+  }
+
+  public getServerVersions(): Observable<ServerVersions> {
+    return this.http.get<ServerVersions>(this.url + 'version', {});
   }
 
   // get Jenkins artifact

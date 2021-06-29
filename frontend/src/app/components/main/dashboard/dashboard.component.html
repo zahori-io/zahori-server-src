@@ -1,7 +1,10 @@
 <div class="app-container">
   <div class="h-100">
-    <div class="h-100 no-gutters justify-content-center align-items-center row">
 
+    <banner [banner]="banner" (click)="closeBanner()"></banner>
+    
+    <div class="h-100 no-gutters justify-content-center align-items-center row">
+      
       <div class="d-none d-lg-block col-lg-4">
         <app-team-process-selector></app-team-process-selector>
       </div>

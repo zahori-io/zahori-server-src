@@ -61,3 +61,13 @@
 .bg-zahori {
   background: #3ac47d;
 }
+
+banner {
+  position: fixed;
+  left: 0px;
+  width: 50%;
+  margin-left: 25%;
+  margin-top: 70px;
+  text-align: center !important;
+  z-index: 9999;
+}

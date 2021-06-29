@@ -35,7 +35,18 @@ export class LoginComponent implements OnInit {
 			result => {
 				if (result === true) {
 					// Login OK
-					this.router.navigate(['/app/dashboard']);
+					
+					// Get server version to check if there are updates
+					this.dataService.getServerVersions().subscribe(
+						(serverVersions) => {
+						  this.router.navigate(['/app/dashboard'], { state: { serverVersions: serverVersions } });
+						},
+						(error) => {
+						  console.error("Error getting server versions: " + error.message);
+						  this.router.navigate(['/app/dashboard'], { state: { serverVersions: null } });
+						}
+					);
+
 				} else {
 					// Login KO
 					this.error = 'El nombre del usuario o la contraseña son incorrectos';

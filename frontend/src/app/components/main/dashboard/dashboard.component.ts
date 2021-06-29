@@ -6,26 +6,40 @@ import { Execution } from '../../../model/excution';
 import { CaseExecution } from '../../../model/caseExecution';
 import { ExecutionStats } from '../../../model/executionStats';
 import { BrowserExecutionStats } from '../../../model/browserExecutionsStats';
+import { Observable } from 'rxjs';
+import { ServerVersions } from '../../../model/serverVersions';
+import { BannerOptions } from '../../utils/banner/banner';
 declare var $: any;
 
+const SUCCESS_COLOR: string = "alert alert-success";
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-
-
 export class DashboardComponent implements OnInit {
 
   processes: Process[];
-
+  banner: BannerOptions;
+  
   constructor(
     public dataService: DataService
   ) { }
 
   ngOnInit() {
     this.dataService.getClientFromToken();
+    this.banner = new BannerOptions();
+    this.verifyNewServerVersionAvailable();
+  }
+
+  verifyNewServerVersionAvailable(){
+    let serverVersions: ServerVersions = history.state['serverVersions'];
+    console.log("latestServerVersion:: " + serverVersions.latestServerVersion);
+    console.log("remoteVersion: " + serverVersions.remoteVersion);
+    if (serverVersions && serverVersions.remoteVersion != serverVersions.latestServerVersion){
+      this.banner = new BannerOptions("Hay disponible una nueva versión del servidor: " + serverVersions.latestServerVersion + " (actual: " + serverVersions.remoteVersion + ")", "", SUCCESS_COLOR, true);
+    }
   }
 
   getProcessLastExecutionStats(process: Process): ExecutionStats {
@@ -100,4 +114,9 @@ export class DashboardComponent implements OnInit {
     // Round parts per unit number (i.e.: 0.50): toFixed(n)  n=2 -> No decimal, n=3 -> one decimal
     return parseFloat(percent.toFixed(2));
   }
+
+  closeBanner() {
+    this.banner = new BannerOptions;
+  }
+
 }
