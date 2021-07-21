@@ -12,3 +12,7 @@ input[type=number] {
 input[type=number] {
   text-align:center;
 }
+
+banner {
+  margin-top: -25px;
+}

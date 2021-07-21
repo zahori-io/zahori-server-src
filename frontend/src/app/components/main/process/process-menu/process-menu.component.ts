@@ -5,8 +5,7 @@ import { ViewEncapsulation } from '@angular/core';
 @Component({
   selector: 'app-process-menu',
   templateUrl: './process-menu.component.html',
-  styleUrls: ['./process-menu.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./process-menu.component.css']
 })
 export class ProcessMenuComponent implements OnInit {
 

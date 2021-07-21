@@ -7,8 +7,7 @@ import { ViewEncapsulation } from '@angular/core';
 @Component({
   selector: 'app-client-teams-process',
   templateUrl: './client-teams-process.component.html',
-  styleUrls: ['./client-teams-process.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./client-teams-process.component.css']
 })
 export class ClientTeamsProcessComponent implements OnInit {
 

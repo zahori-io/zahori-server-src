@@ -14,8 +14,7 @@ import { Tag } from '../../../../model/tag';
 @Component({
   selector: 'app-trigger',
   templateUrl: './trigger.component.html',
-  styleUrls: ['./trigger.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./trigger.component.css']
 })
 export class TriggerComponent implements OnInit {
 

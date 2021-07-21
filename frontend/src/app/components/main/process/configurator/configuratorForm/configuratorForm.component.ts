@@ -14,7 +14,8 @@ const SUCCESS_COLOR: string = "alert alert-success";
 const ERROR_COLOR: string = "alert alert-danger";
 @Component({
     selector: 'configuratorForm',
-    templateUrl: './configuratorForm.component.html'
+    templateUrl: './configuratorForm.component.html',
+    styleUrls: ['./configuratorForm.component.css']
 })
 
 export class ConfiguratorFormComponent implements OnInit, OnChanges {

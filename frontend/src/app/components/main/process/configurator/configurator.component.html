@@ -1,4 +1,5 @@
 <div class="app-main__inner2col">
+
   <div class="Zahoricontent w-50">
 
     <div class="app-page-title">
@@ -46,15 +47,16 @@
 
   <div class="ZahoriZonaDcha w-50">
     <div id="ContDe" class="ps ps--active-x ps--active-y disabled">
-
-    <configuratorForm [configuration]="selectedConfiguration" 
-                    [envs]="envs" 
-                    [evidenceCases]="evidenceCases" 
-                    [evidenceTypes]="evidenceTypes" 
-                    [testRepositories]="testRepositories"
-                    [retries]="retries"
-                    [timeouts]="timeouts"
-                    (environmentsChange)="getEnvironments()">
-    </configuratorForm>
+      <configuratorForm [configuration]="selectedConfiguration" 
+                      [envs]="envs" 
+                      [evidenceCases]="evidenceCases" 
+                      [evidenceTypes]="evidenceTypes" 
+                      [testRepositories]="testRepositories"
+                      [retries]="retries"
+                      [timeouts]="timeouts"
+                      (environmentsChange)="getEnvironments()">
+      </configuratorForm>
     </div>
   </div>
+
+</div>

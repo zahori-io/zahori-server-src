@@ -4,9 +4,9 @@
   }
 </style>
 
-<div class="app-main__inner">
+<banner [banner]="banner" (click)="closeBanner()"></banner>
 
-  <banner [banner]="banner" (click)="closeBanner()"></banner>
+<div class="app-main__inner">
 
   <div class="app-page-title">
     <div class="page-title-wrapper">

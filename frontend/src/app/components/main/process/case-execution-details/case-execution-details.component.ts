@@ -10,8 +10,7 @@ declare var HarViewer: any;
 @Component({
   selector: 'app-case-execution-details',
   templateUrl: './case-execution-details.component.html',
-  styleUrls: ['./case-execution-details.component.css'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./case-execution-details.component.css']
 })
 export class CaseExecutionDetailsComponent implements OnInit {
 

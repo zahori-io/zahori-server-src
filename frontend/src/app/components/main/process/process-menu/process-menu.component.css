@@ -4,4 +4,8 @@
 
 .linkActive {
     font-weight: bold;
+    color: #84986B;
+}
+.linkActive i {
+    color: #84986B;
 }

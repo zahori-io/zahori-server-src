@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Environment } from 'src/app/model/environment';
-import { EvidenceCase } from 'src/app/model/evidence-case';
-import { TestRepository } from 'src/app/model/test-repository';
 import { Configuration } from '../../../../model/configuration';
 import { DataService } from '../../../../services/data.service';
 import { Retry } from '../../../../model/retry';
 import { Timeout } from '../../../../model/timeout';
 import { EvidenceType } from '../../../../model/evidence-type';
 import { BannerOptions } from '../../../utils/banner/banner';
+import { Environment } from '../../../../model/environment';
+import { EvidenceCase } from '../../../../model/evidence-case';
+import { TestRepository } from '../../../../model/test-repository';
 import Swal from 'sweetalert2';
 
 const SUCCESS_COLOR: string = "alert alert-success";
@@ -90,10 +90,12 @@ export class ConfiguratorComponent implements OnInit {
 
   editConfiguration(configuration: Configuration) {
     this.selectedConfiguration = configuration;
+    this.banner = new BannerOptions();
   }
 
   newConfiguration() {
     this.selectedConfiguration = new Configuration();
+    this.banner = new BannerOptions();
   }
 
   removeConfiguration(configuration: Configuration) {
@@ -115,7 +117,7 @@ export class ConfiguratorComponent implements OnInit {
         this.dataService.saveConfigurations(configurations).subscribe(
           (configurationRemoved) => {
             console.log("Configuration removed");
-            // this.banner = new BannerOptions("", "Configuración eliminada", SUCCESS_COLOR, true);
+            this.banner = new BannerOptions("", "Configuración eliminada", SUCCESS_COLOR, true);
             this.dataService.getProcessConfigurations();
           },
           (error) => {
