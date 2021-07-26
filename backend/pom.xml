@@ -62,9 +62,9 @@
 	</properties>
 
 	<scm>
-		<connection>scm:git:git://github.com/zahori-io/zahori-server.git</connection>
-		<developerConnection>scm:git:git@github.com:zahori-io/zahori-server.git</developerConnection>
-		<url>https://github.com/zahori-io/zahori-server.git</url>
+		<connection>scm:git:git://github.com/zahori-io/zahori-server-src.git</connection>
+		<developerConnection>scm:git:git@github.com:zahori-io/zahori-server-src.git</developerConnection>
+		<url>https://github.com/zahori-io/zahori-server-src.git</url>
 		<tag>v0.1.0</tag>
 	</scm>
 
