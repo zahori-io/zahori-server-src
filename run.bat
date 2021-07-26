@@ -1,2 +1,2 @@
 @echo off
-docker run -p 9090:9090 zahoriaut/zahoriaut:0.1.7
+docker run -p 9090:9090 zahoriaut/zahoriaut:0.1.8
