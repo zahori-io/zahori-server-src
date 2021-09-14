@@ -23,12 +23,12 @@ package io.zahori.server.controller;
  * #L%
  */
 
-import io.zahori.server.utils.FilePath;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +40,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import io.zahori.server.utils.FilePath;
 
 /**
  * The type Evidences controller.
@@ -61,7 +63,7 @@ public class EvidencesController {
      * @param redirectAttributes the redirect attributes
      * @return the string
      */
-// TODO review security issue using path as request param
+    // TODO review security issue using path as request param
     @PostMapping
     public String uploadEvidence(@RequestParam String path, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
 
@@ -80,8 +82,7 @@ public class EvidencesController {
                 Files.createDirectories(saveDir);
             }
 
-            String filePath = FilePath.normalize(Paths.get(file.getOriginalFilename()).toString());
-            String fileName = StringUtils.substringAfterLast(filePath, File.separator);
+            String fileName = Paths.get(file.getOriginalFilename()).getFileName().toString();
 
             Path pathToSave = Paths.get(saveDir + File.separator + fileName);
             Files.write(pathToSave, file.getBytes());

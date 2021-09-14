@@ -46,6 +46,11 @@
                                 data-toggle="modal" data-target="#harModal">HAR</button>
                         </div>
 
+                        <div *ngFor="let attachment of caseExecution.attachments">
+                            <button (click)="getFile(attachment.path)"
+                            class="mb-2 mr-2 btn-pill btn btn-attachment btn-sm">{{getFileName(attachment.path)}}</button>
+                        </div>
+
                         <div *ngIf="downloading" title="Descargando fichero..."
                             class="spinner-border spinner-border-sm text-primary"></div>
                         <span class="sr-only">Descargando fichero...</span>

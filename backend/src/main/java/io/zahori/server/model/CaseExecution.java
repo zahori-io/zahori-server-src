@@ -27,7 +27,9 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -35,6 +37,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -79,6 +82,10 @@ public class CaseExecution implements Serializable {
     private String doc;
 
     private String har;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "case_execution_id", nullable = false)
+    private Set<Attachment> attachments;
 
     @Column(name = "duration_seconds")
     private Integer durationSeconds;
@@ -300,6 +307,20 @@ public class CaseExecution implements Serializable {
      */
     public void setHar(String har) {
         this.har = har;
+    }
+
+    /**
+     * @return the attachments
+     */
+    public Set<Attachment> getAttachments() {
+        return attachments;
+    }
+
+    /**
+     * @param attachments the attachments to set
+     */
+    public void setAttachments(Set<Attachment> attachments) {
+        this.attachments = attachments;
     }
 
     /**

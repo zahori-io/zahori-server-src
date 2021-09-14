@@ -434,9 +434,9 @@ public class ExecutionService {
                                     String processCase = process.getName() + "' -> case '" + caseExecution.getCas().getName() + "' ("
                                             + caseExecution.getBrowser().getBrowserName() + ")";
                                     LOG.info("[<--] Process finished '{}'", processCase);
-                                    casesExecuted.add(resultCaseExecution);
-                                    updateTotals(execution, resultCaseExecution);
-                                    updateCaseExecution(resultCaseExecution);
+                                    CaseExecution savedCaseExecution = updateCaseExecution(resultCaseExecution);
+                                    updateTotals(execution, savedCaseExecution);
+                                    casesExecuted.add(savedCaseExecution);
                                 }) //
                 ) //
                 .sequential() //
@@ -472,7 +472,7 @@ public class ExecutionService {
                 .subscribe();
     }
 
-    private void updateCaseExecution(CaseExecution resultCaseExecution) {
+    private CaseExecution updateCaseExecution(CaseExecution resultCaseExecution) {
         Optional<CaseExecution> caseExecutionDBOpt = caseExecutionsRepository.findById(resultCaseExecution.getCaseExecutionId());
         if (caseExecutionDBOpt.isPresent()) {
             CaseExecution caseExecutionDB = caseExecutionDBOpt.get();
@@ -480,7 +480,7 @@ public class ExecutionService {
             resultCaseExecution.setBrowserVersion(caseExecutionDB.getBrowserVersion());
             resultCaseExecution.setScreenResolution(caseExecutionDB.getScreenResolution());
         }
-        caseExecutionsRepository.save(resultCaseExecution);
+        return caseExecutionsRepository.save(resultCaseExecution);
     }
 
     private void updateTotals(Execution execution, CaseExecution caseExecution) {

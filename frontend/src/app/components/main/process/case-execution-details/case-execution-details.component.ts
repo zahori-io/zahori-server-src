@@ -114,6 +114,17 @@ export class CaseExecutionDetailsComponent implements OnInit {
     );
   }
 
+  getFileName(filePath: string): string {
+    if (filePath.includes("/")){
+      let parts:string[] = filePath.split("/");
+      return parts[parts.length-1];
+    }
+    if (filePath.includes("\\")){
+      let parts:string[] = filePath.split("\\");
+      return parts[parts.length-1];
+    }
+  }
+
   viewStepInModal(step: Step) {
     this.resetModalVariables();
     this.stepModal = step;

@@ -18,3 +18,10 @@
     max-width: initial;
     width: 98%;
 }
+
+.btn-attachment {
+    color: #84986B;
+    background-color: #d6efb8;
+    border: none;
+    border-radius: 50px;
+}

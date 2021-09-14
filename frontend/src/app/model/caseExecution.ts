@@ -1,3 +1,4 @@
+import { Attachment } from "./attachment";
 import { Browser } from "./browser";
 import { Case } from "./case";
 import { Step } from "./step";
@@ -13,6 +14,7 @@ export class CaseExecution {
     video: string;
     doc: string;
     har: string;
+    attachments: Attachment[];
     durationSeconds: number;
     browser: Browser;
     cas: Case;
