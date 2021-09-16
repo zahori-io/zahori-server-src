@@ -4,4 +4,5 @@ export class Browser {
     defaultVersion: string;
     icon: string;
     order: number;
+    selected: boolean;
 }

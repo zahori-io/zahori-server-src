@@ -42,9 +42,10 @@
 				<tr *ngFor="let case of dataService.processCases; index as indexCase; last as lastCase;">
 					<td>
 						<div class="ml-2 custom-control custom-switch">
-							<input [(ngModel)]="case.selected" type="checkbox" id="selectCase-{{indexCase}}"
-								(change)="selectCase(case, $event)" class="custom-control-input">
-							<label for="selectCase-{{indexCase}}" class="custom-control-label"></label>
+							<input type="checkbox" [(ngModel)]="case.selected" name="case-{{case.caseId}}" id="case-{{case.caseId}}"
+							[checked]="case.selected" [value]="case.caseId" class="custom-control-input">
+
+							<label for="case-{{case.caseId}}" class="custom-control-label"></label>
 						</div>
 					</td>
 					<td>{{case.caseId}}</td>
@@ -106,7 +107,7 @@
 							<ng-template ngFor let-browser [ngForOf]="browsers" let-isLast="lastBrowser">
 								<div *ngIf="browser.browserName !== 'NULLBROWSER'" class="custom-checkbox custom-control custom-control-inline">
 									<input type="checkbox" [attr.id]="browser.browserName" class="custom-control-input"
-										value="{{browser.browserName}}" (change)="selectBrowser(browser, $event)" />
+										[value]="browser.browserName" name="browser_{{browser.browserName}}" [(ngModel)]="browser.selected" [checked]="browser.selected" />
 									<label class="custom-control-label" [attr.for]="browser.browserName">
 										<i title="{{browser.browserName}}"
 											class="mr-1 fab fa fa-{{browser.browserName}}"></i>

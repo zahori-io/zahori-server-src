@@ -23,7 +23,6 @@ export class TriggerComponent implements OnInit {
   created: boolean;
   browsers: Browser[];
   execution: Execution;
-  browsersSelected: Browser[] = [];
   periodicExecutionEnabled: boolean = false;
 
   tags: Tag[] = [];
@@ -64,44 +63,20 @@ export class TriggerComponent implements OnInit {
     this.execution.process = new Process();
     this.execution.process.processId = this.dataService.processSelected.processId;
     this.execution.casesExecutions = [];
+    this.clearSelectedBrowsers();
+    this.clearSelectedCases();
   }
 
-  selectCase(processCase: Case, event: any) {
-    event.currentTarget.checked ? processCase.selected = true : processCase.selected = false;
+  clearSelectedBrowsers() {
+    if (this.browsers) {
+      for (var j = 0; j < this.browsers.length; j++) {
+        this.browsers[j].selected = false;
+      }
+    }
   }
 
   deselectCase(processCase: Case) {
     processCase.selected = false;
-  }
-
-  selectBrowser(browser: Browser, event: any) {
-    if (event.currentTarget.checked) {
-      this.addToBrowserList(browser);
-    } else {
-      this.removeFromBrowserList(browser);
-    }
-  }
-
-  addToBrowserList(browser: Browser) {
-    if (this.browsersSelected.length == 0) {
-      this.browsersSelected.push(browser);
-      return;
-    }
-    for (var i = 0; i < this.browsersSelected.length; i++) {
-      if (this.browsersSelected[i].browserName !== browser.browserName) {
-        this.browsersSelected.push(browser);
-        return;
-      }
-    }
-  }
-
-  removeFromBrowserList(browser: Browser) {
-    for (var i = 0; i < this.browsersSelected.length; i++) {
-      if (this.browsersSelected[i].browserName === browser.browserName) {
-        this.browsersSelected.splice(i, 1);
-        return;
-      }
-    }
   }
 
   createExecution() {
@@ -116,12 +91,14 @@ export class TriggerComponent implements OnInit {
 
         // PROCESS OF TYPE 'BROWSER'
         if (this.dataService.processSelected.processType.name == "BROWSER") {
-          for (var j = 0; j < this.browsersSelected.length; j++) {
-            var caseExecution = new CaseExecution();
-            caseExecution.browser = this.browsersSelected[j];
-            caseExecution.cas = this.dataService.processCases[i];
+          for (var j = 0; j < this.browsers.length; j++) {
+            if (this.browsers[j].selected){
+              var caseExecution = new CaseExecution();
+              caseExecution.browser = this.browsers[j];
+              caseExecution.cas = this.dataService.processCases[i];
 
-            this.execution.casesExecutions.push(caseExecution);
+              this.execution.casesExecutions.push(caseExecution);
+            }
           }
         }
         // PROCESSES OF OTHER TYPES
@@ -141,7 +118,6 @@ export class TriggerComponent implements OnInit {
     this.dataService.createExecution(this.execution).subscribe(
       () => {
         this.newExecution();
-        this.clearSelections();
         this.error = "";
         this.created = true;
         this.loading = false;
@@ -158,7 +134,7 @@ export class TriggerComponent implements OnInit {
       !this.thereAreCasesSelected()
       || this.dataService.processCases.length == 0
       || !this.execution.name
-      || (this.dataService.processSelected.processType.name == 'BROWSER' && this.browsersSelected.length <= 0)
+      || (this.dataService.processSelected.processType.name == 'BROWSER' && !this.thereAreBrowsersSelected())
       || !this.execution.configuration.configurationId
       || this.loading
     );
@@ -173,7 +149,16 @@ export class TriggerComponent implements OnInit {
     return false;
   }
 
-  clearSelections() {
+  thereAreBrowsersSelected() : boolean {
+    for (var i = 0; i < this.browsers.length; i++) {
+      if (this.browsers[i].selected){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  clearSelectedCases() {
     for (var i = 0; i < this.dataService.processCases.length; i++) {
       this.dataService.processCases[i].selected = false;
     }
