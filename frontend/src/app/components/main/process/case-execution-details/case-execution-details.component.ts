@@ -43,7 +43,7 @@ export class CaseExecutionDetailsComponent implements OnInit {
         this.file = new Blob([data], { type: 'application/octet-stream' });
 
         var reader = new FileReader();
-        reader.readAsText(this.file, 'ISO-8859-1');
+        reader.readAsText(this.file, 'UTF-8');
         reader.onload = e => {
           this.textFileContent = e.target.result;
           this.downloading = false;
