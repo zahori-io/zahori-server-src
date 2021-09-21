@@ -1,12 +1,8 @@
 <!--MENU PRINCIPAL-->
 <div class="app-header header-shadow">
-  
-  <!-- LOGO ZAHORI -->
-  <a routerLink="dashboard">
-    <div class="header__logo">
-      <div class="logo-src"></div>
-    </div>
-  </a>
+  <div class="header__logo">
+    <div class="logo-src"></div>
+  </div>
 
   <!-- LOGO EMPRESA CLIENTE
     <div class="app-header__logo2">
@@ -128,7 +124,7 @@
             </div>
             <div class="widget-content-left  ml-3 header-user-info">
               <div class="widget-heading">
-                {{authService.getUsername()}}
+                {{authService.getUsername().toLowerCase()}}
               </div>
               <div class="widget-subheading">
                 Automation Engineer

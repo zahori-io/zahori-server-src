@@ -74,6 +74,9 @@ export class DataService {
     this.getCases().subscribe(
       cases => {
         this.processCases = cases;
+        this.processCases.forEach(pc => {
+          pc.selected = false;
+        });
       }
     );
   }
