@@ -10,8 +10,8 @@
 				</div>
 				<div class="page-title-actions d-flex">
 					<div class="menuPills m-auto" *ngFor ="let tag of tags">
-						<button id = "tag" class="mr-2 btn-pill btn btn-info btn-sm" [ngStyle] = "{backgroundColor: tag.color, borderColor: tag.color}" style="color: black;">{{tag.name}}</button>
-					</div>
+            <button id = "tag" class="mr-2 btn-pill btn btn-info btn-sm" [ngClass]="{'tagSelected':selectedTags.includes(tag)}" [ngStyle] = "{backgroundColor: tag.color, borderColor: tag.color}" style="color: #3d4246" (click)="onTagClick(tag)">{{tag.name}}</button>
+          </div>
 
 					<div class="search-wrapper ml-3">
 						<div class="input-holder">
@@ -29,7 +29,14 @@
 		<table class="mb-0 table">
 			<thead>
 				<tr>
-					<th></th>
+					<th>
+            <div class="ml-2 custom-control custom-switch">
+              <input type="checkbox" [(ngModel)]="massiveSelected" name="massiveSelected" id="massiveSelected" [checked]="massiveSelected"
+                     (change)="massiveChangeState()"
+                     class="custom-control-input">
+              <label _ngcontent-scw-c70="" class="custom-control-label" for="massiveSelected"></label>
+            </div>
+          </th>
 					<th>Id</th>
 					<th>Caso</th>
 					<th>Etiquetas</th>
@@ -71,11 +78,16 @@
 				<span>Casos a ejecutar *</span>
 				<div class="d-flex mb-3" id="caseList">
 					<span *ngIf="!thereAreCasesSelected()" class="text-danger">Selecciona los casos a ejecutar</span>
-					<ng-template ngFor let-case [ngForOf]="dataService.processCases" let-isLast="last">
-						<button *ngIf="case.selected" class="mr-2 badge  btn btn-zahoriPill" title="{{case.name}}">{{case.name}}
-							<i class="fas fa-times-circle ml-1" (click)="deselectCase(case)"></i>
-						</button>
-					</ng-template>
+
+          <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal">
+            <mat-chip class="example-box" *ngFor="let process of dataService.processCases">
+              <div *ngIf="process.selected" class="badge btn-zahoriPill">
+                {{process.name}}
+                <i class="fas fa-times-circle ml-1" (click)="deselectCase(process)"></i>
+              </div>
+            </mat-chip>
+          </mat-chip-list>
+
 				</div>
 
 				<form class="">
@@ -94,11 +106,11 @@
 							</option>
 						</select>
 						<div *ngIf="dataService.processConfigurations.length == 0">
-							<span class="text-danger"><strong>Aún no hay configuraciones</strong></span><span>, crea una 
+							<span class="text-danger"><strong>Aún no hay configuraciones</strong></span><span>, crea una
 								<a routerLink="../configurator" routerLinkActive="linkActive"><strong>aquí</strong></a>
 							</span>
 						</div>
-						
+
 					</div>
 
 					<div class="position-relative form-group" *ngIf="dataService.processSelected.processType.name == 'BROWSER'">
@@ -200,7 +212,7 @@
 							</div>
 						</div>
 					</span>
-					
+
 				</form>
 			</div>
 

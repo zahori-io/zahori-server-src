@@ -2,7 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
-import { NgSelectModule } from '@ng-select/ng-select'; 
+import { NgSelectModule } from '@ng-select/ng-select';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './components/app.component';
@@ -42,6 +42,8 @@ import { ClientTeamsComponent } from './components/main/client-teams/client-team
 import { ClientTeamsProcessComponent } from './components/main/client-teams-process/client-teams-process.component';
 import { NotificationsComponent } from './components/main/notifications/notifications.component';
 import { BannerComponent } from './components/utils/banner/banner.component';
+import {MatChipsModule } from '@angular/material/chips';
+
 
 @NgModule({
   declarations: [
@@ -85,7 +87,8 @@ import { BannerComponent } from './components/utils/banner/banner.component';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    NgSelectModule 
+    NgSelectModule,
+    MatChipsModule
   ],
   providers: [
     AutenticacionService,

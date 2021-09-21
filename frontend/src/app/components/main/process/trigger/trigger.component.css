@@ -28,4 +28,18 @@
     line-height: 1.428571429;
     border-radius: 15px;
   }
-
+.tagSelected {
+  border: #3d4246 3px outset;
+  font-weight: bold;
+  color:#3d4246;
+}
+.tag {
+  color:#3d4246;
+}
+.mat-standard-chip{
+  min-height: 16px!important;
+  padding: 1px 1px!important;
+}
+.mat-standard-chip {
+  margin: 4px 1px 4px 1px!important;
+}

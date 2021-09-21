@@ -7,7 +7,6 @@ import { Configuration } from '../../../../model/configuration';
 import { Execution } from '../../../../model/excution';
 import { Process } from '../../../../model/process';
 import { DataService } from '../../../../services/data.service';
-import { ViewEncapsulation } from '@angular/core';
 import { Tag } from '../../../../model/tag';
 
 
@@ -23,23 +22,27 @@ export class TriggerComponent implements OnInit {
   created: boolean;
   browsers: Browser[];
   execution: Execution;
-  periodicExecutionEnabled: boolean = false;
-
+  periodicExecutionEnabled = false;
+  massiveSelected: boolean;
   tags: Tag[] = [];
+  selectedTags: Tag[] = [];
 
   constructor(
     public dataService: DataService,
     private router: Router
-  ) { }
+  ) {
+
+  }
 
   ngOnInit(): void {
     this.dataService.getProcessCases();
     this.getBrowsers();
-    this.getTags()
+    this.getTags();
     this.newExecution();
-    this.error = "";
+    this.error = '';
     this.loading = false;
     this.created = false;
+    this.massiveSelected = false;
   }
 
   getTags() {
@@ -48,8 +51,7 @@ export class TriggerComponent implements OnInit {
         this.tags = res;
       });
   }
-
-  getBrowsers() {
+  getBrowsers () {
     this.dataService.getBrowsers().subscribe(
       browsers => {
         this.browsers = browsers;
@@ -82,18 +84,18 @@ export class TriggerComponent implements OnInit {
   createExecution() {
     this.loading = true;
     this.created = false;
-    this.error = "";
+    this.error = '';
 
     // Create caseExecutions
     this.execution.casesExecutions = [];
-    for (var i = 0; i < this.dataService.processCases.length; i++) {
+    for (let i = 0; i < this.dataService.processCases.length; i++) {
       if (this.dataService.processCases[i].selected) {
 
         // PROCESS OF TYPE 'BROWSER'
-        if (this.dataService.processSelected.processType.name == "BROWSER") {
-          for (var j = 0; j < this.browsers.length; j++) {
+        if (this.dataService.processSelected.processType.name === 'BROWSER') {
+          for (let j = 0; j < this.browsers.length; j++) {
             if (this.browsers[j].selected){
-              var caseExecution = new CaseExecution();
+              let caseExecution = new CaseExecution();
               caseExecution.browser = this.browsers[j];
               caseExecution.cas = this.dataService.processCases[i];
 
@@ -103,9 +105,9 @@ export class TriggerComponent implements OnInit {
         }
         // PROCESSES OF OTHER TYPES
         else {
-          var caseExecution = new CaseExecution();
-          var browser: Browser = new Browser();
-          browser.browserName = "NULLBROWSER";
+          const caseExecution = new CaseExecution();
+          const browser: Browser = new Browser();
+          browser.browserName = 'NULLBROWSER';
           caseExecution.browser = browser;
           caseExecution.cas = this.dataService.processCases[i];
 
@@ -132,16 +134,15 @@ export class TriggerComponent implements OnInit {
   invalidForm(): boolean {
     return (
       !this.thereAreCasesSelected()
-      || this.dataService.processCases.length == 0
+      || this.dataService.processCases.length === 0
       || !this.execution.name
-      || (this.dataService.processSelected.processType.name == 'BROWSER' && !this.thereAreBrowsersSelected())
+      || (this.dataService.processSelected.processType.name === 'BROWSER' && !this.thereAreBrowsersSelected())
       || !this.execution.configuration.configurationId
       || this.loading
     );
   }
-  
-  thereAreCasesSelected() : boolean {
-    for (var i = 0; i < this.dataService.processCases.length; i++) {
+  thereAreCasesSelected(): boolean {
+    for (let i = 0; i < this.dataService.processCases.length; i++) {
       if (this.dataService.processCases[i].selected){
         return true;
       }
@@ -159,12 +160,60 @@ export class TriggerComponent implements OnInit {
   }
 
   clearSelectedCases() {
-    for (var i = 0; i < this.dataService.processCases.length; i++) {
+    for (let i = 0; i < this.dataService.processCases.length; i++) {
       this.dataService.processCases[i].selected = false;
     }
   }
 
   enablePeriodicExecution(event: any) {
     this.periodicExecutionEnabled = event.currentTarget.checked;
+  }
+
+  onTagClick(tag: Tag) {
+    if (this.selectedTags.some(e => e.name === tag.name)){// Is selected
+      this.dataService.processCases.forEach(pc => {
+        if (pc.clientTags.some(e => e.name === tag.name)){
+          if (pc.clientTags.length === 1) { // if process only have one tag
+            pc.selected = false;
+          } else {// if process have multiple tags
+            if (this.selectedTags.length === 1) { // if only have selected one tag
+              pc.selected = false;
+            } else { // if process have multiple tags and have selected more than one
+              let unselect = true;
+              pc.clientTags.forEach(ct => {
+                if (ct.name !== tag.name){
+                  if (this.selectedTags.some(e => e.name === ct.name)){
+                    unselect = false;
+                  }
+                }
+              });
+              unselect ? pc.selected = false : pc.selected = true;
+            }
+          }
+        }
+      });
+      this.selectedTags.splice(this.selectedTags.indexOf(tag), 1);
+    } else {
+      this.dataService.processCases.forEach(pc => {
+        if (pc.clientTags.some(e => e.name === tag.name)) {
+          pc.selected = true;
+        }
+      });
+      this.selectedTags.push(tag);
+    }
+  }
+
+  massiveChangeState() {
+      if (!this.massiveSelected) {
+        this.dataService.processCases.forEach(pc => {
+          pc.selected = false;
+        });
+        this.selectedTags.splice(0,  this.selectedTags.length);
+      } else {
+        this.dataService.processCases.forEach(pc => {
+          pc.selected = true;
+        });
+        this.selectedTags.concat(this.tags);
+      }
   }
 }
