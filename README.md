@@ -1,3 +1,16 @@
+Requisitos mínimos para desarrollar el servidor Zahorí
+- Git
+- OpenJDK 11
+- Maven 3.8.1
+- Node.js v14.4.0
+- Npm 6.14.5
+- Docker 20.10.8
+- docker-compose 1.17.1
+- IDE para el desarrollo del frontend Angular (por ejemplo: Visual Studio Code)
+- IDE para el desarrollo del backend Java (Eclipse | Netbeans | IntelliJ ...)
+- Editor de base de datos: DBeaver CE (Comunity Edition)
+- WebDriver para Chrome si quieres probar un proceso con el navegador local
+
 Para ejecutar el servidor en modo desarrollo primero añade las siguientes variables de entorno a nivel de sistema operativo o dentro de tu IDE preferido (Eclipse, Visual Studio, IntelliJ...):
 
 ZAHORI_DB_HOST=localhost
