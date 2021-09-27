@@ -1,10 +1,4 @@
-input[type="color"] {
-	opacity: 0;
-	display: block;
-	width: 32px;
-	height: 32px;
-	border: none;
-}
-#color-picker-wrapper {
-	float: left;
+.alert {
+	margin-bottom: 0;
+	padding: 0 .75rem 1.25rem; 
 }

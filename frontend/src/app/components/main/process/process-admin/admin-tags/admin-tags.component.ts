@@ -5,7 +5,7 @@ import { BannerOptions } from '../../../../../utils/banner/banner'
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 
-const ERROR: string = "Error: ";
+const ERROR: string = " ";
 const SUCCESS_COLOR : string = "alert alert-success";
 const ERROR_COLOR : string = "alert alert-danger";
 
@@ -45,7 +45,7 @@ export class AdminTagsComponent implements OnInit {
 
   updateTag(tag : Tag){
     if (tag.name.length == 0 ){
-      this.banner = new BannerOptions(ERROR, "Todos los campos son obligatorios", ERROR_COLOR , true )
+      // this.banner = new BannerOptions(ERROR, "Todos los campos son obligatorios", ERROR_COLOR , true )
     }
     else if (this.tags.filter(candidate => candidate.name === tag.name).length > 1){
       this.banner = new BannerOptions(ERROR, "La etiqueta \"" + tag.name + "\" ya existe, elige otro nombre.", ERROR_COLOR , true )
@@ -62,7 +62,7 @@ export class AdminTagsComponent implements OnInit {
   
   createTag(tag : Tag){    
     if (tag.name.length == 0){
-      this.banner = new BannerOptions("Todos los campos son obligatorios", "", ERROR_COLOR , true );
+      // this.banner = new BannerOptions("Todos los campos son obligatorios", "", ERROR_COLOR , true );
     } 
     else if (this.tags.filter(candidate => candidate.name === tag.name).length > 0){
       this.banner = new BannerOptions(ERROR, "La etiqueta \"" + tag.name + "\" ya existe, elige otro nombre.", ERROR_COLOR , true )
