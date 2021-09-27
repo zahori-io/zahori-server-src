@@ -29,9 +29,7 @@
     border-radius: 15px;
   }
 .tagSelected {
-  border: #3d4246 3px outset;
-  font-weight: bold;
-  color:#3d4246;
+  box-shadow: #a06969 2px 2px;
 }
 .tag {
   color:#3d4246;
