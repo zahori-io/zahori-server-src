@@ -4,7 +4,7 @@ import { Environment } from '../../../../../model/environment';
 import { DataService } from '../../../../../services/data.service'
 import { BannerOptions } from '../../../../utils/banner/banner'
 
-const ERROR: string = "Error: ";
+const ERROR: string = "";
 const SUCCESS_COLOR : string = "alert alert-success";
 const ERROR_COLOR : string = "alert alert-danger";
 
@@ -53,9 +53,8 @@ export class AdminEnvironmentsComponent implements OnInit {
 
   updateEnv(env : Environment){
     if (env.name.length == 0 || env.url.length == 0){
-      this.banner = new BannerOptions(ERROR, "Todos los campos son obligatorios", ERROR_COLOR , true )
-    }
-    else{
+      // this.banner = new BannerOptions(ERROR, "Todos los campos son obligatorios", ERROR_COLOR , true )
+    } else{
       let envArray: Environment[] = [env];
       this.sendPostPetition(envArray, new BannerOptions("Entorno modificado: " + env.name, "", SUCCESS_COLOR , true ));
     }
@@ -64,8 +63,7 @@ export class AdminEnvironmentsComponent implements OnInit {
   
   createEnv(env : Environment){  
     if (env.name.length == 0 || env.url.length == 0){
-      
-      this.banner = new BannerOptions(ERROR, "Todos los campos son obligatorios", ERROR_COLOR , true );
+      // this.banner = new BannerOptions(ERROR, "Todos los campos son obligatorios", ERROR_COLOR , true );
     }
     else{
       let envArray: Environment[] = [env];

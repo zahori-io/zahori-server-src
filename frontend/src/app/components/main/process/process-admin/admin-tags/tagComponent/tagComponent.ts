@@ -5,7 +5,8 @@ import { Direct } from 'protractor/built/driverProviders';
 
 @Component({
     selector: 'tag',
-    templateUrl: './tagComponent.html'
+    templateUrl: './tagComponent.html',
+    styleUrls: ['./tagComponent.css']
 })
 
 export class tagComponent{

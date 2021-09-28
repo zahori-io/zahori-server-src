@@ -7,7 +7,7 @@
 </style>
        
 
-    <div class="row mt-2 form-group">
+    <div class="row mt-2">
         <div class="col-4">
             <input #textInputId
             [class.error] = "(name.invalid ) && submitted"
@@ -45,9 +45,9 @@
         </ng-template>
     </div>
     
-    <div class="row mt-3">
+    <div class="row mt-1">
     <div class="col-4">
-        <div  *ngIf="name.invalid && submitted" class="alert alert-danger">
+        <div  *ngIf="name.invalid && submitted" class="alert">
             El campo es obligatorio
         </div>
     </div>
@@ -56,18 +56,19 @@
 
 
 <datalist id="listacoloresperfil">
-    <option value="#00ffff">
-    <option value="#ff00ff">
-    <option value="#ffff00">
-    <option value="#ffaa00">
-    <option value="#ff0000">
-    <option value="#cc0000">
-    <option value="#990000">
-    <option value="#660000">
-    <option value="#330000">
-    <option value="#00ff80">
-    <option value="#6600cc">
-    <option value="#ff9933">
-    <option value="#ff99cc">
-    <option value="#ccffff">
+    <option value="#e8e8e8"><!-- Azul claro -->
+    <option value="#b9b9b9"><!-- Gris -->
+    <option value="#ffff00"><!-- amarillo -->
+    <option value="#6eeb81"><!-- amarillo claro -->
+    <option value="#73e712"><!-- verde -->
+    <option value="#ffc25b"><!--  -->
+    <option value="#ff8a8a"><!-- Rojo claro -->
+    <option value="#41a751"><!--  -->
+    <option value="#03a91d"><!--  -->
+    <option value="#fbaa20"><!-- naranja -->
+    <option value="#f2b7fe"><!-- rosaceo -->
+    <option value="#eb8aff"><!--  -->
+    <option value="#cfa4d8"><!--  -->
+    <option value="#c5deff"><!--  -->
+    <option value="#61a5ff">
 </datalist>

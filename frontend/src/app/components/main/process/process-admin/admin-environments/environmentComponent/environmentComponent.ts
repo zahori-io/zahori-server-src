@@ -4,7 +4,8 @@ import Swal from 'sweetalert2/dist/sweetalert2.js';
 
 @Component({
     selector: 'environment',
-    templateUrl: './environmentComponent.html'
+    templateUrl: './environmentComponent.html',
+    styleUrls: ['./environmentComponent.css']
 })
 
 export class EnvironmentComponent{
