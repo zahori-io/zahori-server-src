@@ -1,0 +1,131 @@
+<div class="app-container app-theme-white body-tabs-shadow">
+  <div class="app-container">
+    <div class="h-100">
+      <div class="h-100 no-gutters row">
+        <div class="d-none d-lg-block col-lg-4">
+          <div class="slider-light">
+            <div class="slick-slider">
+              <div>
+                <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-premium-dark"
+                     tabindex="-1">
+                  <div class="slide-img-bg"
+                       style="background-image: url('assets/images/loginImg/login1.jpg');"></div>
+                  <div class="slider-content">
+                    <h3>Tus pruebas de software</h3>
+                    <p>Podrás probar tus aplicaciones software en cualquier plataforma y
+                      dispositivo, y reutilizar las pruebas automáticas para adaptarte de forma
+                      ágil a los avances funcionales del software. Podrás además realizar
+                      prototipados rápidos, regresivos y ágiles.
+                      Reutiliza fácilmente tus pruebas. Automatiza una vez y prueba tanto como
+                      necesites.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-premium-dark"
+                     tabindex="-1">
+                  <div class="slide-img-bg"
+                       style="background-image: url('assets/images/loginImg/login2.jpg');"></div>
+                  <div class="slider-content">
+                    <h3>Tus procesos de transacciones on-line</h3>
+                    <p>Podrás automatizar tus transacciones online: compra, carga de productos,
+                      actualización de precios, comprobación de transacciones, bancarias y mucho
+                      más.
+                      Genera sondas que automáticamente comprueben la disponibilidad de tus
+                      productos
+                      Asegura que tus operaciones de negocio online sigan funcionando, aunque haya
+                      cambios externos o internos.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-premium-dark"
+                     tabindex="-1">
+                  <div class="slide-img-bg"
+                       style="background-image: url('assets/images/loginImg/login3.jpg');"></div>
+                  <div class="slider-content">
+                    <h3>Tus despliegues de aplicaciones</h3>
+                    <p>Podrás aplicar prácticas DevOps y de Integración Continua, introduciendo
+                      procesos automáticos en todo el ciclo de desarrollo del software, para
+                      acelerar la velocidad de puesta en producción de nuevas funcionalidades, y
+                      adaptarte mejor a las peticiones de tus usuarios.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="h-100 d-flex bg-white justify-content-center align-items-center col-md-12 col-lg-8">
+          <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-9">
+            <div class="app-logo"><img alt="Zahorí 0.9 202011051320" src="assets/images/LOGOz.png" /></div>
+            <h4 class="mb-0">
+              <span class="d-block">Bienvenido,</span>
+              <span>Por favor, introduce tus datos para registrarte.</span>
+            </h4>
+              <form [formGroup]="signupForm" (submit)="signup()">
+                <div class="form-row">
+                  <div class="col-md-6"><!-- Usuario -->
+                    <div class="position-relative form-group">
+                      <label for="username" class="">Usuario</label>
+                      <input id="username" placeholder="Nombre de usuario" type="text" class="form-control" formControlName="username">
+                    </div>
+                    <div *ngIf="submitted" class="ml-2 text-danger">
+                      <div *ngIf="signupForm.get('username').hasError('required')">Este campo no puede estar vacío</div>
+                      <div *ngIf="signupForm.get('username').hasError('minlength')">El usuario ha de tener al menos 4 caracteres</div>
+                    </div>
+                  </div>
+                  <div class="col-md-6"><!-- blank -->
+                  </div>
+                  <div class="col-md-6"><!-- password -->
+                    <div class="position-relative form-group">
+                      <label for="password" class="">Contraseña</label>
+                      <input name="password" id="password"
+                             placeholder="Contraseña..." type="password" class="form-control"
+                             formControlName="password">
+                    </div>
+                    <div *ngIf="submitted" class="ml-2 text-danger">
+                      <div *ngIf="signupForm.get('password').hasError('required')">Este campo no puede estar vacío</div>
+                      <div *ngIf="signupForm.get('password').hasError('minlength')">La contraseña ha de tener al menos 8 caracteres</div>
+                      <div *ngIf="signupForm.get('password').hasError('pattern')">La contraseña ha de tener al menos:
+                        <ul>
+                          <li>Una letra mayúscula</li>
+                          <li>Una letra minúscula</li>
+                          <li>Un numero</li>
+                          <li>Un carácter especial</li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6"><!-- repPassword -->
+                    <div class="position-relative form-group">
+                      <label for="reppassword" class="">Repetir contraseña</label>
+                      <input name="reppassword" id="reppassword"
+                             placeholder="Repetir contraseña..." type="password" class="form-control"
+                             formControlName="repPassword">
+                    </div>
+                    <div *ngIf="submitted" class="ml-2 text-danger">
+                      <div *ngIf="signupForm.get('repPassword').hasError('required')">Este campo no puede estar vacío</div>
+                      <div *ngIf="signupForm.get('repPassword').hasError('minlength')">La contraseña ha de tener al menos 8 caracteres</div>
+                      <div *ngIf="signupForm.get('repPassword').hasError('passwordValidator')">Las contraseñas escritas no coinciden</div>
+                    </div>
+                  </div>
+
+                </div>
+                <div class="divider row"></div>
+                <div class="d-flex align-items-center">
+                  <div class="ml-auto">
+                    <button  class="btn btn-primary btn-lg button-sep" (click)="goBack()">Volver</button>
+                    <button  class="btn btn-primary btn-lg">Registrarse</button>
+                  </div>
+                </div>
+
+              </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -43,6 +43,7 @@ import { ClientTeamsProcessComponent } from './components/main/client-teams-proc
 import { NotificationsComponent } from './components/main/notifications/notifications.component';
 import { BannerComponent } from './components/utils/banner/banner.component';
 import {MatChipsModule } from '@angular/material/chips';
+import { SignupComponent } from './components/signup/signup.component';
 
 
 @NgModule({
@@ -80,16 +81,18 @@ import {MatChipsModule } from '@angular/material/chips';
     ClientTeamsProcessComponent,
     NotificationsComponent,
     BannerComponent,
-    ConfiguratorFormComponent
+    ConfiguratorFormComponent,
+    SignupComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    NgSelectModule,
-    MatChipsModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        FormsModule,
+        NgSelectModule,
+        MatChipsModule,
+        ReactiveFormsModule
+    ],
   providers: [
     AutenticacionService,
     AuthGuard,

@@ -85,57 +85,102 @@
 
         <div class="drawer-section">
             <h4>Editar/Crear usuario</h4>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <label for="exampleEmail" class="">ID Usuario</label>
-                    <input name="" id="" placeholder="" type="text" class="form-control">
+          <form [formGroup]="userForm" (submit)="onSubmit()">
+            <div class="form-row">
+              <div class="col-md-12"><!-- Usuario -->
+                <div class="position-relative form-group">
+                  <label for="username" class="">Usuario</label>
+                  <input id="username" placeholder="Nombre de usuario" type="text" class="form-control" formControlName="username">
+                  <div *ngIf="submit" class="ml-2 text-danger">
+                    <div *ngIf="userForm.get('username').hasError('required')">Este campo no puede estar vacío</div>
+                    <div *ngIf="userForm.get('username').hasError('minlength')">El usuario ha de tener al menos 4 caracteres</div>
+                  </div>
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-
-                    <label for="exampleEmail" class="">Nombre</label>
-                    <input name="" id="" placeholder="" type="text" class="form-control">
+              </div>
+              <div class="col-md-12"><!-- Nombre -->
+                <div class="position-relative form-group">
+                  <label for="name" class="">Nombre</label>
+                  <input id="name" placeholder="Nombre" type="text" class="form-control" formControlName="name">
+                  <div *ngIf="submit" class="ml-2 text-danger">
+                    <div *ngIf="userForm.get('name').hasError('required')">Este campo no puede estar vacío</div>
+                    <div *ngIf="userForm.get('name').hasError('minlength')">El usuario ha de tener al menos 4 caracteres</div>
+                  </div>
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-
-                    <label for="" class="">Apellidos</label>
-                    <input name="" id="" placeholder="" type="text" class="form-control">
+              </div>
+              <div class="col-md-12"><!-- Apellidos -->
+                <div class="position-relative form-group">
+                  <label for="surnames" class="">Apellidos</label>
+                  <input id="surnames" placeholder="Apellidos" type="text" class="form-control" formControlName="surnames">
+                  <div *ngIf="submit" class="ml-2 text-danger">
+                    <div *ngIf="userForm.get('name').hasError('required')">Este campo no puede estar vacío</div>
+                    <div *ngIf="userForm.get('name').hasError('minlength')">El usuario ha de tener al menos 4 caracteres</div>
+                  </div>
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <label for="" class="">email</label>
-                    <input name="" id="" placeholder="" type="text" class="form-control">
+              </div>
+              <div class="col-md-12"><!-- email -->
+                <div class="position-relative form-group">
+                  <label for="email" class="">Email</label>
+                  <input id="email" placeholder="Email" type="text" class="form-control" formControlName="email">
+                  <div *ngIf="submit" class="ml-2 text-danger">
+                    <div *ngIf="userForm.get('email').hasError('required')">Este campo no puede estar vacío</div>
+                    <div *ngIf="userForm.get('email').hasError('email')">El correo no es valido</div>
+                  </div>
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <label for="" class="">Autenticación</label>
-                    <input name="" id="" placeholder="" type="text" class="form-control">
+              </div>
+              <div class="col-md-12"><!-- repetir email -->
+                <div class="position-relative form-group">
+                  <label for="repEmail" class="">Repetir email</label>
+                  <input id="repEmail" placeholder="Repetir email" type="text" class="form-control" formControlName="repEmail">
+                  <div *ngIf="submit" class="ml-2 text-danger">
+                    <div *ngIf="userForm.get('repEmail').hasError('required')">Este campo no puede estar vacío</div>
+                    <div *ngIf="userForm.get('repEmail').hasError('email')">El correo no es valido</div>
+                    <div *ngIf="userForm.get('repEmail').hasError('emailValidator')">Los correos escritos no coinciden</div>
+                  </div>
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <label for="exampleEmail" class="">Clave</label>
-                    <input name="" id="" placeholder="" type="text" class="form-control">
+              </div>
+              <div class="col-md-12"><!-- password -->
+                <div class="position-relative form-group">
+                  <label for="password" class="">Contraseña</label>
+                  <input name="password" id="password"
+                         placeholder="Contraseña..." type="password" class="form-control"
+                         formControlName="password">
+                  <div *ngIf="submit" class="ml-2 text-danger">
+                    <div *ngIf="userForm.get('password').hasError('required')">Este campo no puede estar vacío</div>
+                    <div *ngIf="userForm.get('password').hasError('minlength')">La contraseña ha de tener al menos 8 caracteres</div>
+                    <div *ngIf="userForm.get('password').hasError('pattern')">La contraseña ha de tener al menos:
+                      <ul>
+                        <li>Una letra mayúscula</li>
+                        <li>Una letra minúscula</li>
+                        <li>Un numero</li>
+                        <li>Un carácter especial</li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <label for="exampleEmail" class="">Confirmación</label>
-                    <input name="" id="" placeholder="" type="text" class="form-control">
+              </div>
+              <div class="col-md-12"><!-- repPassword -->
+                <div class="position-relative form-group">
+                  <label for="reppassword" class="">Repetir contraseña</label>
+                  <input name="reppassword" id="reppassword"
+                         placeholder="Repetir contraseña..." type="password" class="form-control"
+                         formControlName="repPassword">
+                  <div *ngIf="submit" class="ml-2 text-danger">
+                    <div *ngIf="userForm.get('repPassword').hasError('required')">Este campo no puede estar vacío</div>
+                    <div *ngIf="userForm.get('repPassword').hasError('minlength')">La contraseña ha de tener al menos 8 caracteres</div>
+                    <div *ngIf="userForm.get('repPassword').hasError('passwordValidator')">Las contraseñas escritas no coinciden</div>
+                  </div>
                 </div>
+              </div>
             </div>
-            <div class="text-center">
-                <button class="btn-wide mt-5 btn-icon btn btn-zahoriV btn-sm">
-                    Guardar
-                </button>
+            <div class="divider row"></div>
+            <div class="d-flex align-items-center">
+              <div class="ml-auto">
+                <button  class="btn btn-primary btn-lg">Guardar</button>
+              </div>
             </div>
+          </form>
         </div>
-        
+
     </div>
 
 </div>
