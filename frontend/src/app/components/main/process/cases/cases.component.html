@@ -69,7 +69,7 @@
                 [multiple]="true"
                 [(ngModel)]="case.clientTags">
                   <ng-template ng-label-tmp let-item="item" let-clear="clear" style="border:none">
-                    <button  title = {{item.name}} class="btn-circle mt-2" [ngStyle] = "{backgroundColor: item.color, borderColor: item.color}" (click)="clear(item)"></button>
+                    <button  title = {{item.name}} class="btn-circle mt-2" [ngStyle] = "{backgroundColor: item.color, borderColor: item.color}"></button>
                   </ng-template>
           
                   <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">

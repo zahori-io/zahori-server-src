@@ -66,13 +66,6 @@
                         </h4>
                         <h6 class="mt-3">¿No tienes cuenta todavía? <a [routerLink]="['/signup']"
                                 class="text-primary">Regístrate</a></h6>
-                        <div class="divider row"></div>
-                        <div>
-                            <form (submit)="loginUser($event)">
-                                <div class="form-row">
-                                    <div class="col-md-6">
-                                        <div class="position-relative form-group">
-                                            <label for="exampleUsername" class="">Email</label>
                                             <input name="username" id="username" ng-model="username"
                                                 placeholder="Nombre de usuario o correo electrónico..." type="email"
                                                 class="form-control">
