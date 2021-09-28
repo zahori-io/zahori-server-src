@@ -11,7 +11,7 @@ import { ServerVersions } from '../../../model/serverVersions';
 import { BannerOptions } from '../../utils/banner/banner';
 declare var $: any;
 
-const SUCCESS_COLOR: string = "alert alert-success";
+const SUCCESS_COLOR = 'alert alert-success';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -21,70 +21,72 @@ export class DashboardComponent implements OnInit {
 
   processes: Process[];
   banner: BannerOptions;
-  
+
   constructor(
     public dataService: DataService
   ) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.dataService.getClientFromToken();
     this.banner = new BannerOptions();
     this.verifyNewServerVersionAvailable();
   }
 
-  verifyNewServerVersionAvailable(){
-    let serverVersions: ServerVersions = history.state['serverVersions'];
-    console.log("latestServerVersion:: " + serverVersions.latestServerVersion);
-    console.log("remoteVersion: " + serverVersions.remoteVersion);
-    if (serverVersions && serverVersions.remoteVersion != serverVersions.latestServerVersion){
-      this.banner = new BannerOptions("Hay disponible una nueva versión del servidor: " + serverVersions.latestServerVersion + " (actual: " + serverVersions.remoteVersion + ")", "", SUCCESS_COLOR, true);
+  verifyNewServerVersionAvailable(): void{
+    const serverVersions: ServerVersions = history.state.serverVersions;
+    if (serverVersions && serverVersions.remoteVersion !== serverVersions.latestServerVersion){
+      console.log('latestServerVersion:: ' + serverVersions.latestServerVersion);
+      console.log('remoteVersion: ' + serverVersions.remoteVersion);
+      this.banner = new BannerOptions('Hay disponible una nueva versión del servidor: ' +
+        serverVersions.latestServerVersion +
+        ' (actual: ' + serverVersions.remoteVersion + ')', '', SUCCESS_COLOR, true);
     }
   }
 
   getProcessLastExecutionStats(process: Process): ExecutionStats {
-    var lastExecutionStats: ExecutionStats = new ExecutionStats();
+    const lastExecutionStats: ExecutionStats = new ExecutionStats();
     if (process.executions.length > 0) {
       // TODO validar que la ejecución no este Running
-      var lastExecution: Execution = process.executions[0];
+      const lastExecution: Execution = process.executions[0];
       lastExecutionStats.totalPassed = lastExecution.totalPassed;
       lastExecutionStats.totalFailed = lastExecution.totalFailed;
 
-      for (var i = 0; i < lastExecution.casesExecutions.length; i++) {
-        var caseExecution: CaseExecution = lastExecution.casesExecutions[i];
-        var browserExecutionStats: BrowserExecutionStats = lastExecutionStats.browserStats.get(caseExecution.browser.browserName);
+      for (let i = 0; i < lastExecution.casesExecutions.length; i++) {
+        const caseExecution: CaseExecution = lastExecution.casesExecutions[i];
+        let browserExecutionStats: BrowserExecutionStats = lastExecutionStats.browserStats.get(caseExecution.browser.browserName);
         if (!browserExecutionStats) {
           browserExecutionStats = new BrowserExecutionStats();
           lastExecutionStats.browserStats.set(caseExecution.browser.browserName, browserExecutionStats);
         }
 
-        if ("PASSED" == caseExecution.status) {
+        if ('PASSED' === caseExecution.status) {
           browserExecutionStats.totalPassed += 1;
         }
-        if ("FAILED" == caseExecution.status) {
+        if ('FAILED' === caseExecution.status) {
           browserExecutionStats.totalFailed += 1;
         }
-        if ("Not executed" == caseExecution.status) {
+        if ('Not executed' === caseExecution.status) {
           browserExecutionStats.totalFailed += 1;
         }
       }
 
-      var percent = 0;
+      let percent = 0;
       if (lastExecutionStats.totalPassed + lastExecutionStats.totalFailed > 0) {
         percent = this.getPartsPerUnit(lastExecutionStats);
       }
 
-      $("#contador-" + process.processId).circleProgress({
+      $('#contador-' + process.processId).circleProgress({
         value: percent,
         animation: false,
         startAngle: -Math.PI / 2,
         fill: {
           color: '#3ac47d' // green
-          //gradient: ['#ff1e41', '#ff5f43']
+          // gradient: ['#ff1e41', '#ff5f43']
         }
       });
 
     } else {
-      $("#contador-" + process.processId).circleProgress({
+      $('#contador-' + process.processId).circleProgress({
         value: 0,
         animation: false,
         fill: { color: '#3ac47d' }
@@ -97,7 +99,7 @@ export class DashboardComponent implements OnInit {
     return this.getNumberMaxTwoDecimals(lastExecutionStats.totalPassed / (lastExecutionStats.totalPassed + lastExecutionStats.totalFailed));
   }
 
-  getPercent(lastExecutionStats: ExecutionStats) {
+  getPercent(lastExecutionStats: ExecutionStats): number {
     return this.getPartsPerUnit(lastExecutionStats) * 100;
   }
 
@@ -105,7 +107,7 @@ export class DashboardComponent implements OnInit {
     return this.getNumberMaxTwoDecimals(browserExecutionStats.totalPassed / (browserExecutionStats.totalPassed + browserExecutionStats.totalFailed));
   }
 
-  getBrowserPercent(browserExecutionStats: BrowserExecutionStats) {
+  getBrowserPercent(browserExecutionStats: BrowserExecutionStats): number {
     return this.getBrowserPartsPerUnit(browserExecutionStats) * 100;
   }
 
@@ -114,7 +116,7 @@ export class DashboardComponent implements OnInit {
     return parseFloat(percent.toFixed(2));
   }
 
-  closeBanner() {
+  closeBanner(): void {
     this.banner = new BannerOptions;
   }
 
