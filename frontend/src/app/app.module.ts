@@ -44,7 +44,8 @@ import { NotificationsComponent } from './components/main/notifications/notifica
 import { BannerComponent } from './components/utils/banner/banner.component';
 import {MatChipsModule } from '@angular/material/chips';
 import { SignupComponent } from './components/signup/signup.component';
-
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { StepsModalComponent } from './components/main/process/case-execution-details/steps-modal/steps-modal.component';
 
 
 @NgModule({
@@ -83,7 +84,8 @@ import { SignupComponent } from './components/signup/signup.component';
     NotificationsComponent,
     BannerComponent,
     ConfiguratorFormComponent,
-    SignupComponent
+    SignupComponent,
+    StepsModalComponent
   ],
     imports: [
         BrowserModule,
@@ -92,7 +94,8 @@ import { SignupComponent } from './components/signup/signup.component';
         FormsModule,
         NgSelectModule,
         MatChipsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        NgbModule
     ],
   providers: [
     AutenticacionService,
