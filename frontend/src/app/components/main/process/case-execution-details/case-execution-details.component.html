@@ -12,7 +12,7 @@
                     </button>
                 </div>
 
-                <h3 class="drawer-heading">Evidencias</h3>
+                <h3 class="drawer-heading">{{'main.process.caseExecutionDetails.evidences'|translate}}</h3>
                 <div class="drawer-section">
                     <div class="scrollbar-container ps">
 
@@ -32,18 +32,18 @@
                             <!-- Button trigger log modal -->
                             <button type="button" *ngIf="caseExecution.log" (click)="getTextFile(caseExecution.log)"
                                 class="mb-2 mr-2 btn-pill btn btn-zahoriPill btn-sm" data-backdrop="false"
-                                data-toggle="modal" data-target="#logModal">Log</button>
+                                data-toggle="modal" data-target="#logModal">{{'main.process.caseExecutionDetails.log'|translate}}</button>
 
                             <button *ngIf="caseExecution.doc" (click)="getFile(caseExecution.doc)"
-                                class="mb-2 mr-2 btn-pill btn btn-zahoriPill btn-sm">Doc</button>
+                                class="mb-2 mr-2 btn-pill btn btn-zahoriPill btn-sm">{{'main.process.caseExecutionDetails.doc'|translate}}</button>
                             <button *ngIf="caseExecution.video" (click)="getFile(caseExecution.video)"
-                                class="mb-2 mr-2 btn-pill btn btn-zahoriPill btn-sm">Vídeo</button>
+                                class="mb-2 mr-2 btn-pill btn btn-zahoriPill btn-sm">{{'main.process.caseExecutionDetails.video'|translate}}</button>
 
                             <!-- Button trigger log modal -->
                             <button type="button" *ngIf="caseExecution.har" title="HTTP Archive"
                                 (click)="getHarFile(caseExecution.har)"
                                 class="mb-2 mr-2 btn-pill btn btn-zahoriPill btn-sm" data-backdrop="false"
-                                data-toggle="modal" data-target="#harModal">HAR</button>
+                                data-toggle="modal" data-target="#harModal">{{'main.process.caseExecutionDetails.har'|translate}}</button>
                         </div>
 
                         <div *ngFor="let attachment of caseExecution.attachments">
@@ -53,11 +53,11 @@
 
                         <div *ngIf="downloading" title="Descargando fichero..."
                             class="spinner-border spinner-border-sm text-primary"></div>
-                        <span class="sr-only">Descargando fichero...</span>
+                        <span class="sr-only">{{'main.process.caseExecutionDetails.downloadFile'|translate}}</span>
 
                         <br />
 
-                        <h5>Pasos ejecutados</h5>
+                        <h5>{{'main.process.caseExecutionDetails.stepsExecuted'|translate}}</h5>
                         <div *ngFor="let step of caseExecution.stepsJson; index as i">
 
                             <div class="paso mb-3">
@@ -125,16 +125,18 @@
             </div>
 
             <div class="modal-body">
-                <p *ngIf="downloading">Cargando...</p>
+                <p *ngIf="downloading">{{'main.process.caseExecutionDetails.loading'|translate}}</p>
                 <!-- LOG -->
                 <pre *ngIf="textFileContent">{{textFileContent}}</pre>
             </div>
 
             <div class="modal-footer">
                 <button class="btn-widemr-2 btn-icon btn btn-zahoriV" (click)="downloadFile()">
-                    <i class="fa fa-download mr-1 "></i>Descargar
+                    <i class="fa fa-download mr-1 "></i>{{'main.process.caseExecutionDetails.download'|translate}}
                 </button>
-                <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">
+                  {{'main.process.caseExecutionDetails.close'|translate}}
+                </button>
             </div>
         </div>
     </div>
@@ -147,7 +149,7 @@
         <div class="modal-content">
 
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">HTTP Requests: {{fileName}}</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">{{'main.process.caseExecutionDetails.httpRequest'|translate}} {{fileName}}</h5>
 
                 <div class="ml-auto">
                     <button type="button" (click)="maximizeModal()" class="btn btn-default" aria-label="Left Align">
@@ -160,15 +162,15 @@
             </div>
 
             <div class="modal-body">
-                <p *ngIf="downloading">Cargando...</p>
+                <p *ngIf="downloading">{{'main.process.caseExecutionDetails.loading'|translate}}</p>
                 <div id="HarViewer"></div>
             </div>
 
             <div class="modal-footer">
                 <button class="btn-widemr-2 btn-icon btn btn-zahoriV" (click)="downloadFile()">
-                    <i class="fa fa-download mr-1 "></i>Descargar
+                    <i class="fa fa-download mr-1 "></i>{{'main.process.caseExecutionDetails.download'|translate}}
                 </button>
-                <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-light" data-dismiss="modal">{{'main.process.caseExecutionDetails.close'|translate}}</button>
             </div>
         </div>
     </div>

@@ -1,5 +1,5 @@
-<h5 class="drawer-heading" *ngIf="configuration.configurationId == 0">Crear configuración</h5>
-<h5 class="drawer-heading" *ngIf="configuration.configurationId > 0">Editar configuración</h5>
+<h5 class="drawer-heading" *ngIf="configuration.configurationId == 0">{{'main.process.configurator.form.createConf' | translate}}</h5>
+<h5 class="drawer-heading" *ngIf="configuration.configurationId > 0">{{'main.process.configurator.form.editConf' | translate}}</h5>
 
 <div class=" drawer-section">
   <form class="mt-4">
@@ -7,18 +7,18 @@
     <div class="d-flex position-relative form-group">
 
       <div class="col-6">
-        <label for="name" class="">Nombre</label>
-        <input name="name" placeholder="" type="text" class="form-control" [(ngModel)]="configuration.name">
+        <label for="name" class="">{{'main.process.configurator.form.name' | translate}}</label>
+        <input id="name" name="name" placeholder="" type="text" class="form-control" [(ngModel)]="configuration.name">
       </div>
 
       <div class="col-6">
-        <label for="environmentId" class="">Entorno</label>
+        <label for="environmentId" class="">{{'main.process.configurator.form.environment' | translate}}</label>
         <div class="input-group">
-          <select [(ngModel)]="configuration.clientEnvironment.environmentId" name="environmentId" class="form-control">
-            <option *ngIf="envs.length == 0" [value]="0" selected disabled>No hay entornos, crea uno</option>
+          <select id="environmentId" [(ngModel)]="configuration.clientEnvironment.environmentId" name="environmentId" class="form-control">
+            <option *ngIf="envs.length == 0" [value]="0" selected disabled>{{'main.process.configurator.form.noEnvironments' | translate}}</option>
             <option [value]="env.environmentId" *ngFor="let env of envs">{{env.name}}</option>
           </select>
-          <div class="input-group-prepend" title="Editar entornos" style="cursor: pointer;">
+          <div class="input-group-prepend" title="{{'main.process.configurator.form.editEnvironments' | translate}}" style="cursor: pointer;">
             <div (click)="emitEventOpenEnvironmentComponent()" class="input-group-text" data-backdrop="false"
               data-toggle="modal" data-target="#environmentsModal">
               <i class="fas fa-pen fa-1" style="color: #969696;" aria-hidden="true"></i>
@@ -32,21 +32,21 @@
     <div class="d-flex  position-relative form-group">
 
       <div class="col-6">
-        <label for="retryId" class="">Reintentos</label>
-        <select [(ngModel)]="configuration.retry.retryId" name="retryId" class="form-control">
+        <label for="retryId" class="">{{'main.process.configurator.form.retries' | translate}}</label>
+        <select id="retryId" [(ngModel)]="configuration.retry.retryId" name="retryId" class="form-control">
           <option [value]="retry.retryId" *ngFor="let retry of retries">{{retry.retryId}}</option>
         </select>
       </div>
 
       <div class="col-6">
-        <label for="timeout" class="">Timeout</label>
+        <label for="timeout" class="">{{'main.process.configurator.form.timeout' | translate}}</label>
         <div class="input-group">
-          <select [(ngModel)]="configuration.timeout.timeoutId" name="timeout" class="form-control">
+          <select id="timeout" [(ngModel)]="configuration.timeout.timeoutId" name="timeout" class="form-control">
             <option [value]="timeout.timeoutId" *ngFor="let timeout of timeouts">{{timeout.timeoutId}}</option>
           </select>
           <div class="input-group-prepend">
             <div class="input-group-text">
-              segundos
+              {{'main.process.configurator.form.seconds' | translate}}
             </div>
           </div>
         </div>
@@ -56,8 +56,8 @@
 
     <div class="d-flex  position-relative form-group">
       <div class="col-6">
-        <label for="generateEvidence">Generar evidencias</label>
-        <select name="generateEvidence" class="form-control" [(ngModel)]="configuration.evidenceCase.eviCaseId">
+        <label for="generateEvidence">{{'main.process.configurator.form.generateEvidences' | translate}}</label>
+        <select id="generateEvidence" name="generateEvidence" class="form-control" [(ngModel)]="configuration.evidenceCase.eviCaseId">
           <option [value]="eviCase.eviCaseId" *ngFor="let eviCase of evidenceCases">{{eviCase.name}}</option>
         </select>
       </div>
@@ -66,8 +66,7 @@
         <div class="ml-2 custom-control custom-switch">
           <input [(ngModel)]="configuration.uploadResults" name="uploadResults" id="uploadResults" type="checkbox"
             class="custom-control-input">
-          <label for="uploadResults" class="custom-control-label" style="margin-bottom: .5rem;">Guardar resultados en
-            repositorio</label>
+          <label for="uploadResults" class="custom-control-label" style="margin-bottom: .5rem;">{{'main.process.configurator.form.saveResultsRepo' | translate}}</label>
         </div>
         <select [(ngModel)]="configuration.testRepository.testRepoId" [disabled]="!configuration.uploadResults"
           name="testRepoId" class="form-control">
@@ -78,7 +77,7 @@
 
     <div>
       <div class="col-12">
-        <label for="generateEvidence">Tipos de evidencias</label>
+        <label for="generateEvidence">{{'main.process.configurator.form.evidenceTypes' | translate}}</label>
       </div>
     </div>
     <div class="d-flex  position-relative form-group">
@@ -95,7 +94,7 @@
     </div>
 
     <div class="text-center">
-      <input type="submit" value="Guardar" class="btn-wide mt-3 mb-3 btn-icon btn btn-zahoriV btn-sm"
+      <input type="submit" value="{{'main.process.configurator.form.save' | translate}}" class="btn-wide mt-3 mb-3 btn-icon btn btn-zahoriV btn-sm"
         (click)="saveConf(configuration)" />
     </div>
 
@@ -118,7 +117,7 @@
 
       <div class="modal-footer">
         <button type="button" class="btn btn-light" data-dismiss="modal"
-          (click)="closeEditEnvironmentsModal()">Cerrar</button>
+          (click)="closeEditEnvironmentsModal()">{{'main.process.configurator.form.close' | translate}}</button>
       </div>
     </div>
   </div>

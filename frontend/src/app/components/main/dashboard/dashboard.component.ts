@@ -9,6 +9,7 @@ import { BrowserExecutionStats } from '../../../model/browserExecutionsStats';
 import { Observable } from 'rxjs';
 import { ServerVersions } from '../../../model/serverVersions';
 import { BannerOptions } from '../../utils/banner/banner';
+import {TranslateService} from '@ngx-translate/core';
 declare var $: any;
 
 const SUCCESS_COLOR = 'alert alert-success';
@@ -22,9 +23,7 @@ export class DashboardComponent implements OnInit {
   processes: Process[];
   banner: BannerOptions;
 
-  constructor(
-    public dataService: DataService
-  ) { }
+  constructor(public dataService: DataService, private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.dataService.getClientFromToken();
@@ -37,9 +36,8 @@ export class DashboardComponent implements OnInit {
     if (serverVersions && serverVersions.remoteVersion !== serverVersions.latestServerVersion){
       console.log('latestServerVersion:: ' + serverVersions.latestServerVersion);
       console.log('remoteVersion: ' + serverVersions.remoteVersion);
-      this.banner = new BannerOptions('Hay disponible una nueva versión del servidor: ' +
-        serverVersions.latestServerVersion +
-        ' (actual: ' + serverVersions.remoteVersion + ')', '', SUCCESS_COLOR, true);
+      const bannerText  = this.translate.instant('banner.serverVersion', {latest: serverVersions.latestServerVersion, actual: serverVersions.remoteVersion});
+      this.banner = new BannerOptions(bannerText, '', SUCCESS_COLOR, true);
     }
   }
 

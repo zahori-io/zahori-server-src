@@ -6,30 +6,30 @@
     </div>
     <div class="drawer-content-wrapper">
         <div class="scrollbar-container">
-            <h3 class="drawer-heading">NOTIFICACIONES</h3>
+            <h3 class="drawer-heading">{{'main.notifications.notifications'|translate}}</h3>
             <div class="drawer-section">
                 <div class="dropdown-menu-header mb-0">
                     <div class="dropdown-menu-header-inner bg-blue-zah">
                         <div class="menu-header-image opacity-1"></div>
                         <div class="menu-header-content text-dark">
-                            <h6 class="menu-header-subtitle">Tienes <b>21</b> mensajes sin leer</h6>
+                            <h6 class="menu-header-subtitle">{{'main.notifications.unreadMessages'|translate:{'messages':21} }}</h6>
                         </div>
                     </div>
                 </div>
                 <ul class="tabs-animated-shadow tabs-animated nav nav-justified tabs-shadow-bordered p-3">
                     <li class="nav-item">
                         <a role="tab" class="nav-link active" data-toggle="tab" href="#tab-messages-header">
-                            <span>Pruebas</span>
+                            <span>{{'main.notifications.test'|translate}}</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a role="tab" class="nav-link" data-toggle="tab" href="#tab-events-header">
-                            <span>Procesos</span>
+                            <span>{{'main.notifications.processes'|translate}}</span>
                         </a>
                     </li>
                     <li class="nav-item">
                         <a role="tab" class="nav-link" data-toggle="tab" href="#tab-errors-header">
-                            <span>Errores</span>
+                            <span>{{'main.notifications.errors'|translate}}</span>
                         </a>
                     </li>
                 </ul>
@@ -216,8 +216,8 @@
                                         <div class="swal2-success-circular-line-right"
                                             style="background-color: rgb(255, 255, 255);"></div>
                                     </div>
-                                    <div class="results-subtitle">¡Todo correcto!</div>
-                                    <div class="results-title">¡No hay errores de sistema!</div>
+                                    <div class="results-subtitle">{{'main.notifications.successful'|translate}}</div>
+                                    <div class="results-title">{{'main.notifications.noErrors'|translate}}</div>
                                 </div>
                             </div>
                         </div>
@@ -226,7 +226,7 @@
                 <ul class="nav flex-column">
                     <li class="nav-item-divider nav-item"></li>
                     <li class="nav-item-btn text-center nav-item">
-                        <button class="btn-shadow btn-wide btn-pill btn btn-zahoriV btn-sm">Ver últimos cambios</button>
+                        <button class="btn-shadow btn-wide btn-pill btn btn-zahoriV btn-sm">{{'main.notifications.showLastChanges'|translate}}</button>
                     </li>
                 </ul>
             </div>

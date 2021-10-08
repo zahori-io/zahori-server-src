@@ -5,12 +5,12 @@
     <div class="app-page-title">
       <div class="page-title-wrapper">
         <div class="page-title-heading">
-          <div>Configuraciones</div>
+          <div>{{'main.process.configurator.configurations' | translate}}</div>
         </div>
         <div class="page-title-actions d-flex">
           <div class="search-wrapper ml-3">
             <div class="input-holder">
-              <input type="text" class="search-input" placeholder="Type to search">
+              <input type="text" class="search-input" placeholder="{{'main.process.configurator.search' | translate}}">
               <button class="search-icon"><span></span></button>
             </div>
             <button class="close"></button>
@@ -18,28 +18,33 @@
         </div>
       </div>
     </div>
-    
+
     <table class="mb-0 table">
       <tbody>
         <tr *ngIf="dataService.processConfigurations.length == 0">
-          <td class="text-center">Aún no hay configuraciones para este proceso, puedes crear una en la parte derecha.</td>
+          <td class="text-center">{{'main.process.configurator.noConfigurations' | translate}}</td>
         </tr>
         <tr *ngFor="let configuration of dataService.processConfigurations; index as i">
 
           <td>{{configuration.name}}</td>
           <td class="text-right">
-            <button class="btn-wide  btn-icon btn btn-zahoriV btn-sm mr-1"
-              (click)="editConfiguration(configuration)">Editar <i class="far fa-edit"></i></button>
-            <button class="btn-wide  btn-icon btn btn-zahoriAz btn-sm" (click)="removeConfiguration(configuration)">Eliminar <i
-                class="far fa-trash-alt"></i></button>
+            <button class="btn-wide  btn-icon btn btn-zahoriV btn-sm mr-1" (click)="editConfiguration(configuration)">
+              {{'main.process.configurator.edit' | translate}}
+              <i class="far fa-edit"></i>
+            </button>
+            <button class="btn-wide  btn-icon btn btn-zahoriAz btn-sm" (click)="removeConfiguration(configuration)">
+              {{'main.process.configurator.delete' | translate}}
+              <i class="far fa-trash-alt"></i>
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
 
     <div *ngIf="dataService.processConfigurations.length > 0" class="text-center">
-      <button (click)="newConfiguration()" class="btn-wide mt-5 mb-5 btn-icon btn btn-zahoriV btn-sm">Nueva
-        Configuración</button>
+      <button (click)="newConfiguration()" class="btn-wide mt-5 mb-5 btn-icon btn btn-zahoriV btn-sm">
+        {{'main.process.configurator.newConfiguration' | translate}}
+      </button>
     </div>
 
     <banner [banner]="banner" (click)="closeBanner()"></banner>
@@ -47,10 +52,10 @@
 
   <div class="ZahoriZonaDcha w-50">
     <div id="ContDe" class="ps ps--active-x ps--active-y disabled">
-      <configuratorForm [configuration]="selectedConfiguration" 
-                      [envs]="envs" 
-                      [evidenceCases]="evidenceCases" 
-                      [evidenceTypes]="evidenceTypes" 
+      <configuratorForm [configuration]="selectedConfiguration"
+                      [envs]="envs"
+                      [evidenceCases]="evidenceCases"
+                      [evidenceTypes]="evidenceTypes"
                       [testRepositories]="testRepositories"
                       [retries]="retries"
                       [timeouts]="timeouts"

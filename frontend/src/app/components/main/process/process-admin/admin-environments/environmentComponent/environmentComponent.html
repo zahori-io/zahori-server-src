@@ -10,51 +10,51 @@
         <div class="col-4">
             <input #textInputId
             [class.error] = "(name.invalid ) && submitted"
-            ngModel name="name"  
-            #name="ngModel" 
-            id="name" 
-            placeholder="Introduzca nombre del entorno" 
-            type="text" 
-            class="form-control" 
-            [(ngModel)] = "environment.name" 
-            required>
-        </div>   
-        <div class="col-6">
-            <input #textInputUrl 
-            [class.error] = "url.invalid && submitted"
-            ngModel name="url"  
-            #url="ngModel" 
-            id="url" 
-            placeholder="Introduzca url del entorno" 
-            type="text" 
-            class="form-control" 
-            [(ngModel)] = "environment.url" 
+            ngModel name="name"
+            #name="ngModel"
+            id="name"
+            placeholder="{{'main.process.processAdmin.environments.environment.insertEnvironmentName'|translate}}"
+            type="text"
+            class="form-control"
+            [(ngModel)] = "environment.name"
             required>
         </div>
-        
+        <div class="col-6">
+            <input #textInputUrl
+            [class.error] = "url.invalid && submitted"
+            ngModel name="url"
+            #url="ngModel"
+            id="url"
+            placeholder="{{'main.process.processAdmin.environments.environment.insertEnvironmentUrl'|translate}}"
+            type="text"
+            class="form-control"
+            [(ngModel)] = "environment.url"
+            required>
+        </div>
+
         <a *ngIf= "!isNew(environment); else newEnv">
-            <i class="fas fa-save mr-2" title="Editar" style="cursor: pointer;" (click)="updateEnv(environment)"></i>
-            <i class="fas fa-times mt-2" title="Eliminar" style="cursor: pointer;" (click)="deleteEnv(environment)"></i>
+            <i class="fas fa-save mr-2" title="{{'main.process.processAdmin.environments.environment.edit'|translate}}" style="cursor: pointer;" (click)="updateEnv(environment)"></i>
+            <i class="fas fa-times mt-2" title="{{'main.process.processAdmin.environments.environment.remove'|translate}}" style="cursor: pointer;" (click)="deleteEnv(environment)"></i>
         </a>
-        
+
         <ng-template #newEnv>
             <a>
-                <i class="fas fa-save mr-2" title="Guardar" style="cursor: pointer;" (click)="createEnv(environment); textInputId.value=''; textInputUrl.value='';"></i>
-                <i class="fas fa-times mt-2" title="Eliminar" style="cursor: pointer;" (click)="deleteFromArray(environment)"></i>
+                <i class="fas fa-save mr-2" title="{{'main.process.processAdmin.environments.environment.save'|translate}}" style="cursor: pointer;" (click)="createEnv(environment); textInputId.value=''; textInputUrl.value='';"></i>
+                <i class="fas fa-times mt-2" title="{{'main.process.processAdmin.environments.environment.remove'|translate}}" style="cursor: pointer;" (click)="deleteFromArray(environment)"></i>
             </a>
         </ng-template>
     </div>
-    
+
     <div class="row mt-1">
     <div class="col-4">
         <div  *ngIf="name.invalid && submitted" class="alert">
-            El campo es obligatorio
+          {{'formError.empty'|translate}}
         </div>
     </div>
 
     <div class="col-6">
         <div *ngIf="url.invalid && submitted"class="alert">
-            El campo es obligatorio
+          {{'formError.empty'|translate}}
         </div>
     </div>
 </div>

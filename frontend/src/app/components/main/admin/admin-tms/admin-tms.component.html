@@ -4,35 +4,35 @@
     <div class="app-page-title">
         <div class="page-title-wrapper">
             <div class="page-title-heading">
-                <div>Gestión de Repositorios de pruebas</div>
+                <div>{{'main.admin.tms.title'|translate}}</div>
             </div>
         </div>
     </div>
 
     <div class="col-12" *ngIf="clientTestRepo.length == 0">
-        Aún no hay repositorios definidos.
+      {{'main.admin.tms.noRepo'|translate}}
     </div>
 
     <div *ngIf="clientTestRepo.length > 0">
-        
+
         <div class="row ml-1">
             <div class="col-2">
-                <h6>Activo</h6>
+                <h6>{{'main.admin.tms.active'|translate}}</h6>
             </div>
             <div class="col-2">
-                <h6>Nombre</h6>
+                <h6>{{'main.admin.tms.name'|translate}}</h6>
             </div>
             <!--<div class="col-1">
             <h6>Orden</h6>
         </div>-->
             <div class="col-4">
-                <h6>Url</h6>
+                <h6>{{'main.admin.tms.url'|translate}}</h6>
             </div>
             <div class="col-2">
-                <h6>Usuario</h6>
+                <h6>{{'main.admin.tms.user'|translate}}</h6>
             </div>
             <div class="col-2">
-                <h6>Clave</h6>
+                <h6>{{'main.admin.tms.key'|translate}}</h6>
             </div>
             <div class="col-1">
                 <h6></h6>
@@ -51,12 +51,11 @@
                 <select name="reponame" id="{{'reponame-'+elem.id.testRepoId}}" class="form-control"
                     [disabled]="!elem.active"
                     [(ngModel)]="testRepo.get(elem.id.testRepoId).name">
-                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='Xray Server'">Xray Server</option>
-                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='Xray Cloud'">Xray Cloud</option>
-                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='Azure Test Plans'">Azure Test Plans
-                    </option>
-                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='TestLink'">TestLink</option>
-                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='HP ALM'">HP ALM</option>
+                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='Xray Server'">{{'main.admin.tms.xrayServer'|translate}}</option>
+                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='Xray Cloud'">{{'main.admin.tms.xrayCloud'|translate}}</option>
+                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='Azure Test Plans'">{{'main.admin.tms.azureTestPlans'|translate}}</option>
+                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='TestLink'">{{'main.admin.tms.testLink'|translate}}</option>
+                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='HP ALM'">{{'main.admin.tms.HP_ALM'|translate}}</option>
                 </select>
             </div>
             <!--<div class="col-1 d-flex">
@@ -78,7 +77,7 @@
                     ng-model="password" type="password" class="form-control">
             </div>
             <div class="col-1 d-flex p-2 mt-1">
-                <a (click)="save(elem.id.testRepoId, i)" title="Guardar"
+                <a (click)="save(elem.id.testRepoId, i)" title="{{'main.admin.tms.save'|translate}}"
                     [hidden]="!elem.active">
                     <i class="fas fa-save mr-2"></i>
                 </a>
@@ -89,9 +88,8 @@
 
     <div class="row mt-3 pl-1">
         <div class="col-11 text-center mt-3">
-            <button class="btn-wide mb-4 btn-icon btn btn-zahoriV btn-sm sidebarGreyCollapse"
-                (click)="newTestRepository()">
-                Añadir
+            <button class="btn-wide mb-4 btn-icon btn btn-zahoriV btn-sm sidebarGreyCollapse" (click)="newTestRepository()">
+              {{'main.admin.tms.add'|translate}}
             </button>
         </div>
     </div>

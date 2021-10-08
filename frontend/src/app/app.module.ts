@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {HttpClientModule, HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 
@@ -46,6 +46,8 @@ import {MatChipsModule } from '@angular/material/chips';
 import { SignupComponent } from './components/signup/signup.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StepsModalComponent } from './components/main/process/case-execution-details/steps-modal/steps-modal.component';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 
 
 @NgModule({
@@ -95,7 +97,14 @@ import { StepsModalComponent } from './components/main/process/case-execution-de
         NgSelectModule,
         MatChipsModule,
         ReactiveFormsModule,
-        NgbModule
+        NgbModule,
+        TranslateModule.forRoot({
+          loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient]
+          }
+        })
     ],
   providers: [
     AutenticacionService,
@@ -106,3 +115,8 @@ import { StepsModalComponent } from './components/main/process/case-execution-de
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+// required for AOT compilation
+export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
+  return new TranslateHttpLoader(http);
+}

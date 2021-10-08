@@ -8,21 +8,21 @@
         <div class="app-page-title">
           <div class="page-title-wrapper">
             <div class="page-title-heading">
-              <div>Últimas ejecuciones
+              <div>{{'main.process.executions.lastExecutions'|translate}}
                 <i title="reload" *ngIf="!loading" class="fas fa-sync-alt fa-xs ml-3"
                   style="cursor: pointer; color: grey; font-size: 0.7em;" (click)="reload()"></i>
                 <div title="loading..." *ngIf="loading"
                   class="spinner-border spinner-border-sm text-secondary ml-3 mb-1"
                   style="border: 0.15em solid currentColor;border-right-color: transparent; border-width: 0.1em;"
                   role="status">
-                  <span class="sr-only">Running...</span>
+                  <span class="sr-only">{{'main.process.executions.running'|translate}}</span>
                 </div>
               </div>
             </div>
             <div class="page-title-actions">
               <div class="search-wrapper active">
                 <div class="input-holder">
-                  <input type="text" class="search-input" placeholder="Type to search">
+                  <input type="text" class="search-input" placeholder="{{'main.process.executions.search'|translate}}">
                   <button class="search-icon"><span></span></button>
                 </div>
                 <button class="close"></button>
@@ -38,17 +38,17 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Nombre ejecución</th>
-              <th>Casos ejecutados</th>
-              <th class="text-center">Duración</th>
-              <th class="text-center">Estado</th>
-              <th class="text-center">Correctos/Totales</th>
-              <th class="text-center" style="width: 110px;">Navegadores</th>
-              <th class="text-center" style="width: 150px;">Fecha</th>
-              <th class="text-center">Tipo</th>
+              <th>{{'main.process.executions.executionName'|translate}}</th>
+              <th>{{'main.process.executions.caseExecuted'|translate}}</th>
+              <th class="text-center">{{'main.process.executions.duration'|translate}}</th>
+              <th class="text-center">{{'main.process.executions.state'|translate}}</th>
+              <th class="text-center">{{'main.process.executions.correctTotals'|translate}}</th>
+              <th class="text-center" style="width: 110px;">{{'main.process.executions.browsers'|translate}}</th>
+              <th class="text-center" style="width: 150px;">{{'main.process.executions.date'|translate}}</th>
+              <th class="text-center">{{'main.process.executions.type'|translate}}</th>
             </tr>
           </thead>
-          
+
           <tbody>
             <ng-template ngFor let-execution [ngForOf]="dataService.processExecutions" let-i="index">
 
@@ -70,15 +70,15 @@
                 </td>
                 <td class="text-center">
                   <i title="{{execution.status}}" class="fas " [ngClass]="{
-                    'fa-check text-success': 'SUCCESS PASSED'.includes(execution.status),    
+                    'fa-check text-success': 'SUCCESS PASSED'.includes(execution.status),
                     'fa-times text-danger': execution.status  === 'FAILURE',
                     'fa-exclamation-triangle': execution.status  === 'Not executed'}">
                   </i>
                   <div title="Running" *ngIf="execution.status === 'Running'"
                     class="spinner-border spinner-border-sm text-primary" role="status">
-                    <span class="sr-only">Running...</span>
+                    <span class="sr-only">{{'main.process.executions.running'|translate}}</span>
                   </div>
-                  <span *ngIf="execution.status === 'Created'">Creada</span>
+                  <span *ngIf="execution.status === 'Created'">{{'main.process.executions.created'|translate}}</span>
                 </td>
                 <td class="text-center">{{execution.totalPassed}}/{{execution.totalPassed + execution.totalFailed}}</td>
                 <td class="text-center">
@@ -92,7 +92,7 @@
                 </td>
                 <td class="text-center">{{execution.date}}</td>
                 <td class="text-center">
-                  <span *ngIf="!execution.periodicExecution">Manual</span>
+                  <span *ngIf="!execution.periodicExecution">{{'main.process.executions.manual'|translate}}</span>
                   <button *ngIf="execution.periodicExecution" id="sidebarProgramarCollapse"
                     class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriV btn-sm">
                     <i class="fas fa-clock"></i>
@@ -105,14 +105,14 @@
                   <table class="mb-0 table table-hover" style="width: 100%;">
                     <thead>
                       <tr>
-                        <th>Caso</th>
-                        <th class="text-center">Fecha/Hora</th>
-                        <th class="text-center">Duración</th>
-                        <th class="text-center">Estado</th>
-                        <th class="text-center">Navegador</th>
-                        <th class="text-center">Evidencias</th>
-                        <th class="text-center">Vídeo/Streaming</th>
-                        <th class="text-center">Notas</th>
+                        <th>{{'main.process.executions.case'|translate}}</th>
+                        <th class="text-center">{{'main.process.executions.dateHour'|translate}}</th>
+                        <th class="text-center">{{'main.process.executions.duration'|translate}}</th>
+                        <th class="text-center">{{'main.process.executions.state'|translate}}</th>
+                        <th class="text-center">{{'main.process.executions.browser'|translate}}</th>
+                        <th class="text-center">{{'main.process.executions.evidences'|translate}}</th>
+                        <th class="text-center">{{'main.process.executions.videoStreaming'|translate}}</th>
+                        <th class="text-center">{{'main.process.executions.notes'|translate}}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -136,7 +136,7 @@
                             title="{{caseExecution.status}}"></i>
                           <div title="Running" *ngIf="caseExecution.status === 'Running'"
                             class="spinner-border spinner-border-sm text-primary" role="status">
-                            <span class="sr-only">Running...</span>
+                            <span class="sr-only">{{'main.process.executions.running'|translate}}</span>
                           </div>
                         </td>
                         <td class="text-center">
@@ -147,7 +147,7 @@
                           <button *ngIf="caseExecution.status === 'PASSED' || caseExecution.status === 'FAILED'"
                             id="sidebarEvidenciasCollapsed" class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriV btn-sm"
                             (click)="showCaseExecutionDetails(caseExecution)">
-                            <i class="fas fa-plus-circle mr-1"></i>Ver
+                            <i class="fas fa-plus-circle mr-1"></i>{{'main.process.executions.show'|translate}}
                           </button>
                         </td>
                         <td class="text-center">
@@ -155,12 +155,11 @@
                             (click)="startVideoStreaming(caseExecution)"
                             class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriV btn-sm" data-backdrop="false"
                             data-toggle="modal" data-target="#videoModal">
-                            <i class="fa fa-youtube mr-1 "></i>Ver
+                            <i class="fa fa-youtube mr-1 "></i>{{'main.process.executions.show'|translate}}
                           </button>
                         </td>
                         <td class="text-center">
-                          <span *ngIf="caseExecution.status === 'Not executed' && execution.status !== 'Running'">No
-                            ejecutado</span>
+                          <span *ngIf="caseExecution.status === 'Not executed' && execution.status !== 'Running'">{{'main.process.executions.notExecuted'|translate}}</span>
                           <span *ngIf="caseExecution.status !== 'Not executed'">
                             {{caseExecution.notes}}
                           </span>
@@ -191,17 +190,17 @@
                 <td style="display: none;"></td>
               </tr>
             </ng-template>
-            
+
             <tr *ngIf="!loading && dataService.processExecutions.length == 0">
               <td colspan="9" class="text-center">
-                <span>Aún no hay ejecuciones de este proceso. Puedes crear una nueva en la página 
-									<a routerLink="../trigger"><strong>Disparador</strong></a>
+                <span>{{'main.process.executions.withoutExecutionsYet'|translate}}
+									<a routerLink="../trigger"><strong>{{'main.process.executions.trigger'|translate}}</strong></a>
 								</span>
               </td>
             </tr>
 
             <tr *ngIf="loading">
-              <td colspan="9" class="text-center">Cargando...</td>
+              <td colspan="9" class="text-center">{{'main.process.executions.loading'|translate}}</td>
             </tr>
 
           </tbody>
@@ -237,11 +236,11 @@
             </button>
           </div>
 
-          <h3 class="drawer-heading">Programar ejecución periódica</h3>
+          <h3 class="drawer-heading">{{'main.process.executions.schedulePeriodicExecution'|translate}}</h3>
           <div class="drawer-section">
             <h6 class="titVentana">(REGT02)</h6>
             <div class="d-flex">
-              <span>Periódica</span>
+              <span>{{'main.process.executions.periodic'|translate}}</span>
               <div class="ml-2 custom-control custom-switch">
                 <input type="checkbox" class="custom-control-input" id="customSwitch1" checked="">
                 <label class="custom-control-label " for="customSwitch1"></label>
@@ -249,8 +248,8 @@
             </div>
             <div class="d-flex mt-3">
               <div class="position-relative form-group">
-                <label for="exampleTime">Hora</label>
-                <input name="time" id="exampleTime" placeholder="time placeholder" type="time" class="form-control">
+                <label for="exampleTime">{{'main.process.executions.hour'|translate}}</label>
+                <input name="time" id="exampleTime" placeholder="{{'main.process.executions.hour'|translate}}" type="time" class="form-control">
               </div>
               <div class="mt-4 pt-3 ml-3 d-flex">
                 <div class="custom-checkbox custom-control  mr-2">
@@ -277,7 +276,7 @@
             </div>
 
             <div class="text-center">
-              <button class="btn-wide mt-5 btn-icon btn btn-zahoriV btn-sm">Guardar</button>
+              <button class="btn-wide mt-5 btn-icon btn btn-zahoriV btn-sm">{{'main.process.executions.save'|translate}}</button>
             </div>
 
           </div>
@@ -300,7 +299,7 @@
     <div class="modal-content">
 
       <div class="modal-header">
-        <h5 *ngIf="caseExecutionVideoSelected" class="modal-title" id="exampleModalLongTitle">Vídeo
+        <h5 *ngIf="caseExecutionVideoSelected" class="modal-title" id="exampleModalLongTitle">{{'main.process.executions.video'|translate}}
           ({{caseExecutionVideoSelected.caseExecutionId}}): {{caseExecutionVideoSelected.cas.name}}</h5>
 
         <div class="ml-auto">
@@ -323,9 +322,9 @@
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-light" (click)="closeModal()" data-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-light" (click)="closeModal()" data-dismiss="modal">{{'main.process.executions.close'|translate}}</button>
       </div>
-      
+
     </div>
   </div>
 </div>
