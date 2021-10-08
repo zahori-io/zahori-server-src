@@ -4,7 +4,7 @@
 
 	<groupId>io.zahori</groupId>
 	<artifactId>zahori-server</artifactId>
-	<version>0.1.10-SNAPSHOT</version>
+	<version>0.1.10</version>
 	<packaging>jar</packaging>
 	<name>zahori-server</name>
 
