@@ -8,4 +8,12 @@ export class Client {
     name: string;
     numParallel: number;
     clientTeams: Team[];
+    constructor() {
+      this.clientId = 1;
+      this.active = true;
+      this.css = '';
+      this.logo = '';
+      this.name = '';
+      this.numParallel = 0;
+    }
 }

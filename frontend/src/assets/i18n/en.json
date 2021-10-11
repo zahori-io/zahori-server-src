@@ -1,0 +1,182 @@
+{
+	"banner": {
+		"serverVersion": "A new version of the server is available: {{latest}} (current: {{actual}})"
+	},
+	"formError": {
+		"empty": "This field can not be blank",
+		"invalidEmail": "The email is not valid",
+		"minLength": "The field must have at least {{characters}} characters",
+		"misMatchEmail": "Written emails do not match",
+		"misMatchPassword": "Written passwords do not match",
+		"passwordConditions": {
+			"condition1": "An uppercase letter",
+			"condition2": "A lowercase letter",
+			"condition3": "A number",
+			"condition4": "A special character",
+			"text": "The password must have at least:"
+		}
+	},
+	"login": {
+		"login": "Login",
+		"loginError": "The username or password is incorrect",
+		"noAccount": "Don't have an account yet?",
+		"password": "Password",
+		"recoverPassword": "Recover Password",
+		"register": "Sign up",
+		"rememberMe": "Remember me",
+		"slide1": {
+			"text": "You will be able to test your software applications on any platform and device, and reuse the automatic tests to adapt in an agile way to the functional advances of the software. You can also carry out rapid, regressive and agile prototyping. Easily reuse your tests. Automate once and test as much as you need. ",
+			"title": "Your software tests"
+		},
+		"slide2": {
+			"text": "You will be able to automate your online transactions: purchase, product loading, price update, transaction verification, banking and much more. Generate probes that automatically check the availability of your products. Make sure your online business operations keep running, even if there are external or internal changes. ",
+			"title": "Your online transaction processes"
+		},
+		"slide3": {
+			"text": "You will be able to apply DevOps and Continuous Integration practices, introducing automatic processes throughout the software development cycle, to accelerate the speed of putting new functionalities into production, and better adapt to the requests of your users. ",
+			"title": "Your application deployments"
+		},
+		"user": "User"
+	},
+	"main": {
+		"admin": {
+			"Administrator": "Administrator",
+			"executions": {
+				"evidence": "Evidence",
+				"evidenceOps": {
+					"never": "Never",
+					"onlyFail": "Only if the process fails",
+					"onlyFailOrAlert": "Only if the process fails or has alerts"
+				},
+				"languages": "Languages",
+				"languagesOps": {
+					"en": "English",
+					"es": "Spanish"
+				},
+				"parallelization": "Parallelization",
+				"retries": "Retries",
+				"save": "Save",
+				"timeout": "Timeout",
+				"title": "Execution management",
+				"types": "Types",
+				"typesOps": {
+					"doc": "Doc",
+					"har": "Har",
+					"log": "Log",
+					"screenshot": "Screenshot",
+					"video": "Video"
+				}
+			},
+			"groups": {
+				"add": "Add",
+				"administrator": "Admin",
+				"editNewGroup": "Edit / Create group",
+				"linkProcess": "Link processes",
+				"linkUsers": "Link Users",
+				"name": "First Name",
+				"process": "Processes",
+				"save": "Save",
+				"title": "Group management",
+				"type": "Type",
+				"users": "Users"
+			},
+			"menu": {
+				"browsers": "Browsers",
+				"execution": "Execution",
+				"groups": "Groups",
+				"testRepo": "Test Repository",
+				"users": "Users"
+			},
+			"platforms": {
+				"desktop": "Computer",
+				"mobile": "Mobile devices",
+				"title": "Browser management"
+			},
+			"tags": {
+				"add": "Add",
+				"colour": "colour",
+				"name": "First Name",
+				"save": "Save",
+				"title": "Label management"
+			},
+			"tms": {
+				"User": "User",
+				"active": "Active",
+				"add": "Add",
+				"key": "Key",
+				"name": "Name",
+				"noRepo": "There are no repositories defined yet.",
+				"save": "Save",
+				"testRepoOps": {
+					"HP_ALM": "HP ALM",
+					"azureTestPlans": "Azure Test Plans",
+					"testLink": "TestLink",
+					"xrayCloud": "Xray Cloud",
+					"xrayServer": "Xray Server"
+				},
+				"title": "Managing Test Repositories",
+				"url": "Url"
+			},
+			"users": {
+				"editNewUser": "Edit / Create user",
+				"email": "e-mail",
+				"id": "Id",
+				"name": "First Name",
+				"newUser": "New user",
+				"password": "Password",
+				"repeatEmail": "Repeat email",
+				"repeatPassword": "Repeat password",
+				"save": "Save",
+				"surnames": "Surnames",
+				"title": "User management",
+				"user": "User",
+				"userHolder": "Username"
+			}
+		},
+		"clientTeams": {
+			"teams": "Teams"
+		},
+		"clientTeamsProcess": {
+			"process": "Processes"
+		},
+		"dashboard": {
+			"noProcessDefined": "There is no defined process for this computer",
+			"total": "Total"
+		},
+		"help": {
+			"help": "Help",
+			"helpText": "Solve all your doubts."
+		},
+		"menu": {
+			"language": {
+				"en": "English",
+				"es": "Spanish",
+				"text": "Language"
+			},
+			"logout": "Logout",
+			"notifications": "Notifications"
+		},
+		"notifications": {
+			"errors": "Errors",
+			"noErrors": "There are no system errors!",
+			"notifications": "NOTIFICATIONS",
+			"processes": "Processes",
+			"showLastChanges": "View latest changes",
+			"successful": "All right!",
+			"test": "Tests",
+			"unreadMessages": "You have {{messages}} unread messages"
+		}
+	},
+	"signup": {
+		"password": "Password",
+		"passwordHolder": "Password....",
+		"pleaseRegister": "Please enter your details to register.",
+		"repeatPassword": "Repeat password",
+		"repeatPasswordHolder": "Repeat password...",
+		"return": "Return",
+		"signup": "check in",
+		"user": "User",
+		"userHolder": "Username",
+		"welcome": "You are welcome"
+	}
+}

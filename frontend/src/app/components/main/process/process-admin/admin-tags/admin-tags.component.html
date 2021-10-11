@@ -5,9 +5,9 @@
     <div class="app-page-title">
         <div class="page-title-wrapper">
             <div class="page-title-heading">
-                <div>Gestión de etiquetas</div>
+                <div>{{'main.process.processAdmin.tags.title'|translate}}</div>
             </div>
-        </div> 
+        </div>
     </div>
 
     <div class="col-12" *ngIf="tags.length == 0 && myTags.length == 0">
@@ -16,10 +16,10 @@
 
     <div *ngIf="tags.length > 0 || myTags.length > 0" class="row mt-3">
         <div class="col-4">
-            <label for="name" class="">Nombre</label>
+            <label for="name" class="">{{'main.process.processAdmin.tags.name'|translate}}</label>
         </div>
         <div class="col-6">
-            <label for="color" class="">Color</label>
+            <label for="color" class="">{{'main.process.processAdmin.tags.colour'|translate}}</label>
         </div>
 
         <tag id="tagContainter" *ngFor="let tag of tags" [tag]="tag" (updated)="updateTag($event)"
@@ -29,7 +29,7 @@
     </div>
 
     <div class="col-8 text-center mt-3">
-        <button class="btn-wide mt-2 btn-icon btn btn-zahoriV btn-sm" (click)="newTag()">Añadir etiqueta</button>
+        <button class="btn-wide mt-2 btn-icon btn btn-zahoriV btn-sm" (click)="newTag()">{{'main.process.processAdmin.tags.addTag'|translate}}</button>
     </div>
 
 </div>

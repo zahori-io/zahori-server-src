@@ -11,8 +11,8 @@
   <div class="app-page-title">
     <div class="page-title-wrapper">
       <div class="page-title-heading">
-        <div>Casos</div>
-        <button type="button" title="Guardar casos" (click)="saveCases()" class="mt-2 ml-5 btn btn-zahoriPill btn-sm">Guardar</button>
+        <div>{{'main.process.cases.cases'|translate}}</div>
+        <button type="button" title="Guardar casos" (click)="saveCases()" class="mt-2 ml-5 btn btn-zahoriPill btn-sm">{{'main.process.cases.save'|translate}}</button>
       </div>
     </div>
   </div>
@@ -27,7 +27,7 @@
       <tbody>
         <tr>
           <td class="text-center">
-            Aún no hay casos definidos. <a (click)="createNewCase()"><b>Crear uno</b></a>
+            {{'main.process.cases.noCases'|translate}} <a (click)="createNewCase()"><b>{{'main.process.cases.createCase'|translate}}</b></a>
           </td>
         </tr>
       </tbody>
@@ -36,30 +36,30 @@
     <ng-container *ngIf="!loading && thereAreActiveCases()">
       <thead>
         <tr>
-          <th><i title="Añadir caso" class="fa fa-plus fa-1" style="cursor: pointer;" (click)="createNewCase()"></i></th>
-          <th>Caso</th>
-          <th>Etiquetas</th>
+          <th><i title="{{'main.process.cases.addCase'|translate}}" class="fa fa-plus fa-1" style="cursor: pointer;" (click)="createNewCase()"></i></th>
+          <th>{{'main.process.cases.case'|translate}}</th>
+          <th>{{'main.process.cases.tags'|translate}}</th>
 
           <ng-container *ngFor="let field Of tableData[0] | keyvalue">
             <th *ngIf="isVariableField(field.key)" class="showOnHover">
               {{field.key}}
-              <i title="Cambiar nombre" class="fas fa-pen fa-1 hide ml-3" style="cursor: pointer;" (click)="editField(tableData, field.key)"></i>
-              <i title="Eliminar campo" class="fa fa-trash fa-1 hide ml-2" style="cursor: pointer;" (click)="removeField(tableData, field.key, fixedFields)"></i>
+              <i title="{{'main.process.cases.changeName'|translate}}" class="fas fa-pen fa-1 hide ml-3" style="cursor: pointer;" (click)="editField(tableData, field.key)"></i>
+              <i title="{{'main.process.cases.deleteField'|translate}}" class="fa fa-trash fa-1 hide ml-2" style="cursor: pointer;" (click)="removeField(tableData, field.key, fixedFields)"></i>
             </th>
           </ng-container>
 
-          <th><i title="Añadir campo" class="fa fa-plus fa-1" style="cursor: pointer;" (click)="addField(tableData)"></i></th>
+          <th><i title="{{'main.process.cases.addField'|translate}}" class="fa fa-plus fa-1" style="cursor: pointer;" (click)="addField(tableData)"></i></th>
         </tr>
       </thead>
       <tbody>
         <ng-container *ngFor="let case of tableData">
           <tr *ngIf="case.active == true" class="showOnHover">
             <td>
-              <i class="hide fa fa-trash fa-1" title="Eliminar caso" (click)="removeCase(tableData, case)" style="cursor: pointer;"></i>
+              <i class="hide fa fa-trash fa-1" title="{{'main.process.cases.deleteCase'|translate}}" (click)="removeCase(tableData, case)" style="cursor: pointer;"></i>
             </td>
             <td contenteditable="true"  [textContent]="case.name" (blur)="case.name = $event.target.textContent"></td>
             <td>
-              <ng-select 
+              <ng-select
                 [items]="tags"
                 class = "custom"
                 style= "width: 100px;"
@@ -71,14 +71,14 @@
                   <ng-template ng-label-tmp let-item="item" let-clear="clear" style="border:none">
                     <button  title = {{item.name}} class="btn-circle mt-2" [ngStyle] = "{backgroundColor: item.color, borderColor: item.color}"></button>
                   </ng-template>
-          
+
                   <ng-template ng-option-tmp let-item="item" let-item$="item$" let-index="index">
                     <button  class="btn-circle mr-2" [ngStyle] = "{backgroundColor: item.color, borderColor: item.color}"></button>
                     {{item.name}}
                   </ng-template>
               </ng-select>
             </td>
-      
+
             <ng-container *ngFor="let field Of case | keyvalue; trackBy: avoidLosingFocus">
               <td *ngIf="isVariableField(field.key)" contenteditable [textContent]="case[field.key]" (blur)="case[field.key] = $event.target.textContent"></td>
             </ng-container>

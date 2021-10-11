@@ -20,12 +20,14 @@ import { AdminGroupsComponent } from './components/main/admin/admin-groups/admin
 import { AdminUsersComponent } from './components/main/admin/admin-users/admin-users.component';
 import { AuthGuard } from './guards/auth.guard';
 import { ProcessComponent } from './components/main/process/process.component';
-import { ProcessAdminComponent } from './components/main/process/process-admin/process-admin.component'
+import { ProcessAdminComponent } from './components/main/process/process-admin/process-admin.component';
+import { SignupComponent } from './components/signup/signup.component';
 
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'signup', component: SignupComponent },
   {
     path: 'app', component: MainComponent, canActivate: [AuthGuard],
     children: [

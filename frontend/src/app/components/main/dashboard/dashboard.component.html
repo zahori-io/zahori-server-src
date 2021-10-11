@@ -2,9 +2,9 @@
   <div class="h-100">
 
     <banner [banner]="banner" (click)="closeBanner()"></banner>
-    
+
     <div class="h-100 no-gutters justify-content-center align-items-center row">
-      
+
       <div class="d-none d-lg-block col-lg-4">
         <app-team-process-selector></app-team-process-selector>
       </div>
@@ -14,14 +14,16 @@
         <div class="row w-100">
 
           <div class="titLinea col-lg-12 mb-2">
-            <h3><img alt="icono equipos"
-                src="/assets/images/imgIcons/equipos.png" />{{dataService.teamSelectedInSelector.name}}</h3>
+            <h3>
+              <img alt="icono equipos" src="/assets/images/imgIcons/equipos.png" />
+              {{dataService.teamSelectedInSelector.name}}
+            </h3>
           </div>
 
           <div
             *ngIf="dataService.teamSelectedInSelector.processes && dataService.teamSelectedInSelector.processes.length == 0"
             style="zoom: 90%;" class="progress-box col-lg-6  mb-5">
-            <h4>No hay ningún proceso definido para este equipo</h4>
+            <h4>{{'main.dashboard.noProcessDefined'| translate}}</h4>
           </div>
 
           <div style="zoom: 90%;" class="progress-box col-lg-6  mb-5"
@@ -39,7 +41,7 @@
                   *ngIf="lastExecutionStats.totalPassed + lastExecutionStats.totalFailed > 0">
                   {{getPercent(lastExecutionStats)}}%
                 </strong>
-                <span class="titGrafica">Total</span>
+                <span class="titGrafica">{{'main.dashboard.total'| translate}}</span>
                 <span class="subtitGrafica">{{lastExecutionStats.totalPassed}} /
                   {{lastExecutionStats.totalPassed + lastExecutionStats.totalFailed}}</span>
                 <!-- Total Failed: {{lastExecutionStats.totalFailed}} -->

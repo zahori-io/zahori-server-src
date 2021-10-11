@@ -8,13 +8,8 @@ import { BannerOptions } from './banner';
 })
 export class BannerComponent {
 
-  @Input() 
+  @Input()
   banner: BannerOptions;
-
-  show : boolean = false;
-
+  show = false;
   constructor() { }
-
-  ngOnInit(): void {
-  }
 }

@@ -1,0 +1,42 @@
+<!-- Modal - Steps -->
+<div class="modal-header">
+  <h5>{{'main.process.caseExecutionDetails.stepsModal.title'|translate}}</h5>
+  <div class="ml-auto">
+    <button type="button" (click)="activeModal.close()" class="btn btn-default" aria-label="Left Align">
+      <span class="fas fa-times fa-lg" style="color: grey;" aria-hidden="true"></span>
+    </button>
+  </div>
+</div>
+
+<!-- STEPS -->
+<div class="modal-body">
+  <ngb-carousel #carousel>
+    <ng-container *ngFor="let step of caseExecution.stepsJson; let index = index">
+      <ng-template ngbSlide id="slide-{{index}}">
+        <h5 class="modal-title" id="stepData">
+              <span>
+                  <i title="{{step.status}}" class="fas " [ngClass]="{
+                  'fa-check text-success': step.status  === 'Passed',
+                  'fa-times text-danger': step.status  === 'Failed',
+                  'fa-exclamation-triangle': step.status  === 'Not executed'}">
+                  </i>
+                  Paso {{step.name}}
+              </span>
+        </h5>
+        <div class="paso mb-3">
+          <p>{{step.messageText}}</p>
+
+          <div *ngFor="let attachment of step.attachments">
+            <img class="w-100" alt="Imagen Evidencia" *ngIf="attachment"
+                 [src]="getAttachmentUrl(attachment) | authImage | async" />
+          </div>
+        </div>
+      </ng-template>
+    </ng-container>
+
+  </ngb-carousel>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-light" (click)="activeModal.close()">{{'main.process.caseExecutionDetails.stepsModal.close'|translate}}</button>
+</div>

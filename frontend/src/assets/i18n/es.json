@@ -1,0 +1,310 @@
+{
+  "banner": {
+    "serverVersion": "Hay disponible una nueva versión del servidor: {{latest}} (actual: {{actual}})",
+    "configDeleted": "Configuración eliminada",
+    "error": "Error: "
+  },
+  "formError": {
+    "empty": "Este campo no puede estar vacío",
+    "invalidEmail": "El correo no es valido",
+    "minLength": "El campo ha de tener al menos {{characters}} caracteres",
+    "misMatchEmail": "Los correos escritos no coinciden",
+    "misMatchPassword": "Las contraseñas escritas no coinciden",
+    "passwordConditions": {
+      "condition1": "Una letra mayúscula",
+      "condition2": "Una letra minúscula",
+      "condition3": "Un numero",
+      "condition4": "Un carácter especial",
+      "text": "La contraseña ha de tener al menos:"
+    }
+  },
+  "login": {
+    "login": "Entrar",
+    "loginError": "El nombre del usuario o la contraseña son incorrectos",
+    "noAccount": "¿No tienes cuenta todavía?",
+    "password": "Contraseña",
+    "recoverPassword": "Recuperar contraseña",
+    "register": "Registrate",
+    "rememberMe": "Recuérdame",
+    "slide1": {
+      "text": "Podrás probar tus aplicaciones software en cualquier plataforma y dispositivo, y reutilizar las pruebas automáticas para adaptarte de forma ágil a los avances funcionales del software. Podrás además realizar prototipados rápidos, regresivos y ágiles. Reutiliza fácilmente tus pruebas. Automatiza una vez y prueba tanto como necesites.",
+      "title": "Tus pruebas de software"
+    },
+    "slide2": {
+      "text": "Podrás automatizar tus transacciones online: compra, carga de productos, actualización de precios, comprobación de transacciones, bancarias y mucho más. Genera sondas que automáticamente comprueben la disponibilidad de tus productos. Asegura que tus operaciones de negocio online sigan funcionando, aunque haya cambios externos o internos.",
+      "title": "Tus procesos de transacciones on-line"
+    },
+    "slide3": {
+      "text": "Podrás aplicar prácticas DevOps y de Integración Continua, introduciendo procesos automáticos en todo el ciclo de desarrollo del software, para acelerar la velocidad de puesta en producción de nuevas funcionalidades, y adaptarte mejor a las peticiones de tus usuarios.",
+      "title": "Tus despliegues de aplicaciones"
+    },
+    "user": "Usuario"
+  },
+  "main": {
+    "admin": {
+      "Administrator": "Administrador",
+      "executions": {
+        "evidence": "Evidencias",
+        "evidenceOps": {
+          "never": "Nunca",
+          "onlyFail": "Sólo si el proceso falla",
+          "onlyFailOrAlert": "Sólo si el proceso falla o tiene alertas"
+        },
+        "languages": "Idiomas",
+        "languagesOps": {
+          "en": "Ingles",
+          "es": "Español"
+        },
+        "parallelization": "Paralelización",
+        "retries": "Reintentos",
+        "save": "Guardar",
+        "timeout": "Timeout",
+        "title": "Gestión de ejecuciones",
+        "types": "Tipos",
+        "typesOps": {
+          "doc": "Doc",
+          "har": "Har",
+          "log": "Log",
+          "screenshot": "Captura de pantalla",
+          "video": "Vídeo"
+        }
+      },
+      "groups": {
+        "add": "Añadir",
+        "administrator": "Admin",
+        "editNewGroup": "Editar/Crear grupo",
+        "linkProcess": "Vincular procesos",
+        "linkUsers": "Vincular Usuarios",
+        "name": "Nombre",
+        "process": "Procesos",
+        "save": "Guardar",
+        "title": "Gestión de Grupos",
+        "type": "Tipo",
+        "users": "Usuarios"
+      },
+      "menu": {
+        "browsers": "Navegadores",
+        "execution": "Ejecución",
+        "groups": "Grupos",
+        "testRepo": "Repositorio de Pruebas",
+        "users": "Usuarios"
+      },
+      "platforms": {
+        "desktop": "Ordenador",
+        "mobile": "Dispositivos mobiles",
+        "title": "Gestión de navegadores"
+      },
+      "tags": {
+        "add": "Añadir",
+        "colour": "Color",
+        "name": "Nombre",
+        "save": "Guardar",
+        "title": "Gestión de etiquetas"
+      },
+      "tms": {
+        "User": "Usuario",
+        "active": "Activo",
+        "add": "Añadir",
+        "key": "Clave",
+        "name": "Nombre",
+        "noRepo": "Aún no hay repositorios definidos.",
+        "save": "Guardar",
+        "testRepoOps": {
+          "HP_ALM": "HP ALM",
+          "azureTestPlans": "Azure Test Plans",
+          "testLink": "TestLink",
+          "xrayCloud": "Xray Cloud",
+          "xrayServer": "Xray Server"
+        },
+        "title": "Gestión de Repositorios de pruebas",
+        "url": "Url"
+      },
+      "users": {
+        "editNewUser": "Editar/Crear usuario",
+        "email": "email",
+        "id": "ID",
+        "name": "Nombre",
+        "newUser": "Nuevo usuario",
+        "password": "Contraseña",
+        "repeatEmail": "Repetir email",
+        "repeatPassword": "Repetir contraseña",
+        "save": "Guardar",
+        "surnames": "Apellidos",
+        "title": "Gestión de Usuarios",
+        "user": "Usuario",
+        "userHolder": "Nombre de usuario"
+      }
+    },
+    "clientTeams": {
+      "teams": "Equipos"
+    },
+    "clientTeamsProcess": {
+      "process": "Procesos"
+    },
+    "dashboard": {
+      "noProcessDefined": "No hay ningún proceso definido para este equipo",
+      "total": "Total"
+    },
+    "help": {
+      "help": "Ayuda",
+      "helpText": "Resuelve todas tus dudas."
+    },
+    "menu": {
+      "language": {
+        "en": "Ingles",
+        "es": "Español",
+        "text": "Idioma"
+      },
+      "logout": "Salir",
+      "notifications": "Notificaciones"
+    },
+    "notifications": {
+      "errors": "Errores",
+      "noErrors": "¡-No hay errores de sistema!",
+      "notifications": "NOTIFICACIONES",
+      "processes": "Procesos",
+      "showLastChanges": "Ver últimos cambios",
+      "successful": "¡Todo correcto!",
+      "test": "Pruebas",
+      "unreadMessages": "Tienes {{messages}} mensajes sin leer"
+    },
+    "process": {
+      "caseExecutionDetails": {
+        "evidences": "Evidencias",
+        "log": "Log",
+        "doc": "Doc",
+        "video": "Video",
+        "har": "HAR",
+        "downloadFile": "Descargando fichero...",
+        "stepsExecuted": "Pasos ejecutados",
+        "loading": "Cargando...",
+        "download": "Descargar",
+        "close": "Cerrar",
+        "httpRequest": "Petición http",
+        "stepsModal": {
+          "title": "Evidencias",
+          "close": "Cerrar"
+        }
+      },
+      "cases": {
+        "cases": "Casos",
+        "save": "Guardar",
+        "noCases": "Aún no hay casos definidos.",
+        "createCase": "Crear uno",
+        "addCase": "Añadir caso",
+        "deleteCase": "Eliminar caso",
+        "case": "Caso",
+        "tags": "Etiquetas",
+        "changeName": "Cambiar nombre",
+        "deleteField": "Borrar campo",
+        "addField": "Añadir campo"
+      },
+      "configurator": {
+        "configurations": "Configuraciones",
+        "search": "Buscar...",
+        "noConfigurations": "Aún no hay configuraciones para este proceso, puedes crear una en la parte derecha.",
+        "edit": "Editar",
+        "newConfiguration": "Nueva configuración",
+        "delete": "Eliminar",
+        "form": {
+          "createConf": "Crear configuración",
+          "editConf": "Editar configuración",
+          "name": "Nombre",
+          "environment": "Entorno",
+          "editEnvironments": "Editar entornos",
+          "noEnvironments": "No hay entornos, crea uno",
+          "retries": "Reintentos",
+          "timeout": "Timeout",
+          "generateEvidences": "Generar evidencias",
+          "saveResultsRepo": "Guardar resultados en repositorio",
+          "evidenceTypes": "Tipos de evidencias",
+          "save": "Guardar",
+          "close": "Cerrar",
+          "seconds": "segundos"
+        }
+      },
+      "executions": {
+        "lastExecutions": "Últimas ejecuciones",
+        "running": "En ejecución...",
+        "search": "Buscar...",
+        "executionName": "Nombre ejecución",
+        "caseExecuted": "Casos ejecutados",
+        "duration": "Duración",
+        "state": "Estado",
+        "correctTotals": "Correctos/Totales",
+        "browsers": "Navegadores",
+        "date": "Fecha",
+        "type": "Tipo",
+        "created": "Creada",
+        "manual": "Manual",
+        "case": "Caso",
+        "dateHour": "Fecha/hora",
+        "browser": "Navegador",
+        "Evidences": "Evidencias",
+        "videoStreaming": "Vídeo/Streaming",
+        "notes": "Notas",
+        "show": "ver",
+        "notExecuted": "No ejecutado",
+        "withoutExecutionsYet": "Aún no hay ejecuciones de este proceso. Puedes crear una nueva en la página",
+        "trigger": "Disparador",
+        "loading": "Cargando...",
+        "schedulePeriodicExecution ": "Programar ejecución periódica",
+        "periodic": "Periódica",
+        "hour": "Hora",
+        "save": "Guardar",
+        "video": "Video",
+        "close": "Cerrar"
+      },
+      "processAdmin": {
+        "administrator": "Administrador",
+        "menu": {
+          "environments": "Entornos",
+          "tags": "etiquetas"
+        },
+        "tags": {
+          "title": "Gestión de etiquetas",
+          "name": "Nombre",
+          "colour": "Color",
+          "addTag": "Añadir etiqueta",
+          "tag": {
+            "IntroduceTagName": "Introduzca nombre de la etiqueta",
+            "obligatoryField": "El campo es obligatorio",
+            "edit": "Editar",
+            "remove": "Eliminar",
+            "save": "Guardar",
+            "deleteFields": "Borrar campos"
+          }
+        },
+        "environments": {
+          "title": "Gestión de entornos",
+          "undefinedEnvironments": "No hay entornos definidos.",
+          "name": "Nombre",
+          "url": "url",
+          "addEnvironment": "Añadir entorno",
+          "environment": {
+            "insertEnvironmentName": "Introduzca nombre del entorno",
+            "insertEnvironmentUrl": "Introduzca url del entorno",
+            "edit": "Editar",
+            "remove": "Eliminar",
+            "save": "Borrar"
+          }
+        }
+      },
+      "processMenu": {
+        
+      }
+    },
+    "signup": {
+      "password": "Contraseña",
+      "passwordHolder": "Contraseña....",
+      "pleaseRegister": "Por favor, introduce tus datos para registrarte.",
+      "repeatPassword": "Repetir contraseña",
+      "repeatPasswordHolder": "Repetir contraseña...",
+      "return": "Volver",
+      "signup": "Registrarse",
+      "user": "Usuario",
+      "userHolder": "Nombre de usuario",
+      "welcome": "Bienvenido"
+    }
+  }
+}

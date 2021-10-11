@@ -5,50 +5,49 @@
     outline: 0 none;
     }
 </style>
-       
+
 
     <div class="row mt-2">
         <div class="col-4">
             <input #textInputId
             [class.error] = "(name.invalid ) && submitted"
-            ngModel name="name"  
-            #name="ngModel" 
-            id="name" 
-            placeholder="Introduzca nombre de la etiqueta" 
-            type="text" 
-            class="form-control" 
-            [(ngModel)] = "tag.name" 
+            ngModel name="name"
+            #name="ngModel"
+            id="name"
+            placeholder="{{'main.process.processAdmin.tags.tag.IntroduceTagName'|translate}}"
+            type="text"
+            class="form-control"
+            [(ngModel)] = "tag.name"
             required>
-
-        </div>   
+        </div>
         <div class="col-2">
             <input ejs-colorpicker type="color"
-            ngModel name="color" 
+            ngModel name="color"
              id="colorpicker"
-             size = 2  
-             class="form-control" 
-             [(ngModel)] = "tag.color" 
+             size = 2
+             class="form-control"
+             [(ngModel)] = "tag.color"
              list="listacoloresperfil"
              />
         </div>
-        
+
         <a *ngIf= "!isNew(tag); else newEnv">
-            <i class="fas fa-save mr-2" title = "Editar" style="cursor: pointer;" (click) = "updateTag(tag)"></i>
-            <i class="fas fa-times mt-2" title = "Eliminar" style="cursor: pointer;" (click) = deleteTag(tag)></i>
+            <i class="fas fa-save mr-2" title = "{{'main.process.processAdmin.tags.tag.edit'|translate}}" style="cursor: pointer;" (click) = "updateTag(tag)"></i>
+            <i class="fas fa-times mt-2" title = "{{'main.process.processAdmin.tags.tag.remove'|translate}}" style="cursor: pointer;" (click) = deleteTag(tag)></i>
         </a>
-        
+
         <ng-template #newEnv>
             <a>
-                <i class="fas fa-save mr-2" title = "Guardar" style="cursor: pointer;" (click) = "createTag(tag); textInputId.value='';"></i>
-                <i class="fas fa-times mt-2" title = "Borrar campos" style="cursor: pointer;" (click) = "deleteFromArray(tag)"></i>
+                <i class="fas fa-save mr-2" title = "{{'main.process.processAdmin.tags.tag.save'|translate}}" style="cursor: pointer;" (click) = "createTag(tag); textInputId.value='';"></i>
+                <i class="fas fa-times mt-2" title = "{{'main.process.processAdmin.tags.tag.deleteFields'|translate}}" style="cursor: pointer;" (click) = "deleteFromArray(tag)"></i>
             </a>
         </ng-template>
     </div>
-    
+
     <div class="row mt-1">
     <div class="col-4">
         <div  *ngIf="name.invalid && submitted" class="alert">
-            El campo es obligatorio
+          {{'main.process.processAdmin.tags.tag.obligatoryField'|translate}}
         </div>
     </div>
 

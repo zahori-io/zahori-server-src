@@ -3,23 +3,23 @@
     <div class="app-page-title">
         <div class="page-title-wrapper">
             <div class="page-title-heading">
-                <div>Gestión de Usuarios</div>
+                <div>{{'main.admin.users.title'|translate}}</div>
             </div>
         </div>
     </div>
 
     <div class="row ml-1 mb-3  border-bottom">
         <div class="col-2">
-            <h6>ID</h6>
+            <h6>{{'main.admin.users.id'|translate}}</h6>
         </div>
         <div class="col-2">
-            <h6>Nombre</h6>
+            <h6>{{'main.admin.users.name'|translate}}</h6>
         </div>
         <div class="col-3">
-            <h6>Apellidos</h6>
+            <h6>{{'main.admin.users.surnames'|translate}}</h6>
         </div>
         <div class="col-3">
-            <h6>Email</h6>
+            <h6>{{'main.admin.users.email'|translate}}</h6>
         </div>
         <div class="col-1">
             <h6></h6>
@@ -73,7 +73,7 @@
 
     <div class="row mt-3 pl-1">
         <div class="col-11 text-center mt-3">
-            <button class="btn-wide mt-2 btn-icon btn btn-zahoriV btn-sm sidebarGreyCollapse">Nuevo Usuario</button>
+            <button class="btn-wide mt-2 btn-icon btn btn-zahoriV btn-sm sidebarGreyCollapse">{{'main.admin.users.newUser'|translate}}</button>
         </div>
     </div>
 
@@ -84,58 +84,103 @@
     <div class="drawer-content-wrapperGrey ps ps--active-x ps--active-y">
 
         <div class="drawer-section">
-            <h4>Editar/Crear usuario</h4>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <label for="exampleEmail" class="">ID Usuario</label>
-                    <input name="" id="" placeholder="" type="text" class="form-control">
+            <h4>{{'main.admin.users.editNewUser'|translate}}</h4>
+          <form [formGroup]="userForm" (submit)="onSubmit()">
+            <div class="form-row">
+              <div class="col-md-12"><!-- Usuario -->
+                <div class="position-relative form-group">
+                  <label for="username" class="">{{'main.admin.users.user'|translate}}</label>
+                  <input id="username" placeholder="{{'main.admin.users.userHolder'|translate}}" type="text" class="form-control" formControlName="username">
+                  <div *ngIf="submit" class="ml-2 text-danger">
+                    <div *ngIf="userForm.get('username').hasError('required')">{{'formError.empty' | translate}}</div>
+                    <div *ngIf="userForm.get('username').hasError('minlength')">{{'formError.minLength' | translate:{'characters':4} }}</div>
+                  </div>
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-
-                    <label for="exampleEmail" class="">Nombre</label>
-                    <input name="" id="" placeholder="" type="text" class="form-control">
+              </div>
+              <div class="col-md-12"><!-- Nombre -->
+                <div class="position-relative form-group">
+                  <label for="name" class="">{{'main.admin.users.name'|translate}}</label>
+                  <input id="name" placeholder="{{'main.admin.users.name'|translate}}" type="text" class="form-control" formControlName="name">
+                  <div *ngIf="submit" class="ml-2 text-danger">
+                    <div *ngIf="userForm.get('name').hasError('required')">{{'formError.empty' | translate}}</div>
+                    <div *ngIf="userForm.get('name').hasError('minlength')">{{'formError.minLength' | translate:{'characters':4} }}</div>
+                  </div>
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-
-                    <label for="" class="">Apellidos</label>
-                    <input name="" id="" placeholder="" type="text" class="form-control">
+              </div>
+              <div class="col-md-12"><!-- Apellidos -->
+                <div class="position-relative form-group">
+                  <label for="surnames" class="">{{'main.admin.users.surnames'|translate}}</label>
+                  <input id="surnames" placeholder="{{'main.admin.users.surnames'|translate}}" type="text" class="form-control" formControlName="surnames">
+                  <div *ngIf="submit" class="ml-2 text-danger">
+                    <div *ngIf="userForm.get('name').hasError('required')">{{'formError.empty' | translate}}</div>
+                    <div *ngIf="userForm.get('name').hasError('minlength')">{{'formError.minLength' | translate:{'characters':4} }}</div>
+                  </div>
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <label for="" class="">email</label>
-                    <input name="" id="" placeholder="" type="text" class="form-control">
+              </div>
+              <div class="col-md-12"><!-- email -->
+                <div class="position-relative form-group">
+                  <label for="email" class="">{{'main.admin.users.email'|translate}}</label>
+                  <input id="email" placeholder="{{'main.admin.users.email'|translate}}" type="text" class="form-control" formControlName="email">
+                  <div *ngIf="submit" class="ml-2 text-danger">
+                    <div *ngIf="userForm.get('email').hasError('required')">{{'formError.empty' | translate}}</div>
+                    <div *ngIf="userForm.get('email').hasError('email')">{{'formError.invalidEmail' | translate}}</div>
+                  </div>
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <label for="" class="">Autenticación</label>
-                    <input name="" id="" placeholder="" type="text" class="form-control">
+              </div>
+              <div class="col-md-12"><!-- repetir email -->
+                <div class="position-relative form-group">
+                  <label for="repEmail" class="">{{'main.admin.users.repeatEmail'|translate}}</label>
+                  <input id="repEmail" placeholder="{{'main.admin.users.repeatEmail'|translate}}" type="text" class="form-control" formControlName="repEmail">
+                  <div *ngIf="submit" class="ml-2 text-danger">
+                    <div *ngIf="userForm.get('repEmail').hasError('required')">{{'formError.empty' | translate}}</div>
+                    <div *ngIf="userForm.get('repEmail').hasError('email')">{{'formError.invalidEmail' | translate}}</div>
+                    <div *ngIf="userForm.get('repEmail').hasError('emailValidator')">{{'formError.misMatchEmail' | translate}}</div>
+                  </div>
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <label for="exampleEmail" class="">Clave</label>
-                    <input name="" id="" placeholder="" type="text" class="form-control">
+              </div>
+              <div class="col-md-12"><!-- password -->
+                <div class="position-relative form-group">
+                  <label for="password" class="">{{'main.admin.users.password'|translate}}</label>
+                  <input name="password" id="password"
+                         placeholder="{{'main.admin.users.password'|translate}}" type="password" class="form-control"
+                         formControlName="password">
+                  <div *ngIf="submit" class="ml-2 text-danger">
+                    <div *ngIf="userForm.get('password').hasError('required')">{{'formError.empty' | translate}}</div>
+                    <div *ngIf="userForm.get('password').hasError('minlength')">{{'formError.minLength' | translate:{'characters':8} }}</div>
+                    <div *ngIf="userForm.get('password').hasError('pattern')">{{'formError.passwordConditions.text' | translate}}
+                      <ul>
+                        <li>{{'formError.passwordConditions.condition1' | translate}}</li>
+                        <li>{{'formError.passwordConditions.condition2' | translate}}</li>
+                        <li>{{'formError.passwordConditions.condition3' | translate}}</li>
+                        <li>{{'formError.passwordConditions.condition4' | translate}}</li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-            </div>
-            <div class="row mt-3">
-                <div class="col-12">
-                    <label for="exampleEmail" class="">Confirmación</label>
-                    <input name="" id="" placeholder="" type="text" class="form-control">
+              </div>
+              <div class="col-md-12"><!-- repPassword -->
+                <div class="position-relative form-group">
+                  <label for="reppassword" class="">{{'main.admin.users.repeatPassword'|translate}}</label>
+                  <input name="reppassword" id="reppassword"
+                         placeholder="{{'main.admin.users.repeatPassword'|translate}}" type="password" class="form-control"
+                         formControlName="repPassword">
+                  <div *ngIf="submit" class="ml-2 text-danger">
+                    <div *ngIf="userForm.get('repPassword').hasError('required')">{{'formError.empty' | translate}}</div>
+                    <div *ngIf="userForm.get('repPassword').hasError('minlength')">{{'formError.minLength' | translate:{'characters':8} }}</div>
+                    <div *ngIf="userForm.get('repPassword').hasError('passwordValidator')">{{'formError.misMatchPassword' | translate}}</div>
+                  </div>
                 </div>
+              </div>
             </div>
-            <div class="text-center">
-                <button class="btn-wide mt-5 btn-icon btn btn-zahoriV btn-sm">
-                    Guardar
-                </button>
+            <div class="divider row"></div>
+            <div class="d-flex align-items-center">
+              <div class="ml-auto">
+                <button  class="btn btn-primary btn-lg">{{'main.admin.users.save'|translate}}</button>
+              </div>
             </div>
+          </form>
         </div>
-        
+
     </div>
 
 </div>

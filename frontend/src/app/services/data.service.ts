@@ -10,6 +10,7 @@ import { Execution } from '../model/excution';
 import { Process } from '../model/process';
 import { Team } from '../model/team';
 import { Case } from '../model/case';
+import {Account} from '../model/account';
 import { Configuration } from '../model/configuration';
 import { Browser } from '../model/browser';
 import { Environment } from '../model/environment';
@@ -89,7 +90,6 @@ export class DataService {
       }
     );
   }
-
   /*
     API CALLS
    */
@@ -198,6 +198,9 @@ export class DataService {
     return this.http.get<ServerVersions>(this.url + 'version', {});
   }
 
+  public setSignUpUser(account: Account): Observable<Account> {
+    return this.http.post<Account>('/users/sign-up', JSON.stringify(account), { headers: this.headers });
+  }
   // get Jenkins artifact
   //public getFile(fileUrl: string) {
   //  return this.http.get(this.url + "process/" + this.processSelected.processId + "/artifact?url=" + fileUrl, { responseType: 'blob' });
