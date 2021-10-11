@@ -1,5 +1,7 @@
 {
 	"banner": {
+		"configDeleted": "Deleted configuration",
+		"error": "Error: ",
 		"serverVersion": "A new version of the server is available: {{latest}} (current: {{actual}})"
 	},
 	"formError": {
@@ -165,6 +167,163 @@
 			"successful": "All right!",
 			"test": "Tests",
 			"unreadMessages": "You have {{messages}} unread messages"
+		},
+		"process": {
+			"caseExecutionDetails": {
+				"close": "Close",
+				"doc": "Doc",
+				"download": "Download",
+				"downloadFile": "Downloading file ...",
+				"evidences": "Evidences",
+				"har": "HAR",
+				"httpRequest": "Http request",
+				"loading": "Loading...",
+				"log": "Log",
+				"stepsExecuted": "Steps executed",
+				"stepsModal": {
+					"close": "Close",
+					"title": "Evidences"
+				},
+				"video": "Video"
+			},
+			"cases": {
+				"addCase": "Add case",
+				"addField": "Add Field",
+				"case": "Case",
+				"cases": "Cases",
+				"changeName": "Rename",
+				"createCase": "Create one",
+				"deleteCase": "Delete case",
+				"deleteField": "Clear Field",
+				"noCases": "There are no defined cases yet.",
+				"save": "Save",
+				"tags": "Labels"
+			},
+			"configurator": {
+				"configurations": "Configurations",
+				"delete": "Remove",
+				"edit": "Edit",
+				"form": {
+					"close": "Close",
+					"createConf": "Create Configuration",
+					"editConf": "Edit settings",
+					"editEnvironments": "Edit environments",
+					"environment": "Environment",
+					"evidenceTypes": "Types of evidence",
+					"generateEvidences": "Generate evidence",
+					"name": "Name",
+					"noEnvironments": "There are no environments, create one",
+					"retries": "Retries",
+					"save": "Save",
+					"saveResultsRepo": "Save results to repository",
+					"seconds": "Seconds",
+					"timeout": "Timeout"
+				},
+				"newConfiguration": "New configuration",
+				"noConfigurations": "There are no settings for this process yet, you can create one on the right side.",
+				"search": "Search for..."
+			},
+			"executions": {
+				"Evidences": "EvidenceS",
+				"browser": "Browser",
+				"browsers": "Browsers",
+				"case": "Case",
+				"caseExecuted": "Executed cases",
+				"close": "Close",
+				"correctTotals": "Correct / Totals",
+				"created": "Created",
+				"date": "Date",
+				"dateHour": "date/hour",
+				"duration": "Duration",
+				"executionName": "Run Name",
+				"hour": "Hour",
+				"lastExecutions": "Latest executions",
+				"loading": "Loading...",
+				"manual": "Manual",
+				"notExecuted": "Not executed",
+				"notes": "Notes",
+				"periodic": "Periodic",
+				"running": "Executing...",
+				"save": "Save",
+				"schedulePeriodicExecution ": "Schedule periodic execution",
+				"search": "Search for...",
+				"show": "Watch",
+				"state": "State",
+				"trigger": "Trigger",
+				"type": "Type",
+				"video": "Video",
+				"videoStreaming": "Video / Streaming",
+				"withoutExecutionsYet": "There are no executions of this process yet. You can create a new one on the page"
+			},
+			"processAdmin": {
+				"administrator": "Administrator",
+				"environments": {
+					"addEnvironment": "Add Environment",
+					"environment": {
+						"edit": "Edit",
+						"insertEnvironmentName": "Enter environment name",
+						"insertEnvironmentUrl": "Enter environment url",
+						"remove": "Remove",
+						"save": "Delete"
+					},
+					"name": "Name",
+					"title": "Environment management",
+					"undefinedEnvironments": "There are no defined environments.",
+					"url": "Url"
+				},
+				"menu": {
+					"environments": "Environments",
+					"tags": "Tags"
+				},
+				"tags": {
+					"addTag": "Add Tag",
+					"colour": "Colour",
+					"name": "Name",
+					"tag": {
+						"IntroduceTagName": "Enter tag name",
+						"deleteFields": "Clear Fields",
+						"edit": "Edit",
+						"obligatoryField": "The field is mandatory",
+						"remove": "Remove",
+						"save": "Save"
+					},
+					"title": "Label management"
+				}
+			},
+			"processMenu": {
+				"Administration": "Administration",
+				"cases": "Cases",
+				"configurator": "configurator",
+				"lastExecutions": "Latest executions",
+				"trigger": "Trigger"
+			},
+			"trigger": {
+				"ErrorOnCreateExecution": "Error creating run",
+				"browsers": "Browsers",
+				"canYouSeeIn": "You can see it in",
+				"case": "Case",
+				"caseToExecute": "Cases to be executed *",
+				"cases": "Cases",
+				"create": "Create",
+				"createOne": ", create a",
+				"creatingExecution": "Creating execution",
+				"execution": "Execution",
+				"executionCreated": "Execution created",
+				"here": "here",
+				"id": "Id",
+				"lastExecutions": "Latest executions",
+				"noCaseDefine": "There are no defined cases, you can create them on the page",
+				"noCaseYet": "No settings yet",
+				"periodic": "Periodic",
+				"search": "Search for...",
+				"selectCaseToExecute": "Select the cases to run",
+				"tags": "Tags",
+				"time": "Time",
+				"title": "Cases to be executed"
+			}
+		},
+		"profile": {
+			"title": "My Profile"
 		}
 	},
 	"signup": {
