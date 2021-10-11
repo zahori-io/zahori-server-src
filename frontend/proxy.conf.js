@@ -2,7 +2,8 @@ const PROXY_CONFIG = [
     {
         context: [
             "/api",
-            "/login"
+            "/login",
+            "/users/sign-up"
         ],
         target: "http://localhost:9090",
         secure: false

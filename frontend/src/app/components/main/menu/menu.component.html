@@ -1,12 +1,8 @@
 <!--MENU PRINCIPAL-->
 <div class="app-header header-shadow">
-  
-  <!-- LOGO ZAHORI -->
-  <a routerLink="dashboard">
-    <div class="header__logo">
-      <div class="logo-src"></div>
-    </div>
-  </a>
+  <div class="header__logo">
+    <div class="logo-src"></div>
+  </div>
 
   <!-- LOGO EMPRESA CLIENTE
     <div class="app-header__logo2">
@@ -44,7 +40,7 @@
             <span class="icon-wrapper icon-wrapper-alt rounded-circle">
               <span class="icon-wrapper-bg bg-primary"></span>
               <i class="icon text-primary icon-anim-pulse ion-android-notifications"></i>
-              <span class="badge badge-dot badge-dot-sm badge-danger">Notificationes</span>
+              <span class="badge badge-dot badge-dot-sm badge-danger">{{'main.menu.notifications'| translate}}</span>
             </span>
           </button>
         </div>
@@ -53,7 +49,7 @@
           <button type="button" data-toggle="dropdown" class="p-0 mr-2 btn btn-link">
             <span class="icon-wrapper icon-wrapper-alt rounded-circle">
               <span class="icon-wrapper-bg bg-primary"></span>
-              <span class="language-icon opacity-8 flag large ES"></span>
+              <span class="language-icon opacity-8 flag large E" [ngClass]="flag"></span>
             </span>
           </button>
           <div tabindex="-1" role="menu" aria-hidden="true" class="rm-pointers dropdown-menu dropdown-menu-right">
@@ -62,18 +58,18 @@
                 <div class="menu-header-image opacity-05"></div>
                 <div class="menu-header-content text-center text-white">
                   <h6 class="menu-header-subtitle mt-0">
-                    Idioma
+                    {{'main.menu.language.text'| translate}}
                   </h6>
                 </div>
               </div>
             </div>
-            <button type="button" tabindex="0" class="dropdown-item">
+            <button type="button" tabindex="0" class="dropdown-item" (click)="useLanguage('es')" data-toggle="dropdown">
               <span class="mr-3 opacity-8 flag large ES"></span>
-              Español
+              {{'main.menu.language.es'| translate}}
             </button>
-            <button type="button" tabindex="0" class="dropdown-item">
+            <button type="button" tabindex="0" class="dropdown-item" (click)="useLanguage('en')" data-toggle="dropdown">
               <span class="mr-3 opacity-8 flag large GB"></span>
-              English
+              {{'main.menu.language.en'| translate}}
             </button>
           </div>
         </div>
@@ -115,7 +111,7 @@
                             </div>
                             <div class="widget-content-right mr-2">
                               <button class="btn-pill btn-shadow btn-shine btn btn-focus"
-                                (click)="logout();$event.preventDefault();$event.stopPropagation();">Salir
+                                (click)="logout();$event.preventDefault();$event.stopPropagation();">{{'main.menu.logout'| translate}}
                               </button>
                             </div>
                           </div>

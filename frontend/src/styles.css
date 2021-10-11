@@ -106,9 +106,9 @@ a:hover {
 	padding-right:10px;
   font-size: 1.3rem;
   font-weight: 300;
-  
+
   line-height: 0.88;
-  
+
 }
 
 .nav-link{color:#6A6A6A; display:flex;align-items:center;transition:background-color 0.3s ease, color 0.3s ease;cursor:pointer}
@@ -160,7 +160,7 @@ a:hover {
 }
 .btn-success.toggle-on{background:#84986B; border-color: #84986B }
 .btn-success:not(:disabled):not(.disabled):active, .btn-success:not(:disabled):not(.disabled).active, .show>.btn-success.dropdown-toggle {border-color: #84986B}
-   
+
 
 .menuPills .disabled {opacity:.25}
 .menuPills .disabled:hover {opacity:1;cursor:pointer}
@@ -176,7 +176,7 @@ a:hover {
     font-weight: 600;
 }
 .btnNav{
-	
+
 	font-size: 1.8rem;
 	padding:0 0.5rem
 }
@@ -201,7 +201,7 @@ a:hover {
 }
 .app-sidebar__inner .titLinea img{
 	width: 40%
-	
+
 }
 
 .progress-box h4 {
@@ -246,7 +246,7 @@ a:hover {
     padding: 0 0 0 0;
 }
 button span.hamburger-box {
-    
+
     display: inline-block;
     position: relative;
 }
@@ -280,7 +280,7 @@ display: block;
     box-shadow: 0 0.46875rem 2.1875rem rgba(4,9,20,0.03), 0 0.9375rem 1.40625rem rgba(4,9,20,0.03), 0 0.25rem 0.53125rem rgba(4,9,20,0.05), 0 0.125rem 0.1875rem rgba(4,9,20,0.03);
 }
 .app-header .app-header__content {
-    
+
     padding: 0 3rem;
     margin-left:-1.5rem
 }
@@ -339,7 +339,7 @@ tr.collapse td,  tr.collapsing td{border-top:none}
 ----------------------------------------------------- */
 .app-main__inner2col{
 	display: flex;
-	
+
 }
 .Zahoricontent{
 	width:70%;
@@ -427,8 +427,8 @@ font-size: 1.2rem;
   letter-spacing: normal;
   text-align: left;
   color: #788c62;
-		}	
-		
+		}
+
 
 /* ---------------------------------------------------
     CONTENT STYLE
@@ -440,7 +440,7 @@ font-size: 1.2rem;
     min-height: 80vh;
     transition: all 0.3s;
 }
-		.vh-80{height:80vh}	
+		.vh-80{height:80vh}
 /* ---------------------------------------------------
     FORMS
 ----------------------------------------------------- */
@@ -473,7 +473,7 @@ font-size: 1.2rem;
     .icoNav{
         width: 20px;
     }
-  
+
 }
 
 @media (min-width: 1200px) and (max-width: 1500px){
@@ -495,17 +495,17 @@ font-size: 1.2rem;
     .icoNav{
         width: 30px;
     }
-  
+
 }
 @media (min-width: 1500px){
-    
+
     .fsize-3 {
     font-size: 1.6rem !important;
 }
     .icoNav{
         width: 100%;
     }
-  
+
 }
 
 /* ---------------------------------------------------
