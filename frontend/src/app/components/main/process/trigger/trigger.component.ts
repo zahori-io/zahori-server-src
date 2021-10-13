@@ -8,6 +8,7 @@ import { Execution } from '../../../../model/excution';
 import { Process } from '../../../../model/process';
 import { DataService } from '../../../../services/data.service';
 import { Tag } from '../../../../model/tag';
+import {getSortHeaderNotContainedWithinSortError} from '@angular/material/sort/sort-errors';
 
 
 @Component({
@@ -202,8 +203,29 @@ export class TriggerComponent implements OnInit {
       this.selectedTags.push(tag);
     }
   }
-
-  massiveChangeState() {
+  onCaseSelection(cs: Case): void{
+      const selectTags = new Map(cs.clientTags.map(key => [key.tagId, true]));
+      this.dataService.processCases.forEach(pc => {
+        if (!pc.selected && pc.clientTags.length > 0){// Solo  casos no seleccionados y que tengan tags
+          pc.clientTags.forEach(ptg => {
+            if (cs.clientTags.some(e => e.name === ptg.name)){
+              selectTags.set(ptg.tagId, false);
+            }
+          });
+        }
+      });
+      console.log(selectTags);
+      selectTags.forEach((value: boolean, key: number) => {
+        if (!value && this.selectedTags.some(e => e.tagId === key)){
+            this.selectedTags.splice(this.selectedTags.indexOf(this.selectedTags.find(tg => tg.tagId === key)), 1);
+        }
+        if (value && !this.selectedTags.some(e => e.tagId === key)){
+          console.log('paso por aqui');
+          this.selectedTags.push(this.tags.find(tg => tg.tagId === key));
+        }
+      });
+  }
+  massiveChangeState(): void {
       if (!this.massiveSelected) {
         this.dataService.processCases.forEach(pc => {
           pc.selected = false;
