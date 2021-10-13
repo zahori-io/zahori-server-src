@@ -50,7 +50,7 @@
 					<td>
 						<div class="ml-2 custom-control custom-switch">
 							<input type="checkbox" [(ngModel)]="case.selected" name="case-{{case.caseId}}" id="case-{{case.caseId}}"
-							[checked]="case.selected" [value]="case.caseId" class="custom-control-input">
+							[checked]="case.selected" [value]="case.caseId" class="custom-control-input" (change)="onCaseSelection(case)">
 
 							<label for="case-{{case.caseId}}" class="custom-control-label"></label>
 						</div>
