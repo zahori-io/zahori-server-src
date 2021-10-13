@@ -224,7 +224,7 @@
 				"search": "Search for..."
 			},
 			"executions": {
-				"Evidences": "EvidenceS",
+				"evidences": "Evidences",
 				"browser": "Browser",
 				"browsers": "Browsers",
 				"case": "Case",
