@@ -23,12 +23,12 @@ package io.zahori.server.controller;
  * #L%
  */
 
+import io.zahori.server.utils.FilePath;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,8 +40,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import io.zahori.server.utils.FilePath;
 
 /**
  * The type Evidences controller.
@@ -81,17 +79,16 @@ public class EvidencesController {
             if (!Files.exists(saveDir)) {
                 Files.createDirectories(saveDir);
             }
-
-            String fileName = Paths.get(file.getOriginalFilename()).getFileName().toString();
-
+            String filePath = FilePath.normalize(Paths.get(file.getOriginalFilename()).toString());
+            String fileName = StringUtils.substringAfterLast(filePath, File.separator);
             Path pathToSave = Paths.get(saveDir + File.separator + fileName);
+            
             Files.write(pathToSave, file.getBytes());
-
             LOG.info("File uploaded: " + pathToSave.toString());
             redirectAttributes.addFlashAttribute("message", "File uploaded: '" + fileName + "'");
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOG.error("Error uploading evidence file: " + e.getMessage());
         }
 
         return "redirect:/uploadStatus";
