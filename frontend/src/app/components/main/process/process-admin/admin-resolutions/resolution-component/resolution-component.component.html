@@ -1,0 +1,62 @@
+<style>
+  .error{
+    border-color: rgb(255, 72, 0);
+    box-shadow: 0 1px 1px rgba(229, 103, 23, 0.075)inset, 0 0 8px rgba(255, 81, 0, 0.966);
+    outline: 0 none;
+  }
+</style>
+
+<div class="row mt-2">
+  <div class="col-4">
+    <input #textInputId
+           [class.error] = "(name.invalid ) && submitted"
+           ngModel name="width"
+           #name="ngModel"
+           id="name"
+           placeholder="{{'main.process.processAdmin.resolutions.resolution.insertWidth'|translate}}"
+           type="text"
+           class="form-control"
+           [(ngModel)] = "resolution.width"
+           required>
+  </div>
+  <div class="col-6">
+    <input #textInputUrl
+           [class.error] = "url.invalid && submitted"
+           ngModel name="height"
+           #url="ngModel"
+           id="url"
+           placeholder="{{'main.process.processAdmin.resolutions.resolution.insertHeight'|translate}}"
+           type="text"
+           class="form-control"
+           [(ngModel)] = "resolution.height"
+           required>
+  </div>
+
+  <a *ngIf= "!isNew(resolution); else newEnv">
+    <i class="fas fa-save mr-2" title="{{'main.process.processAdmin.resolutions.resolution.edit'|translate}}" style="cursor: pointer;" (click)="updateEnv(resolution)"></i>
+    <i class="fas fa-times mt-2" title="{{'main.process.processAdmin.resolutions.resolution.remove'|translate}}" style="cursor: pointer;" (click)="deleteEnv(resolution)"></i>
+  </a>
+
+  <ng-template #newEnv>
+    <a>
+      <i class="fas fa-save mr-2" title="{{'main.process.processAdmin.resolutions.resolution.save'|translate}}" style="cursor: pointer;" (click)="createEnv(resolution); textInputId.value=''; textInputUrl.value='';"></i>
+      <i class="fas fa-times mt-2" title="{{'main.process.processAdmin.resolutions.resolution.remove'|translate}}" style="cursor: pointer;" (click)="deleteFromArray(resolution)"></i>
+    </a>
+  </ng-template>
+</div>
+
+<div class="row mt-1">
+  <div class="col-4">
+    <div  *ngIf="name.invalid && submitted" class="alert">
+      {{'formError.empty'|translate}}
+    </div>
+  </div>
+
+  <div class="col-6">
+    <div *ngIf="url.invalid && submitted"class="alert">
+      {{'formError.empty'|translate}}
+    </div>
+  </div>
+</div>
+
+

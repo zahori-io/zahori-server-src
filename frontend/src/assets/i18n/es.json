@@ -224,7 +224,6 @@
 				"search": "Buscar..."
 			},
 			"executions": {
-				"evidences": "Evidencias",
 				"browser": "Navegador",
 				"browsers": "Navegadores",
 				"case": "Caso",
@@ -235,6 +234,7 @@
 				"date": "Fecha",
 				"dateHour": "Fecha/hora",
 				"duration": "Duración",
+				"evidences": "Evidencias",
 				"executionName": "Nombre ejecución",
 				"hour": "Hora",
 				"lastExecutions": "Últimas ejecuciones",
@@ -260,12 +260,18 @@
 				"environments": {
 					"addEnvironment": "Añadir entorno",
 					"environment": {
+						"delete": "Borrar",
 						"edit": "Editar",
 						"insertEnvironmentName": "Introduzca nombre del entorno",
 						"insertEnvironmentUrl": "Introduzca url del entorno",
 						"remove": "Eliminar",
-						"save": "Borrar"
+						"removeMessage": "Borrar entorno: {{name}}}",
+						"removeWarning": "Esta acción no puede deshacerse",
+						"save": "Guardar"
 					},
+					"environmentCreated": "Entorno creado: {{name}}",
+					"environmentModified": "Entorno modificado: {{name}}",
+					"environmentRemoved": "Entorno eliminado: {{name}}",
 					"name": "Nombre",
 					"title": "Gestión de entornos",
 					"undefinedEnvironments": "No hay entornos definidos.",
@@ -273,7 +279,31 @@
 				},
 				"menu": {
 					"environments": "Entornos",
+					"resolutions": "Resoluciones",
 					"tags": "etiquetas"
+				},
+				"resolutions": {
+					"addResolution": "Añadir resolución",
+					"allFieldsObligatory": "Todos los campos son obligatorios",
+					"height": "Alto",
+					"invalidResolution": "La resolución no es valida",
+					"resolution": {
+						"cancel": "Cancelar",
+						"delete": "Borrar",
+						"edit": "Editar",
+						"insertHeight": "Introduzca el alto",
+						"insertWidth": "Introduzca el ancho",
+						"remove": "Eliminar",
+						"removeMessage": "Borrar resolución: {{width}}x{{height}}",
+						"removeWarning": "Esta acción no puede deshacerse",
+						"save": "Guardar"
+					},
+					"resolutionCreated": "Resolución creada: {{width}}x{{height}}",
+					"resolutionModified": "Resolución modificada: {{width}}x{{height}}",
+					"resolutionRemoved": "Resolución eliminada: {{width}}x{{height}}",
+					"title": "Gestión de resoluciones",
+					"undefinedResolutions": "No hay resoluciones definidas.",
+					"width": "Ancho"
 				},
 				"tags": {
 					"addTag": "Añadir etiqueta",
@@ -299,6 +329,7 @@
 			},
 			"trigger": {
 				"ErrorOnCreateExecution": "Error al crear la ejecución",
+				"SelectResolutions": "Selecciona las resoluciones",
 				"browsers": "Navegadores",
 				"canYouSeeIn": "Puedes verla en",
 				"case": "Caso",
@@ -314,12 +345,16 @@
 				"lastExecutions": "Últimas ejecuciones",
 				"noCaseDefine": "No hay casos definidos, puedes crealos en la página de",
 				"noCaseYet": "Aún no hay configuraciones",
+				"noResolutionsAvailable": "No hay resoluciones disponibles",
 				"periodic": "Periódica",
+				"resolutions": "Resoluciones",
 				"search": "Buscar...",
+				"selectAllResolutions": "Selecciona todas las resoluciones",
 				"selectCaseToExecute": "Selecciona los casos a ejecutar",
 				"tags": "Etiquetas",
 				"time": "Tiempo",
-				"title": "Casos a ejecutar"
+				"title": "Casos a ejecutar",
+				"unselectAllResolutions": "Deseleccionar todas las resoluciones"
 			}
 		},
 		"profile": {

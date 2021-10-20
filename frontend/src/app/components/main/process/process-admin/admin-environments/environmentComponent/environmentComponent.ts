@@ -1,72 +1,73 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { Environment } from '../../../../../../model/environment';
+import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Environment} from '../../../../../../model/environment';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
-    selector: 'environment',
-    templateUrl: './environmentComponent.html',
-    styleUrls: ['./environmentComponent.css']
+  selector: 'environment',
+  templateUrl: './environmentComponent.html',
+  styleUrls: ['./environmentComponent.css']
 })
 
-export class EnvironmentComponent{
-    @Input()
-    environment : Environment;
+export class EnvironmentComponent {
+  @Input()
+  environment: Environment;
 
-    @Output()
-    deleted = new EventEmitter<Environment>();
-    
-    @Output()
-    updated = new EventEmitter<Environment>();
-    
-    @Output()
-    created = new EventEmitter<Environment>();
-    @Output()
-    erased = new EventEmitter<Environment>();
+  @Output()
+  deleted = new EventEmitter<Environment>();
 
-    submitted : boolean = false;
+  @Output()
+  updated = new EventEmitter<Environment>();
 
-    createEnv(env : Environment){
-        this.created.emit(env);
-        console.log("click on create");
-        this.submitted = true;
-    }
+  @Output()
+  created = new EventEmitter<Environment>();
+  @Output()
+  erased = new EventEmitter<Environment>();
 
-    updateEnv(env : Environment){
-        this.updated.emit(env);
-        console.log("click on update");
-        this.submitted = true;
-    }
+  submitted = false;
 
-    deleteEnv(env : Environment) {
-        Swal.fire({
-            title: 'Borrar entorno: ' + env.name,
-            text: 'Esta acción no puede deshacerse',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonText: 'Borrar',
-            cancelButtonText: 'Cancelar',
-            backdrop: `
+  constructor(private translate: TranslateService) {
+  }
+
+  createEnv(env: Environment): void {
+    this.created.emit(env);
+    this.submitted = true;
+  }
+
+  updateEnv(env: Environment): void  {
+    this.updated.emit(env);
+    this.submitted = true;
+  }
+
+  deleteEnv(env: Environment): void  {
+    const bannerText = this.translate.instant('main.process.processAdmin.environments.environment.removeMessage', {name: env.name});
+    Swal.fire({
+      title: bannerText,
+      text: this.translate.instant('main.process.processAdmin.environments.environment.removeWarning'),
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('main.process.processAdmin.environments.environment.dalete'),
+      cancelButtonText: this.translate.instant('main.process.processAdmin.environments.environment.cancel'),
+      backdrop: `
                 rgba(64, 69, 58,0.4)
                 left top
                 no-repeat`
-        }).then((result) => {
-            if (result.value) {       
-                this.deleted.emit(env);
-                console.log("click on borrar");
-                this.submitted = true;
-            } 
+    }).then((result) => {
+      if (result.value) {
+        this.deleted.emit(env);
+        this.submitted = true;
+      }
 
-        })
-    }
-    
-    deleteFromArray(env : Environment){
-        this.erased.emit(env);
-    }
-
-    isNew(env : Environment){
-      return env.environmentId == 0;
+    });
   }
 
+  deleteFromArray(env: Environment): void  {
+    this.erased.emit(env);
+  }
+
+  isNew(env: Environment): boolean  {
+    return env.environmentId === 0;
+  }
 
 
 }

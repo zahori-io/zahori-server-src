@@ -48,6 +48,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StepsModalComponent } from './components/main/process/case-execution-details/steps-modal/steps-modal.component';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { AdminResolutionsComponent } from './components/main/process/process-admin/admin-resolutions/admin-resolutions.component';
+import { ResolutionComponentComponent } from './components/main/process/process-admin/admin-resolutions/resolution-component/resolution-component.component';
+import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 
 
 @NgModule({
@@ -87,7 +90,9 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
     BannerComponent,
     ConfiguratorFormComponent,
     SignupComponent,
-    StepsModalComponent
+    StepsModalComponent,
+    AdminResolutionsComponent,
+    ResolutionComponentComponent
   ],
     imports: [
         BrowserModule,
@@ -99,12 +104,13 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
         ReactiveFormsModule,
         NgbModule,
         TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useFactory: HttpLoaderFactory,
-            deps: [HttpClient]
-          }
-        })
+            loader: {
+                provide: TranslateLoader,
+                useFactory: HttpLoaderFactory,
+                deps: [HttpClient]
+            }
+        }),
+        NgMultiSelectDropDownModule
     ],
   providers: [
     AutenticacionService,
