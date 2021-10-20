@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<babeledit_project be_version="2.8.0" version="1.2">
+<babeledit_project be_version="2.9.0" version="1.2">
     <!--
 
     BabelEdit project file
@@ -2901,23 +2901,6 @@
                                 <name>executions</name>
                                 <children>
                                     <concept_node>
-                                        <name>Evidences</name>
-                                        <definition_loaded>false</definition_loaded>
-                                        <description/>
-                                        <comment/>
-                                        <default_text/>
-                                        <translations>
-                                            <translation>
-                                                <language>en-US</language>
-                                                <approved>true</approved>
-                                            </translation>
-                                            <translation>
-                                                <language>es-ES</language>
-                                                <approved>true</approved>
-                                            </translation>
-                                        </translations>
-                                    </concept_node>
-                                    <concept_node>
                                         <name>browser</name>
                                         <definition_loaded>false</definition_loaded>
                                         <description/>
@@ -3072,6 +3055,23 @@
                                     </concept_node>
                                     <concept_node>
                                         <name>duration</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description/>
+                                        <comment/>
+                                        <default_text/>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>es-ES</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
+                                        <name>evidences</name>
                                         <definition_loaded>false</definition_loaded>
                                         <description/>
                                         <comment/>
@@ -3456,6 +3456,23 @@
                                                 <name>environment</name>
                                                 <children>
                                                     <concept_node>
+                                                        <name>delete</name>
+                                                        <definition_loaded>false</definition_loaded>
+                                                        <description/>
+                                                        <comment/>
+                                                        <default_text/>
+                                                        <translations>
+                                                            <translation>
+                                                                <language>en-US</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                            <translation>
+                                                                <language>es-ES</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                        </translations>
+                                                    </concept_node>
+                                                    <concept_node>
                                                         <name>edit</name>
                                                         <definition_loaded>false</definition_loaded>
                                                         <description/>
@@ -3524,6 +3541,40 @@
                                                         </translations>
                                                     </concept_node>
                                                     <concept_node>
+                                                        <name>removeMessage</name>
+                                                        <definition_loaded>false</definition_loaded>
+                                                        <description/>
+                                                        <comment/>
+                                                        <default_text/>
+                                                        <translations>
+                                                            <translation>
+                                                                <language>en-US</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                            <translation>
+                                                                <language>es-ES</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                        </translations>
+                                                    </concept_node>
+                                                    <concept_node>
+                                                        <name>removeWarning</name>
+                                                        <definition_loaded>false</definition_loaded>
+                                                        <description/>
+                                                        <comment/>
+                                                        <default_text/>
+                                                        <translations>
+                                                            <translation>
+                                                                <language>en-US</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                            <translation>
+                                                                <language>es-ES</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                        </translations>
+                                                    </concept_node>
+                                                    <concept_node>
                                                         <name>save</name>
                                                         <definition_loaded>false</definition_loaded>
                                                         <description/>
@@ -3542,6 +3593,57 @@
                                                     </concept_node>
                                                 </children>
                                             </folder_node>
+                                            <concept_node>
+                                                <name>environmentCreated</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description/>
+                                                <comment/>
+                                                <default_text/>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>es-ES</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
+                                                <name>environmentModified</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description/>
+                                                <comment/>
+                                                <default_text/>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>es-ES</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
+                                                <name>environmentRemoved</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description/>
+                                                <comment/>
+                                                <default_text/>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>es-ES</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
                                             <concept_node>
                                                 <name>name</name>
                                                 <definition_loaded>false</definition_loaded>
@@ -3633,7 +3735,357 @@
                                                 </translations>
                                             </concept_node>
                                             <concept_node>
+                                                <name>resolutions</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description/>
+                                                <comment/>
+                                                <default_text/>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>es-ES</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
                                                 <name>tags</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description/>
+                                                <comment/>
+                                                <default_text/>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>es-ES</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                        </children>
+                                    </folder_node>
+                                    <folder_node>
+                                        <name>resolutions</name>
+                                        <children>
+                                            <concept_node>
+                                                <name>addResolution</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description/>
+                                                <comment/>
+                                                <default_text/>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>es-ES</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
+                                                <name>allFieldsObligatory</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description/>
+                                                <comment/>
+                                                <default_text/>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>es-ES</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
+                                                <name>height</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description/>
+                                                <comment/>
+                                                <default_text/>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>es-ES</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
+                                                <name>invalidResolution</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description/>
+                                                <comment/>
+                                                <default_text/>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>es-ES</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <folder_node>
+                                                <name>resolution</name>
+                                                <children>
+                                                    <concept_node>
+                                                        <name>cancel</name>
+                                                        <definition_loaded>false</definition_loaded>
+                                                        <description/>
+                                                        <comment/>
+                                                        <default_text/>
+                                                        <translations>
+                                                            <translation>
+                                                                <language>en-US</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                            <translation>
+                                                                <language>es-ES</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                        </translations>
+                                                    </concept_node>
+                                                    <concept_node>
+                                                        <name>delete</name>
+                                                        <definition_loaded>false</definition_loaded>
+                                                        <description/>
+                                                        <comment/>
+                                                        <default_text/>
+                                                        <translations>
+                                                            <translation>
+                                                                <language>en-US</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                            <translation>
+                                                                <language>es-ES</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                        </translations>
+                                                    </concept_node>
+                                                    <concept_node>
+                                                        <name>edit</name>
+                                                        <definition_loaded>false</definition_loaded>
+                                                        <description/>
+                                                        <comment/>
+                                                        <default_text/>
+                                                        <translations>
+                                                            <translation>
+                                                                <language>en-US</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                            <translation>
+                                                                <language>es-ES</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                        </translations>
+                                                    </concept_node>
+                                                    <concept_node>
+                                                        <name>insertHeight</name>
+                                                        <definition_loaded>false</definition_loaded>
+                                                        <description/>
+                                                        <comment/>
+                                                        <default_text/>
+                                                        <translations>
+                                                            <translation>
+                                                                <language>en-US</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                            <translation>
+                                                                <language>es-ES</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                        </translations>
+                                                    </concept_node>
+                                                    <concept_node>
+                                                        <name>insertWidth</name>
+                                                        <definition_loaded>false</definition_loaded>
+                                                        <description/>
+                                                        <comment/>
+                                                        <default_text/>
+                                                        <translations>
+                                                            <translation>
+                                                                <language>en-US</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                            <translation>
+                                                                <language>es-ES</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                        </translations>
+                                                    </concept_node>
+                                                    <concept_node>
+                                                        <name>remove</name>
+                                                        <definition_loaded>false</definition_loaded>
+                                                        <description/>
+                                                        <comment/>
+                                                        <default_text/>
+                                                        <translations>
+                                                            <translation>
+                                                                <language>en-US</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                            <translation>
+                                                                <language>es-ES</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                        </translations>
+                                                    </concept_node>
+                                                    <concept_node>
+                                                        <name>removeMessage</name>
+                                                        <definition_loaded>false</definition_loaded>
+                                                        <description/>
+                                                        <comment/>
+                                                        <default_text/>
+                                                        <translations>
+                                                            <translation>
+                                                                <language>en-US</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                            <translation>
+                                                                <language>es-ES</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                        </translations>
+                                                    </concept_node>
+                                                    <concept_node>
+                                                        <name>removeWarning</name>
+                                                        <definition_loaded>false</definition_loaded>
+                                                        <description/>
+                                                        <comment/>
+                                                        <default_text/>
+                                                        <translations>
+                                                            <translation>
+                                                                <language>en-US</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                            <translation>
+                                                                <language>es-ES</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                        </translations>
+                                                    </concept_node>
+                                                    <concept_node>
+                                                        <name>save</name>
+                                                        <definition_loaded>false</definition_loaded>
+                                                        <description/>
+                                                        <comment/>
+                                                        <default_text/>
+                                                        <translations>
+                                                            <translation>
+                                                                <language>en-US</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                            <translation>
+                                                                <language>es-ES</language>
+                                                                <approved>true</approved>
+                                                            </translation>
+                                                        </translations>
+                                                    </concept_node>
+                                                </children>
+                                            </folder_node>
+                                            <concept_node>
+                                                <name>resolutionCreated</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description/>
+                                                <comment/>
+                                                <default_text/>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>es-ES</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
+                                                <name>resolutionModified</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description/>
+                                                <comment/>
+                                                <default_text/>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>es-ES</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
+                                                <name>resolutionRemoved</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description/>
+                                                <comment/>
+                                                <default_text/>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>es-ES</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
+                                                <name>title</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description/>
+                                                <comment/>
+                                                <default_text/>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>es-ES</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
+                                                <name>undefinedResolutions</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description/>
+                                                <comment/>
+                                                <default_text/>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>es-ES</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
+                                                <name>width</name>
                                                 <definition_loaded>false</definition_loaded>
                                                 <description/>
                                                 <comment/>
@@ -3944,6 +4396,23 @@
                                         </translations>
                                     </concept_node>
                                     <concept_node>
+                                        <name>SelectResolutions</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description/>
+                                        <comment/>
+                                        <default_text/>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>es-ES</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
                                         <name>browsers</name>
                                         <definition_loaded>false</definition_loaded>
                                         <description/>
@@ -4199,6 +4668,23 @@
                                         </translations>
                                     </concept_node>
                                     <concept_node>
+                                        <name>noResolutionsAvailable</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description/>
+                                        <comment/>
+                                        <default_text/>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>es-ES</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
                                         <name>periodic</name>
                                         <definition_loaded>false</definition_loaded>
                                         <description/>
@@ -4216,7 +4702,41 @@
                                         </translations>
                                     </concept_node>
                                     <concept_node>
+                                        <name>resolutions</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description/>
+                                        <comment/>
+                                        <default_text/>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>es-ES</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
                                         <name>search</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description/>
+                                        <comment/>
+                                        <default_text/>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>es-ES</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
+                                        <name>selectAllResolutions</name>
                                         <definition_loaded>false</definition_loaded>
                                         <description/>
                                         <comment/>
@@ -4285,6 +4805,23 @@
                                     </concept_node>
                                     <concept_node>
                                         <name>title</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description/>
+                                        <comment/>
+                                        <default_text/>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>es-ES</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
+                                        <name>unselectAllResolutions</name>
                                         <definition_loaded>false</definition_loaded>
                                         <description/>
                                         <comment/>
@@ -4528,6 +5065,7 @@
     </translation_files>
     <editor_configuration>
         <save_empty_translations>true</save_empty_translations>
+        <translation_order>alphabetically</translation_order>
         <copy_templates>
             <copy_template>{{'%1' | translate}}</copy_template>
             <copy_template>[translate]=&quot;'%1'&quot;</copy_template>

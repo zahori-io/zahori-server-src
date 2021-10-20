@@ -10,8 +10,8 @@ import { Timeout } from '../../../../../model/timeout';
 import { DataService } from '../../../../../services/data.service';
 import { BannerOptions } from '../../../../utils/banner/banner';
 
-const SUCCESS_COLOR: string = "alert alert-success";
-const ERROR_COLOR: string = "alert alert-danger";
+const SUCCESS_COLOR: string = 'alert alert-success';
+const ERROR_COLOR: string = 'alert alert-danger';
 @Component({
     selector: 'configuratorForm',
     templateUrl: './configuratorForm.component.html',
@@ -19,6 +19,10 @@ const ERROR_COLOR: string = "alert alert-danger";
 })
 
 export class ConfiguratorFormComponent implements OnInit, OnChanges {
+
+    constructor(
+        public dataService: DataService
+    ) { }
     @Input()
     configuration: Configuration;
     @Input()
@@ -37,16 +41,12 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
     @Output()
     environmentsChange = new EventEmitter<any>();
 
-    public eventInstantiateEnvironmentCompononent: Subject<void> = new Subject<void>();
-    emitEventOpenEnvironmentComponent() {
-        this.eventInstantiateEnvironmentCompononent.next();
-    }
+    public eventInstantiateEnvironmentComponent: Subject<void> = new Subject<void>();
 
     banner: BannerOptions;
-
-    constructor(
-        public dataService: DataService
-    ) { }
+    emitEventOpenEnvironmentComponent(): void {
+        this.eventInstantiateEnvironmentComponent.next();
+    }
 
     ngOnInit(): void {
         this.banner = new BannerOptions();
@@ -61,7 +61,7 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
 
     saveConf(configuration: Configuration) {
         this.banner = new BannerOptions();
-        let errorMessage = this.validateConfig(configuration);
+        const errorMessage = this.validateConfig(configuration);
         if (errorMessage){
             this.banner = new BannerOptions("", errorMessage, ERROR_COLOR, true);
             return;
@@ -70,7 +70,7 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
         if (configuration.testRepository.testRepoId == 0){
             configuration.testRepository = null;
         }
-        
+
         let configurations: Configuration[] = [configuration];
         this.dataService.saveConfigurations(configurations).subscribe(
             (configurationsSaved) => {

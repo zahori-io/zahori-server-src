@@ -1,7 +1,7 @@
-import { Attachment } from "./attachment";
-import { Browser } from "./browser";
-import { Case } from "./case";
-import { Step } from "./step";
+import { Attachment } from './attachment';
+import { Browser } from './browser';
+import { Case } from './case';
+import { Step } from './step';
 
 export class CaseExecution {
     caseExecutionId: number;

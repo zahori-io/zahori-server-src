@@ -1,0 +1,34 @@
+<banner [banner]="banner" (click)="closeBanner()"></banner>
+
+<div class="sidebarZahoricontent">
+  <div class="app-page-title">
+    <div class="page-title-wrapper">
+      <div class="page-title-heading">
+        <div>{{'main.process.processAdmin.resolutions.title'|translate}}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-12" *ngIf="resolutions.length == 0 && newResolutions.length == 0">
+    {{'main.process.processAdmin.resolutions.undefinedResolutions'|translate}}
+  </div>
+
+  <div *ngIf="resolutions.length > 0 || newResolutions.length > 0" class="row mt-3">
+    <div class="col-4">
+      <label id="width" class="">{{'main.process.processAdmin.resolutions.width'|translate}}</label>
+    </div>
+    <div class="col-6">
+      <label id="height" class="">{{'main.process.processAdmin.resolutions.height'|translate}}</label>
+    </div>
+
+    <app-resolution res class="col-12" id="test" *ngFor="let res of resolutions" [resolution]="res" (updated)="updateRes($event)"
+                 (deleted)="deleteRes($event)"></app-resolution>
+    <app-resolution res class="col-12" id="newTests" *ngFor="let newRes of newResolutions" [resolution]="newRes"
+                 (created)="createRes($event)" (erased)="deleteFromArray($event)"></app-resolution>
+  </div>
+
+  <div class="col-8 text-center mt-3">
+    <button class="btn-wide mt-2 btn-icon btn btn-zahoriV btn-sm" (click)="newRes()">{{'main.process.processAdmin.resolutions.addResolution'|translate}}</button>
+  </div>
+</div>
+

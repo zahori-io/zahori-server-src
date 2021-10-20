@@ -22,6 +22,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { ProcessComponent } from './components/main/process/process.component';
 import { ProcessAdminComponent } from './components/main/process/process-admin/process-admin.component';
 import { SignupComponent } from './components/signup/signup.component';
+import {AdminResolutionsComponent} from './components/main/process/process-admin/admin-resolutions/admin-resolutions.component';
 
 
 const routes: Routes = [
@@ -44,7 +45,8 @@ const routes: Routes = [
             children:[
               { path: '', component : AdminEnvironmentsComponent},
               { path: 'environments', component: AdminEnvironmentsComponent },
-              { path: 'tags', component: AdminTagsComponent }
+              { path: 'tags', component: AdminTagsComponent },
+              { path: 'resolutions', component: AdminResolutionsComponent}
             ]}
         ]
       },

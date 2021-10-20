@@ -41,3 +41,11 @@
 .mat-standard-chip {
   margin: 4px 1px 4px 1px!important;
 }
+:host ::ng-deep .multiselect-dropdown .dropdown-btn .selected-item {
+  background: #6a6a6a!important;
+  border:1px solid #6a6a6a!important;
+  border-radius: 8px!important;
+}
+:host ::ng-deep .dropdown-list{
+  position: relative!important;
+}

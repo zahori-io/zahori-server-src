@@ -224,7 +224,6 @@
 				"search": "Search for..."
 			},
 			"executions": {
-				"evidences": "Evidences",
 				"browser": "Browser",
 				"browsers": "Browsers",
 				"case": "Case",
@@ -235,6 +234,7 @@
 				"date": "Date",
 				"dateHour": "date/hour",
 				"duration": "Duration",
+				"evidences": "Evidences",
 				"executionName": "Run Name",
 				"hour": "Hour",
 				"lastExecutions": "Latest executions",
@@ -260,12 +260,18 @@
 				"environments": {
 					"addEnvironment": "Add Environment",
 					"environment": {
+						"delete": "Delete",
 						"edit": "Edit",
 						"insertEnvironmentName": "Enter environment name",
 						"insertEnvironmentUrl": "Enter environment url",
 						"remove": "Remove",
+						"removeMessage": "Delete environment: {{name}}}",
+						"removeWarning": "This action cannot be undone",
 						"save": "Delete"
 					},
+					"environmentCreated": "Environment created: {{name}}",
+					"environmentModified": "Modified environment: {{name}}",
+					"environmentRemoved": "Environment removed: {{name}}",
 					"name": "Name",
 					"title": "Environment management",
 					"undefinedEnvironments": "There are no defined environments.",
@@ -273,7 +279,31 @@
 				},
 				"menu": {
 					"environments": "Environments",
+					"resolutions": "Resolutions",
 					"tags": "Tags"
+				},
+				"resolutions": {
+					"addResolution": "Add resolution",
+					"allFieldsObligatory": "All fields are required",
+					"height": "Height",
+					"invalidResolution": "The resolution is not valid",
+					"resolution": {
+						"cancel": "Cancel",
+						"delete": "Delete",
+						"edit": "Edit",
+						"insertHeight": "Enter Height",
+						"insertWidth": "Enter the width",
+						"remove": "Remove",
+						"removeMessage": "Remove resolution: {{width}}x{{height}}",
+						"removeWarning": "This action cannot be undone",
+						"save": "Delete"
+					},
+					"resolutionCreated": "Resolution created: {{width}}x{{height}}",
+					"resolutionModified": "Modified resolution: {{width}}x{{height}}",
+					"resolutionRemoved": "Resolution removed: {{width}}x{{height}}",
+					"title": "Resolution management",
+					"undefinedResolutions": "There are no definite resolutions.",
+					"width": "Width"
 				},
 				"tags": {
 					"addTag": "Add Tag",
@@ -299,6 +329,7 @@
 			},
 			"trigger": {
 				"ErrorOnCreateExecution": "Error creating run",
+				"SelectResolutions": "Select resolutions",
 				"browsers": "Browsers",
 				"canYouSeeIn": "You can see it in",
 				"case": "Case",
@@ -314,12 +345,16 @@
 				"lastExecutions": "Latest executions",
 				"noCaseDefine": "There are no defined cases, you can create them on the page",
 				"noCaseYet": "No settings yet",
+				"noResolutionsAvailable": "No resolutions available",
 				"periodic": "Periodic",
+				"resolutions": "Resolutions",
 				"search": "Search for...",
+				"selectAllResolutions": "Select all resolutions",
 				"selectCaseToExecute": "Select the cases to run",
 				"tags": "Tags",
 				"time": "Time",
-				"title": "Cases to be executed"
+				"title": "Cases to be executed",
+				"unselectAllResolutions": "Deselect all resolutions"
 			}
 		},
 		"profile": {

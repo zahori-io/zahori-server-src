@@ -21,6 +21,7 @@ import { Retry } from '../model/retry';
 import { Timeout } from '../model/timeout';
 import { EvidenceType } from '../model/evidence-type';
 import { ServerVersions } from '../model/serverVersions';
+import {Resolution} from '../model/resolution';
 
 @Injectable({
   providedIn: 'root'
@@ -86,7 +87,7 @@ export class DataService {
     this.getConfigurations().subscribe(
       configurations => {
         this.processConfigurations = configurations;
-        //console.log(JSON.stringify(this.processConfigurations))
+        // console.log(JSON.stringify(this.processConfigurations))
       }
     );
   }
@@ -98,82 +99,82 @@ export class DataService {
   }
 
   public getExecutions(): Observable<Execution[]> {
-    return this.http.get<Execution[]>(this.url + "process/" + this.processSelected.processId + "/executions", {});
+    return this.http.get<Execution[]>(this.url + 'process/' + this.processSelected.processId + '/executions', {});
   }
 
   public getCases(): Observable<Case[]> {
-    return this.http.get<Case[]>(this.url + "process/" + this.processSelected.processId + "/cases", {});
+    return this.http.get<Case[]>(this.url + 'process/' + this.processSelected.processId + '/cases', {});
   }
 
   public getEviCases(): Observable<EvidenceCase[]> {
-    return this.http.get<EvidenceCase[]>(this.url + "evidenceCase", {});
+    return this.http.get<EvidenceCase[]>(this.url + 'evidenceCase', {});
   }
 
   public getEvidenceTypes(): Observable<EvidenceType[]> {
-    return this.http.get<EvidenceType[]>(this.url + "evidenceType", {});
+    return this.http.get<EvidenceType[]>(this.url + 'evidenceType', {});
   }
 
   public getCasesJson(): Observable<string> {
-    return this.http.get<string>(this.url + "process/" + this.processSelected.processId + "/cases", { responseType: 'text' as 'json' });
+    return this.http.get<string>(this.url + 'process/' + this.processSelected.processId + '/cases', { responseType: 'text' as 'json' });
   }
 
   public saveCases(cases: {}[]): Observable<any> {
-    return this.http.post(this.url + "process/" + this.processSelected.processId + "/cases", cases, { responseType: 'text' as 'json' });
+    return this.http.post(this.url + 'process/' + this.processSelected.processId + '/cases', cases, { responseType: 'text' as 'json' });
   }
 
   private getConfigurations(): Observable<Configuration[]> {
-    return this.http.get<Configuration[]>(this.url + "process/" + this.processSelected.processId + "/configurations", {});
+    return this.http.get<Configuration[]>(this.url + 'process/' + this.processSelected.processId + '/configurations', {});
   }
 
-  public saveConfigurations(configurations: Configuration[]) : Observable<Configuration[]> {
-    return this.http.post<Configuration[]>(this.url + "process/" + this.processSelected.processId + "/configurations", JSON.stringify(configurations));
+  public saveConfigurations(configurations: Configuration[]): Observable<Configuration[]> {
+    return this.http.post<Configuration[]>(this.url + 'process/' + this.processSelected.processId + '/configurations', JSON.stringify(configurations));
   }
 
   public getBrowsers(): Observable<Browser[]> {
-    return this.http.get<Browser[]>(this.url + "browser", {});
+    return this.http.get<Browser[]>(this.url + 'browser', {});
   }
 
   public getSelenoidUiHostAndPort(): Observable<string> {
-    return this.http.get<string>(this.url + "selenoid/ui", { responseType: 'text' as 'json' });
+    return this.http.get<string>(this.url + 'selenoid/ui', { responseType: 'text' as 'json' });
   }
 
   public createExecution(execution: Execution): Observable<Execution> {
-    return this.http.post<Execution>(this.url + "process/" + this.processSelected.processId + "/executions", JSON.stringify(execution), {});
+    return this.http.post<Execution>(this.url + 'process/' + this.processSelected.processId + '/executions', JSON.stringify(execution), {});
   }
 
   public getFile(fileUrl: string) {
-    return this.http.get(this.url + "process/" + this.processSelected.processId + "/file?path=" + fileUrl, { responseType: 'blob' });
+    return this.http.get(this.url + 'process/' + this.processSelected.processId + '/file?path=' + fileUrl, { responseType: 'blob' });
   }
 
   public getEnvironments(processId: string): Observable<any> {
-    return this.http.get<any>(this.url + "process/" + processId + "/environments");
+    return this.http.get<any>(this.url + 'process/' + processId + '/environments');
   }
 
   public setEnvironment(envs: Environment[], processId: string) {
-    return this.http.post(this.url + "process/" + processId + "/environments", JSON.stringify(envs));
+    return this.http.post(this.url + 'process/' + processId + '/environments', JSON.stringify(envs));
   }
 
   public getTags(processId: String) {
-    return this.http.get(this.url + "process/" + processId + "/tags");
+    return this.http.get(this.url + 'process/' + processId + '/tags');
   }
 
   public setTags(tags: Tag[], processId: string) {
-    return this.http.post(this.url + "process/" + processId + "/tags", JSON.stringify(tags));
+    return this.http.post(this.url + 'process/' + processId + '/tags', JSON.stringify(tags));
   }
 
   public getTestRepositories() {
-    return this.http.get(this.url + "repositories");
+    return this.http.get(this.url + 'repositories');
   }
 
   public getRetries(): Observable<Retry[]> {
-    return this.http.get<Retry[]>(this.url + "retries");
+    return this.http.get<Retry[]>(this.url + 'retries');
   }
 
   public getTimeouts(): Observable<Timeout[]> {
-    return this.http.get<Timeout[]>(this.url + "timeouts");
+    return this.http.get<Timeout[]>(this.url + 'timeouts');
   }
 
-  //TMS
+  // TMS
   public getClientTestRepo(): Observable<ClientTestRepo[]> {
     return this.http.get<ClientTestRepo[]>(this.url + 'clienttestrepo/', {});
   }
@@ -201,8 +202,15 @@ export class DataService {
   public setSignUpUser(account: Account): Observable<Account> {
     return this.http.post<Account>('/users/sign-up', JSON.stringify(account), { headers: this.headers });
   }
+  public getResolutions(processId: string): Observable<any> {
+    return this.http.get<any>(this.url + 'resolutions/' + processId);
+  }
+
+  public setResolutions(res: Resolution[], processId: string): Observable<object> {
+    return this.http.post(this.url + 'resolutions/' + processId, JSON.stringify(res));
+  }
   // get Jenkins artifact
-  //public getFile(fileUrl: string) {
+  // public getFile(fileUrl: string) {
   //  return this.http.get(this.url + "process/" + this.processSelected.processId + "/artifact?url=" + fileUrl, { responseType: 'blob' });
-  //}
+  // }
 }
