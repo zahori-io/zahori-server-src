@@ -141,7 +141,6 @@ export class DataService {
   public createExecution(execution: Execution): Observable<Execution> {
     return this.http.post<Execution>(this.url + 'process/' + this.processSelected.processId + '/executions', JSON.stringify(execution), {});
   }
-
   public getFile(fileUrl: string): Observable<any> {
     return this.http.get(this.url + 'process/' + this.processSelected.processId + '/file?path=' + fileUrl, { responseType: 'blob' });
   }
@@ -209,7 +208,6 @@ export class DataService {
   public setResolutions(res: Resolution[], processId: string): Observable<object> {
     return this.http.post(this.url + 'resolutions/' + processId, JSON.stringify(res));
   }
-
   public setPeriodicExecution(ps: ProcessSchedule): Observable<object>{
     return this.http.post(this.url + 'schedule/', JSON.stringify(ps));
   }
