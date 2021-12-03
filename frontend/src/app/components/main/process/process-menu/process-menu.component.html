@@ -30,10 +30,7 @@
     <div class="app-header__content header-shadow">
         <div class="app-header-left">
             <ul class="nav">
-                <li class="nav-title">
-                    <strong class="font-weight-normal">{{dataService.teamSelected.name}}</strong> -
-                    {{dataService.processSelected.name}}
-                </li>
+                <li class="nav-title">{{dataService.processSelected.name}}</li>
                 <li class="nav-item">
                     <a routerLink="executions" routerLinkActive="linkActive" class="nav-link">
                         <i class="nav-link-icon fas fa-history" aria-hidden="true"></i>
@@ -59,7 +56,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a routerLink="admin" routerLinkActive="linkActive" class="nav-link">
+                    <a routerLink="admin/environments" routerLinkActive="linkActive" class="nav-link">
                         <i class="fas fa-cog mr-2" aria-hidden="true"> </i>
                       {{'main.process.processMenu.Administration'|translate}}
                     </a>
