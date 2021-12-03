@@ -18,6 +18,7 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
   selenoidUiHostAndPort: string;
   rfb: RFB; // Vídeo streaming
   ngClass: string;
+  showCapabilities: boolean = false;
 
   constructor(public dataService: DataService) {
   }
@@ -50,6 +51,14 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
     this.caseExecutionSelected = new CaseExecution();
   }
 
+  editCapabilities() {
+    this.showCapabilities = true;
+  }
+
+  closeCapabilities() {
+    this.showCapabilities = false;
+  }
+  
   getProcessExecutions() {
     this.loading = true;
     this.dataService.getExecutions().subscribe(
@@ -100,6 +109,16 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
     return browserNames;
   }
 
+  getScreenResolutionsList(execution: Execution): any {
+    var resolutions = new Set();
+
+    execution.casesExecutions.forEach(function (caseExecution) {
+      resolutions.add(caseExecution.screenResolution);
+    });
+
+    return resolutions;
+  }
+
   maximizeModal() {
     this.modalMaximized = !this.modalMaximized;
   }
@@ -146,6 +165,10 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
         console.log("getSelenoidUiHostAndPort -> " + this.selenoidUiHostAndPort);
       }
     );
+  }
+  
+  getNumberOfTableColumns(): number {
+    return this.dataService.isWebProcess() ? 11 : 9;
   }
 
 }

@@ -45,7 +45,6 @@ import { BannerComponent } from './components/utils/banner/banner.component';
 import {MatChipsModule } from '@angular/material/chips';
 import { SignupComponent } from './components/signup/signup.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { StepsModalComponent } from './components/main/process/case-execution-details/steps-modal/steps-modal.component';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { AdminResolutionsComponent } from './components/main/process/process-admin/admin-resolutions/admin-resolutions.component';
@@ -90,7 +89,6 @@ import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
     BannerComponent,
     ConfiguratorFormComponent,
     SignupComponent,
-    StepsModalComponent,
     AdminResolutionsComponent,
     ResolutionComponentComponent
   ],

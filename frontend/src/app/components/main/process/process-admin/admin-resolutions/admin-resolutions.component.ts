@@ -39,7 +39,7 @@ export class AdminResolutionsComponent implements OnInit {
     res.active = false;
     const resArray: Resolution[] = [res];
     const bannerText = this.translate.instant('main.process.processAdmin.resolutions.resolutionRemoved', {width: res.width, height: res.height});
-    this.sendPostPetition(resArray, new BannerOptions(bannerText, '', SUCCESS_COLOR, true));
+    this.saveResolution(resArray, new BannerOptions(bannerText, '', SUCCESS_COLOR, true));
   }
 
   updateRes(res: Resolution): void {
@@ -49,7 +49,7 @@ export class AdminResolutionsComponent implements OnInit {
     } else {
       const resArray: Resolution[] = [res];
       const bannerText = this.translate.instant('main.process.processAdmin.resolutions.resolutionModified', {width: res.width, height: res.height});
-      this.sendPostPetition(resArray, new BannerOptions(bannerText, '', SUCCESS_COLOR, true));
+      this.saveResolution(resArray, new BannerOptions(bannerText, '', SUCCESS_COLOR, true));
     }
 
   }
@@ -61,7 +61,7 @@ export class AdminResolutionsComponent implements OnInit {
     } else {
       const resArray: Resolution[] = [res];
       const bannerText = this.translate.instant('main.process.processAdmin.resolutions.resolutionCreated', {width: res.width, height: res.height});
-      this.sendPostPetition(resArray, new BannerOptions(bannerText, '', SUCCESS_COLOR, true));
+      this.saveResolution(resArray, new BannerOptions(bannerText, '', SUCCESS_COLOR, true));
       this.deleteFromArray(res);
     }
   }
@@ -73,7 +73,7 @@ export class AdminResolutionsComponent implements OnInit {
     }
   }
 
-  sendPostPetition(res: Resolution[], banner: BannerOptions): void {
+  saveResolution(res: Resolution[], banner: BannerOptions): void {
     this.dataService.setResolutions(res, String(this.dataService.processSelected.processId)).subscribe(
       () => {
         this.refresh();

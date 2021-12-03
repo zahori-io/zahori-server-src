@@ -23,11 +23,6 @@ package io.zahori.server.service;
  * #L%
  */
 
-import io.zahori.server.model.CaseExecution;
-import io.zahori.server.model.Execution;
-import io.zahori.server.model.selenoid.SelenoidSession;
-import io.zahori.server.model.selenoid.SelenoidStatus;
-import io.zahori.server.repository.CaseExecutionsRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,6 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +43,12 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+
+import io.zahori.server.model.CaseExecution;
+import io.zahori.server.model.Execution;
+import io.zahori.server.model.selenoid.SelenoidSession;
+import io.zahori.server.model.selenoid.SelenoidStatus;
+import io.zahori.server.repository.CaseExecutionsRepository;
 
 /**
  * The type Selenoid service.
@@ -84,11 +86,12 @@ public class SelenoidService {
         LOG.info("Watching selenoid sessions for execution {}", execution.getExecutionId());
 
         Map<Long, CaseExecution> caseExecutions = getMap(execution);
+        LOG.info("######## caseExecutions map: " + caseExecutions.toString());
 
         // Timeout cuando aún queda algún caso que no se ha llegado ha ejecutar
         int maxTimeoutRetries = 20;
         int timeoutRetry = 0;
-        int waitSeconds = 2;
+        int waitSeconds = 1;
         Set<Long> casesExecuted = new HashSet<>();
         List<CaseExecution> caseExecutionsToUpdate;
 
@@ -115,20 +118,20 @@ public class SelenoidService {
             caseExecutionsToUpdate = new ArrayList<>();
             for (SelenoidSession session : status.getSessions().values()) {
                 Long caseExecutionIdInSession = Long.valueOf(session.getCaps().getName());
+                LOG.info("######## caseExecutionIdInSession: " + caseExecutionIdInSession);
 
                 // Validate that executionId in this session is from a case in this execution
                 if (!caseExecutions.containsKey(caseExecutionIdInSession)) {
                     continue;
                 }
 
-                // If not running previously -> set selenoid sessionId, browser version and screen resolution
+                // If not running previously -> set selenoid sessionId and browser version
                 if (!casesExecuted.contains(caseExecutionIdInSession)) {
                     LOG.info("CaseExecution '{}' is running", caseExecutionIdInSession);
 
                     CaseExecution caseExecution = caseExecutions.get(caseExecutionIdInSession);
                     caseExecution.setSelenoidId(session.getId());
                     caseExecution.setBrowserVersion(session.getCaps().getVersion());
-                    caseExecution.setScreenResolution(session.getCaps().getScreenResolution());
 
                     caseExecutionsToUpdate.add(caseExecution);
                     casesExecuted.add(caseExecutionIdInSession);
@@ -160,7 +163,7 @@ public class SelenoidService {
 
         SelenoidStatus status = response.getBody();
 
-        LOG.info("selenoid status: {}", status);
+        LOG.info(status.toString());
         return status;
     }
 

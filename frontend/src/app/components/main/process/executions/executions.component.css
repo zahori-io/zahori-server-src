@@ -1,3 +1,6 @@
+.app-main__inner {
+    padding: 10px 15px 0!important;
+}
 
 .modal{
     margin-top: 100px;
@@ -8,7 +11,7 @@
 }
 
 .modal-content {
-    height: calc(100vh - 100px);
+    height: calc(100vh - 135px);
 }
 
 .modal-body {
@@ -18,4 +21,35 @@
 .modal-maximized {
     max-width: initial;
     width: 98%;
+}
+
+.caseSelected{
+    background: #f8f9fa!important;
+}
+
+.sidebarZahoricontent.reduce {
+    width: 60%;
+    float: left;
+}
+
+.sidebarZahoriGrey {
+    display: none;
+}
+.sidebarZahoriGrey.active {
+    display: block;
+    width: 45%;
+    float: right;
+    height: fit-content;
+    margin: -140px -70px 0 0px;
+    min-width: auto;
+}
+
+.drawer-content-wrapperGrey {
+    height: calc(100vh - 70px);
+    position: fixed!important;
+    overflow-y: scroll!important;
+}
+
+.drawer-nav-btn {
+    top: 2.75rem;
 }

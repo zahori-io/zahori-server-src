@@ -45,8 +45,8 @@ const routes: Routes = [
             children:[
               { path: '', component : AdminEnvironmentsComponent},
               { path: 'environments', component: AdminEnvironmentsComponent },
-              { path: 'tags', component: AdminTagsComponent },
-              { path: 'resolutions', component: AdminResolutionsComponent}
+              { path: 'resolutions', component: AdminResolutionsComponent},
+              { path: 'tags', component: AdminTagsComponent }
             ]}
         ]
       },
