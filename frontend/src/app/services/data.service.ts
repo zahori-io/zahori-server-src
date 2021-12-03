@@ -22,6 +22,7 @@ import { Timeout } from '../model/timeout';
 import { EvidenceType } from '../model/evidence-type';
 import { ServerVersions } from '../model/serverVersions';
 import {Resolution} from '../model/resolution';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,8 @@ export class DataService {
 
   constructor(
     private http: HttpClient,
-    private autenticacionService: AutenticacionService
+    private autenticacionService: AutenticacionService,
+    private router: Router
   ) { }
 
   getClientFromToken(): void {
@@ -91,6 +93,15 @@ export class DataService {
       }
     );
   }
+
+  isWebProcess():boolean {
+    return this.processSelected.processType.name === 'BROWSER';
+  }
+
+  isDashboardPage(){
+    return this.router.url === "/app/dashboard";
+  }
+
   /*
     API CALLS
    */

@@ -5,7 +5,7 @@
   </h3>
 </div>
 <div>
-  <button (click)="selectTeam(team)" type="button" class="btn btn-zahoriPill mb-2 mr-1" data-container="body"
+  <button (click)="selectTeam(team)" type="button" class="btn btn-zahoriPill mb-2 mr-1" [ngClass]="{'btn-zahoriPill-selected': !dataService.isDashboardPage() && dataService.teamSelected.id === team.id}" data-container="body"
     data-toggle="popover" data-placement="top" *ngFor="
       let team of dataService.client.clientTeams;
       index as indexTeam;

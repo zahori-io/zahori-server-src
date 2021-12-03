@@ -6,7 +6,7 @@
 </div>
 
 <div>
-  <button (click)="selectProcess(process)" type="button" class="btn btn-zahoriPillNar mb-2 mr-1" data-container="body"
+  <button (click)="selectProcess(process)" type="button" class="btn btn-zahoriPillNar mb-2 mr-1" [ngClass]="{'btn-zahoriPillNar-selected': !dataService.isDashboardPage() && dataService.processSelected.processId === process.processId}" data-container="body"
     data-toggle="popover" data-placement="top" *ngFor="
       let process of dataService.teamSelectedInSelector.processes;
       index as indexProcess;
