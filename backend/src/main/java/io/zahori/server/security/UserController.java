@@ -69,14 +69,16 @@ public class UserController {
     public ResponseEntity<Object> signUp(@RequestBody AccountEntity user) {
         log.info("Sing-up user: " + user);
 
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-
         try {
-            user = accountRepository.save(user);
-            return new ResponseEntity<>(user, HttpStatus.OK);
+            /* PREVENT USER SIGNUP UNTIL FUNCIONALITY IS READY
+                user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+                user = accountRepository.save(user);
+                return new ResponseEntity<>(user, HttpStatus.OK);
+            */
+            return new ResponseEntity<>(user, HttpStatus.NOT_IMPLEMENTED);
+
         } catch (Exception e) {
             log.error(e.getMessage());
-            e.printStackTrace();
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
