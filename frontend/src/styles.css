@@ -134,6 +134,7 @@ a:hover {
 .btn-zahoriAz:not(:disabled):not(.disabled):active:focus,.btn-zahoriAz:not(:disabled):not(.disabled).active:focus,.show>.btn-zahoriAz.dropdown-toggle:focus{box-shadow:0 0 0 0 rgba(82,88,93,0.5)}
 
 .btn-zahoriPill{color:#84986B;background-color:#D7E5C6;border: none; border-radius: 50px}
+.btn-zahoriPill-selected{color:#D7E5C6;background-color:#84986B}
 .btn-zahoriPill:hover{color:#D7E5C6;background-color:#84986B}
 .btn-zahoriPill:focus,.btn-zahoriPill.focus{box-shadow:0 0 0 0 rgba(82,88,93,0.5)}
 .btn-zahoriPill.disabled,.btn-zahoriPill:disabled{color:#fff;background-color:#343a40;border-color:#343a40}
@@ -143,7 +144,8 @@ a:hover {
 .btn-sm{padding: 0 1rem; font-weight: 400}
 
 .btn-zahoriPillNar{color:#7B7032;background-color:#EADB86;border: none; border-radius: 50px}
-.btn-zahoriPillNar:hover{color:#EADB86;background-color:#7B7032}
+.btn-zahoriPillNar-selected{color:#EADB86;background-color:#7B7032}
+.btn-zahoriPillNar:hover {color:#EADB86;background-color:#7B7032}
 .btn-zahoriPillNar:focus,.btn-zahoriPillNar.focus{box-shadow:0 0 0 0 rgba(82,88,93,0.5)}
 .btn-zahoriPillNar.disabled,.btn-zahoriPillNar:disabled{color:#EADB86;background-color:#7B7032;border-color:#343a40}
 .btn-zahoriPillNar:not(:disabled):not(.disabled):active,.btn-zahoriPillNar:not(:disabled):not(.disabled).active,.show>.btn-zahoriPillNar.dropdown-toggle{color:#EADB86;background-color:#7B7032;border-color:#171a1d}
@@ -184,6 +186,22 @@ a:hover {
 	background: #61714e;
     color: #fff;
 }
+
+.btn-zahoriPill-resolutions {
+    color: #6a6a6a;
+    background: #eee;
+    border: none;
+    border-radius: 4px;
+}
+
+.badge-resolutions {
+    font-weight: 400;
+    text-transform: lowercase;
+    padding: 1px 5px;
+    font-size: 0.89em;
+    display: inline-block;
+}
+
 
 /* ---------------------------------------------------
     TÍTULOS

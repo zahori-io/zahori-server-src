@@ -1,9 +1,6 @@
 package io.zahori.server.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import java.io.Serializable;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +9,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /*-
  * #%L
@@ -41,6 +39,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "resolutions")
 public class Resolution implements Serializable {
+
     @Id
     @Column(name = "resolution_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,10 +63,10 @@ public class Resolution implements Serializable {
     private Process process;
 
     @Column(name = "width")
-    private Long width;
+    private Integer width;
 
     @Column(name = "height")
-    private Long height;
+    private Integer height;
 
     public Long getResolutionId() {
         return resolutionId;
@@ -139,28 +138,28 @@ public class Resolution implements Serializable {
     /**
      * @return Screen witdh
      */
-    public Long getWidth() {
+    public Integer getWidth() {
         return width;
     }
 
     /**
      * @param width
      */
-    public void setWidth(Long width) {
+    public void setWidth(Integer width) {
         this.width = width;
     }
 
     /**
      * @return Screen height
      */
-    public Long getHeight() {
+    public Integer getHeight() {
         return height;
     }
 
     /**
      * @param height
      */
-    public void setHeight(Long height) {
+    public void setHeight(Integer height) {
         this.height = height;
     }
 }
