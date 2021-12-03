@@ -51,11 +51,12 @@
                 <select name="reponame" id="{{'reponame-'+elem.id.testRepoId}}" class="form-control"
                     [disabled]="!elem.active"
                     [(ngModel)]="testRepo.get(elem.id.testRepoId).name">
-                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='Xray Server'">{{'main.admin.tms.xrayServer'|translate}}</option>
-                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='Xray Cloud'">{{'main.admin.tms.xrayCloud'|translate}}</option>
-                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='Azure Test Plans'">{{'main.admin.tms.azureTestPlans'|translate}}</option>
-                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='TestLink'">{{'main.admin.tms.testLink'|translate}}</option>
-                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='HP ALM'">{{'main.admin.tms.HP_ALM'|translate}}</option>
+                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='Xray Server'">Xray Server</option>
+                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='Xray Cloud'">Xray Cloud</option>
+                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='Azure Test Plans'">Azure Test Plans
+                    </option>
+                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='TestLink'">TestLink</option>
+                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='HP ALM'">HP ALM</option>
                 </select>
             </div>
             <!--<div class="col-1 d-flex">

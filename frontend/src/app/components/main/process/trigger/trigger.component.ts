@@ -8,10 +8,9 @@ import { Execution } from '../../../../model/excution';
 import { Process } from '../../../../model/process';
 import { DataService } from '../../../../services/data.service';
 import { Tag } from '../../../../model/tag';
-import {Resolution} from '../../../../model/resolution';
-import {IDropdownSettings} from 'ng-multiselect-dropdown';
-import {TranslateService} from '@ngx-translate/core';
-
+import { Resolution } from '../../../../model/resolution';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-trigger',
@@ -34,7 +33,7 @@ export class TriggerComponent implements OnInit {
   dropdownSettings: IDropdownSettings = {};
   selectResolution: string;
 
-  constructor(public dataService: DataService, private router: Router, private  translate: TranslateService) {
+  constructor(public dataService: DataService, private router: Router, private translate: TranslateService) {
   }
 
   ngOnInit(): void {
@@ -57,12 +56,14 @@ export class TriggerComponent implements OnInit {
       unSelectAllText: this.translate.instant('main.process.trigger.unselectAllResolutions')
     };
   }
+
   getTags(): void {
     this.dataService.getTags(String(this.dataService.processSelected.processId)).subscribe(
       (res: any) => {
         this.tags = res;
       });
   }
+
   getBrowsers(): void {
     this.dataService.getBrowsers().subscribe(
       browsers => {
@@ -70,6 +71,7 @@ export class TriggerComponent implements OnInit {
       }
     );
   }
+
   getResolutions(): void {
     this.dataService.getResolutions(String(this.dataService.processSelected.processId)).subscribe(
       resolutions => {
@@ -80,17 +82,19 @@ export class TriggerComponent implements OnInit {
       }
     );
   }
-  newExecution(): void  {
+
+  newExecution(): void {
     this.execution = new Execution();
     this.execution.configuration = new Configuration();
     this.execution.process = new Process();
     this.execution.process.processId = this.dataService.processSelected.processId;
     this.execution.casesExecutions = [];
     this.clearSelectedBrowsers();
+    this.clearSelectedResolutions();
     this.clearSelectedCases();
   }
 
-  clearSelectedBrowsers(): void  {
+  clearSelectedBrowsers(): void {
     if (this.browsers) {
       for (let j = 0; j < this.browsers.length; j++) {
         this.browsers[j].selected = false;
@@ -98,11 +102,16 @@ export class TriggerComponent implements OnInit {
     }
   }
 
-  deselectCase(processCase: Case): void  {
-    processCase.selected = false;
+  clearSelectedResolutions(): void {
+    this.selectedResolutions = [];
   }
 
-  createExecution(): void  {
+  deselectCase(processCase: Case): void {
+    processCase.selected = false;
+    this.onCaseSelection(processCase);
+  }
+
+  createExecution(): void {
     this.loading = true;
     this.created = false;
     this.error = '';
@@ -113,16 +122,24 @@ export class TriggerComponent implements OnInit {
       if (this.dataService.processCases[i].selected) {
 
         // PROCESS OF TYPE 'BROWSER'
-        if (this.dataService.processSelected.processType.name === 'BROWSER') {
-          for (const item of this.browsers) {
-            if (item.selected){
-              const caseExecution = new CaseExecution();
-              caseExecution.browser = item;
-              caseExecution.cas = this.dataService.processCases[i];
-              this.selectedResolutions.forEach(res => {
-                caseExecution.screenResolution = res.widthAndHeight;
+        if (this.dataService.isWebProcess()) {
+          for (const browser of this.browsers) {
+            if (browser.selected) {
+              if (this.selectedResolutions.length == 0) {
+                const caseExecution = new CaseExecution();
+                caseExecution.browser = browser;
+                caseExecution.cas = this.dataService.processCases[i];
+                caseExecution.screenResolution = "";
                 this.execution.casesExecutions.push(caseExecution);
-              });
+              } else {
+                this.selectedResolutions.forEach(resolution => {
+                  const caseExecution = new CaseExecution();
+                  caseExecution.browser = browser;
+                  caseExecution.cas = this.dataService.processCases[i];
+                  caseExecution.screenResolution = resolution.widthAndHeight;
+                  this.execution.casesExecutions.push(caseExecution);
+                });
+              }
             }
           }
         }
@@ -159,14 +176,16 @@ export class TriggerComponent implements OnInit {
       !this.thereAreCasesSelected()
       || this.dataService.processCases.length === 0
       || !this.execution.name
-      || (this.dataService.processSelected.processType.name === 'BROWSER' && !this.thereAreBrowsersSelected())
+      || (this.dataService.isWebProcess() && !this.thereAreBrowsersSelected())
+      || (this.dataService.isWebProcess() && !this.thereAreResolutionsSelected())
       || !this.execution.configuration.configurationId
       || this.loading
     );
   }
+
   thereAreCasesSelected(): boolean {
     for (let i = 0; i < this.dataService.processCases.length; i++) {
-      if (this.dataService.processCases[i].selected){
+      if (this.dataService.processCases[i].selected) {
         return true;
       }
     }
@@ -175,27 +194,31 @@ export class TriggerComponent implements OnInit {
 
   thereAreBrowsersSelected(): boolean {
     for (let i = 0; i < this.browsers.length; i++) {
-      if (this.browsers[i].selected){
+      if (this.browsers[i].selected) {
         return true;
       }
     }
     return false;
   }
 
-  clearSelectedCases(): void  {
+  thereAreResolutionsSelected(): boolean {
+    return this.selectedResolutions && this.selectedResolutions.length > 0;
+  }
+
+  clearSelectedCases(): void {
     for (let i = 0; i < this.dataService.processCases.length; i++) {
       this.dataService.processCases[i].selected = false;
     }
   }
 
-  enablePeriodicExecution(event: any): void  {
+  enablePeriodicExecution(event: any): void {
     this.periodicExecutionEnabled = event.currentTarget.checked;
   }
 
-  onTagClick(tag: Tag): void  {
-    if (this.selectedTags.some(e => e.name === tag.name)){// Is selected
+  onTagClick(tag: Tag): void {
+    if (this.selectedTags.some(e => e.name === tag.name)) {// Is selected
       this.dataService.processCases.forEach(pc => {
-        if (pc.clientTags.some(e => e.name === tag.name)){
+        if (pc.clientTags.some(e => e.name === tag.name)) {
           if (pc.clientTags.length === 1) { // if process only have one tag
             pc.selected = false;
           } else {// if process have multiple tags
@@ -204,8 +227,8 @@ export class TriggerComponent implements OnInit {
             } else { // if process have multiple tags and have selected more than one
               let unselect = true;
               pc.clientTags.forEach(ct => {
-                if (ct.name !== tag.name){
-                  if (this.selectedTags.some(e => e.name === ct.name)){
+                if (ct.name !== tag.name) {
+                  if (this.selectedTags.some(e => e.name === ct.name)) {
                     unselect = false;
                   }
                 }
@@ -225,39 +248,43 @@ export class TriggerComponent implements OnInit {
       this.selectedTags.push(tag);
     }
   }
-  onCaseSelection(cs: Case): void{
 
-      const selectTags = new Map(cs.clientTags.map(key => [key.tagId, true]));
-      this.dataService.processCases.forEach(pc => {
-        if (!pc.selected && pc.clientTags.length > 0){// Solo  casos no seleccionados y que tengan tags
-          pc.clientTags.forEach(ptg => {
-            if (cs.clientTags.some(e => e.name === ptg.name)){
-              selectTags.set(ptg.tagId, false);
-            }
-          });
-        }
-      });
-      console.log(selectTags);
-      selectTags.forEach((value: boolean, key: number) => {
-        if (!value && this.selectedTags.some(e => e.tagId === key)){
-            this.selectedTags.splice(this.selectedTags.indexOf(this.selectedTags.find(tg => tg.tagId === key)), 1);
-        }
-        if (value && !this.selectedTags.some(e => e.tagId === key)){
-          this.selectedTags.push(this.tags.find(tg => tg.tagId === key));
-        }
-      });
-  }
-  massiveChangeState(): void {
-      if (!this.massiveSelected) {
-        this.dataService.processCases.forEach(pc => {
-          pc.selected = false;
+  onCaseSelection(processCase: Case): void {
+    console.log("On case selection -> selected tags: " + this.selectedTags.length);
+    const selectTags = new Map(processCase.clientTags.map(key => [key.tagId, true]));
+    this.dataService.processCases.forEach(processCase => {
+      if (!processCase.selected && processCase.clientTags.length > 0) {// Solo  casos no seleccionados y que tengan tags
+        processCase.clientTags.forEach(tag => {
+          if (processCase.clientTags.some(t => t.name === tag.name)) {
+            selectTags.set(tag.tagId, false);
+          }
         });
-        this.selectedTags.splice(0,  this.selectedTags.length);
-      } else {
-        this.dataService.processCases.forEach(pc => {
-          pc.selected = true;
-        });
-        this.selectedTags.concat(this.tags);
       }
+    });
+
+    selectTags.forEach((value: boolean, key: number) => {
+      if (!value && this.selectedTags.some(tag => tag.tagId === key)) {
+        this.selectedTags.splice(this.selectedTags.indexOf(this.selectedTags.find(t => t.tagId === key)), 1);
+      }
+      if (value && !this.selectedTags.some(tag => tag.tagId === key)) {
+        this.selectedTags.push(this.tags.find(t => t.tagId === key));
+      }
+    });
+    console.log("--> On case selection -> selected tags: " + this.selectedTags.length);
   }
+
+  massiveChangeState(): void {
+    if (!this.massiveSelected) {
+      this.dataService.processCases.forEach(pc => {
+        pc.selected = false;
+      });
+      this.selectedTags.splice(0, this.selectedTags.length);
+    } else {
+      this.dataService.processCases.forEach(pc => {
+        pc.selected = true;
+      });
+      this.selectedTags = [].concat(this.tags);
+    }
+  }
+
 }

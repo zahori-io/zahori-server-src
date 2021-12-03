@@ -1,6 +1,6 @@
 {
 	"banner": {
-		"configDeleted": "Deleted configuration",
+		"configDeleted": "Configuration removed",
 		"error": "Error: ",
 		"serverVersion": "A new version of the server is available: {{latest}} (current: {{actual}})"
 	},
@@ -53,7 +53,7 @@
 				"languages": "Languages",
 				"languagesOps": {
 					"en": "English",
-					"es": "Spanish"
+					"es": "Español"
 				},
 				"parallelization": "Parallelization",
 				"retries": "Retries",
@@ -72,7 +72,7 @@
 			"groups": {
 				"add": "Add",
 				"administrator": "Admin",
-				"editNewGroup": "Edit / Create group",
+				"editNewGroup": "Edit/Create group",
 				"linkProcess": "Link processes",
 				"linkUsers": "Link Users",
 				"name": "First Name",
@@ -84,9 +84,9 @@
 			},
 			"menu": {
 				"browsers": "Browsers",
-				"execution": "Execution",
+				"execution": "Executions",
 				"groups": "Groups",
-				"testRepo": "Test Repository",
+				"testRepo": "Repositories",
 				"users": "Users"
 			},
 			"platforms": {
@@ -99,13 +99,13 @@
 				"colour": "colour",
 				"name": "First Name",
 				"save": "Save",
-				"title": "Label management"
+				"title": "Tags"
 			},
 			"tms": {
-				"User": "User",
+				"user": "User",
 				"active": "Active",
 				"add": "Add",
-				"key": "Key",
+				"key": "Password",
 				"name": "Name",
 				"noRepo": "There are no repositories defined yet.",
 				"save": "Save",
@@ -116,11 +116,11 @@
 					"xrayCloud": "Xray Cloud",
 					"xrayServer": "Xray Server"
 				},
-				"title": "Managing Test Repositories",
+				"title": "Repositories management",
 				"url": "Url"
 			},
 			"users": {
-				"editNewUser": "Edit / Create user",
+				"editNewUser": "Edit/Create user",
 				"email": "e-mail",
 				"id": "Id",
 				"name": "First Name",
@@ -152,7 +152,7 @@
 		"menu": {
 			"language": {
 				"en": "English",
-				"es": "Spanish",
+				"es": "Español",
 				"text": "Language"
 			},
 			"logout": "Logout",
@@ -188,16 +188,42 @@
 			},
 			"cases": {
 				"addCase": "Add case",
-				"addField": "Add Field",
+				"addField": {
+					"cancelButton": "Cancel",
+					"confirmButton": "Add",
+					"duplicatedName": "The field '{{fieldName}}' already exists, choose another name",
+					"emptyNameWarning": "Write the name of the field!",
+					"placeholder": "Field name",
+					"title": "Add field"
+				},
 				"case": "Case",
 				"cases": "Cases",
 				"changeName": "Rename",
 				"createCase": "Create one",
-				"deleteCase": "Delete case",
-				"deleteField": "Clear Field",
+				"editField": "Edit field name",
+				"editFieldSaveButton": "Change",
+				"firstCaseName": "My first case",
 				"noCases": "There are no defined cases yet.",
+				"removeCase": {
+					"cancelButton": "Cancel",
+					"confirmButton": "Remove",
+					"iconText": "Remove case",
+					"title": "Remove case: ",
+					"warning": "This action cannot be undone when the Save button is pressed"
+				},	
+				"removeField": {
+					"cancelButton": "Cancel",
+					"confirmation": "Field removed",
+					"confirmButton": "Remove",
+					"iconText": "Remove field",
+					"title": "Remove field: ",
+					"warning": "This action cannot be undone when the Save button is pressed",
+					"warningFixedFields": "Fixed fields cannot be removed"
+				},
 				"save": "Save",
-				"tags": "Labels"
+				"saveError": "Error saving cases: ",
+				"saveSuccess": "Cases saved",
+				"tags": "Tags"
 			},
 			"configurator": {
 				"configurations": "Configurations",
@@ -205,8 +231,8 @@
 				"edit": "Edit",
 				"form": {
 					"close": "Close",
-					"createConf": "Create Configuration",
-					"editConf": "Edit settings",
+					"createConf": "Create configuration",
+					"editConf": "Edit configuration",
 					"editEnvironments": "Edit environments",
 					"environment": "Environment",
 					"evidenceTypes": "Types of evidence",
@@ -220,60 +246,64 @@
 					"timeout": "Timeout"
 				},
 				"newConfiguration": "New configuration",
-				"noConfigurations": "There are no settings for this process yet, you can create one on the right side.",
+				"noConfigurations": "There are no configurations for this process yet, you can create one on the right side.",
 				"search": "Search for..."
 			},
 			"executions": {
 				"browser": "Browser",
 				"browsers": "Browsers",
 				"case": "Case",
-				"caseExecuted": "Executed cases",
+				"caseExecuted": "Cases executed",
 				"close": "Close",
-				"correctTotals": "Correct / Totals",
+				"configuration": "Configuration",
+				"correctTotals": "Passed/Totals",
 				"created": "Created",
 				"date": "Date",
-				"dateHour": "date/hour",
+				"dateHour": "Date",
 				"duration": "Duration",
 				"evidences": "Evidences",
-				"executionName": "Run Name",
+				"executionName": "Name",
 				"hour": "Hour",
-				"lastExecutions": "Latest executions",
+				"lastExecutions": "Last executions",
 				"loading": "Loading...",
 				"manual": "Manual",
 				"notExecuted": "Not executed",
 				"notes": "Notes",
 				"periodic": "Periodic",
+				"resolution": "Resolution",
+				"resolutions": "Resolutions",
 				"running": "Executing...",
 				"save": "Save",
 				"schedulePeriodicExecution ": "Schedule periodic execution",
 				"search": "Search for...",
-				"show": "Watch",
+				"show": "watch",
 				"state": "State",
 				"trigger": "Trigger",
-				"type": "Type",
+				"type": "Trigger",
 				"video": "Video",
-				"videoStreaming": "Video / Streaming",
+				"videoStreaming": "Video/Streaming",
 				"withoutExecutionsYet": "There are no executions of this process yet. You can create a new one on the page"
 			},
 			"processAdmin": {
 				"administrator": "Administrator",
 				"environments": {
-					"addEnvironment": "Add Environment",
+					"addEnvironment": "Add environment",
 					"environment": {
-						"delete": "Delete",
+						"cancel": "Cancel",
+						"delete": "Remove",
 						"edit": "Edit",
-						"insertEnvironmentName": "Enter environment name",
-						"insertEnvironmentUrl": "Enter environment url",
+						"insertEnvironmentName": "Environment name",
+						"insertEnvironmentUrl": "Environment url",
 						"remove": "Remove",
-						"removeMessage": "Delete environment: {{name}}}",
+						"removeMessage": "Remove environment: {{name}}",
 						"removeWarning": "This action cannot be undone",
-						"save": "Delete"
+						"save": "Remove"
 					},
 					"environmentCreated": "Environment created: {{name}}",
-					"environmentModified": "Modified environment: {{name}}",
+					"environmentModified": "Environment updated: {{name}}",
 					"environmentRemoved": "Environment removed: {{name}}",
 					"name": "Name",
-					"title": "Environment management",
+					"title": "Environments",
 					"undefinedEnvironments": "There are no defined environments.",
 					"url": "Url"
 				},
@@ -289,42 +319,50 @@
 					"invalidResolution": "The resolution is not valid",
 					"resolution": {
 						"cancel": "Cancel",
-						"delete": "Delete",
+						"delete": "Remove",
 						"edit": "Edit",
-						"insertHeight": "Enter Height",
-						"insertWidth": "Enter the width",
+						"insertHeight": "Height",
+						"insertWidth": "Width",
 						"remove": "Remove",
 						"removeMessage": "Remove resolution: {{width}}x{{height}}",
 						"removeWarning": "This action cannot be undone",
-						"save": "Delete"
+						"save": "Remove"
 					},
 					"resolutionCreated": "Resolution created: {{width}}x{{height}}",
-					"resolutionModified": "Modified resolution: {{width}}x{{height}}",
+					"resolutionModified": "Resolution updated: {{width}}x{{height}}",
 					"resolutionRemoved": "Resolution removed: {{width}}x{{height}}",
-					"title": "Resolution management",
+					"title": "Resolutions",
 					"undefinedResolutions": "There are no definite resolutions.",
 					"width": "Width"
 				},
 				"tags": {
-					"addTag": "Add Tag",
+					"addTag": "Add tag",
 					"colour": "Colour",
 					"name": "Name",
 					"tag": {
-						"IntroduceTagName": "Enter tag name",
-						"deleteFields": "Clear Fields",
+						"IntroduceTagName": "Tag name",
+						"created": "Tag created: ",
+						"duplicatedColour": "The colour for tag '{{tagName}}' is already used in other tag, choose other colour",
+						"duplicatedName": "The tag name '{{tagName}}' already exist, choose other name",
 						"edit": "Edit",
 						"obligatoryField": "The field is mandatory",
 						"remove": "Remove",
-						"save": "Save"
+						"removeCancelButton": "Cancel",
+						"removeConfirmButton": "Remove",
+						"removed": "Tag removed: ",
+						"removeTag": "Remove tag: ",
+						"removeWarning": "This action cannot be undone",
+						"save": "Save",
+						"updated": "Tag updated: "
 					},
-					"title": "Label management"
+					"title": "Tags"
 				}
 			},
 			"processMenu": {
 				"Administration": "Administration",
 				"cases": "Cases",
-				"configurator": "configurator",
-				"lastExecutions": "Latest executions",
+				"configurator": "Configurations",
+				"lastExecutions": "Last executions",
 				"trigger": "Trigger"
 			},
 			"trigger": {
@@ -335,26 +373,27 @@
 				"case": "Case",
 				"caseToExecute": "Cases to be executed *",
 				"cases": "Cases",
-				"create": "Create",
-				"createOne": ", create a",
+				"configuration": "Configuration",
 				"creatingExecution": "Creating execution",
+				"execute": "Execute",
 				"execution": "Execution",
 				"executionCreated": "Execution created",
 				"here": "here",
 				"id": "Id",
-				"lastExecutions": "Latest executions",
+				"lastExecutions": "Last executions",
+				"name": "Name",
 				"noCaseDefine": "There are no defined cases, you can create them on the page",
-				"noCaseYet": "No settings yet",
-				"noResolutionsAvailable": "No resolutions available",
+				"noCaseYet": "There are no configurations, create one ",
+				"noResolutionsAvailable": "No resolutions available, create one ",
 				"periodic": "Periodic",
 				"resolutions": "Resolutions",
 				"search": "Search for...",
-				"selectAllResolutions": "Select all resolutions",
+				"selectAllResolutions": "Select all",
 				"selectCaseToExecute": "Select the cases to run",
 				"tags": "Tags",
 				"time": "Time",
 				"title": "Cases to be executed",
-				"unselectAllResolutions": "Deselect all resolutions"
+				"unselectAllResolutions": "Unselect all"
 			}
 		},
 		"profile": {
