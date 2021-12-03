@@ -52,14 +52,14 @@
 				},
 				"languages": "Idiomas",
 				"languagesOps": {
-					"en": "Ingles",
+					"en": "English",
 					"es": "Español"
 				},
 				"parallelization": "Paralelización",
 				"retries": "Reintentos",
 				"save": "Guardar",
 				"timeout": "Timeout",
-				"title": "Gestión de ejecuciones",
+				"title": "Gestión de Ejecuciones",
 				"types": "Tipos",
 				"typesOps": {
 					"doc": "Doc",
@@ -84,28 +84,28 @@
 			},
 			"menu": {
 				"browsers": "Navegadores",
-				"execution": "Ejecución",
+				"execution": "Ejecuciones",
 				"groups": "Grupos",
-				"testRepo": "Repositorio de Pruebas",
+				"testRepo": "Repositorios",
 				"users": "Usuarios"
 			},
 			"platforms": {
 				"desktop": "Ordenador",
 				"mobile": "Dispositivos mobiles",
-				"title": "Gestión de navegadores"
+				"title": "Gestión de Navegadores"
 			},
 			"tags": {
 				"add": "Añadir",
 				"colour": "Color",
 				"name": "Nombre",
 				"save": "Guardar",
-				"title": "Gestión de etiquetas"
+				"title": "Gestión de Etiquetas"
 			},
 			"tms": {
-				"User": "Usuario",
+				"user": "Usuario",
 				"active": "Activo",
 				"add": "Añadir",
-				"key": "Clave",
+				"key": "Contraseña",
 				"name": "Nombre",
 				"noRepo": "Aún no hay repositorios definidos.",
 				"save": "Guardar",
@@ -116,12 +116,12 @@
 					"xrayCloud": "Xray Cloud",
 					"xrayServer": "Xray Server"
 				},
-				"title": "Gestión de Repositorios de pruebas",
+				"title": "Gestión de Repositorios",
 				"url": "Url"
 			},
 			"users": {
 				"editNewUser": "Editar/Crear usuario",
-				"email": "email",
+				"email": "Email",
 				"id": "ID",
 				"name": "Nombre",
 				"newUser": "Nuevo usuario",
@@ -151,7 +151,7 @@
 		},
 		"menu": {
 			"language": {
-				"en": "Ingles",
+				"en": "English",
 				"es": "Español",
 				"text": "Idioma"
 			},
@@ -188,15 +188,41 @@
 			},
 			"cases": {
 				"addCase": "Añadir caso",
-				"addField": "Añadir campo",
+				"addField": {
+					"cancelButton": "Cancelar",
+					"confirmButton": "Añadir",
+					"duplicatedName": "El campo '{{fieldName}}' ya existe, elige otro nombre",
+					"emptyNameWarning": "Escribe el nombre del campo!",
+					"placeholder": "Nombre del campo",
+					"title": "Añadir campo"
+				},
 				"case": "Caso",
 				"cases": "Casos",
 				"changeName": "Cambiar nombre",
 				"createCase": "Crear uno",
-				"deleteCase": "Eliminar caso",
-				"deleteField": "Borrar campo",
+				"editField": "Cambiar nombre del campo",
+				"editFieldSaveButton": "Cambiar",
+				"firstCaseName": "Mi primer caso",
 				"noCases": "Aún no hay casos definidos.",
+				"removeCase": {
+					"cancelButton": "Cancelar",
+					"confirmButton": "Eliminar",
+					"iconText": "Eliminar caso",
+					"title": "Eliminar caso: ",
+					"warning": "Esta acción no podrá deshacerse cuando se pulse el botón 'Guardar' de la página"
+				},	
+				"removeField": {
+					"cancelButton": "Cancelar",
+					"confirmation": "Campo eliminado",
+					"confirmButton": "Eliminar",
+					"iconText": "Eliminar campo",
+					"title": "Eliminar campo: ",
+					"warning": "Esta acción no podrá deshacerse cuando se pulse el botón 'Guardar' de la página",
+					"warningFixedFields": "No se pueden eliminar columnas fijas"
+				},
 				"save": "Guardar",
+				"saveError": "Error al guardar los casos: ",
+				"saveSuccess": "Casos guardados",
 				"tags": "Etiquetas"
 			},
 			"configurator": {
@@ -229,13 +255,14 @@
 				"case": "Caso",
 				"caseExecuted": "Casos ejecutados",
 				"close": "Cerrar",
+				"configuration": "Configuración",
 				"correctTotals": "Correctos/Totales",
 				"created": "Creada",
 				"date": "Fecha",
-				"dateHour": "Fecha/hora",
+				"dateHour": "Fecha",
 				"duration": "Duración",
 				"evidences": "Evidencias",
-				"executionName": "Nombre ejecución",
+				"executionName": "Nombre",
 				"hour": "Hora",
 				"lastExecutions": "Últimas ejecuciones",
 				"loading": "Cargando...",
@@ -243,6 +270,8 @@
 				"notExecuted": "No ejecutado",
 				"notes": "Notas",
 				"periodic": "Periódica",
+				"resolution": "Resolución",
+				"resolutions": "Resoluciones",
 				"running": "En ejecución...",
 				"save": "Guardar",
 				"schedulePeriodicExecution ": "Programar ejecución periódica",
@@ -250,7 +279,7 @@
 				"show": "ver",
 				"state": "Estado",
 				"trigger": "Disparador",
-				"type": "Tipo",
+				"type": "Disparador",
 				"video": "Video",
 				"videoStreaming": "Vídeo/Streaming",
 				"withoutExecutionsYet": "Aún no hay ejecuciones de este proceso. Puedes crear una nueva en la página"
@@ -260,12 +289,13 @@
 				"environments": {
 					"addEnvironment": "Añadir entorno",
 					"environment": {
-						"delete": "Borrar",
+						"cancel": "Cancelar",
+						"delete": "Eliminar",
 						"edit": "Editar",
-						"insertEnvironmentName": "Introduzca nombre del entorno",
-						"insertEnvironmentUrl": "Introduzca url del entorno",
+						"insertEnvironmentName": "Nombre del entorno",
+						"insertEnvironmentUrl": "Url del entorno",
 						"remove": "Eliminar",
-						"removeMessage": "Borrar entorno: {{name}}}",
+						"removeMessage": "Eliminar entorno: {{name}}",
 						"removeWarning": "Esta acción no puede deshacerse",
 						"save": "Guardar"
 					},
@@ -273,7 +303,7 @@
 					"environmentModified": "Entorno modificado: {{name}}",
 					"environmentRemoved": "Entorno eliminado: {{name}}",
 					"name": "Nombre",
-					"title": "Gestión de entornos",
+					"title": "Entornos",
 					"undefinedEnvironments": "No hay entornos definidos.",
 					"url": "Url"
 				},
@@ -290,19 +320,19 @@
 					"invalidResolution": "La resolución no es valida",
 					"resolution": {
 						"cancel": "Cancelar",
-						"delete": "Borrar",
+						"delete": "Eliminar",
 						"edit": "Editar",
-						"insertHeight": "Introduzca el alto",
-						"insertWidth": "Introduzca el ancho",
+						"insertHeight": "Alto",
+						"insertWidth": "Ancho",
 						"remove": "Eliminar",
-						"removeMessage": "Borrar resolución: {{width}}x{{height}}",
+						"removeMessage": "Eliminar resolución: {{width}}x{{height}}",
 						"removeWarning": "Esta acción no puede deshacerse",
 						"save": "Guardar"
 					},
 					"resolutionCreated": "Resolución creada: {{width}}x{{height}}",
 					"resolutionModified": "Resolución modificada: {{width}}x{{height}}",
 					"resolutionRemoved": "Resolución eliminada: {{width}}x{{height}}",
-					"title": "Gestión de resoluciones",
+					"title": "Resoluciones",
 					"undefinedResolutions": "No hay resoluciones definidas.",
 					"width": "Ancho"
 				},
@@ -311,12 +341,20 @@
 					"colour": "Color",
 					"name": "Nombre",
 					"tag": {
-						"IntroduceTagName": "Introduzca nombre de la etiqueta",
-						"deleteFields": "Borrar campos",
+						"IntroduceTagName": "Nombre de la etiqueta",
+						"created": "Etiqueta creada: ",
+						"duplicatedColour": "El color de la etiqueta '{{tagName}}' ya se está usando en otra etiqueta, elige otro color",
+						"duplicatedName": "La etiqueta '{{tagName}}' ya existe, elige otro nombre",
 						"edit": "Editar",
 						"obligatoryField": "El campo es obligatorio",
 						"remove": "Eliminar",
-						"save": "Guardar"
+						"removeCancelButton": "Cancelar",
+						"removeConfirmButton": "Eliminar",
+						"removed": "Etiqueta eliminada: ",
+						"removeTag": "Eliminar etiqueta: ",
+						"removeWarning": "Esta acción no puede deshacerse",
+						"save": "Guardar",
+						"updated": "Etiqueta modificada: "
 					},
 					"title": "Gestión de etiquetas"
 				},
@@ -357,7 +395,7 @@
 			"processMenu": {
 				"Administration": "Administración",
 				"cases": "Casos",
-				"configurator": "Configurador",
+				"configurator": "Configuraciones",
 				"lastExecutions": "Últimas ejecuciones",
 				"trigger": "Disparador"
 			},
@@ -372,21 +410,22 @@
 				"case": "Caso",
 				"caseToExecute": "Casos a ejecutar *",
 				"cases": "casos",
-				"create": "Crear",
-				"createOne": ", crea una",
+				"configuration": "Configuración",
 				"creatingExecution": "Creando ejecución",
+				"execute": "Ejecutar",
 				"execution": "Ejecución",
 				"executionCreated": "Ejecución creada",
 				"here": "aquí",
 				"id": "Id",
 				"lastExecutions": "Últimas ejecuciones",
+				"name": "Nombre",
 				"noCaseDefine": "No hay casos definidos, puedes crealos en la página de",
-				"noCaseYet": "Aún no hay configuraciones",
-				"noResolutionsAvailable": "No hay resoluciones disponibles",
+				"noCaseYet": "Aún no hay configuraciones, crea una ",
+				"noResolutionsAvailable": "No hay resoluciones, defínelas ",
 				"periodic": "Periódica",
 				"resolutions": "Resoluciones",
 				"search": "Buscar...",
-				"selectAllResolutions": "Selecciona todas las resoluciones",
+				"selectAllResolutions": "Marcar todas",
 				"selectCaseToExecute": "Selecciona los casos a ejecutar",
 				"tags": "Etiquetas",
 				"time": "Tiempo",

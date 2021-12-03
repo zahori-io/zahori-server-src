@@ -44,18 +44,18 @@
             <th *ngIf="isVariableField(field.key)" class="showOnHover">
               {{field.key}}
               <i title="{{'main.process.cases.changeName'|translate}}" class="fas fa-pen fa-1 hide ml-3" style="cursor: pointer;" (click)="editField(tableData, field.key)"></i>
-              <i title="{{'main.process.cases.deleteField'|translate}}" class="fa fa-trash fa-1 hide ml-2" style="cursor: pointer;" (click)="removeField(tableData, field.key, fixedFields)"></i>
+              <i title="{{'main.process.cases.removeField.iconText'|translate}}" class="fa fa-trash fa-1 hide ml-2" style="cursor: pointer;" (click)="removeField(tableData, field.key, fixedFields)"></i>
             </th>
           </ng-container>
 
-          <th><i title="{{'main.process.cases.addField'|translate}}" class="fa fa-plus fa-1" style="cursor: pointer;" (click)="addField(tableData)"></i></th>
+          <th><i title="{{'main.process.cases.addField.title'|translate}}" class="fa fa-plus fa-1" style="cursor: pointer;" (click)="addField(tableData)"></i></th>
         </tr>
       </thead>
       <tbody>
         <ng-container *ngFor="let case of tableData">
           <tr *ngIf="case.active == true" class="showOnHover">
             <td>
-              <i class="hide fa fa-trash fa-1" title="{{'main.process.cases.deleteCase'|translate}}" (click)="removeCase(tableData, case)" style="cursor: pointer;"></i>
+              <i class="hide fa fa-trash fa-1" title="{{'main.process.cases.removeCase.iconText'|translate}}" (click)="removeCase(tableData, case)" style="cursor: pointer;"></i>
             </td>
             <td contenteditable="true"  [textContent]="case.name" (blur)="case.name = $event.target.textContent"></td>
             <td>

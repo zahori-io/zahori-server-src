@@ -1,4 +1,3 @@
-
 <div class="app-main__inner2col">
 
 	<div class="Zahoricontent">
@@ -9,13 +8,17 @@
 					<div>{{'main.process.trigger.title'|translate}}</div>
 				</div>
 				<div class="page-title-actions d-flex">
-					<div class="menuPills m-auto" *ngFor ="let tag of tags">
-            <button id = "tag" class="mr-2 btn-pill btn btn-info btn-sm" [ngClass]="{'tagSelected':selectedTags.includes(tag)}" [ngStyle] = "{backgroundColor: tag.color, borderColor: tag.color}" style="color: #3d4246" (click)="onTagClick(tag)">{{tag.name}}</button>
-          </div>
+					<div class="menuPills m-auto" *ngFor="let tag of tags">
+						<button id="tag" class="mr-2 btn-pill btn btn-info btn-sm"
+							[ngClass]="{'tagSelected':selectedTags.includes(tag)}"
+							[ngStyle]="{backgroundColor: tag.color, borderColor: tag.color}" style="color: #3d4246"
+							(click)="onTagClick(tag)">{{tag.name}}</button>
+					</div>
 
 					<div class="search-wrapper ml-3">
 						<div class="input-holder">
-							<input type="text" class="search-input" placeholder="{{'main.process.trigger.search'|translate}}">
+							<input type="text" class="search-input"
+								placeholder="{{'main.process.trigger.search'|translate}}">
 							<button class="search-icon">
 								<span></span>
 							</button>
@@ -30,13 +33,13 @@
 			<thead>
 				<tr>
 					<th>
-            <div class="ml-2 custom-control custom-switch">
-              <input type="checkbox" [(ngModel)]="massiveSelected" name="massiveSelected" id="massiveSelected" [checked]="massiveSelected"
-                     (change)="massiveChangeState()"
-                     class="custom-control-input">
-              <label _ngcontent-scw-c70="" class="custom-control-label" for="massiveSelected"></label>
-            </div>
-          </th>
+						<div class="ml-2 custom-control custom-switch">
+							<input type="checkbox" [(ngModel)]="massiveSelected" name="massiveSelected"
+								id="massiveSelected" [checked]="massiveSelected" (change)="massiveChangeState()"
+								class="custom-control-input">
+							<label _ngcontent-scw-c70="" class="custom-control-label" for="massiveSelected"></label>
+						</div>
+					</th>
 					<th>{{'main.process.trigger.id'|translate}}</th>
 					<th>{{'main.process.trigger.case'|translate}}</th>
 					<th>{{'main.process.trigger.tags'|translate}}</th>
@@ -44,13 +47,15 @@
 			</thead>
 			<tbody>
 				<tr *ngIf="dataService.processCases.length == 0">
-					<td class="text-center" colspan="4">{{'main.process.trigger.noCaseDefine'|translate}} <a routerLink="../cases"><strong>{{'main.process.trigger.cases'|translate}}</strong></a></td>
+					<td class="text-center" colspan="4">{{'main.process.trigger.noCaseDefine'|translate}} <a
+							routerLink="../cases"><strong>{{'main.process.trigger.cases'|translate}}</strong></a></td>
 				</tr>
 				<tr *ngFor="let case of dataService.processCases; index as indexCase; last as lastCase;">
 					<td>
 						<div class="ml-2 custom-control custom-switch">
-							<input type="checkbox" [(ngModel)]="case.selected" name="case-{{case.caseId}}" id="case-{{case.caseId}}"
-							[checked]="case.selected" [value]="case.caseId" class="custom-control-input" (change)="onCaseSelection(case)">
+							<input type="checkbox" [(ngModel)]="case.selected" name="case-{{case.caseId}}"
+								id="case-{{case.caseId}}" [checked]="case.selected" [value]="case.caseId"
+								class="custom-control-input" (change)="onCaseSelection(case)">
 
 							<label for="case-{{case.caseId}}" class="custom-control-label"></label>
 						</div>
@@ -60,8 +65,8 @@
 					<td>
 						<button class="btn-circle mt-2" [title]="tag.name"
 							*ngFor="let tag of case.clientTags; index as indexTags; last as lastTag;"
-							[ngStyle] = "{backgroundColor: tag.color, borderColor: tag.color}">
-					</button>
+							[ngStyle]="{backgroundColor: tag.color, borderColor: tag.color}">
+						</button>
 					</td>
 				</tr>
 			</tbody>
@@ -76,29 +81,30 @@
 			<div class="drawer-section">
 
 				<span>{{'main.process.trigger.caseToExecute'|translate}}</span>
-				<div class="d-flex mb-3" id="caseList">
+				<div class="d-flex mt-2 mb-3" id="caseList">
 					<span *ngIf="!thereAreCasesSelected()" class="text-danger">{{'main.process.trigger.selectCaseToExecute'|translate}}</span>
 
-          <mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal">
-            <mat-chip class="example-box" *ngFor="let process of dataService.processCases">
-              <div *ngIf="process.selected" class="badge btn-zahoriPill">
-                {{process.name}}
-                <i class="fas fa-times-circle ml-1" (click)="deselectCase(process)"></i>
-              </div>
-            </mat-chip>
-          </mat-chip-list>
-
+					<mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal">
+						<mat-chip class="example-box" *ngFor="let case of dataService.processCases">
+							<div *ngIf="case.selected" class="badge btn-zahoriPill">
+								{{case.name}}
+								<i class="fas fa-times-circle ml-1" (click)="deselectCase(case)"></i>
+							</div>
+						</mat-chip>
+					</mat-chip-list>
 				</div>
 
 				<form class="">
 					<div class="position-relative form-group">
-						<label for="execution_name" class="">Nombre *</label>
-						<input id="execution_name" type="text" [(ngModel)]="execution.name" name="execution_name" class="form-control" />
+						<label for="execution_name" class="">{{'main.process.trigger.name'|translate}} *</label>
+						<input id="execution_name" type="text" [(ngModel)]="execution.name" name="execution_name"
+							class="form-control" />
 					</div>
 
 					<div class="position-relative form-group">
-						<label for="execution_configurationId" class="">Configuración *</label>
-						<select id="execution_configurationId" *ngIf="dataService.processConfigurations.length > 0" [(ngModel)]="execution.configuration.configurationId" name="execution_configurationId"
+						<label for="execution_configurationId" class="">{{'main.process.trigger.configuration'|translate}} *</label>
+						<select id="execution_configurationId" *ngIf="dataService.processConfigurations.length > 0"
+							[(ngModel)]="execution.configuration.configurationId" name="execution_configurationId"
 							class="form-control">
 							<option *ngFor="let configuration of dataService.processConfigurations"
 								[value]="configuration.configurationId">
@@ -106,32 +112,53 @@
 							</option>
 						</select>
 						<div *ngIf="dataService.processConfigurations.length == 0">
-							<span class="text-danger"><strong>{{'main.process.trigger.noCaseYet'|translate}}</strong></span><span>{{'main.process.trigger.createOne'|translate}}
-								<a routerLink="../configurator" routerLinkActive="linkActive"><strong>{{'main.process.trigger.here'|translate}}</strong></a>
-							</span>
+							<span class="text-danger">{{'main.process.trigger.noCaseYet'|translate}}</span>
+							<a routerLink="../configurator" routerLinkActive="linkActive">
+								<strong>{{'main.process.trigger.here'|translate}}</strong>
+							</a>
 						</div>
 
 					</div>
 
-					<div class="position-relative form-group" *ngIf="dataService.processSelected.processType.name == 'BROWSER'">
-						<label for="browsers" class="">{{'main.process.trigger.browsers'|translate}} *</label>
-						<div>
-							<ng-template id="browsers" ngFor let-browser [ngForOf]="browsers" let-isLast="lastBrowser">
-								<div *ngIf="browser.browserName !== 'NULLBROWSER'" class="custom-checkbox custom-control custom-control-inline">
-									<input type="checkbox" [attr.id]="browser.browserName" class="custom-control-input"
-										[value]="browser.browserName" name="browser_{{browser.browserName}}" [(ngModel)]="browser.selected" [checked]="browser.selected" />
-									<label class="custom-control-label" [attr.for]="browser.browserName">
-										<i title="{{browser.browserName}}"
-											class="mr-1 fab fa fa-{{browser.browserName}}"></i>
-									</label>
-								</div>
-							</ng-template>
+					<div *ngIf="dataService.isWebProcess()">
+						<div class="position-relative form-group">
+							<label for="browsers" class="">{{'main.process.trigger.browsers'|translate}} *</label>
+							<div>
+								<ng-template id="browsers" ngFor let-browser [ngForOf]="browsers"
+									let-isLast="lastBrowser">
+									<div *ngIf="browser.browserName !== 'NULLBROWSER'"
+										class="custom-checkbox custom-control custom-control-inline">
+										<input type="checkbox" [attr.id]="browser.browserName"
+											class="custom-control-input" [value]="browser.browserName"
+											name="browser_{{browser.browserName}}" [(ngModel)]="browser.selected"
+											[checked]="browser.selected" />
+										<label class="custom-control-label" [attr.for]="browser.browserName">
+											<i title="{{browser.browserName}}"
+												class="mr-1 fab fa fa-{{browser.browserName}}"></i>
+										</label>
+									</div>
+								</ng-template>
+							</div>
+						</div>
+
+						<div class="position-relative form-group">
+							<label for="resolutions" class="">{{'main.process.trigger.resolutions'|translate}} *</label>
+							
+							<div *ngIf="resolutions && resolutions.length == 0">
+								<span class="text-danger">{{'main.process.trigger.noResolutionsAvailable'|translate}}</span>
+								<span>
+									<a routerLink="../admin/resolutions"
+										routerLinkActive="linkActive"><strong>{{'main.process.trigger.here'|translate}}</strong></a>
+								</span>
+							</div>
+
+							<ng-multiselect-dropdown *ngIf="resolutions && resolutions.length > 0" id="resolutions" [settings]="dropdownSettings" [data]="resolutions"
+								[placeholder]="selectResolution" [(ngModel)]="selectedResolutions" name="resolutions">
+							</ng-multiselect-dropdown>
 						</div>
 					</div>
-          <div class="position-relative form-group">
-            <label for="resolutions" class="">{{'main.process.trigger.resolutions'|translate}} *</label>
-            <ng-multiselect-dropdown id="resolutions"  [settings]="dropdownSettings" [data]="resolutions" [placeholder]="selectResolution" [(ngModel)]="selectedResolutions" name="resolutions"></ng-multiselect-dropdown>
-          </div>
+
+
 					<div class="position-relative form-group">
 						<div class="d-flex">
 							<span>{{'main.process.trigger.periodic'|translate}}</span>
@@ -158,9 +185,8 @@
 
 					<div class="text-center">
 						<button class="btn-wide btn-icon btn btn-zahoriV btn-sm"
-							[title]="invalidForm() ? 'Rellena los campos obligatorios' : ''"
-							[disabled]="invalidForm()"
-							(click)="createExecution()">{{'main.process.trigger.create'|translate}}</button>
+							[title]="invalidForm() ? 'Rellena los campos obligatorios' : ''" [disabled]="invalidForm()"
+							(click)="createExecution()">{{'main.process.trigger.execute'|translate}}</button>
 					</div>
 
 					<span *ngIf="loading">
@@ -173,11 +199,14 @@
 					<span *ngIf="created">
 						<div class="text-center mt-2">
 							<div>
-								<span>{{'main.process.trigger.executionCreated'|translate}} <i class="ml-2 fas fa-check text-success" aria-hidden="true"></i></span>
+								<span>{{'main.process.trigger.executionCreated'|translate}} <i
+										class="ml-2 fas fa-check text-success" aria-hidden="true"></i></span>
 							</div>
 							<div>
 								<span>{{'main.process.trigger.canYouSeeIn'|translate}}
-									<a routerLink="../executions" routerLinkActive="linkActive"><strong>{{'main.process.trigger.lastExecutions'|translate}} </strong></a>
+									<a routerLink="../executions"
+										routerLinkActive="linkActive"><strong>{{'main.process.trigger.lastExecutions'|translate}}
+										</strong></a>
 								</span>
 							</div>
 						</div>
@@ -199,7 +228,8 @@
 					<span *ngIf="error != ''">
 						<div class="text-center mt-2">
 							<div>
-								<span>{{'main.process.trigger.ErrorOnCreateExecution'|translate}} <i class="ml-2 fas fa-times text-danger" aria-hidden="true"></i></span>
+								<span>{{'main.process.trigger.ErrorOnCreateExecution'|translate}} <i
+										class="ml-2 fas fa-times text-danger" aria-hidden="true"></i></span>
 							</div>
 							<div>
 								<span>{{error}}</span>

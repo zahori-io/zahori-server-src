@@ -3,7 +3,7 @@ import { Tag } from '../../../../../model/tag';
 import { DataService } from '../../../../../services/data.service'
 import { BannerOptions } from '../../../../../utils/banner/banner'
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-
+import { TranslateService } from '@ngx-translate/core';
 
 const ERROR: string = " ";
 const SUCCESS_COLOR : string = "alert alert-success";
@@ -25,13 +25,12 @@ export class AdminTagsComponent implements OnInit {
     this.refresh();
     this.banner = new BannerOptions();
   }  
-  constructor(public dataService: DataService) {
+  constructor(public dataService: DataService, private translate: TranslateService) {
   }
-
+ 
   refresh(){
     this.dataService.getTags(String(this.dataService.processSelected.processId)).subscribe(
       (res : any) => {
-        console.log(JSON.stringify(res))
         this.tags = res;
       });
   }
@@ -39,7 +38,7 @@ export class AdminTagsComponent implements OnInit {
   deleteTag(tag: Tag){
     tag.active = false;
     let tagArray: Tag[] = [tag];
-    this.sendPostPetition(tagArray, new BannerOptions("Etiqueta eliminada: " + tag.name, "", SUCCESS_COLOR , true ));
+    this.saveTags(tagArray, new BannerOptions(this.translate.instant('main.process.processAdmin.tags.tag.removed') + tag.name, "", SUCCESS_COLOR , true ));
 
     }
 
@@ -48,14 +47,14 @@ export class AdminTagsComponent implements OnInit {
       // this.banner = new BannerOptions(ERROR, "Todos los campos son obligatorios", ERROR_COLOR , true )
     }
     else if (this.tags.filter(candidate => candidate.name === tag.name).length > 1){
-      this.banner = new BannerOptions(ERROR, "La etiqueta \"" + tag.name + "\" ya existe, elige otro nombre.", ERROR_COLOR , true )
+      this.banner = new BannerOptions(ERROR, this.translate.instant('main.process.processAdmin.tags.tag.duplicatedName', {tagName: tag.name}), ERROR_COLOR , true )
     }
     else if (this.tags.filter(candidate => candidate.color === tag.color).length > 1){
-      this.banner = new BannerOptions(ERROR, "El color para la etiqueta \"" + tag.name + "\" ya se está usando en otra etiqueta, elige otro color.", ERROR_COLOR , true )
+      this.banner = new BannerOptions(ERROR, this.translate.instant('main.process.processAdmin.tags.tag.duplicatedColour', {tagName: tag.name}), ERROR_COLOR , true )
     }
     else{
       let tagArray: Tag[] = [tag];
-      this.sendPostPetition(tagArray, new BannerOptions("Etiqueta modificada: " + tag.name, "", SUCCESS_COLOR , true ));
+      this.saveTags(tagArray, new BannerOptions(this.translate.instant('main.process.processAdmin.tags.tag.updated') + tag.name, "", SUCCESS_COLOR , true ));
     }
     
   }
@@ -65,14 +64,14 @@ export class AdminTagsComponent implements OnInit {
       // this.banner = new BannerOptions("Todos los campos son obligatorios", "", ERROR_COLOR , true );
     } 
     else if (this.tags.filter(candidate => candidate.name === tag.name).length > 0){
-      this.banner = new BannerOptions(ERROR, "La etiqueta \"" + tag.name + "\" ya existe, elige otro nombre.", ERROR_COLOR , true )
+      this.banner = new BannerOptions(ERROR, this.translate.instant('main.process.processAdmin.tags.tag.duplicatedName', {tagName: tag.name}), ERROR_COLOR , true )
     }
     else if (this.tags.filter(candidate => candidate.color === tag.color).length > 0){
-      this.banner = new BannerOptions(ERROR, "El color para la etiqueta \"" + tag.name + "\" ya se está usando en otra etiqueta. elige otro color.", ERROR_COLOR , true )
+      this.banner = new BannerOptions(ERROR, this.translate.instant('main.process.processAdmin.tags.tag.duplicatedColour', {tagName: tag.name}), ERROR_COLOR , true )
     }
     else{
       let tagArray: Tag[] = [tag];
-      this.sendPostPetition(tagArray, new BannerOptions("Etiqueta creada: " + tag.name, "", SUCCESS_COLOR , true ));
+      this.saveTags(tagArray, new BannerOptions(this.translate.instant('main.process.processAdmin.tags.tag.created') + tag.name, "", SUCCESS_COLOR , true ));
       this.deleteFromArray(tag);
     }
     
@@ -80,8 +79,8 @@ export class AdminTagsComponent implements OnInit {
 
   duplicateElement(tag : Tag){
        Swal.fire({
-          title: 'La etiqueta ' + tag.name + ' ya existe',
-          text: 'Elige otro nombre distinto',
+          title: this.translate.instant('main.process.processAdmin.tags.tag.duplicatedName', {tagName: tag.name}),
+          text: '',
           icon: 'warning',
           confirmButtonText: 'Ok',
           backdrop: `
@@ -106,7 +105,7 @@ export class AdminTagsComponent implements OnInit {
     }
   }
  
-  sendPostPetition(tag : Tag[], banner : BannerOptions){
+  saveTags(tag : Tag[], banner : BannerOptions){
     this.dataService.setTags(tag, String(this.dataService.processSelected.processId)).subscribe(
       (res : any) => {
         this.refresh();
@@ -114,7 +113,7 @@ export class AdminTagsComponent implements OnInit {
         this.showrow = false;
       });
       error => {
-        console.log("Error en la petición:" + error);
+        console.log("Error saving tags:" + error);
         this.banner = new BannerOptions(ERROR, error, ERROR_COLOR , true )
       }  }
 

@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, ViewContainerRef, Directive } f
 import { Tag } from '../../../../../../model/tag';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { Direct } from 'protractor/built/driverProviders';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'tag',
@@ -29,18 +30,21 @@ export class tagComponent{
     submitted : boolean = false;
     public color1: string = '#2889e9';
 
+    constructor(private translate: TranslateService) {
+    }
+
     public onEventLog(event: string, data: any): void {
         console.log(event, data);
     }
 
     deleteTag(tag : Tag) {
         Swal.fire({
-            title: 'Borrar etiqueta ' + tag.name,
-            text: 'Esta acción no puede deshacerse',
+            title: this.translate.instant('main.process.processAdmin.tags.tag.removeTag') + tag.name,
+            text: this.translate.instant('main.process.processAdmin.tags.tag.removeWarning'),
             icon: 'warning',
             showCancelButton: true,
-            confirmButtonText: 'Ok',
-            cancelButtonText: 'No',
+            confirmButtonText: this.translate.instant('main.process.processAdmin.tags.tag.removeConfirmButton'),
+            cancelButtonText: this.translate.instant('main.process.processAdmin.tags.tag.removeCancelButton'),
             backdrop: `
                 rgba(64, 69, 58,0.4)
                 left top
@@ -48,7 +52,6 @@ export class tagComponent{
         }).then((result) => {
             if (result.value) {
                 this.deleted.emit(tag);
-                console.log("click on borrar");
                 this.submitted = true;
             }
         })
@@ -56,20 +59,17 @@ export class tagComponent{
 
     updateTag(tag : Tag){
         this.updated.emit(tag);
-        console.log("click on update");
         console.log(this.color1);
         this.submitted = true;
     }
 
     createTag(tag : Tag){
         this.created.emit(tag);
-        console.log("click on create");
         this.submitted = true;
     }
 
     deleteFromArray(tag : Tag){
         this.erased.emit(tag);
-        console.log("click on erase");
     }
 
     isNew(tag : Tag){

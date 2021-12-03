@@ -46,7 +46,7 @@ export class EnvironmentComponent {
       text: this.translate.instant('main.process.processAdmin.environments.environment.removeWarning'),
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: this.translate.instant('main.process.processAdmin.environments.environment.dalete'),
+      confirmButtonText: this.translate.instant('main.process.processAdmin.environments.environment.delete'),
       cancelButtonText: this.translate.instant('main.process.processAdmin.environments.environment.cancel'),
       backdrop: `
                 rgba(64, 69, 58,0.4)

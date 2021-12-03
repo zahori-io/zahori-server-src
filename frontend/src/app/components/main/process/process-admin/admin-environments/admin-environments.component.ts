@@ -58,7 +58,7 @@ export class AdminEnvironmentsComponent implements OnInit {
     } else{
       const envArray: Environment[] = [env];
       const bannerText = this.translate.instant('main.process.processAdmin.environments.environmentModified', {name: env.name});
-      this.sendPostPetition(envArray, new BannerOptions('Entorno modificado: ' + env.name, '', SUCCESS_COLOR , true ));
+      this.sendPostPetition(envArray, new BannerOptions(bannerText, '', SUCCESS_COLOR , true ));
     }
 
   }

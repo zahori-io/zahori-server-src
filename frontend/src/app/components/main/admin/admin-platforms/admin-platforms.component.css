@@ -18,3 +18,9 @@
     margin: -140px -70px 0 0px;
     min-width: auto;
 }
+
+.drawer-content-wrapperGrey {
+    height: calc(100vh - 70px);
+    position: fixed!important;
+    overflow-y: scroll!important;
+}

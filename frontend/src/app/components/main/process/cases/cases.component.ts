@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Tag } from 'src/app/model/tag';
 import { BannerOptions } from 'src/app/utils/banner/banner';
 import Swal from 'sweetalert2';
@@ -23,7 +24,8 @@ export class CasesComponent implements OnInit {
   isHidden : Boolean = true
 
   constructor(
-    public dataService: DataService
+    public dataService: DataService,
+    private translate: TranslateService
   ) { }
 
   ngOnInit(): void {
@@ -36,7 +38,6 @@ export class CasesComponent implements OnInit {
   getTags(){
     this.dataService.getTags(String(this.dataService.processSelected.processId)).subscribe(
       (res : any) => {
-        console.log(JSON.stringify(res))
         this.tags = res;
       });
   }
@@ -57,7 +58,7 @@ export class CasesComponent implements OnInit {
   createNewCase() {
     var newCase = {};
     if (this.tableData.length == 0) {
-      newCase["name"] = "Mi primer caso";
+      newCase["name"] = this.translate.instant('main.process.cases.firstCaseName');
 
       this.fixedFields.push("caseId");
       this.fixedFields.push("name");
@@ -76,12 +77,12 @@ export class CasesComponent implements OnInit {
 
   removeCase(tableData: {}[], cas: {}) {
     Swal.fire({
-      title: 'Eliminar caso: ' + cas["name"],
-      text: 'Esta acción no podrá deshacerse cuando se pulse el botón "Guardar" de la página',
+      title: this.translate.instant('main.process.cases.removeCase.title') + cas["name"],
+      text: this.translate.instant('main.process.cases.removeCase.warning'),
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Eliminar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: this.translate.instant('main.process.cases.removeCase.confirmButton'),
+      cancelButtonText: this.translate.instant('main.process.cases.removeCase.cancelButton'),
       backdrop: `
           rgba(64, 69, 58,0.4)
           left top
@@ -102,25 +103,25 @@ export class CasesComponent implements OnInit {
 
   async addField(tableData) {
     const { value: newFieldName } = await Swal.fire({
-      title: 'Añadir campo',
+      title: this.translate.instant('main.process.cases.addField.title'),
       input: 'text',
       //inputLabel: 'Nombre del campo',
       inputValue: "",
-      inputPlaceholder: 'Nombre del campo',
+      inputPlaceholder: this.translate.instant('main.process.cases.addField.placeholder'),
       showCancelButton: true,
-      confirmButtonText: 'Añadir',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: this.translate.instant('main.process.cases.addField.confirmButton'),
+      cancelButtonText: this.translate.instant('main.process.cases.addField.cancelButton'),
       //width: '30%',
       //animation: false,
       inputValidator: (value) => {
         if (!value) {
-          return 'Escribe el nombre del campo!'
+          return this.translate.instant('main.process.cases.addField.emptyNameWarning')
         } else {
           if (tableData.length) {
             var caseRow = tableData[0];
             for (var key of Object.keys(caseRow)) {
               if (key.toLowerCase() === value.toLowerCase()) {
-                return "El campo '" + value + "' ya existe, elige otro nombre";
+                return this.translate.instant('main.process.cases.addField.duplicatedName', {fieldName: value});
               }
             }
           }
@@ -137,23 +138,23 @@ export class CasesComponent implements OnInit {
 
   async editField(tableData, fieldName: string) {
     const { value: newFieldName } = await Swal.fire({
-      title: 'Cambiar nombre del campo',
+      title: this.translate.instant('main.process.cases.editField'),
       input: 'text',
       //inputLabel: 'Nombre del campo',
       inputValue: fieldName,
-      inputPlaceholder: 'Nombre del campo',
+      inputPlaceholder: this.translate.instant('main.process.cases.addField.placeholder'),
       showCancelButton: true,
-      confirmButtonText: 'Cambiar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: this.translate.instant('main.process.cases.editFieldSaveButton'),
+      cancelButtonText: this.translate.instant('main.process.cases.addField.cancelButton'),
       inputValidator: (value) => {
         if (!value) {
-          return 'Escribe el nombre del campo!'
+          return this.translate.instant('main.process.cases.addField.emptyNameWarning')
         } else {
           if (tableData.length) {
             var caseRow = tableData[0];
             for (var key of Object.keys(caseRow)) {
               if (value !== fieldName && key.toLowerCase() === value.toLowerCase()) {
-                return "El campo '" + value + "' ya existe, elige otro nombre";
+                return this.translate.instant('main.process.cases.addField.duplicatedName', {fieldName: value});
               }
             }
           }
@@ -171,12 +172,12 @@ export class CasesComponent implements OnInit {
 
   removeField(tableData, fieldName: string, fixedFields: string[]) {
     Swal.fire({
-      title: 'Eliminar campo: ' + fieldName,
-      text: 'Esta acción no podrá deshacerse cuando se pulse el botón "Guardar" de la página',
+      title: this.translate.instant('main.process.cases.removeField.title') + fieldName,
+      text: this.translate.instant('main.process.cases.removeField.warning'),
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Eliminar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: this.translate.instant('main.process.cases.removeField.confirmButton'),
+      cancelButtonText: this.translate.instant('main.process.cases.removeField.cancelButton'),
       backdrop: `
           rgba(64, 69, 58,0.4)
           left top
@@ -185,13 +186,13 @@ export class CasesComponent implements OnInit {
       if (result.value) {
         for (const caseRow of tableData) {
           if (fixedFields.includes(fieldName)) {
-            alert("No se pueden eliminar columnas fijas");
+            alert(this.translate.instant('main.process.cases.removeField.warningFixedFields'));
             return;
           }
 
           if (caseRow.hasOwnProperty(fieldName)) {
             delete caseRow[fieldName];
-            console.log("Field removed");
+            console.log(this.translate.instant('main.process.cases.removeField.confirmation'));
           }
         }
       }
@@ -264,11 +265,11 @@ export class CasesComponent implements OnInit {
       (cases) => {
         this.tableData = this.parseCases(JSON.parse(cases), this.fixedFields);
         console.log("cases saved!");
-        this.banner = new BannerOptions("Casos guardados", "", SUCCESS_COLOR, true);
+        this.banner = new BannerOptions(this.translate.instant('main.process.cases.saveSuccess'), "", SUCCESS_COLOR, true);
       },
       (error) => {
         console.error("Error saving cases: " + error.message);
-        this.banner = new BannerOptions("Error al guardar los casos: " + error.message, "", ERROR_COLOR, true);
+        this.banner = new BannerOptions(this.translate.instant('main.process.cases.saveError') + error.message, "", ERROR_COLOR, true);
       }
     );
   }
@@ -301,36 +302,4 @@ export class CasesComponent implements OnInit {
     return false;
   }
 
-  deleteTag(tag: Tag, tags: Tag[]){
-    let index : number = tags.indexOf(tag);
-    if (index !== -1){
-      tags.splice(index, 1);
-    }
-  }
-
-  setTag(tags: Tag[]){
-    let inputOptions = {}
-
-    $.map(this.tags, function(aTag){
-      let index : number = tags.indexOf(aTag);
-      if(index === -1){
-        inputOptions[aTag.tagId] = aTag.name
-      }
-    })
-
-    
-    Swal.fire({
-      title: 'Seleccionar etiqueta',
-      input: 'select',
-      inputOptions: inputOptions,
-      inputPlaceholder: 'Seleccione etiqueta',
-      showCancelButton: true,
-      inputValidator: (value) => {
-        return new Promise((resolve) => {
-          tags = tags.concat([inputOptions[value]])
-          resolve(null)     
-        })
-      }
-    })
-  }
 }

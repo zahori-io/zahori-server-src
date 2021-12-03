@@ -1,7 +1,15 @@
+.app-main__inner {
+    padding: 30px 30px 0!important;
+}
+
 .table thead th, .table tfoot th {
     vertical-align: bottom;
     border-bottom: 2px solid #e9ecef;
     border-top: none;
+}
+
+.table td {
+    padding: 0 0 0 0.55rem;
 }
 
 td:hover i {
@@ -10,7 +18,8 @@ td:hover i {
 
 .showOnHover:hover .hide {
     visibility: visible;
-  }
+}
+
 .hide {
     visibility: hidden;
 }
@@ -45,9 +54,9 @@ banner {
     font-size: 12px;
     line-height: 1.428571429;
     border-radius: 15px;
-  }
+}
 
-  .btn-circle-selector {
+.btn-circle-selector {
     background-color: blue;
     color: azure;
     width: 20px;
@@ -57,18 +66,19 @@ banner {
     font-size: 12px;
     line-height: 1.428571429;
     border-radius: 15px;
-  }
+}
 
-  ::ng-deep .ng-select.custom {
-        border:none;
-        background-color: transparent;
-    }
-    ::ng-deep .ng-select.custom .ng-select-container  {            
-        border:none;
-        background-color: transparent;
-    }
+::ng-deep .ng-select.custom {
+    border: none;
+    background-color: transparent;
+}
 
-    ::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
-        white-space: nowrap;
-        background: none;
-    }
+::ng-deep .ng-select.custom .ng-select-container {
+    border: none;
+    background-color: transparent;
+}
+
+::ng-deep .ng-select.ng-select-multiple .ng-select-container .ng-value-container .ng-value {
+    white-space: nowrap;
+    background: none;
+}
