@@ -1,9 +1,9 @@
-import {EventEmitter, Input, Output} from '@angular/core';
+import {EventEmitter, Input, Output, ViewChild} from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { CaseExecution } from '../../../../model/caseExecution';
 import { DataService } from '../../../../services/data.service';
-import {NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
-import {StepsModalComponent} from './steps-modal/steps-modal.component';
+import {NgbCarousel, NgbCarouselConfig, NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
+import { Step } from '../../../../model/step';
 declare var HarViewer: any;
 
 @Component({
@@ -12,6 +12,7 @@ declare var HarViewer: any;
   styleUrls: ['./case-execution-details.component.css']
 })
 export class CaseExecutionDetailsComponent implements OnInit {
+  @ViewChild('carousel') carousel: NgbCarousel;
   @Input() caseExecution: CaseExecution;
   @Output() onClose = new EventEmitter<any>();
   downloading = false;
@@ -19,8 +20,14 @@ export class CaseExecutionDetailsComponent implements OnInit {
   file: Blob;
   fileName: string;
   modalMaximized = false;
-  constructor(public dataService: DataService, private modalService: NgbModal, config: NgbModalConfig) {
-    config.size = 'xl';
+  stepSelected: Number;
+  
+  constructor(public dataService: DataService, private modalService: NgbModal, config: NgbCarouselConfig) {
+    config.showNavigationArrows = true;
+    config.showNavigationIndicators = false;
+    config.interval = 15000;
+    config.pauseOnFocus = true;
+    config.pauseOnHover = true;
   }
   ngOnInit(): void {
   }
@@ -115,10 +122,10 @@ export class CaseExecutionDetailsComponent implements OnInit {
       return parts[parts.length - 1];
     }
   }
-  viewStepInModal(item: string): void  {
-    const modalRef = this.modalService.open(StepsModalComponent);
-    modalRef.componentInstance.item = item;
-    modalRef.componentInstance.caseExecution = this.caseExecution;
+  viewStepInModal(index: Number) {
+    this.resetModalVariables();
+    this.stepSelected = index;
+    this.carousel.select('slide-' + index);
   }
   downloadFile(): void {
     const a = document.createElement('a');
@@ -148,5 +155,9 @@ export class CaseExecutionDetailsComponent implements OnInit {
   }
   maximizeModal(): void {
     this.modalMaximized = !this.modalMaximized;
+  }
+
+  getWidthFromResolution(resolution: string): string{
+    return resolution.substr(0, resolution.indexOf('x')); 
   }
 }

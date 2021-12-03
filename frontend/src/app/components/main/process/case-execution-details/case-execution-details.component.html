@@ -2,7 +2,7 @@
 <div id="sidebarEvidencias" class="sidebarZahori active" *ngIf="caseExecution && caseExecution.caseExecutionId > 0">
 
     <div class="drawer-content-wrapper">
-        <div class="scroll-area vh-80" style="height: auto;">
+        <div class="scroll-area">
             <div class="scrollbar-container ps--active-y ps">
 
                 <div class="drawer-nav-btn">
@@ -16,39 +16,47 @@
                 <div class="drawer-section">
                     <div class="scrollbar-container ps">
 
-                        <span>
+                        <div>
                             <i title="{{caseExecution.status}}" class="mr-1 fas " [ngClass]="{
                                 'fa-check text-success': caseExecution.status  === 'PASSED',
                                 'fa-times text-danger': caseExecution.status  === 'FAILED',
                                 'fa-exclamation-triangle': caseExecution.status  === 'Not executed',
                                 'fa-sync-alt': caseExecution.status  === 'Running'}">
                             </i>
-                            <i title="{{caseExecution.browser.browserName}}"
-                                class="mr-1 fab fa fa-{{caseExecution.browser.browserName}}"></i>
                             <h4 class="titVentana" style="display: inline-block;">{{caseExecution.cas.name}}</h4>
-                        </span>
+                        </div>
 
                         <div>
+                            <i title="{{caseExecution.browser.browserName}} {{caseExecution.browserVersion}}"
+                            class="mr-1 fab fa fa-{{caseExecution.browser.browserName}}"></i>
+                            
+                            <div class="badge-resolutions btn-zahoriPill-resolutions ml-1 mb-1">
+                                {{caseExecution.screenResolution}}
+                            </div>
+                        </div>
+
+                        <div class="mb-2 mt-2">
                             <!-- Button trigger log modal -->
                             <button type="button" *ngIf="caseExecution.log" (click)="getTextFile(caseExecution.log)"
-                                class="mb-2 mr-2 btn-pill btn btn-zahoriPill btn-sm" data-backdrop="false"
+                                class="mr-2 btn-pill btn btn-zahoriPill btn-sm" data-backdrop="false"
                                 data-toggle="modal" data-target="#logModal">{{'main.process.caseExecutionDetails.log'|translate}}</button>
 
                             <button *ngIf="caseExecution.doc" (click)="getFile(caseExecution.doc)"
-                                class="mb-2 mr-2 btn-pill btn btn-zahoriPill btn-sm">{{'main.process.caseExecutionDetails.doc'|translate}}</button>
+                                class="mr-2 btn-pill btn btn-zahoriPill btn-sm">{{'main.process.caseExecutionDetails.doc'|translate}}</button>
+                            
                             <button *ngIf="caseExecution.video" (click)="getFile(caseExecution.video)"
-                                class="mb-2 mr-2 btn-pill btn btn-zahoriPill btn-sm">{{'main.process.caseExecutionDetails.video'|translate}}</button>
+                                class="mr-2 btn-pill btn btn-zahoriPill btn-sm">{{'main.process.caseExecutionDetails.video'|translate}}</button>
 
-                            <!-- Button trigger log modal -->
+                            <!-- Button trigger HAR modal -->
                             <button type="button" *ngIf="caseExecution.har" title="HTTP Archive"
                                 (click)="getHarFile(caseExecution.har)"
-                                class="mb-2 mr-2 btn-pill btn btn-zahoriPill btn-sm" data-backdrop="false"
+                                class="mr-2 btn-pill btn btn-zahoriPill btn-sm" data-backdrop="false"
                                 data-toggle="modal" data-target="#harModal">{{'main.process.caseExecutionDetails.har'|translate}}</button>
                         </div>
 
-                        <div *ngFor="let attachment of caseExecution.attachments">
+                        <div class="mt-2" *ngFor="let attachment of caseExecution.attachments">
                             <button (click)="getFile(attachment.path)"
-                            class="mb-2 mr-2 btn-pill btn btn-attachment btn-sm">{{getFileName(attachment.path)}}</button>
+                            class="mr-2 btn-pill btn btn-attachment btn-sm">{{getFileName(attachment.path)}}</button>
                         </div>
 
                         <div *ngIf="downloading" title="Descargando fichero..."
@@ -58,7 +66,9 @@
                         <br />
 
                         <h5>{{'main.process.caseExecutionDetails.stepsExecuted'|translate}}</h5>
-                        <div *ngFor="let step of caseExecution.stepsJson; index as i">
+                        <div *ngFor="let step of caseExecution.stepsJson; index as i; first as first;">
+
+                            <hr *ngIf="!first">
 
                             <div class="paso mb-3">
                                 <span class="font-weight-bold">
@@ -74,28 +84,17 @@
                                 <p>{{step.messageText}}</p>
 
                                 <div *ngFor="let attachment of step.attachments">
-                                    <a (click)="viewStepInModal(i.toString())">
+                                    <a (click)="viewStepInModal(i)" href="javascript:void(0);" data-backdrop="false"
+                                        data-toggle="modal" data-target="#stepsModal">
                                         <img class="w-100" alt="Imagen Evidencia" *ngIf="attachment"
                                             [src]="getAttachmentUrl(attachment) | authImage | async" />
                                     </a>
                                 </div>
+
                             </div>
                         </div>
 
-                        <div class="ps__rail-x" style="width: 0; left: 0; bottom: 0;">
-                            <div class="ps__thumb-x" tabindex="0" style="left: 0; width: 0;"></div>
-                        </div>
-                        <div class="ps__rail-y" style="top: 0; right: 0;">
-                            <div class="ps__thumb-y" tabindex="0" style="top: 0; height: 0;"></div>
-                        </div>
                     </div>
-                </div>
-
-                <div class="ps__rail-x" style="width: 0; left: 0; bottom: 0;">
-                    <div class="ps__thumb-x" tabindex="0" style="left: 0; width: 0;"></div>
-                </div>
-                <div class="ps__rail-y" style="top: 0; height: 254px; right: 0;">
-                    <div class="ps__thumb-y" tabindex="0" style="top: 0; height: 40px;"></div>
                 </div>
 
             </div>
@@ -138,6 +137,83 @@
                   {{'main.process.caseExecutionDetails.close'|translate}}
                 </button>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal - Steps -->
+<div id="stepsModal" *ngIf="caseExecution && caseExecution.cas" class="modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="stepsModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" [ngClass]="modalMaximized ? 'modal-maximized' : ''"
+        role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    <i title="{{caseExecution.status}}" class="mr-1 fas " [ngClass]="{
+                        'fa-check text-success': caseExecution.status  === 'PASSED',
+                        'fa-times text-danger': caseExecution.status  === 'FAILED',
+                        'fa-exclamation-triangle': caseExecution.status  === 'Not executed',
+                        'fa-sync-alt': caseExecution.status  === 'Running'}">
+                    </i>
+                    <span class="titVentana" style="display: inline-block;">{{caseExecution.cas.name}}</span>
+                </h5>
+
+                <span class="my-auto ml-3"> 
+                    <i title="{{caseExecution.browser.browserName}} {{caseExecution.browserVersion}}"
+                    class="mr-1 fab fa fa-{{caseExecution.browser.browserName}}"></i>
+                    <div class="badge-resolutions btn-zahoriPill-resolutions ml-1">
+                        {{caseExecution.screenResolution}}
+                    </div>
+                </span>
+                
+                <div class="ml-auto">
+                    <button type="button" (click)="maximizeModal()" class="btn btn-default" aria-label="Left Align">
+                        <span class="far fa-window-maximize fa-lg" style="color: grey;" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" data-dismiss="modal" class="btn btn-default" aria-label="Left Align">
+                        <span class="fas fa-times fa-lg" style="color: grey;" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- STEPS -->
+            <div class="modal-body">
+                <div class="paso mb-3">
+                    <ngb-carousel #carousel class="text-center">
+                        <ng-container *ngFor="let step of caseExecution.stepsJson; let index = index">
+                        <ng-template ngbSlide id="slide-{{index}}">
+                            <h5 class="modal-title" id="stepData">
+                                <span>
+                                    <i title="{{step.status}}" class="fas " [ngClass]="{
+                                    'fa-check text-success': step.status  === 'Passed',
+                                    'fa-times text-danger': step.status  === 'Failed',
+                                    'fa-exclamation-triangle': step.status  === 'Not executed'}">
+                                    </i>
+                                    Paso {{step.name}}
+                                </span>
+                            </h5>
+                            <div class="paso mb-3">
+                            <p>{{step.messageText}}</p>
+
+                            <div #screenshotContainer *ngFor="let attachment of step.attachments" class="text-center">
+                                <img style="box-shadow: 0px 0px 5px #888888;" class="{{getWidthFromResolution(caseExecution.screenResolution) >= screenshotContainer.offsetWidth ? 'w-99' : '' }}" alt="Imagen Evidencia" *ngIf="attachment"
+                                    [src]="getAttachmentUrl(attachment) | authImage | async" />
+                            </div>
+                            </div>
+                        </ng-template>
+                        </ng-container>
+                    </ngb-carousel>
+
+                </div>
+            </div>
+
+            <!--
+            <div class="modal-footer">
+                <button type="button" class="btn btn-light" data-dismiss="modal">Cerrar</button>
+            </div>
+            -->
+
         </div>
     </div>
 </div>

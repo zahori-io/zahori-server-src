@@ -7,7 +7,7 @@
 }
 
 .modal-content {
-    height: calc(100vh - 100px);
+    height: calc(100vh - 135px);
 }
 
 .modal-body {
@@ -24,4 +24,36 @@
     background-color: #d6efb8;
     border: none;
     border-radius: 50px;
+}
+
+.scroll-area {
+    height: calc(100vh - 107px)!important;
+    position: fixed!important;
+    overflow-y: auto!important;
+    margin-bottom: 120px;
+}
+.scrollbar-sidebar, .scrollbar-container {
+    height: fit-content;
+}
+
+.drawer-content-wrapper .drawer-heading {
+    font-size: 1.2rem;
+    border-bottom: #dee2e6 solid 1px;
+    border-top: none;
+}
+
+.drawer-section{
+    background: #f8f9fa;
+}
+
+.drawer-nav-btn {
+    top: .12rem;
+}
+
+.sidebarZahori {
+    margin-top: -11px;
+}
+
+.w-99 {
+    width: 99%;
 }
