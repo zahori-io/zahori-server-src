@@ -1,24 +1,5 @@
 package io.zahori.server.service;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.reactive.function.client.WebClient;
-
 /*-
  * #%L
  * zahori-server
@@ -42,18 +23,27 @@ import org.springframework.web.reactive.function.client.WebClient;
  * #L%
  */
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
-import io.zahori.model.process.Step;
-import io.zahori.model.process.Test;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+
 import io.zahori.server.model.CaseExecution;
 import io.zahori.server.model.ClientTestRepo;
 import io.zahori.server.model.Configuration;
 import io.zahori.server.model.EvidenceType;
 import io.zahori.server.model.Execution;
 import io.zahori.server.model.Process;
-import io.zahori.server.model.jenkins.Artifact;
-import io.zahori.server.model.jenkins.Build;
 import io.zahori.server.repository.CaseExecutionsRepository;
 import io.zahori.server.repository.ConfigurationRepository;
 import io.zahori.server.repository.ExecutionsRepository;
@@ -120,122 +110,7 @@ public class ExecutionService {
      */
     public Iterable<Execution> getExecutions(Long clientId, Long processId) {
         // log.info("#### getExecutions");
-        Iterable<Execution> executions = executionsRepository.findByClientIdAndProcessId(clientId, processId);
-        Process process = null;
-
-        List<Execution> executionsChanged = new ArrayList<>();
-        for (Execution execution : executions) {
-            // log.info("#### execution status: " + execution.getStatus());
-            if (RUNNING.equalsIgnoreCase(execution.getStatus())) {
-
-                if (process == null) {
-                    Optional<Process> processOpt = processesRepository.findById(execution.getProcess().getProcessId());
-                    process = processOpt.get();
-                }
-
-                if (process != null && !StringUtils.isBlank(process.getJenkinsJob()) && !StringUtils.isBlank(process.getJenkinsToken())) {
-                    Build build = jenkinsService.getBuild(process.getJenkinsJob(), process.getJenkinsToken(), Integer.valueOf(execution.getJenkinsBuild()));
-                    if (!build.isBuilding()) {
-                        executionsChanged.add(execution);
-
-                        int numCasesPassed = 0;
-                        int numCasesFailed = 0;
-
-                        String artifactUrlPrefix = "/" + build.getId() + "/artifact/";
-                        for (CaseExecution caseExecution : execution.getCasesExecutions()) {
-                            for (Artifact artifact : build.getArtifacts()) {
-                                LOG.debug("#### Case: " + caseExecution.getCas().getName());
-                                LOG.debug("#### Browser: " + caseExecution.getBrowser().getBrowserName());
-                                if (artifact.getRelativePath().contains("/test-results/" + caseExecution.getCas().getName() + "/") //
-                                        && StringUtils.containsIgnoreCase(artifact.getRelativePath(),
-                                                "/" + caseExecution.getBrowser().getBrowserName() + "/")) {
-
-                                    LOG.debug("#### Path exists in Jenkins");
-                                    String fileName = artifact.getFileName();
-                                    // log
-                                    if (fileName.endsWith(".log")) {
-                                        caseExecution.setLog(artifactUrlPrefix + artifact.getRelativePath());
-                                    }
-                                    // video
-                                    if (fileName.endsWith(".avi")) {
-                                        caseExecution.setVideo(artifactUrlPrefix + artifact.getRelativePath());
-                                    }
-                                    // word
-                                    if (fileName.endsWith(".docx")) {
-                                        caseExecution.setDoc(artifactUrlPrefix + artifact.getRelativePath());
-                                    }
-                                    // har
-                                    if (fileName.endsWith(".har")) {
-                                        caseExecution.setHar(artifactUrlPrefix + artifact.getRelativePath());
-                                    }
-                                    // screenshots
-                                    if (fileName.endsWith(".png")) {
-
-                                    }
-                                    // case steps
-                                    if ("testSteps.json".equalsIgnoreCase(fileName)) {
-                                        byte[] fileBytes = jenkinsService.getFile(process.getJenkinsJob() + artifactUrlPrefix + artifact.getRelativePath(),
-                                                process.getJenkinsToken());
-
-                                        ObjectMapper mapper = new ObjectMapper();
-                                        try {
-                                            Test test = mapper.readValue(fileBytes, Test.class);
-                                            caseExecution.setStatus(test.getTestStatus());
-                                            caseExecution.setDate(getDate(test.getExecutionDate()));
-                                            caseExecution.setNotes(test.getExecutionNotes());
-                                            caseExecution.setDurationSeconds(test.getDurationSeconds());
-
-                                            if (PASSED.equalsIgnoreCase(test.getTestStatus())) {
-                                                numCasesPassed += 1;
-                                            } else if (FAILED.equalsIgnoreCase(test.getTestStatus())) {
-                                                numCasesFailed += 1;
-                                            } else {
-                                                caseExecution.setStatus(NOT_EXECUTED);
-                                                numCasesFailed += 1;
-                                            }
-
-                                            for (Step step : test.getSteps()) {
-                                                updateJenkinsAttachmentUrl(step, artifactUrlPrefix, artifact.getRelativePath());
-
-                                                // Substeps
-                                                for (Step substep : step.getSubSteps()) {
-                                                    updateJenkinsAttachmentUrl(substep, artifactUrlPrefix, artifact.getRelativePath());
-                                                }
-                                            }
-                                            String jsonSteps = mapper.writeValueAsString(test.getSteps());
-                                            caseExecution.setSteps(jsonSteps);
-                                        } catch (IOException e) {
-                                            LOG.error("Error reading testSteps.json: " + e.getMessage());
-                                        }
-                                    }
-                                }
-                            }
-
-                            // "testSteps.json" not present, set case as "Not executed" and increase failed
-                            // cases
-                            if (StringUtils.isBlank(caseExecution.getSteps())) {
-                                caseExecution.setStatus(NOT_EXECUTED);
-                                numCasesFailed += 1;
-                            }
-                        }
-
-                        execution.setTotalPassed(numCasesPassed);
-                        execution.setTotalFailed(numCasesFailed);
-                        if (numCasesPassed > 0 && numCasesFailed == 0) {
-                            execution.setStatus(SUCCESS);
-                        } else {
-                            execution.setStatus(FAILURE);
-                        }
-                    }
-                }
-            }
-        }
-
-        if (!executionsChanged.isEmpty()) {
-            executionsRepository.saveAll(executionsChanged);
-        }
-
-        return executions;
+        return executionsRepository.findByClientIdAndProcessId(clientId, processId);
     }
 
     /**
@@ -259,82 +134,15 @@ public class ExecutionService {
 
             Optional<Process> processOpt = processesRepository.findById(execution.getProcess().getProcessId());
             if (processOpt.isPresent()) {
-
                 Process process = processOpt.get();
-
-                if (StringUtils.isBlank(process.getJenkinsJob()) || StringUtils.isBlank(process.getJenkinsToken())) {
-                    invokeProcess(process, execution);
-                    return execution;
-                }
-
-                // Create execution in database
-                execution = executionsRepository.save(execution);
-
-                // Invoke Jenkins job
-                // Prepare parameter data for the Jenkins job
-                String caseExecutionsJson = new ObjectMapper().writeValueAsString(execution.getCasesExecutions());
-                MultiValueMap<String, Object> bodyHttp = new LinkedMultiValueMap<>();
-                bodyHttp.add(process.getJenkinsJobParameterName(), caseExecutionsJson);
-
-                // Run Jenkins job
-                jenkinsService.triggerJob(process.getJenkinsJob(), process.getJenkinsToken(), bodyHttp);
-
-                // Retrieve jenkins build id when job has started running
-                Build lastBuild = null;
-                int retry = 0;
-                while (true) {
-                    retry++;
-
-                    lastBuild = jenkinsService.getLastBuild(process.getJenkinsJob(), process.getJenkinsToken());
-                    if (lastBuild.isBuilding()) {
-                        break;
-                    }
-
-                    if (retry > 10) {
-                        break;
-                    }
-
-                    TimeUnit.SECONDS.sleep(2);
-                }
-
-                // Update execution in database with Jenkins build Id and status
-                execution.setJenkinsBuild(lastBuild.getId());
-                if (lastBuild.isBuilding()) {
-                    execution.setStatus(RUNNING);
-                } else {
-                    execution.setStatus(lastBuild.getResult());
-                }
-                execution = executionsRepository.save(execution);
-
-                // Delegate to SelenoidService watch for each case execution in Selenoid
-                selenoidService.watchStatus(execution);
+                invokeProcess(process, execution);
+                return execution;
             }
 
             return execution;
         } catch (Exception e) {
             System.err.println(e.getMessage());
             throw new Exception(e.getMessage());
-        }
-    }
-
-    private void updateJenkinsAttachmentUrl(Step step, String artifactUrlPrefix, String artifactRelativePath) {
-        if (!step.getAttachments().isEmpty()) {
-            String attachmentUrl = step.getAttachments().get(0);
-            String file = StringUtils.substringAfterLast(attachmentUrl, "\\");
-            String fileRelativePath = StringUtils.substringBeforeLast(artifactRelativePath, "/") + "/";
-            step.getAttachments().clear();
-            step.addAttachment(artifactUrlPrefix + fileRelativePath + file);
-        }
-    }
-
-    private String getDate(String date) {
-        Date formattedDate;
-        try {
-            formattedDate = new SimpleDateFormat(DATE_FORMAT_JENKINS).parse(date);
-            return new SimpleDateFormat(DATE_FORMAT).format(formattedDate);
-        } catch (ParseException e) {
-            LOG.error("Error parsing jenkins date '" + date + "': " + e.getMessage());
-            return "";
         }
     }
 
@@ -478,7 +286,6 @@ public class ExecutionService {
             CaseExecution caseExecutionDB = caseExecutionDBOpt.get();
             resultCaseExecution.setSelenoidId(caseExecutionDB.getSelenoidId());
             resultCaseExecution.setBrowserVersion(caseExecutionDB.getBrowserVersion());
-            resultCaseExecution.setScreenResolution(caseExecutionDB.getScreenResolution());
         }
         return caseExecutionsRepository.save(resultCaseExecution);
     }
