@@ -10,8 +10,9 @@ export class AppComponent {
 
   constructor(private translate: TranslateService) {
     this.translate.addLangs(['en', 'es']);
-    if (this.translate.getLangs().includes(navigator.language)) {
-      translate.setDefaultLang(navigator.language);
+    const browserLang = translate.getBrowserLang();
+    if (this.translate.getLangs().includes(browserLang)) {
+      translate.setDefaultLang(browserLang);
     } else {
       this.translate.setDefaultLang('en');
     }
