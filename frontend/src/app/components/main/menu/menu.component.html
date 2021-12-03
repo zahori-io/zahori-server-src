@@ -1,8 +1,10 @@
 <!--MENU PRINCIPAL-->
 <div class="app-header header-shadow">
-  <div class="header__logo">
-    <div class="logo-src"></div>
-  </div>
+  <a routerLink="dashboard" routerLinkActive="linkActive" class="p-0 mr-2 btn ">
+    <div class="header__logo">
+      <div class="logo-src"></div>
+    </div>
+  </a>
 
   <!-- LOGO EMPRESA CLIENTE
     <div class="app-header__logo2">
@@ -111,7 +113,8 @@
                             </div>
                             <div class="widget-content-right mr-2">
                               <button class="btn-pill btn-shadow btn-shine btn btn-focus"
-                                (click)="logout();$event.preventDefault();$event.stopPropagation();">{{'main.menu.logout'| translate}}
+                                (click)="logout();$event.preventDefault();$event.stopPropagation();">{{'main.menu.logout'|
+                                translate}}
                               </button>
                             </div>
                           </div>
