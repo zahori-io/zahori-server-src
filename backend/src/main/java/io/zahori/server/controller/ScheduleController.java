@@ -76,8 +76,8 @@ public class ScheduleController {
         LOG.info(cal.getTime().toString());
         return cal.getTime();
     }
-    //generate daily run list at 23:58 0 58 23 ? * * *"
-    @Scheduled(cron = "0 58 23 ? * * *")
+    //generate daily run list at 23:58 every day-> 0 58 23 ? * *
+    @Scheduled(cron = "0 58 23 ? * *")
     private void createExecutionsPool(){
         LOG.info("<--Executing pool-->"+ new Date().toString());
         Date today = new Date();
