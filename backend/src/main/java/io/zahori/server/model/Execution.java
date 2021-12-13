@@ -79,10 +79,10 @@ public class Execution implements Serializable {
     @JoinColumn(name = "execution_id", nullable = false)
     private List<CaseExecution> casesExecutions;
 
-    // bi-directional many-to-one association to PeriodicExecution
+    // bi-directional many-to-one association to processSchedule
     @ManyToOne
-    @JoinColumn(name = "periodic_execution_id")
-    private PeriodicExecution periodicExecution;
+    @JoinColumn(name = "process_schedule_id")
+    private ProcessSchedule processSchedule;
 
     // bi-directional many-to-one association to Process
     @JsonBackReference(value = "process")
@@ -266,22 +266,12 @@ public class Execution implements Serializable {
         this.configuration = configuration;
     }
 
-    /**
-     * Gets periodic execution.
-     *
-     * @return the periodic execution
-     */
-    public PeriodicExecution getPeriodicExecution() {
-        return this.periodicExecution;
+    public ProcessSchedule getProcessSchedule() {
+        return processSchedule;
     }
 
-    /**
-     * Sets periodic execution.
-     *
-     * @param periodicExecution the periodic execution
-     */
-    public void setPeriodicExecution(PeriodicExecution periodicExecution) {
-        this.periodicExecution = periodicExecution;
+    public void setProcessSchedule(ProcessSchedule processSchedule) {
+        this.processSchedule = processSchedule;
     }
 
     /**
