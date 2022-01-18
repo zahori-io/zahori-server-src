@@ -7,7 +7,7 @@ RUN mvn dependency:go-offline package -B
 COPY . /code/
 RUN mvn clean package
 
-FROM adoptopenjdk/openjdk11:x86_64-alpine-jre-11.0.10_9
+FROM adoptopenjdk/openjdk11:x86_64-alpine-jre-11.0.11_9
 
 COPY --from=javabuilder /code/target/app.jar /usr/app/app.jar
 WORKDIR /usr/app
