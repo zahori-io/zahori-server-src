@@ -27,7 +27,7 @@
     "@ng-select/ng-select": "^6.1.0",
     "@ngx-translate/core": "~13.0.0",
     "@ngx-translate/http-loader": "~6.0.0",
-    "@novnc/novnc": "^1.1.0",
+    "@novnc/novnc": "^1.3.0",
     "datatables.net": "^1.11.3",
     "datatables.net-dt": "^1.11.0",
     "jquery": "^3.6.0",
