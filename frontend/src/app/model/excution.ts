@@ -1,7 +1,7 @@
-import { CaseExecution } from "./caseExecution";
-import { Configuration } from "./configuration";
-import { PeriodicExecution } from "./periodic-execution";
-import { Process } from "./process";
+import { CaseExecution } from './caseExecution';
+import { Configuration } from './configuration';
+import { PeriodicExecution } from './periodic-execution';
+import { Process } from './process';
 
 export class Execution {
     executionId: number;

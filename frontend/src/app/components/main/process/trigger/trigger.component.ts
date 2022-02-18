@@ -11,6 +11,7 @@ import { Tag } from '../../../../model/tag';
 import {Resolution} from '../../../../model/resolution';
 import {IDropdownSettings} from 'ng-multiselect-dropdown';
 import {TranslateService} from '@ngx-translate/core';
+import {ProcessSchedule} from '../../../../model/processSchedule';
 
 
 @Component({
@@ -33,6 +34,10 @@ export class TriggerComponent implements OnInit {
   selectedResolutions: Array<Resolution>;
   dropdownSettings: IDropdownSettings = {};
   selectResolution: string;
+  periodicHour: string;
+  periodicDays: any;
+  selectedDays: string[];
+  periodicCreated: boolean;
 
   constructor(public dataService: DataService, private router: Router, private  translate: TranslateService) {
   }
@@ -56,6 +61,39 @@ export class TriggerComponent implements OnInit {
       selectAllText: this.translate.instant('main.process.trigger.selectAllResolutions'),
       unSelectAllText: this.translate.instant('main.process.trigger.unselectAllResolutions')
     };
+    this.periodicDays = [
+      {
+        name: this.translate.instant('main.process.trigger.week.monday.name'),
+        cronDay: this.translate.instant('main.process.trigger.week.monday.cronDay')
+      },
+      {
+        name: this.translate.instant('main.process.trigger.week.tuesday.name'),
+        cronDay: this.translate.instant('main.process.trigger.week.tuesday.cronDay')
+      },
+      {
+        name: this.translate.instant('main.process.trigger.week.wednesday.name'),
+        cronDay: this.translate.instant('main.process.trigger.week.wednesday.cronDay')
+      },
+      {
+        name: this.translate.instant('main.process.trigger.week.thursday.name'),
+        cronDay: this.translate.instant('main.process.trigger.week.thursday.cronDay')
+      },
+      {
+        name: this.translate.instant('main.process.trigger.week.friday.name'),
+        cronDay: this.translate.instant('main.process.trigger.week.friday.cronDay')
+      },
+      {
+        name: this.translate.instant('main.process.trigger.week.saturday.name'),
+        cronDay: this.translate.instant('main.process.trigger.week.saturday.cronDay')
+      },
+      {
+        name: this.translate.instant('main.process.trigger.week.sunday.name'),
+        cronDay: this.translate.instant('main.process.trigger.week.sunday.cronDay')
+      }
+    ];
+    this.selectedDays = [];
+    this.periodicHour = '00:00';
+    this.periodicCreated = false;
   }
   getTags(): void {
     this.dataService.getTags(String(this.dataService.processSelected.processId)).subscribe(
@@ -105,6 +143,7 @@ export class TriggerComponent implements OnInit {
   createExecution(): void  {
     this.loading = true;
     this.created = false;
+    this.periodicCreated = false;
     this.error = '';
 
     // Create caseExecutions
@@ -139,19 +178,43 @@ export class TriggerComponent implements OnInit {
       }
     }
 
-    // submit execution to backend
-    this.dataService.createExecution(this.execution).subscribe(
-      () => {
-        this.newExecution();
+    if (this.periodicExecutionEnabled){
+      const splitHour = this.periodicHour.split(':');
+      const days = this.selectedDays.concat(',').toString();
+      const cronExp = '0 ' + splitHour[1] + ' ' + splitHour[0] + ' ? * ' + days.substring(0, days.length -  2);
+      this.execution.totalPassed = 0;
+      this.execution.totalFailed = 0;
+      const ps: ProcessSchedule = new ProcessSchedule(0, this.dataService.processSelected, this.execution.executionId, cronExp, new Date(), '', 0);
+      this.dataService.setExecution(this.execution).subscribe((exec: Execution) => {
+        this.periodicCreated = true;
+        this.loading = false;
         this.error = '';
-        this.created = true;
-        this.loading = false;
-      },
-      (error) => {
-        this.error = error.error;
-        this.loading = false;
-      }
-    );
+        ps.executionId = exec.executionId;
+        this.dataService.setPeriodicExecution(ps).subscribe(() => {},
+            (error) => {
+              this.error = error.error;
+              this.loading = false;
+            });
+        },
+        (error) => {
+          this.error = error.error;
+          this.loading = false;
+        });
+    } else {
+      // submit execution to backend
+      this.dataService.createExecution(this.execution).subscribe(
+        () => {
+          this.newExecution();
+          this.error = '';
+          this.created = true;
+          this.loading = false;
+        },
+        (error) => {
+          this.error = error.error;
+          this.loading = false;
+        }
+      );
+    }
   }
 
   invalidForm(): boolean {
@@ -259,5 +322,22 @@ export class TriggerComponent implements OnInit {
         });
         this.selectedTags.concat(this.tags);
       }
+  }
+  onDaysChange(e): void {
+
+    if (e.target.checked) {
+      this.selectedDays.push(e.target.value);
+    } else {
+      this.selectedDays.forEach((value, index) => {
+        if (value === e.target.value) { this.selectedDays.splice(index, 1); }
+      });
+    }
+    console.log(this.selectedDays);
+    console.log(this.periodicHour);
+    const splitHour = this.periodicHour.split(':');
+    const days = this.selectedDays.concat(',').toString();
+
+    const cronExp = '0 ' + splitHour[1] + ' ' + splitHour[0] + ' ? * ' + days.substring(0, days.length -  2);
+    console.log(cronExp);
   }
 }

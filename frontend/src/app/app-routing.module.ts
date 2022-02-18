@@ -23,6 +23,7 @@ import { ProcessComponent } from './components/main/process/process.component';
 import { ProcessAdminComponent } from './components/main/process/process-admin/process-admin.component';
 import { SignupComponent } from './components/signup/signup.component';
 import {AdminResolutionsComponent} from './components/main/process/process-admin/admin-resolutions/admin-resolutions.component';
+import {AdminPeriodicExecutionsComponent} from './components/main/process/process-admin/admin-periodic-executions/admin-periodic-executions.component';
 
 
 const routes: Routes = [
@@ -42,11 +43,12 @@ const routes: Routes = [
           { path: 'configurator', component: ConfiguratorComponent },
           { path: 'cases', component: CasesComponent },
           { path: 'admin', component: ProcessAdminComponent,
-            children:[
+            children: [
               { path: '', component : AdminEnvironmentsComponent},
               { path: 'environments', component: AdminEnvironmentsComponent },
               { path: 'tags', component: AdminTagsComponent },
-              { path: 'resolutions', component: AdminResolutionsComponent}
+              { path: 'resolutions', component: AdminResolutionsComponent},
+              { path: 'periodicExecutions', component: AdminPeriodicExecutionsComponent}
             ]}
         ]
       },

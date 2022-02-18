@@ -51,6 +51,7 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { AdminResolutionsComponent } from './components/main/process/process-admin/admin-resolutions/admin-resolutions.component';
 import { ResolutionComponentComponent } from './components/main/process/process-admin/admin-resolutions/resolution-component/resolution-component.component';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
+import { AdminPeriodicExecutionsComponent } from './components/main/process/process-admin/admin-periodic-executions/admin-periodic-executions.component';
 
 
 @NgModule({
@@ -92,7 +93,8 @@ import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
     SignupComponent,
     StepsModalComponent,
     AdminResolutionsComponent,
-    ResolutionComponentComponent
+    ResolutionComponentComponent,
+    AdminPeriodicExecutionsComponent
   ],
     imports: [
         BrowserModule,
@@ -102,14 +104,14 @@ import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
         NgSelectModule,
         MatChipsModule,
         ReactiveFormsModule,
-        NgbModule,
         TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient]
-            }
+          loader: {
+            provide: TranslateLoader,
+            useFactory: HttpLoaderFactory,
+            deps: [HttpClient]
+          }
         }),
+        NgbModule,
         NgMultiSelectDropDownModule
     ],
   providers: [

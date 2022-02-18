@@ -5524,3 +5524,6 @@ Copyright (c) 2015 Daniel Eden
 .ng-dropdown-panel-items {
     width: fit-content;
 }
+app-admin-periodic-executions{
+  width: 100%;
+}

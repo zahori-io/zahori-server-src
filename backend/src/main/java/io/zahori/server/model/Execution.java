@@ -79,7 +79,6 @@ public class Execution implements Serializable {
     @JoinColumn(name = "execution_id", nullable = false)
     private List<CaseExecution> casesExecutions;
 
-    // bi-directional many-to-one association to processSchedule
     @ManyToOne
     @JoinColumn(name = "process_schedule_id")
     private ProcessSchedule processSchedule;

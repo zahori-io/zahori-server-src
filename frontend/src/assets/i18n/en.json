@@ -354,7 +354,39 @@
 				"tags": "Tags",
 				"time": "Time",
 				"title": "Cases to be executed",
-				"unselectAllResolutions": "Deselect all resolutions"
+				"unselectAllResolutions": "Deselect all resolutions",
+        "days": "Days",
+        "hour": "Hour",
+        "week": {
+          "monday": {
+            "name": "Monday",
+            "cronDay": "MON"
+          },
+          "tuesday": {
+            "name": "Tuesday",
+            "cronDay": "TUE"
+          },
+          "wednesday": {
+            "name": "Wednesday",
+            "cronDay": "WED"
+          },
+          "thursday": {
+            "name": "Thursday",
+            "cronDay": "THU"
+          },
+          "friday": {
+            "name": "Friday",
+            "cronDay": "FRI"
+          },
+          "saturday": {
+            "name": "Saturday",
+            "cronDay": "SAT"
+          },
+          "sunday": {
+            "name": "Sunday",
+            "cronDay": "SUN"
+          }
+        }
 			}
 		},
 		"profile": {

@@ -2,6 +2,7 @@ import { Attachment } from './attachment';
 import { Browser } from './browser';
 import { Case } from './case';
 import { Step } from './step';
+import {Execution} from './excution';
 
 export class CaseExecution {
     caseExecutionId: number;
@@ -21,4 +22,5 @@ export class CaseExecution {
     selenoidId: string;
     screenResolution: string;
     browserVersion: string;
+    execution: Execution;
 }

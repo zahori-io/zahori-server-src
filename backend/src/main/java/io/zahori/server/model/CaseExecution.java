@@ -41,6 +41,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -104,6 +105,11 @@ public class CaseExecution implements Serializable {
     @JoinColumn(name = "browser_name")
     private Browser browser;
 
+    @JsonBackReference(value = "execution")
+    @ManyToOne
+    @JoinColumn(name = "execution_id",referencedColumnName ="execution_id", insertable = false, updatable = false)
+    Execution execution;
+
     // bi-directional many-to-one association to Cas
     @ManyToOne
     @JoinColumn(name = "case_id")
@@ -116,6 +122,31 @@ public class CaseExecution implements Serializable {
      * Instantiates a new Case execution.
      */
     public CaseExecution() {
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (obj instanceof CaseExecution) {
+            boolean a,b,c,d;
+            a  = b = c = d = false;
+            try{
+                a = this.browser.getBrowserName().equals(((CaseExecution) obj).browser.getBrowserName());
+                b = this.screenResolution.equals(((CaseExecution) obj).screenResolution);
+                c = this.cas.getCaseId().equals(((CaseExecution) obj).cas.getCaseId());
+                d = this.execution.getExecutionId().equals(((CaseExecution) obj).execution.getExecutionId());
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+            return a &&  b && c && d;
+        }
+        return false;
     }
 
     /**
@@ -439,4 +470,7 @@ public class CaseExecution implements Serializable {
         this.configuration = configuration;
     }
 
+    public Execution getExecution() {
+        return execution;
+    }
 }

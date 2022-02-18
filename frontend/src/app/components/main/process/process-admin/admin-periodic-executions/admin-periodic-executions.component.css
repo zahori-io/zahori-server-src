@@ -1,0 +1,14 @@
+.tagSelected {
+  box-shadow: #a06969 2px 2px;
+}
+.tag {
+  color:#3d4246;
+}
+:host ::ng-deep .multiselect-dropdown .dropdown-btn .selected-item {
+  background: #6a6a6a!important;
+  border:1px solid #6a6a6a!important;
+  border-radius: 8px!important;
+}
+:host ::ng-deep .dropdown-list{
+  position: relative!important;
+}

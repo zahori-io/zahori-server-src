@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
-import { map, catchError } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
@@ -22,6 +21,7 @@ import { Timeout } from '../model/timeout';
 import { EvidenceType } from '../model/evidence-type';
 import { ServerVersions } from '../model/serverVersions';
 import {Resolution} from '../model/resolution';
+import {ProcessSchedule} from '../model/processSchedule';
 
 @Injectable({
   providedIn: 'root'
@@ -56,23 +56,23 @@ export class DataService {
     );
   }
 
-  setFirstTeam() {
+  setFirstTeam(): any {
     if (this.client.clientTeams && this.client.clientTeams.length > 0) {
       this.teamSelected = this.client.clientTeams[0];
       this.teamSelectedInSelector = this.teamSelected;
     }
   }
 
-  setTeam(team: Team) {
+  setTeam(team: Team): any {
     this.teamSelected = team;
   }
 
-  setProcess(process: Process) {
+  setProcess(process: Process): any {
     this.processSelected = process;
     this.processSelectedChange.next(true);
   }
 
-  getProcessCases() {
+  getProcessCases(): any {
     this.getCases().subscribe(
       cases => {
         this.processCases = cases;
@@ -83,7 +83,7 @@ export class DataService {
     );
   }
 
-  getProcessConfigurations() {
+  getProcessConfigurations(): any {
     this.getConfigurations().subscribe(
       configurations => {
         this.processConfigurations = configurations;
@@ -142,7 +142,7 @@ export class DataService {
     return this.http.post<Execution>(this.url + 'process/' + this.processSelected.processId + '/executions', JSON.stringify(execution), {});
   }
 
-  public getFile(fileUrl: string) {
+  public getFile(fileUrl: string): Observable<any> {
     return this.http.get(this.url + 'process/' + this.processSelected.processId + '/file?path=' + fileUrl, { responseType: 'blob' });
   }
 
@@ -150,19 +150,19 @@ export class DataService {
     return this.http.get<any>(this.url + 'process/' + processId + '/environments');
   }
 
-  public setEnvironment(envs: Environment[], processId: string) {
+  public setEnvironment(envs: Environment[], processId: string): Observable<any> {
     return this.http.post(this.url + 'process/' + processId + '/environments', JSON.stringify(envs));
   }
 
-  public getTags(processId: String) {
+  public getTags(processId: string): Observable<any> {
     return this.http.get(this.url + 'process/' + processId + '/tags');
   }
 
-  public setTags(tags: Tag[], processId: string) {
+  public setTags(tags: Tag[], processId: string): Observable<any> {
     return this.http.post(this.url + 'process/' + processId + '/tags', JSON.stringify(tags));
   }
 
-  public getTestRepositories() {
+  public getTestRepositories(): Observable<any> {
     return this.http.get(this.url + 'repositories');
   }
 
@@ -208,6 +208,28 @@ export class DataService {
 
   public setResolutions(res: Resolution[], processId: string): Observable<object> {
     return this.http.post(this.url + 'resolutions/' + processId, JSON.stringify(res));
+  }
+
+  public setPeriodicExecution(ps: ProcessSchedule): Observable<object>{
+    return this.http.post(this.url + 'schedule/', JSON.stringify(ps));
+  }
+  public updatePeriodicExecution(ps: ProcessSchedule): Observable<object>{
+    return this.http.post(this.url + 'schedule/update/', JSON.stringify(ps));
+  }
+  public setExecution(exec: Execution): Observable<object>{
+    return this.http.post(this.url + 'schedule/execution', JSON.stringify(exec));
+  }
+  public updateExecution(exec: Execution): Observable<object>{
+    return this.http.post(this.url + 'schedule/execution/update/', JSON.stringify(exec));
+  }
+  public getPeriodicExecution(processId: number): Observable<ProcessSchedule[]>{
+    return this.http.get<ProcessSchedule[]>(this.url + 'schedule/' + processId);
+  }
+  public getExecutionsByProcessScheduleId(processScheduleId: number): Observable<Execution[]>{
+    return this.http.get<Execution[]>(this.url + 'schedule/executions/' + processScheduleId);
+  }
+  public getExecutionByProcessScheduleId(processScheduleId: number): Observable<Execution>{
+    return this.http.get<Execution>(this.url + 'schedule/execution/' + processScheduleId);
   }
   // get Jenkins artifact
   // public getFile(fileUrl: string) {

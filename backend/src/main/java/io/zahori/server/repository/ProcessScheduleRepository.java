@@ -1,5 +1,6 @@
 package io.zahori.server.repository;
 
+import io.zahori.server.model.Process;
 import io.zahori.server.model.ProcessSchedule;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -22,4 +23,11 @@ public interface ProcessScheduleRepository extends CrudRepository<ProcessSchedul
      */
     @Query("select ps from ProcessSchedule ps where ps.nextExecution between :startDate and :endDate")
     List<ProcessSchedule> findProcessScheduleByDates(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+    /**
+     * get a list of scheduled executions
+     * @param processId  process id
+     * @return List of executions
+     */
+    @Query("select ps from ProcessSchedule ps where ps.process.processId = :processId")
+    List<ProcessSchedule> findProcessScheduleByProcessId(@Param("processId") Long processId);
 }

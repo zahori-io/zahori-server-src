@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild }
 import { CaseExecution } from '../../../../model/caseExecution';
 import { Execution } from '../../../../model/excution';
 import { DataService } from '../../../../services/data.service';
-import RFB from "../../../../../../node_modules/@novnc/novnc/core/rfb.js";
+import RFB from '../../../../../../node_modules/@novnc/novnc/core/rfb.js';
 
 @Component({
   selector: 'app-executions',
@@ -13,8 +13,8 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
 
   caseExecutionSelected: CaseExecution;
   caseExecutionVideoSelected: CaseExecution;
-  loading: boolean = false;
-  modalMaximized: boolean = false;
+  loading = false;
+  modalMaximized = false;
   selenoidUiHostAndPort: string;
   rfb: RFB; // Vídeo streaming
   ngClass: string;
@@ -22,35 +22,35 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
   constructor(public dataService: DataService) {
   }
 
-  ngOnInit(): void {
-    console.log("init ExecutionsComponent");
+  ngOnInit(): any {
+    console.log('init ExecutionsComponent');
     this.getProcessExecutions();
     this.dataService.processSelectedChange.subscribe(
       value => {
-        console.log("new process selected");
+        console.log('new process selected');
         this.hideCaseExecutionDetails();
       });
     this.getSelenoidUiHostAndPort();
   }
 
-  ngAfterViewInit(): void {
-    console.log("ngAfterViewInit");
+  ngAfterViewInit(): any {
+    console.log('ngAfterViewInit');
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    console.log("onChanges ExecutionsComponent");
+  ngOnChanges(changes: SimpleChanges): any {
+    console.log('onChanges ExecutionsComponent');
     // changes.prop contains the old and the new value...
   }
 
-  showCaseExecutionDetails(caseExecution: CaseExecution) {
+  showCaseExecutionDetails(caseExecution: CaseExecution): any {
     this.caseExecutionSelected = caseExecution;
   }
 
-  hideCaseExecutionDetails() {
+  hideCaseExecutionDetails(): any {
     this.caseExecutionSelected = new CaseExecution();
   }
 
-  getProcessExecutions() {
+  getProcessExecutions(): any {
     this.loading = true;
     this.dataService.getExecutions().subscribe(
       (executions) => {
@@ -72,7 +72,7 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
         */
       },
       (error) => {
-        console.error("Error loading executions: " + error.message);
+        console.error('Error loading executions: ' + error.message);
       },
       () => {
         this.loading = false;
@@ -81,9 +81,9 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   getCaseList(execution: Execution): any {
-    var caseNames = new Set();
+    let caseNames = new Set();
 
-    execution.casesExecutions.forEach(function (caseExecution) {
+    execution.casesExecutions.forEach(function(caseExecution) {
       caseNames.add(caseExecution.cas.name);
     });
 
@@ -91,59 +91,59 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   getBrowserList(execution: Execution): any {
-    var browserNames = new Set();
+    const browserNames = new Set();
 
-    execution.casesExecutions.forEach(function (caseExecution) {
+    execution.casesExecutions.forEach(function(caseExecution) {
       browserNames.add(caseExecution.browser.browserName);
     });
 
     return browserNames;
   }
 
-  maximizeModal() {
+  maximizeModal(): any {
     this.modalMaximized = !this.modalMaximized;
   }
 
-  startVideoStreaming(caseExecution: CaseExecution) {
-    console.log("startVideoStreaming on " + this.selenoidUiHostAndPort);
+  startVideoStreaming(caseExecution: CaseExecution): any {
+    console.log('startVideoStreaming on ' + this.selenoidUiHostAndPort);
     this.caseExecutionVideoSelected = caseExecution;
-    var password = "selenoid";
+    const password = 'selenoid';
 
     let protocol;
-    if (window.location.protocol === "https:") {
+    if (window.location.protocol === 'https:') {
       protocol = 'wss://';
     } else {
       protocol = 'ws://';
     }
 
     // Create a new RFB object will start a new connection
-    this.rfb = new RFB(document.getElementById("screen"), protocol + this.selenoidUiHostAndPort + "/ws/vnc/" + caseExecution.selenoidId, {
-      credentials: { password: password },
+    this.rfb = new RFB(document.getElementById('screen'), protocol + this.selenoidUiHostAndPort + '/ws/vnc/' + caseExecution.selenoidId, {
+      credentials: { password },
     });
     this.resizeVnc();
   }
 
-  resizeVnc() {
+  resizeVnc(): any {
     if (this.rfb) {
       this.rfb.viewOnly = true;
-      //this.rfb.resizeSession = true;
-      //this.rfb.scaleViewport = true;
+      // this.rfb.resizeSession = true;
+      // this.rfb.scaleViewport = true;
     }
   }
 
-  closeModal() {
+  closeModal(): any {
     this.rfb.disconnect();
   }
 
-  reload() {
+  reload(): any {
     this.getProcessExecutions();
   }
 
-  getSelenoidUiHostAndPort() {
+  getSelenoidUiHostAndPort(): any {
     this.dataService.getSelenoidUiHostAndPort().subscribe(
       hostAndPort => {
         this.selenoidUiHostAndPort = hostAndPort;
-        console.log("getSelenoidUiHostAndPort -> " + this.selenoidUiHostAndPort);
+        console.log('getSelenoidUiHostAndPort -> ' + this.selenoidUiHostAndPort);
       }
     );
   }

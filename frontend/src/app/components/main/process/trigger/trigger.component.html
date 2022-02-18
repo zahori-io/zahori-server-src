@@ -141,35 +141,16 @@
 								<label class="custom-control-label " for="customSwitch1"></label>
 							</div>
 						</div>
-						<div class="d-flex mt-3" *ngIf="periodicExecutionEnabled">
+						<div *ngIf="periodicExecutionEnabled">
 							<div class="position-relative form-group">
-								<label for="exampleTime"></label>
-								<input name="time" id="exampleTime" placeholder="{{'main.process.trigger.time'|translate}}" type="time"
-									class="form-control">
-							</div>
-							<div class="mt-4 pt-3 ml-3 d-flex">
-								<div class="custom-checkbox custom-control  mr-2">
-									<input type="checkbox" id="DayCheckbox1" class="custom-control-input">
-									<label class="custom-control-label" for="DayCheckbox1">L</label>
-								</div>
-								<div class="custom-checkbox custom-control mr-2">
-									<input type="checkbox" id="DayCheckbox2" class="custom-control-input">
-									<label class="custom-control-label" for="DayCheckbox2">M</label>
-								</div>
-
-								<div class="custom-checkbox custom-control mr-2">
-									<input type="checkbox" id="DayCheckbox3" class="custom-control-input">
-									<label class="custom-control-label" for="DayCheckbox3">X</label>
-								</div>
-
-								<div class="custom-checkbox custom-control mr-2">
-									<input type="checkbox" id="DayCheckbox4" class="custom-control-input">
-									<label class="custom-control-label" for="DayCheckbox4">J</label>
-								</div>
-
-								<div class="custom-checkbox custom-control mr-2">
-									<input type="checkbox" id="DayCheckbox5" class="custom-control-input">
-									<label class="custom-control-label" for="DayCheckbox5">V</label>
+								<label for="Time">{{'main.process.trigger.hour'|translate}}:</label>
+								<input id="Time" placeholder="{{'main.process.trigger.time'|translate}}" type="time" [(ngModel)]="periodicHour" [ngModelOptions]="{standalone: true}"	class="form-control">
+              </div>
+              <label>{{'main.process.trigger.days'|translate}}:</label>
+							<div class="position-relative form-group" *ngFor="let day of periodicDays">
+								<div class="custom-checkbox custom-control">
+									<input type="checkbox" id="{{day.cronDay}}" class="custom-control-input" [value]="day.cronDay" (change)="onDaysChange($event)">
+									<label class="custom-control-label" for="{{day.cronDay}}">{{day.name}}</label>
 								</div>
 							</div>
 						</div>
@@ -197,6 +178,19 @@
 							<div>
 								<span>{{'main.process.trigger.canYouSeeIn'|translate}}
 									<a routerLink="../executions" routerLinkActive="linkActive"><strong>{{'main.process.trigger.lastExecutions'|translate}} </strong></a>
+								</span>
+							</div>
+						</div>
+					</span>
+
+          <span *ngIf="periodicCreated">
+						<div class="text-center mt-2">
+							<div>
+								<span>{{'main.process.trigger.periodicExecutionCreated'|translate}} <i class="ml-2 fas fa-check text-success" aria-hidden="true"></i></span>
+							</div>
+							<div>
+								<span>{{'main.process.trigger.canYouSeeInPeriodic'|translate}}
+                  <a routerLink="../executions" routerLinkActive="linkActive"><strong>{{'main.process.trigger.periodicManagement'|translate}} </strong></a>
 								</span>
 							</div>
 						</div>

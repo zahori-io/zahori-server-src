@@ -280,7 +280,8 @@
 				"menu": {
 					"environments": "Entornos",
 					"resolutions": "Resoluciones",
-					"tags": "etiquetas"
+					"tags": "etiquetas",
+          "periodicExecutions": "Ejecuciones periódicas"
 				},
 				"resolutions": {
 					"addResolution": "Añadir resolución",
@@ -318,7 +319,40 @@
 						"save": "Guardar"
 					},
 					"title": "Gestión de etiquetas"
-				}
+				},
+
+        "periodicExecutions": {
+          "selectDays": "Seleccione dias a ejecutar",
+          "periodicExecutions": "Ejecuciones periódicas",
+          "periodicExecution": "Ejecución periódica",
+          "running": "En ejecución...",
+          "name": "Nombre",
+          "numExecutions": "Nº ejecuciones",
+          "hour": "Hora",
+          "days": "dias",
+          "nextExecution": "Próxima ejecución",
+          "active": "Activa",
+          "loading": "Cargando...",
+          "week": {
+            "MON": "Lunes",
+            "TUE": "Martes",
+            "WED": "Miércoles",
+            "THU": "Jueves",
+            "FRI": "Viernes",
+            "SAT": "Sábado",
+            "SUN": "Domingo"
+          },
+          "executionToEdit": "Edición de ejecución periódica",
+          "errorOnEditPeriodicExecution": "Se ha producido un error al editar la ejecución periódica",
+          "form": {
+            "name": "Nombre",
+            "hour": "Hora",
+            "days": "Dias",
+            "active": "Activo"
+          },
+          "executionSettings": "Ajustes de ejecución",
+          "update": "Actualizar"
+        }
 			},
 			"processMenu": {
 				"Administration": "Administración",
@@ -332,6 +366,9 @@
 				"SelectResolutions": "Selecciona las resoluciones",
 				"browsers": "Navegadores",
 				"canYouSeeIn": "Puedes verla en",
+        "periodicExecutionCreated": "Ejecución periódica creada",
+        "canYouSeeInPeriodic": "Puedes gestionar tu ejecuciones periódicas en ",
+        "periodicManagement": "gestión",
 				"case": "Caso",
 				"caseToExecute": "Casos a ejecutar *",
 				"cases": "casos",
@@ -354,7 +391,39 @@
 				"tags": "Etiquetas",
 				"time": "Tiempo",
 				"title": "Casos a ejecutar",
-				"unselectAllResolutions": "Deseleccionar todas las resoluciones"
+				"unselectAllResolutions": "Deseleccionar todas las resoluciones",
+        "days": "Dias",
+        "hour": "Hora",
+        "week": {
+          "monday": {
+            "name": "Lunes",
+            "cronDay": "MON"
+          },
+          "tuesday": {
+            "name": "Martes",
+            "cronDay": "TUE"
+          },
+          "wednesday": {
+            "name": "Miércoles",
+            "cronDay": "WED"
+          },
+          "thursday": {
+            "name": "Jueves",
+            "cronDay": "THU"
+          },
+          "friday": {
+            "name": "Viernes",
+            "cronDay": "FRI"
+          },
+          "saturday": {
+            "name": "Sábado",
+            "cronDay": "SAT"
+          },
+          "sunday": {
+            "name": "Domingo",
+            "cronDay": "SUN"
+          }
+        }
 			}
 		},
 		"profile": {

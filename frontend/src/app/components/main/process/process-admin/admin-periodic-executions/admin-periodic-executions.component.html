@@ -1,0 +1,241 @@
+<div class="app-main__inner2col">
+  <div class="Zahoricontent">
+    <!-- Inicio cabecera con busqueda -->
+    <div class="app-page-title">
+      <div class="page-title-wrapper">
+        <div class="page-title-heading">
+          <div>{{'main.process.processAdmin.periodicExecutions.periodicExecutions'|translate}}
+            <i title="reload" *ngIf="!loading" class="fas fa-sync-alt fa-xs ml-3"
+               style="cursor: pointer; color: grey; font-size: 0.7em;" (click)="reload()"></i>
+            <div title="loading..." *ngIf="loading"
+                 class="spinner-border spinner-border-sm text-secondary ml-3 mb-1"
+                 style="border: 0.15em solid currentColor;border-right-color: transparent; border-width: 0.1em;"
+                 role="status">
+              <span class="sr-only">{{'main.process.processAdmin.periodicExecutions.running'|translate}}</span>
+            </div>
+          </div>
+        </div>
+        <div class="page-title-actions">
+          <div class="search-wrapper active">
+            <div class="input-holder">
+              <input type="text" class="search-input" placeholder="{{'main.process.executions.search'|translate}}">
+              <button class="search-icon"><span></span></button>
+            </div>
+            <button class="close"></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Fin cabecera con busqueda -->
+
+    <!-- Inicio de Tabla de Datos -->
+    <table class="mb-0 table table-hover">
+
+      <thead>
+      <tr>
+        <th>#</th>
+        <th class="text-center">{{'main.process.processAdmin.periodicExecutions.name'|translate}}</th>
+        <th class="text-center">{{'main.process.processAdmin.periodicExecutions.numExecutions'|translate}}</th>
+        <th class="text-center">{{'main.process.processAdmin.periodicExecutions.hour'|translate}}</th>
+        <th class="text-center">{{'main.process.processAdmin.periodicExecutions.days'|translate}}</th>
+        <th class="text-center"
+            style="width: 110px;">{{'main.process.processAdmin.periodicExecutions.nextExecution'|translate}}</th>
+        <th class="text-center"
+            style="width: 150px;">{{'main.process.processAdmin.periodicExecutions.active'|translate}}</th>
+      </tr>
+      </thead>
+
+      <tbody>
+      <ng-template ngFor let-ps [ngForOf]="processScheduled" let-i="index">
+        <tr (click)="changeEdit(i)">
+          <td scope="row">{{ps.processScheduleId}}</td>
+          <td>{{ps.name}}</td>
+          <td class="text-center">
+            <span>{{ps.numExecutions}}</span>
+          </td>
+          <td class="text-center">
+            <span>{{getHour(ps.cronExpression)}}</span>
+          </td>
+          <td class="text-center">{{getDays(ps.cronExpression)}}</td>
+          <td class="text-center">{{ps.nextExecution| date:'dd/MM/YYYY' }}</td>
+          <td class="text-center">
+            <span *ngIf="ps.active"><i class="metismenu-icon fas fa-check"></i></span>
+            <span *ngIf="!ps.active"><i class="metismenu-icon far fa-times"></i></span>
+          </td>
+        </tr>
+      </ng-template>
+      <tr *ngIf="loading">
+        <td colspan="9" class="text-center">{{'main.process.processAdmin.periodicExecutions.loading'|translate}}</td>
+      </tr>
+      </tbody>
+    </table>
+    <!-- Fin de Tabla de Datos-->
+  </div>
+  <div class="ZahoriZonaDcha">
+    <div class="drawer-section">
+      <div id="ContDe" class="ps ps--active-x ps--active-y disabled">
+        <div>
+          <h5 class="drawer-heading">{{'main.process.processAdmin.periodicExecutions.periodicExecution'|translate}}
+            <i class="fas fa-chevron-left" *ngIf="!showPeriodic" (click)="changeShowPeriodic()"></i>
+            <i class="fas fa-chevron-down" *ngIf="showPeriodic" (click)="changeShowPeriodic()"></i>
+          </h5>
+        </div>
+        <div *ngIf="showPeriodic">
+          <form class="">
+            <div class="position-relative form-group">
+              <label for="periodicExecution_name"
+                     class="">{{'main.process.processAdmin.periodicExecutions.form.name'|translate}} *</label>
+              <input id="periodicExecution_name" type="text" [(ngModel)]="processScheduledSelected.name"
+                     name="periodicExecution_name" class="form-control" (keypress)="periodicMod=true"/>
+            </div>
+            <div class="position-relative form-group">
+              <label for="Time">{{'main.process.processAdmin.periodicExecutions.form.hour'|translate}}:</label>
+              <input id="Time" placeholder="{{'main.process.processAdmin.periodicExecutions.form.time'|translate}}"
+                     type="time" [(ngModel)]="periodicHour" [ngModelOptions]="{standalone: true}" class="form-control" (change)="periodicMod=true">
+            </div>
+
+            <div class="position-relative form-group">
+              <label>{{'main.process.processAdmin.periodicExecutions.form.days'|translate}}:</label>
+              <ng-multiselect-dropdown [settings]="dropdownSettings"
+                                       [data]="periodicDays" [placeholder]="selectDays" [(ngModel)]="selectedDays"
+                                       name="resolutions"
+                                       (onSelect)="periodicMod=true"
+                                       (onSelectAll)="periodicMod=true"
+                                       (onDeSelect)="periodicMod=true">
+              </ng-multiselect-dropdown>
+            </div>
+            <div class="position-relative form-group">
+              <span>{{'main.process.processAdmin.periodicExecutions.form.active'|translate}}</span>
+              <div class="ml-2 custom-control custom-switch">
+                <input type="checkbox" class="custom-control-input" id="active"
+                       [(ngModel)]="processScheduledSelected.active" [checked]="processScheduledSelected.active" (change)="periodicMod=true">
+                <label class="custom-control-label " for="active"></label>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div>
+          <h5 class="drawer-heading">{{'main.process.processAdmin.periodicExecutions.executionSettings'|translate}}
+            <i class="fas fa-chevron-left" *ngIf="!showExecution" (click)="changeShowExecution()"></i>
+            <i class="fas fa-chevron-down" *ngIf="showExecution" (click)="changeShowExecution()"></i>
+          </h5>
+        </div>
+        <div *ngIf="showExecution">
+          <form class="">
+            <div class="position-relative form-group">
+              <label for="execution_configurationId" class="">Configuración *</label>
+              <select id="execution_configurationId"  name="execution_configurationId" class="form-control">
+                <option *ngFor="let configuration of dataService.processConfigurations"
+                        [value]="configuration.configurationId"
+                        [selected]="configuration.configurationId===execution.configuration.configurationId" (change)="executionMod=true">
+                  {{configuration.name}}
+                </option>
+              </select>
+              <div *ngIf="dataService.processConfigurations.length == 0">
+                <span class="text-danger"><strong>{{'main.process.trigger.noCaseYet'|translate}}</strong></span><span>{{'main.process.trigger.createOne'|translate}}
+                <a routerLink="../configurator" routerLinkActive="linkActive"><strong>{{'main.process.trigger.here'|translate}}</strong></a>
+							</span>
+              </div>
+            </div>
+            <div class="position-relative form-group" *ngIf="dataService.processSelected.processType.name == 'BROWSER'">
+              <label for="browsers" class="">{{'main.process.trigger.browsers'|translate}} *</label>
+              <div>
+                <ng-template id="browsers" ngFor let-browser [ngForOf]="browsers" let-isLast="lastBrowser">
+                  <div *ngIf="browser.browserName !== 'NULLBROWSER'"
+                       class="custom-checkbox custom-control custom-control-inline">
+                    <input type="checkbox" [attr.id]="browser.browserName" class="custom-control-input"
+                           [value]="browser.browserName" name="browser_{{browser.browserName}}"
+                           [(ngModel)]="browser.selected" [checked]="browser.selected" (change)="executionMod=true"/>
+                    <label class="custom-control-label" [attr.for]="browser.browserName">
+                      <i title="{{browser.browserName}}"
+                         class="mr-1 fab fa fa-{{browser.browserName}}"></i>
+                    </label>
+                  </div>
+                </ng-template>
+              </div>
+            </div>
+            <div class="position-relative form-group">
+              <label for="resolutions" class="">{{'main.process.trigger.resolutions'|translate}} *</label>
+              <ng-multiselect-dropdown (onSelect)="show()" id="resolutions" [settings]="dropdownSettingsReso" [data]="resolutions"
+                                       [placeholder]="selectResolution" [(ngModel)]="selectedResolutions"
+                                       name="resolutions"
+                                       (onSelect)="executionMod=true"
+                                       (onSelectAll)="executionMod=true"
+                                       (onDeSelect)="executionMod=true">
+
+              </ng-multiselect-dropdown>
+            </div>
+            <div class="position-relative form-group">
+              <div class="page-title-actions d-flex">
+                <div class="menuPills m-auto" *ngFor ="let tag of tags">
+                  <button id = "tag" class="mr-2 btn-pill btn btn-info btn-sm" [ngClass]="{'tagSelected':selectedTags.includes(tag)}" [ngStyle] = "{backgroundColor: tag.color, borderColor: tag.color}" style="color: #3d4246" (click)="onTagClick(tag)">{{tag.name}}</button>
+                </div>
+              </div>
+              <table class="mb-0 table">
+                <thead>
+                <tr>
+                  <th>
+                    <div class="ml-2 custom-control custom-switch">
+                      <input type="checkbox" [(ngModel)]="massiveSelected" [ngModelOptions]="{standalone: true}"
+                             name="massiveSelected" id="massiveSelected" [checked]="massiveSelected"
+                             (change)="massiveChangeState()"
+                             class="custom-control-input">
+                      <label _ngcontent-scw-c70="" class="custom-control-label" for="massiveSelected"></label>
+                    </div>
+                  </th>
+                  <th>{{'main.process.trigger.id'|translate}}</th>
+                  <th>{{'main.process.trigger.case'|translate}}</th>
+                  <th>{{'main.process.trigger.tags'|translate}}</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngIf="dataService.processCases.length == 0">
+                  <td class="text-center" colspan="4">{{'main.process.trigger.noCaseDefine'|translate}} <a
+                    routerLink="../cases"><strong>{{'main.process.trigger.cases'|translate}}</strong></a></td>
+                </tr>
+                <tr *ngFor="let case of dataService.processCases; index as indexCase; last as lastCase;">
+                  <td>
+                    <div class="ml-2 custom-control custom-switch">
+                      <input type="checkbox" [(ngModel)]="case.selected" name="case-{{case.caseId}}"
+                             id="case-{{case.caseId}}"
+                             [checked]="case.selected" [value]="case.caseId" class="custom-control-input"
+                             (change)="onCaseSelection(case)"  (change)="executionMod=true">
+
+                      <label for="case-{{case.caseId}}" class="custom-control-label"></label>
+                    </div>
+                  </td>
+                  <td>{{case.caseId}}</td>
+                  <td>{{case.name}}</td>
+                  <td>
+                    <button class="btn-circle mt-2" [title]="tag.name"
+                            *ngFor="let tag of case.clientTags; index as indexTags; last as lastTag;"
+                            [ngStyle]="{backgroundColor: tag.color, borderColor: tag.color}"  [disabled]="!executionMod && !periodicMod">
+                    </button>
+                  </td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </form>
+        </div>
+        <div class="text-center">
+          <button class="btn-wide btn-icon btn btn-zahoriV btn-sm"
+                  [title]="invalidForm() ? 'Rellena los campos obligatorios' : ''"
+                  [disabled]="invalidForm()"
+                  (click)="editPeriodic()">{{'main.process.processAdmin.periodicExecutions.update'|translate}}</button>
+        </div>
+        <span *ngIf="error != ''">
+						<div class="text-center mt-2">
+							<div>
+								<span>{{'main.process.processAdmin.periodicExecutions.errorOnEditPeriodicExecution'|translate}} <i
+                  class="ml-2 fas fa-times text-danger" aria-hidden="true"></i></span>
+							</div>
+							<div>
+								<span>{{error}}</span>
+							</div>
+						</div>
+					</span>
+      </div>
+    </div>
+  </div>
+</div>

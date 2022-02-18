@@ -24,10 +24,8 @@ public class ProcessSchedule implements Serializable {
     @JoinColumn(name = "process_id")
     private Process process;
 
-    @JsonBackReference(value = "execution")
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "execution_id")
-    private List<Execution> executions;
+    private Long executionId;
 
     @Column(name = "cron_expression")
     private String cronExpression;
@@ -37,6 +35,10 @@ public class ProcessSchedule implements Serializable {
 
     @Column(name = "active")
     private Boolean active;
+    @Transient
+    private String name;
+    @Transient
+    private Long numExecutions;
 
     public Long getProcessScheduleId() {
         return processScheduleId;
@@ -78,11 +80,27 @@ public class ProcessSchedule implements Serializable {
         this.cronExpression = cronExpression;
     }
 
-    public List<Execution> getExecutions() {
-        return executions;
+    public Long getExecutionId() {
+        return executionId;
     }
 
-    public void setExecutions(List<Execution> executions) {
-        this.executions = executions;
+    public void setExecutionId(Long executionId) {
+        this.executionId = executionId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Long getNumExecutions() {
+        return numExecutions;
+    }
+
+    public void setNumExecutions(Long numExecutions) {
+        this.numExecutions = numExecutions;
     }
 }
