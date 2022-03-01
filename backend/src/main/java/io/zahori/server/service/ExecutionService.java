@@ -114,6 +114,16 @@ public class ExecutionService {
     }
 
     /**
+     * Get execution.
+     *
+     * @param executionId the execution id
+     * @return the execution
+     */
+    public Optional<Execution> getExecutionById(Long executionId) {
+        return executionsRepository.findById(executionId);
+    }
+
+    /**
      * Create execution.
      *
      * @param execution the execution
