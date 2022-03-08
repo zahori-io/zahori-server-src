@@ -51,8 +51,12 @@ import { AdminResolutionsComponent } from './components/main/process/process-adm
 import { ResolutionComponentComponent } from './components/main/process/process-admin/admin-resolutions/resolution-component/resolution-component.component';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import { AdminPeriodicExecutionsComponent } from './components/main/process/process-admin/admin-periodic-executions/admin-periodic-executions.component';
-
-
+import {FilterPipe} from './pipes/filter.pipe';
+import {MatTabsModule} from '@angular/material/tabs';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatIconModule} from '@angular/material/icon';
+import { MatFormFieldModule} from '@angular/material/form-field';
+import { MatInputModule} from '@angular/material/input';
 @NgModule({
   declarations: [
     AppComponent,
@@ -92,31 +96,40 @@ import { AdminPeriodicExecutionsComponent } from './components/main/process/proc
     SignupComponent,
     AdminResolutionsComponent,
     ResolutionComponentComponent,
-    AdminPeriodicExecutionsComponent
+    AdminPeriodicExecutionsComponent,
+    FilterPipe
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        FormsModule,
-        NgSelectModule,
-        MatChipsModule,
-        ReactiveFormsModule,
-        TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useFactory: HttpLoaderFactory,
-            deps: [HttpClient]
-          }
-        }),
-        NgbModule,
-        NgMultiSelectDropDownModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    NgSelectModule,
+    MatChipsModule,
+    ReactiveFormsModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
+    NgbModule,
+    NgMultiSelectDropDownModule,
+    MatTabsModule,
+    BrowserAnimationsModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule
+  ],
   providers: [
     AutenticacionService,
     AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     AuthImagePipe
+  ],
+  exports: [
+    FilterPipe
   ],
   bootstrap: [AppComponent]
 })

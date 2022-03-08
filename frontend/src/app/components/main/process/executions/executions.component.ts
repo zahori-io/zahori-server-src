@@ -1,13 +1,17 @@
-import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
+import {AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild, ViewEncapsulation} from '@angular/core';
 import { CaseExecution } from '../../../../model/caseExecution';
 import { Execution } from '../../../../model/excution';
 import { DataService } from '../../../../services/data.service';
 import RFB from '../../../../../../node_modules/@novnc/novnc/core/rfb.js';
+import {PeriodicExecution} from '../../../../model/periodic-execution';
+import {ProcessSchedule} from '../../../../model/processSchedule';
+import {Observable, Observer} from 'rxjs';
 
 @Component({
   selector: 'app-executions',
   templateUrl: './executions.component.html',
-  styleUrls: ['./executions.component.css']
+  styleUrls: ['./executions.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
 
@@ -18,25 +22,23 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
   selenoidUiHostAndPort: string;
   rfb: RFB; // Vídeo streaming
   ngClass: string;
-  showCapabilities: boolean = false;
-
+  showCapabilities = false;
+  manualExecutions: Execution[];
+  periodicExecutionsData: Map<number, Execution[]>;
+  periodicExecutions: ProcessSchedule[];
   constructor(public dataService: DataService) {
   }
 
   ngOnInit(): any {
-    console.log('init ExecutionsComponent');
     this.getProcessExecutions();
     this.dataService.processSelectedChange.subscribe(
       value => {
-        console.log('new process selected');
         this.hideCaseExecutionDetails();
       });
     this.getSelenoidUiHostAndPort();
   }
 
-  ngAfterViewInit(): any {
-    console.log('ngAfterViewInit');
-  }
+  ngAfterViewInit(): any {}
 
   ngOnChanges(changes: SimpleChanges): any {
     console.log('onChanges ExecutionsComponent');
@@ -58,27 +60,39 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
   closeCapabilities() {
     this.showCapabilities = false;
   }
-  
-  getProcessExecutions() {
+
+  getProcessExecutions(): void {
     this.loading = true;
     this.dataService.getExecutions().subscribe(
       (executions) => {
         this.dataService.processExecutions = executions;
-
-        /*
-        this.dataTable = $(this.table.nativeElement);
-        this.dataTable.DataTable();
-        */
-
-        /*
-        $('#dataTableChild').each(function(idx, el){
-          console.log("tabla "+idx);
-          //here this/el refers to the current image dom reference
-          //do soemthing
-          var dataTableChild = $(el.nativeElement);
-          this.dataTableChild.DataTable();
-        })
-        */
+        this.periodicExecutions  = new Array();
+        this.periodicExecutionsData = new Map<number, Execution[]>();
+        this.manualExecutions = new Array();
+        executions.forEach(exec => {
+          if (exec.processSchedule == null) {
+            this.manualExecutions.push(exec);
+          } else {
+            this.dataService.getPeriodicExecution(exec.processSchedule.processScheduleId).subscribe(ps =>  {
+              let execList = new Array<Execution>();
+              if (this.periodicExecutions.indexOf(ps) < 0){
+                this.periodicExecutions.push(ps);
+              }
+              if (this.periodicExecutionsData.has(ps.processScheduleId)){
+                execList = this.periodicExecutionsData.get(ps.processScheduleId);
+                execList.push(exec);
+                this.periodicExecutionsData.set(ps.processScheduleId, execList);
+              }else{
+                execList.push(exec);
+                this.periodicExecutionsData.set(ps.processScheduleId, execList);
+              }
+            });
+          }
+        });
+        console.log(this.periodicExecutions);
+        console.log(this.periodicExecutionsData);
+        console.log('===============================');
+        console.log(this.manualExecutions);
       },
       (error) => {
         console.error('Error loading executions: ' + error.message);
@@ -88,9 +102,8 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
       }
     );
   }
-
   getCaseList(execution: Execution): any {
-    let caseNames = new Set();
+    const caseNames = new Set();
 
     execution.casesExecutions.forEach(function(caseExecution) {
       caseNames.add(caseExecution.cas.name);
@@ -167,9 +180,14 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
       }
     );
   }
-  
+
   getNumberOfTableColumns(): number {
     return this.dataService.isWebProcess() ? 11 : 9;
   }
-
+  getKeys(map): any{
+    return Array.from(map.keys());
+  }
+  getPeriodicExecutions(processScheduleId: number): Execution[]{
+    return this.periodicExecutionsData.get(processScheduleId);
+  }
 }

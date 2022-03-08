@@ -102,7 +102,6 @@
 				"title": "Tags"
 			},
 			"tms": {
-				"user": "User",
 				"active": "Active",
 				"add": "Add",
 				"key": "Password",
@@ -117,7 +116,8 @@
 					"xrayServer": "Xray Server"
 				},
 				"title": "Repositories management",
-				"url": "Url"
+				"url": "Url",
+				"user": "User"
 			},
 			"users": {
 				"editNewUser": "Edit/Create user",
@@ -210,11 +210,11 @@
 					"iconText": "Remove case",
 					"title": "Remove case: ",
 					"warning": "This action cannot be undone when the Save button is pressed"
-				},	
+				},
 				"removeField": {
 					"cancelButton": "Cancel",
-					"confirmation": "Field removed",
 					"confirmButton": "Remove",
+					"confirmation": "Field removed",
 					"iconText": "Remove field",
 					"title": "Remove field: ",
 					"warning": "This action cannot be undone when the Save button is pressed",
@@ -309,8 +309,42 @@
 				},
 				"menu": {
 					"environments": "Environments",
+					"periodicExecutions": "Periodic executions",
 					"resolutions": "Resolutions",
 					"tags": "Tags"
+				},
+				"periodicExecutions": {
+					"active": "Active",
+					"days": "days",
+					"errorOnEditPeriodicExecution": "An error occurred while editing the periodic execution",
+					"executionSettings": "Execution Settings",
+					"executionToEdit": "Periodic execution edition",
+					"form": {
+						"active": "Active",
+						"days": "Days",
+						"hour": "Hour",
+						"name": "Name"
+					},
+					"hour": "Hour",
+					"loading": "Loading...",
+					"name": "Name",
+					"nextExecution": "Next execution",
+					"numExecutions": "Nº executions",
+					"periodicExecution": "Periodic execution",
+					"periodicExecutionUpdated": "The periodic execution has been successfully updated",
+					"periodicExecutions": "Periodic executions",
+					"running": "In execution...",
+					"selectDays": "Select days to execute",
+					"update": "Update",
+					"week": {
+						"FRI": "Friday",
+						"MON": "Monday",
+						"SAT": "Saturday",
+						"SUN": "Sunday",
+						"THU": "Thursday",
+						"TUE": "Tuesday",
+						"WED": "Wednesday"
+					}
 				},
 				"resolutions": {
 					"addResolution": "Add resolution",
@@ -349,9 +383,9 @@
 						"remove": "Remove",
 						"removeCancelButton": "Cancel",
 						"removeConfirmButton": "Remove",
-						"removed": "Tag removed: ",
 						"removeTag": "Remove tag: ",
 						"removeWarning": "This action cannot be undone",
+						"removed": "Tag removed: ",
 						"save": "Save",
 						"updated": "Tag updated: "
 					},
@@ -370,15 +404,18 @@
 				"SelectResolutions": "Select resolutions",
 				"browsers": "Browsers",
 				"canYouSeeIn": "You can see it in",
+				"canYouSeeInPeriodic": "You can manage your periodic executions in",
 				"case": "Case",
 				"caseToExecute": "Cases to be executed *",
 				"cases": "Cases",
 				"configuration": "Configuration",
 				"creatingExecution": "Creating execution",
+				"days": "Days",
 				"execute": "Execute",
 				"execution": "Execution",
 				"executionCreated": "Execution created",
 				"here": "here",
+				"hour": "Hour",
 				"id": "Id",
 				"lastExecutions": "Last executions",
 				"name": "Name",
@@ -386,6 +423,8 @@
 				"noCaseYet": "There are no configurations, create one ",
 				"noResolutionsAvailable": "No resolutions available, create one ",
 				"periodic": "Periodic",
+				"periodicExecutionCreated": "Created periodic execution",
+				"periodicManagement": "Management",
 				"resolutions": "Resolutions",
 				"search": "Search for...",
 				"selectAllResolutions": "Select all",
@@ -394,38 +433,36 @@
 				"time": "Time",
 				"title": "Cases to be executed",
 				"unselectAllResolutions": "Deselect all resolutions",
-        "days": "Days",
-        "hour": "Hour",
-        "week": {
-          "monday": {
-            "name": "Monday",
-            "cronDay": "MON"
-          },
-          "tuesday": {
-            "name": "Tuesday",
-            "cronDay": "TUE"
-          },
-          "wednesday": {
-            "name": "Wednesday",
-            "cronDay": "WED"
-          },
-          "thursday": {
-            "name": "Thursday",
-            "cronDay": "THU"
-          },
-          "friday": {
-            "name": "Friday",
-            "cronDay": "FRI"
-          },
-          "saturday": {
-            "name": "Saturday",
-            "cronDay": "SAT"
-          },
-          "sunday": {
-            "name": "Sunday",
-            "cronDay": "SUN"
-          }
-        }
+				"week": {
+					"friday": {
+						"cronDay": "FRI",
+						"name": "Friday"
+					},
+					"monday": {
+						"cronDay": "MON",
+						"name": "Monday"
+					},
+					"saturday": {
+						"cronDay": "SAT",
+						"name": "Saturday"
+					},
+					"sunday": {
+						"cronDay": "SUN",
+						"name": "Sunday"
+					},
+					"thursday": {
+						"cronDay": "THU",
+						"name": "Thursday"
+					},
+					"tuesday": {
+						"cronDay": "TUE",
+						"name": "Tuesday"
+					},
+					"wednesday": {
+						"cronDay": "WED",
+						"name": "Wednesday"
+					}
+				}
 			}
 		},
 		"profile": {

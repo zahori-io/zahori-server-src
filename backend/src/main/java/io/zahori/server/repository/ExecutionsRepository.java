@@ -45,7 +45,7 @@ public interface ExecutionsRepository extends CrudRepository<Execution, Long> {
      * @param processId the process id
      * @return the iterable
      */
-    @Query("select e from Execution e inner join e.process p where p.processId = :processId and p.client.clientId = :clientId and e.totalPassed <> 0 and e.totalFailed <> 0 ORDER BY e.executionId DESC ")
+    @Query("select e from Execution e inner join e.process p where p.processId = :processId and p.client.clientId = :clientId  ORDER BY e.executionId DESC ")
     Iterable<Execution> findByClientIdAndProcessId(@Param("clientId") Long clientId, @Param("processId") Long processId);
     /**
      * Find by proccess schedule id and process id iterable.
@@ -53,15 +53,17 @@ public interface ExecutionsRepository extends CrudRepository<Execution, Long> {
      * @param processScheduleId  the process Schedule Id
      * @return the iterable
      */
-    @Query("select p from Execution p where p.processSchedule.processScheduleId = :processScheduleId and p.totalPassed <> 0 and p.totalFailed <> 0")
+    @Query("select p from Execution p where p.processSchedule.processScheduleId = :processScheduleId ")
     List<Execution> findByProcessScheduleId(@Param("processScheduleId") Long processScheduleId);
 
-    @Query("select p from Execution p where p.processSchedule.processScheduleId = :processScheduleId and p.totalPassed = 0 and p.totalFailed = 0")
+    @Query("select p from Execution p where p.processSchedule.processScheduleId = :processScheduleId")
     List<Execution> findMainExecutionByProcessScheduleId(@Param("processScheduleId") Long processScheduleId);
 
-    @Query("SELECT COUNT(p)from Execution p where p.processSchedule.processScheduleId = :processScheduleId and p.totalPassed <> 0 and p.totalFailed <> 0")
+    @Query("SELECT COUNT(p)from Execution p where p.processSchedule.processScheduleId = :processScheduleId")
     Long countByProcessScheduleId(@Param("processScheduleId") Long processScheduleId);
 
     @Query("select p.name from Execution p where p.processSchedule.processScheduleId = :processScheduleId and p.totalPassed = 0 and p.totalFailed = 0")
     String getNameByProcessScheduleId(@Param("processScheduleId") Long processScheduleId);
 }
+
+// and p.totalPassed <> 0 or p.totalFailed <> 0

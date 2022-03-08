@@ -18,7 +18,7 @@
         <div class="page-title-actions">
           <div class="search-wrapper active">
             <div class="input-holder">
-              <input type="text" class="search-input" placeholder="{{'main.process.executions.search'|translate}}">
+              <input type="text" class="search-input" placeholder="{{'main.process.executions.search'|translate}}" [(ngModel)]="searchString">
               <button class="search-icon"><span></span></button>
             </div>
             <button class="close"></button>
@@ -46,7 +46,7 @@
       </thead>
 
       <tbody>
-      <ng-template ngFor let-ps [ngForOf]="processScheduled" let-i="index">
+      <ng-template ngFor let-ps [ngForOf]="processScheduled| filter : 'name' : searchString" let-i="index">
         <tr (click)="changeEdit(i)">
           <td scope="row">{{ps.processScheduleId}}</td>
           <td>{{ps.name}}</td>
@@ -60,7 +60,7 @@
           <td class="text-center">{{ps.nextExecution| date:'dd/MM/YYYY' }}</td>
           <td class="text-center">
             <span *ngIf="ps.active"><i class="metismenu-icon fas fa-check"></i></span>
-            <span *ngIf="!ps.active"><i class="metismenu-icon far fa-times"></i></span>
+            <span *ngIf="!ps.active"><i class="metismenu-icon fa fa-times"></i></span>
           </td>
         </tr>
       </ng-template>
@@ -107,8 +107,7 @@
             <div class="position-relative form-group">
               <span>{{'main.process.processAdmin.periodicExecutions.form.active'|translate}}</span>
               <div class="ml-2 custom-control custom-switch">
-                <input type="checkbox" class="custom-control-input" id="active"
-                       [(ngModel)]="processScheduledSelected.active" [checked]="processScheduledSelected.active" (change)="periodicMod=true">
+                <input type="checkbox" class="custom-control-input" id="active" [checked]="processScheduledSelected.active" (change)="changeActive()">
                 <label class="custom-control-label " for="active"></label>
               </div>
             </div>
@@ -232,6 +231,14 @@
 							</div>
 							<div>
 								<span>{{error}}</span>
+							</div>
+						</div>
+					</span>
+        <span *ngIf="updated">
+						<div class="text-center mt-2">
+							<div>
+								<span>{{'main.process.processAdmin.periodicExecutions.periodicExecutionUpdated'|translate}} <i
+                  class="ml-2 fas fa-check text-success" aria-hidden="true"></i></span>
 							</div>
 						</div>
 					</span>

@@ -339,7 +339,7 @@ tr.collapse td,  tr.collapsing td{border-top:none}
 .fa-exclamation-triangle{color:#c4ae34}
 .fa-check{color:#788c62}
 .red{color:#aa2222}
-.fa-times{}
+.fa-times{color:red}
 .fa-clock{font-size:1.5rem}
 /*ELEMENTOS*/
 .custom-control-input:checked ~ .custom-control-label::before {

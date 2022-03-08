@@ -2,6 +2,7 @@ import { CaseExecution } from './caseExecution';
 import { Configuration } from './configuration';
 import { PeriodicExecution } from './periodic-execution';
 import { Process } from './process';
+import {ProcessSchedule} from './processSchedule';
 
 export class Execution {
     executionId: number;
@@ -14,5 +15,5 @@ export class Execution {
     casesExecutions: CaseExecution[];
     configuration: Configuration;
     process: Process;
-    periodicExecution: PeriodicExecution;
+    processSchedule: ProcessSchedule;
 }

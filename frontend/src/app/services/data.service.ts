@@ -231,8 +231,11 @@ export class DataService {
   public updateExecution(exec: Execution): Observable<object>{
     return this.http.post(this.url + 'schedule/execution/update/', JSON.stringify(exec));
   }
-  public getPeriodicExecution(processId: number): Observable<ProcessSchedule[]>{
-    return this.http.get<ProcessSchedule[]>(this.url + 'schedule/' + processId);
+  public getPeriodicExecutions(processId: number): Observable<ProcessSchedule[]>{
+    return this.http.get<ProcessSchedule[]>(this.url + 'schedule/list/' + processId);
+  }
+  public getPeriodicExecution(processScheduleId: number): Observable<ProcessSchedule>{
+    return this.http.get<ProcessSchedule>(this.url + 'schedule/' + processScheduleId);
   }
   public getExecutionsByProcessScheduleId(processScheduleId: number): Observable<Execution[]>{
     return this.http.get<Execution[]>(this.url + 'schedule/executions/' + processScheduleId);

@@ -102,7 +102,6 @@
 				"title": "Gestión de Etiquetas"
 			},
 			"tms": {
-				"user": "Usuario",
 				"active": "Activo",
 				"add": "Añadir",
 				"key": "Contraseña",
@@ -117,7 +116,8 @@
 					"xrayServer": "Xray Server"
 				},
 				"title": "Gestión de Repositorios",
-				"url": "Url"
+				"url": "Url",
+				"user": "Usuario"
 			},
 			"users": {
 				"editNewUser": "Editar/Crear usuario",
@@ -210,11 +210,11 @@
 					"iconText": "Eliminar caso",
 					"title": "Eliminar caso: ",
 					"warning": "Esta acción no podrá deshacerse cuando se pulse el botón 'Guardar' de la página"
-				},	
+				},
 				"removeField": {
 					"cancelButton": "Cancelar",
-					"confirmation": "Campo eliminado",
 					"confirmButton": "Eliminar",
+					"confirmation": "Campo eliminado",
 					"iconText": "Eliminar campo",
 					"title": "Eliminar campo: ",
 					"warning": "Esta acción no podrá deshacerse cuando se pulse el botón 'Guardar' de la página",
@@ -250,10 +250,14 @@
 				"search": "Buscar..."
 			},
 			"executions": {
+        "lastManualExecutions": "Últimas ejecuciones manuales",
+        "lastPeriodicExecutions": "Últimas ejecuciones periódicas",
+        "numExecutions":  "Nº ejecuciones",
 				"browser": "Navegador",
 				"browsers": "Navegadores",
 				"case": "Caso",
 				"caseExecuted": "Casos ejecutados",
+        "nextDate": "Próxima  ejecución",
 				"close": "Cerrar",
 				"configuration": "Configuración",
 				"correctTotals": "Correctos/Totales",
@@ -267,6 +271,7 @@
 				"lastExecutions": "Últimas ejecuciones",
 				"loading": "Cargando...",
 				"manual": "Manual",
+        "active": "Activa",
 				"notExecuted": "No ejecutado",
 				"notes": "Notas",
 				"periodic": "Periódica",
@@ -309,9 +314,42 @@
 				},
 				"menu": {
 					"environments": "Entornos",
+					"periodicExecutions": "Ejecuciones periódicas",
 					"resolutions": "Resoluciones",
-					"tags": "etiquetas",
-          "periodicExecutions": "Ejecuciones periódicas"
+					"tags": "etiquetas"
+				},
+				"periodicExecutions": {
+					"active": "Activa",
+					"days": "dias",
+					"errorOnEditPeriodicExecution": "Se ha producido un error al editar la ejecución periódica",
+					"executionSettings": "Ajustes de ejecución",
+					"executionToEdit": "Edición de ejecución periódica",
+					"form": {
+						"active": "Activo",
+						"days": "Dias",
+						"hour": "Hora",
+						"name": "Nombre"
+					},
+					"hour": "Hora",
+					"loading": "Cargando...",
+					"name": "Nombre",
+					"nextExecution": "Próxima ejecución",
+					"numExecutions": "Nº ejecuciones",
+					"periodicExecution": "Ejecución periódica",
+					"periodicExecutionUpdated": "La ejecución periódica ha sido actualizada correctamente",
+					"periodicExecutions": "Ejecuciones periódicas",
+					"running": "En ejecución...",
+					"selectDays": "Seleccione días a ejecutar",
+					"update": "Actualizar",
+					"week": {
+						"FRI": "Viernes",
+						"MON": "Lunes",
+						"SAT": "Sábado",
+						"SUN": "Domingo",
+						"THU": "Jueves",
+						"TUE": "Martes",
+						"WED": "Miércoles"
+					}
 				},
 				"resolutions": {
 					"addResolution": "Añadir resolución",
@@ -350,47 +388,14 @@
 						"remove": "Eliminar",
 						"removeCancelButton": "Cancelar",
 						"removeConfirmButton": "Eliminar",
-						"removed": "Etiqueta eliminada: ",
 						"removeTag": "Eliminar etiqueta: ",
 						"removeWarning": "Esta acción no puede deshacerse",
+						"removed": "Etiqueta eliminada: ",
 						"save": "Guardar",
 						"updated": "Etiqueta modificada: "
 					},
 					"title": "Gestión de etiquetas"
-				},
-
-        "periodicExecutions": {
-          "selectDays": "Seleccione dias a ejecutar",
-          "periodicExecutions": "Ejecuciones periódicas",
-          "periodicExecution": "Ejecución periódica",
-          "running": "En ejecución...",
-          "name": "Nombre",
-          "numExecutions": "Nº ejecuciones",
-          "hour": "Hora",
-          "days": "dias",
-          "nextExecution": "Próxima ejecución",
-          "active": "Activa",
-          "loading": "Cargando...",
-          "week": {
-            "MON": "Lunes",
-            "TUE": "Martes",
-            "WED": "Miércoles",
-            "THU": "Jueves",
-            "FRI": "Viernes",
-            "SAT": "Sábado",
-            "SUN": "Domingo"
-          },
-          "executionToEdit": "Edición de ejecución periódica",
-          "errorOnEditPeriodicExecution": "Se ha producido un error al editar la ejecución periódica",
-          "form": {
-            "name": "Nombre",
-            "hour": "Hora",
-            "days": "Dias",
-            "active": "Activo"
-          },
-          "executionSettings": "Ajustes de ejecución",
-          "update": "Actualizar"
-        }
+				}
 			},
 			"processMenu": {
 				"Administration": "Administración",
@@ -404,18 +409,18 @@
 				"SelectResolutions": "Selecciona las resoluciones",
 				"browsers": "Navegadores",
 				"canYouSeeIn": "Puedes verla en",
-        "periodicExecutionCreated": "Ejecución periódica creada",
-        "canYouSeeInPeriodic": "Puedes gestionar tu ejecuciones periódicas en ",
-        "periodicManagement": "gestión",
+				"canYouSeeInPeriodic": "Puedes gestionar tu ejecuciones periódicas en ",
 				"case": "Caso",
 				"caseToExecute": "Casos a ejecutar *",
 				"cases": "casos",
 				"configuration": "Configuración",
 				"creatingExecution": "Creando ejecución",
+				"days": "Dias",
 				"execute": "Ejecutar",
 				"execution": "Ejecución",
 				"executionCreated": "Ejecución creada",
 				"here": "aquí",
+				"hour": "Hora",
 				"id": "Id",
 				"lastExecutions": "Últimas ejecuciones",
 				"name": "Nombre",
@@ -423,6 +428,8 @@
 				"noCaseYet": "Aún no hay configuraciones, crea una ",
 				"noResolutionsAvailable": "No hay resoluciones, defínelas ",
 				"periodic": "Periódica",
+				"periodicExecutionCreated": "Ejecución periódica creada",
+				"periodicManagement": "gestión",
 				"resolutions": "Resoluciones",
 				"search": "Buscar...",
 				"selectAllResolutions": "Marcar todas",
@@ -431,38 +438,36 @@
 				"time": "Tiempo",
 				"title": "Casos a ejecutar",
 				"unselectAllResolutions": "Deseleccionar todas las resoluciones",
-        "days": "Dias",
-        "hour": "Hora",
-        "week": {
-          "monday": {
-            "name": "Lunes",
-            "cronDay": "MON"
-          },
-          "tuesday": {
-            "name": "Martes",
-            "cronDay": "TUE"
-          },
-          "wednesday": {
-            "name": "Miércoles",
-            "cronDay": "WED"
-          },
-          "thursday": {
-            "name": "Jueves",
-            "cronDay": "THU"
-          },
-          "friday": {
-            "name": "Viernes",
-            "cronDay": "FRI"
-          },
-          "saturday": {
-            "name": "Sábado",
-            "cronDay": "SAT"
-          },
-          "sunday": {
-            "name": "Domingo",
-            "cronDay": "SUN"
-          }
-        }
+				"week": {
+					"friday": {
+						"cronDay": "FRI",
+						"name": "Viernes"
+					},
+					"monday": {
+						"cronDay": "MON",
+						"name": "Lunes"
+					},
+					"saturday": {
+						"cronDay": "SAT",
+						"name": "Sábado"
+					},
+					"sunday": {
+						"cronDay": "SUN",
+						"name": "Domingo"
+					},
+					"thursday": {
+						"cronDay": "THU",
+						"name": "Jueves"
+					},
+					"tuesday": {
+						"cronDay": "TUE",
+						"name": "Martes"
+					},
+					"wednesday": {
+						"cronDay": "WED",
+						"name": "Miércoles"
+					}
+				}
 			}
 		},
 		"profile": {

@@ -53,3 +53,40 @@
 .drawer-nav-btn {
     top: 2.75rem;
 }
+.tab-icon {
+  margin-right: 8px;
+}
+/* Styles for tab labels */
+.mat-tab-label {
+  min-width: 25px !important;
+  background-color: transparent;
+
+  font-weight: 700;
+}
+
+/* Styles for the active tab label */
+.mat-tab-label.mat-tab-label-active {
+  min-width: 25px !important;
+  background-color: transparent;
+  color: #84986B;;
+  font-weight: 700;
+}
+
+/* Styles for the ink bar */
+.mat-ink-bar {
+  background-color: #6a6a6a;
+}
+.mat-ripple-element{
+  width: 0px!important;
+  left: 0px;
+}
+.container {
+  display: flex;
+}
+
+.input {
+  margin-top: 0.5%;
+}
+.tabs {
+
+}

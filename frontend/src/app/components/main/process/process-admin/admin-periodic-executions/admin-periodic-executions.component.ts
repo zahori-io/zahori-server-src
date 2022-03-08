@@ -46,6 +46,7 @@ export class AdminPeriodicExecutionsComponent implements OnInit {
   dropdownSettingsReso: IDropdownSettings = {};
   selectResolution: string;
   browsers: Browser[];
+  searchString: any;
   constructor(public dataService: DataService, private translate: TranslateService) {
     this.loading = false;
     this.error = '';
@@ -122,7 +123,7 @@ export class AdminPeriodicExecutionsComponent implements OnInit {
   }
   getProcessScheduled(): any{
     this.loading = true;
-    this.dataService.getPeriodicExecution(this.dataService.processSelected.processId).subscribe(
+    this.dataService.getPeriodicExecutions(this.dataService.processSelected.processId).subscribe(
       (processScheduled) => {
       this.processScheduled = processScheduled;
       },
@@ -349,7 +350,6 @@ export class AdminPeriodicExecutionsComponent implements OnInit {
                 caseExecution.browser = item;
                 caseExecution.cas = item1;
                 caseExecution.screenResolution = res.widthAndHeight;
-                console.log(caseExecution);
                 this.execution.casesExecutions.push(caseExecution);
               });
             }
@@ -366,11 +366,9 @@ export class AdminPeriodicExecutionsComponent implements OnInit {
         }
       }
     });
-    console.log("-----------------------------");
-    console.log(this.execution.casesExecutions);
-    console.log("-----------------------------");
     if (this.periodicMod){
       this.processScheduledSelected.cronExpression = cronExp;
+      console.log(this.processScheduledSelected);
       this.execution.name = this.processScheduledSelected.name;
       this.processScheduledSelected.process =  this.dataService.processSelected;
 
@@ -395,5 +393,14 @@ export class AdminPeriodicExecutionsComponent implements OnInit {
     }
     this.loading = false;
     this.updated = true;
+  }
+  changeActive(): void{
+    this.periodicMod  = true;
+    if (this.processScheduledSelected.active) {
+      this.processScheduledSelected.active  =  false;
+    }
+    else {
+      this.processScheduledSelected.active = true;
+    }
   }
 }

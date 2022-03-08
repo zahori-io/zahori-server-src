@@ -83,9 +83,8 @@ public class ScheduleController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    //Retrieve scheduled task
-    @GetMapping(path = "/{processId}")
+    //Retrieve scheduled task by process Id
+    @GetMapping(path = "/list/{processId}")
     public ResponseEntity<Object> getScheduledTasks (@PathVariable Long processId){
         try {
             List<ProcessSchedule> processSchedules = processScheduleRepository.findProcessScheduleByProcessId(processId);
@@ -94,6 +93,20 @@ public class ScheduleController {
                 processSchedule.setNumExecutions(executionsRepository.countByProcessScheduleId(processSchedule.getProcessScheduleId()));
             });
             return new ResponseEntity<>(processSchedules, HttpStatus.OK);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+    //Retrieve scheduled task by process Id
+    @GetMapping(path = "/{processScheduleId}")
+    public ResponseEntity<Object> getScheduledTask (@PathVariable Long processScheduleId){
+        try {
+            ProcessSchedule processSchedule = processScheduleRepository.findById(processScheduleId).orElse(null);
+            assert processSchedule != null;
+            processSchedule.setName(executionsRepository.getNameByProcessScheduleId(processSchedule.getProcessScheduleId()));
+            processSchedule.setNumExecutions(executionsRepository.countByProcessScheduleId(processSchedule.getProcessScheduleId()));
+            return new ResponseEntity<>(processSchedule, HttpStatus.OK);
         } catch (Exception e) {
             LOG.error(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
