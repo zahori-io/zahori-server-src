@@ -273,7 +273,6 @@
                       <thead>
                       <tr>
                         <th>#</th>
-                        <th>{{'main.process.executions.executionName'|translate}}</th>
                         <th>{{'main.process.executions.caseExecuted'|translate}}</th>
                         <th class="text-center">{{'main.process.executions.duration'|translate}}</th>
                         <th class="text-center">{{'main.process.executions.state'|translate}}</th>
@@ -294,7 +293,6 @@
 
                         <tr data-toggle="collapse" [attr.data-target]="'#group-of-rows-2-'+ execution.executionId">
                           <td scope="row">{{execution.executionId}}</td>
-                          <td>{{execution.name}}</td>
                           <td>
                             <ng-container *ngFor="let caseName of getCaseList(execution); let i = index">
                               <button *ngIf="i < 3" class="mb-2 mr-2 btn-pill btn btn-light disabled btn-sm">

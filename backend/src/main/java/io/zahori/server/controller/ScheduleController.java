@@ -90,7 +90,7 @@ public class ScheduleController {
             List<ProcessSchedule> processSchedules = processScheduleRepository.findProcessScheduleByProcessId(processId);
             processSchedules.forEach(processSchedule -> {
                 processSchedule.setName(executionsRepository.getNameByProcessScheduleId(processSchedule.getProcessScheduleId()));
-                processSchedule.setNumExecutions(executionsRepository.countByProcessScheduleId(processSchedule.getProcessScheduleId()));
+                processSchedule.setNumExecutions(executionsRepository.countByProcessScheduleId(processSchedule.getProcessScheduleId())-1);
             });
             return new ResponseEntity<>(processSchedules, HttpStatus.OK);
         } catch (Exception e) {

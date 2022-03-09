@@ -66,28 +66,29 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
     this.dataService.getExecutions().subscribe(
       (executions) => {
         this.dataService.processExecutions = executions;
-        this.periodicExecutions  = new Array();
         this.periodicExecutionsData = new Map<number, Execution[]>();
-        this.manualExecutions = new Array();
+        this.manualExecutions = [];
         executions.forEach(exec => {
           if (exec.processSchedule == null) {
             this.manualExecutions.push(exec);
           } else {
             this.dataService.getPeriodicExecution(exec.processSchedule.processScheduleId).subscribe(ps =>  {
               let execList = new Array<Execution>();
-              if (this.periodicExecutions.indexOf(ps) < 0){
-                this.periodicExecutions.push(ps);
-              }
               if (this.periodicExecutionsData.has(ps.processScheduleId)){
                 execList = this.periodicExecutionsData.get(ps.processScheduleId);
-                execList.push(exec);
-                this.periodicExecutionsData.set(ps.processScheduleId, execList);
-              }else{
-                execList.push(exec);
-                this.periodicExecutionsData.set(ps.processScheduleId, execList);
               }
+              if  (exec.totalPassed >  0 || exec.totalFailed  >  0){
+                execList.push(exec);
+              }
+              this.periodicExecutionsData.set(ps.processScheduleId, execList);
             });
           }
+        });
+        this.dataService.getPeriodicExecutions(this.dataService.processSelected.processId).subscribe(psList =>  {
+          this.periodicExecutions  = [];
+          this.periodicExecutions  = psList;
+        }, err => {
+          console.log(err);
         });
         console.log(this.periodicExecutions);
         console.log(this.periodicExecutionsData);
@@ -190,4 +191,5 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
   getPeriodicExecutions(processScheduleId: number): Execution[]{
     return this.periodicExecutionsData.get(processScheduleId);
   }
+
 }
