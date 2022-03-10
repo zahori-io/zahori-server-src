@@ -52,6 +52,7 @@
               <th class="text-center" style="width: 150px;">{{'main.process.executions.date'|translate}}</th>
               <th class="text-center">{{'main.process.executions.configuration'|translate}}</th>
               <th class="text-center">{{'main.process.executions.type'|translate}}</th>
+              <th class="text-center"></th>
             </tr>
           </thead>
 
@@ -105,6 +106,10 @@
                     <i class="fas fa-clock"></i>
                   </button>
                 </td>
+                <td>
+                  <i title="rerun" class="fas fa-sync-alt fa-xs ml-3"
+                     style="cursor: pointer; color: grey; font-size: 0.7em;" (click)="rerun_execution(execution)"></i>
+                </td>
               </tr>
 
               <tr [attr.id]="'group-of-rows-'+ execution.executionId" class="collapse tr_no_Hover">
@@ -125,6 +130,7 @@
                         <th class="text-center">{{'main.process.executions.evidences'|translate}}</th>
                         <th class="text-center">{{'main.process.executions.videoStreaming'|translate}}</th>
                         <th class="text-center">{{'main.process.executions.notes'|translate}}</th>
+                        <th class="text-center"></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -185,6 +191,10 @@
                             {{caseExecution.notes}}
                           </span>
                         </td>
+                        <td>
+                          <i *ngIf="caseExecution.status === 'FAILED'" title="rerun" class="fas fa-sync-alt fa-xs ml-3"
+                             style="cursor: pointer; color: grey; font-size: 0.7em;" (click)="rerun_failed_case(execution, caseExecution)"></i>
+                        </td>
                       </tr>
                     </tbody>
                     <tfoot>
@@ -202,6 +212,7 @@
                         <th class="text-center">{{'main.process.executions.evidences'|translate}}</th>
                         <th class="text-center">{{'main.process.executions.videoStreaming'|translate}}</th>
                         <th class="text-center">{{'main.process.executions.notes'|translate}}</th>
+                        <th class="text-center"></th>
                       </tr>
                     </tfoot>
                   </table>
