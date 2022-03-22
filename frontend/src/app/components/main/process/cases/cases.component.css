@@ -23,7 +23,9 @@ td:hover i {
 .hide {
     visibility: hidden;
 }
-
+.icon{
+  margin-left: 10px;
+}
 a:not([href]) {
     cursor: pointer;
     color: #84986B;

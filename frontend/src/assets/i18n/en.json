@@ -189,8 +189,10 @@
 			"cases": {
 				"addCase": "Add case",
 				"addField": {
+					"actions": "Actions",
 					"cancelButton": "Cancel",
 					"confirmButton": "Add",
+					"copy": "Copy case",
 					"duplicatedName": "The field '{{fieldName}}' already exists, choose another name",
 					"emptyNameWarning": "Write the name of the field!",
 					"placeholder": "Field name",
@@ -250,6 +252,7 @@
 				"search": "Search for..."
 			},
 			"executions": {
+				"active": "Active",
 				"browser": "Browser",
 				"browsers": "Browsers",
 				"case": "Case",
@@ -265,10 +268,14 @@
 				"executionName": "Name",
 				"hour": "Hour",
 				"lastExecutions": "Last executions",
+				"lastManualExecutions": "Last Manual executions",
+				"lastPeriodicExecutions": "Last periodic runs",
 				"loading": "Loading...",
 				"manual": "Manual",
+				"nextDate": "Next execution",
 				"notExecuted": "Not executed",
 				"notes": "Notes",
+				"numExecutions": "Nº executions",
 				"periodic": "Periodic",
 				"resolution": "Resolution",
 				"resolutions": "Resolutions",

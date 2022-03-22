@@ -2379,6 +2379,23 @@
                                         <name>addField</name>
                                         <children>
                                             <concept_node>
+                                                <name>actions</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description/>
+                                                <comment/>
+                                                <default_text/>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>es-ES</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
                                                 <name>cancelButton</name>
                                                 <definition_loaded>false</definition_loaded>
                                                 <description/>
@@ -2408,6 +2425,23 @@
                                                     </translation>
                                                     <translation>
                                                         <language>en-US</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                </translations>
+                                            </concept_node>
+                                            <concept_node>
+                                                <name>copy</name>
+                                                <definition_loaded>false</definition_loaded>
+                                                <description/>
+                                                <comment/>
+                                                <default_text/>
+                                                <translations>
+                                                    <translation>
+                                                        <language>en-US</language>
+                                                        <approved>true</approved>
+                                                    </translation>
+                                                    <translation>
+                                                        <language>es-ES</language>
                                                         <approved>true</approved>
                                                     </translation>
                                                 </translations>
@@ -3256,6 +3290,23 @@
                                 <name>executions</name>
                                 <children>
                                     <concept_node>
+                                        <name>active</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description/>
+                                        <comment/>
+                                        <default_text/>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>es-ES</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
                                         <name>browser</name>
                                         <definition_loaded>false</definition_loaded>
                                         <description/>
@@ -3511,6 +3562,40 @@
                                         </translations>
                                     </concept_node>
                                     <concept_node>
+                                        <name>lastManualExecutions</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description/>
+                                        <comment/>
+                                        <default_text/>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>es-ES</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
+                                        <name>lastPeriodicExecutions</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description/>
+                                        <comment/>
+                                        <default_text/>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>es-ES</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
                                         <name>loading</name>
                                         <definition_loaded>false</definition_loaded>
                                         <description/>
@@ -3545,6 +3630,23 @@
                                         </translations>
                                     </concept_node>
                                     <concept_node>
+                                        <name>nextDate</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description/>
+                                        <comment/>
+                                        <default_text/>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>es-ES</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
                                         <name>notExecuted</name>
                                         <definition_loaded>false</definition_loaded>
                                         <description/>
@@ -3574,6 +3676,23 @@
                                             </translation>
                                             <translation>
                                                 <language>en-US</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                        </translations>
+                                    </concept_node>
+                                    <concept_node>
+                                        <name>numExecutions</name>
+                                        <definition_loaded>false</definition_loaded>
+                                        <description/>
+                                        <comment/>
+                                        <default_text/>
+                                        <translations>
+                                            <translation>
+                                                <language>en-US</language>
+                                                <approved>true</approved>
+                                            </translation>
+                                            <translation>
+                                                <language>es-ES</language>
                                                 <approved>true</approved>
                                             </translation>
                                         </translations>
