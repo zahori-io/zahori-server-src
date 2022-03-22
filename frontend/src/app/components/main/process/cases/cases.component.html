@@ -39,7 +39,6 @@
           <th><i title="{{'main.process.cases.addCase'|translate}}" class="fa fa-plus fa-1" style="cursor: pointer;" (click)="createNewCase()"></i></th>
           <th>{{'main.process.cases.case'|translate}}</th>
           <th>{{'main.process.cases.tags'|translate}}</th>
-
           <ng-container *ngFor="let field Of tableData[0] | keyvalue">
             <th *ngIf="isVariableField(field.key)" class="showOnHover">
               {{field.key}}
@@ -49,13 +48,15 @@
           </ng-container>
 
           <th><i title="{{'main.process.cases.addField.title'|translate}}" class="fa fa-plus fa-1" style="cursor: pointer;" (click)="addField(tableData)"></i></th>
+
         </tr>
       </thead>
       <tbody>
         <ng-container *ngFor="let case of tableData">
           <tr *ngIf="case.active == true" class="showOnHover">
             <td>
-              <i class="hide fa fa-trash fa-1" title="{{'main.process.cases.removeCase.iconText'|translate}}" (click)="removeCase(tableData, case)" style="cursor: pointer;"></i>
+              <i class="icon fa fa-trash fa-1" title="{{'main.process.cases.removeCase.iconText'|translate}}" (click)="removeCase(tableData, case)" style="cursor: pointer;"></i>
+              <i class="icon fa fa-copy fa-1" title="{{'main.process.cases.addField.copy'|translate}}" style="cursor: pointer;" (click)="copyCase(case)"></i>
             </td>
             <td contenteditable="true"  [textContent]="case.name" (blur)="case.name = $event.target.textContent"></td>
             <td>
@@ -78,7 +79,6 @@
                   </ng-template>
               </ng-select>
             </td>
-
             <ng-container *ngFor="let field Of case | keyvalue; trackBy: avoidLosingFocus">
               <td *ngIf="isVariableField(field.key)" contenteditable [textContent]="case[field.key]" (blur)="case[field.key] = $event.target.textContent"></td>
             </ng-container>

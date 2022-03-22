@@ -189,8 +189,10 @@
 			"cases": {
 				"addCase": "Añadir caso",
 				"addField": {
+					"actions": "Acciones",
 					"cancelButton": "Cancelar",
 					"confirmButton": "Añadir",
+					"copy": "Copiar caso",
 					"duplicatedName": "El campo '{{fieldName}}' ya existe, elige otro nombre",
 					"emptyNameWarning": "Escribe el nombre del campo!",
 					"placeholder": "Nombre del campo",
@@ -250,6 +252,7 @@
 				"search": "Buscar..."
 			},
 			"executions": {
+				"active": "Activa",
 				"browser": "Navegador",
 				"browsers": "Navegadores",
 				"case": "Caso",
@@ -265,10 +268,14 @@
 				"executionName": "Nombre",
 				"hour": "Hora",
 				"lastExecutions": "Últimas ejecuciones",
+				"lastManualExecutions": "Últimas ejecuciones manuales",
+				"lastPeriodicExecutions": "Últimas ejecuciones periódicas",
 				"loading": "Cargando...",
 				"manual": "Manual",
+				"nextDate": "Próxima  ejecución",
 				"notExecuted": "No ejecutado",
 				"notes": "Notas",
+				"numExecutions": "Nº ejecuciones",
 				"periodic": "Periódica",
 				"resolution": "Resolución",
 				"resolutions": "Resoluciones",
