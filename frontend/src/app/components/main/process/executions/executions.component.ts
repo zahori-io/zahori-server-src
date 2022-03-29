@@ -3,6 +3,8 @@ import { CaseExecution } from '../../../../model/caseExecution';
 import { Execution } from '../../../../model/excution';
 import { DataService } from '../../../../services/data.service';
 import RFB from "../../../../../../node_modules/@novnc/novnc/core/rfb.js";
+import Swal from 'sweetalert2';
+import { Process } from '../../../../model/process';
 
 @Component({
   selector: 'app-executions',
