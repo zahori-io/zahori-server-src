@@ -55,8 +55,8 @@
         <ng-container *ngFor="let case of tableData">
           <tr *ngIf="case.active == true" class="showOnHover">
             <td>
-              <i class="icon fa fa-trash fa-1" title="{{'main.process.cases.removeCase.iconText'|translate}}" (click)="removeCase(tableData, case)" style="cursor: pointer;"></i>
-              <i class="icon fa fa-copy fa-1" title="{{'main.process.cases.addField.copy'|translate}}" style="cursor: pointer;" (click)="copyCase(case)"></i>
+              <i class="hide icon fa fa-trash fa-1" title="{{'main.process.cases.removeCase.iconText'|translate}}" (click)="removeCase(tableData, case)" style="cursor: pointer;"></i>
+              <i class="hide icon fa fa-copy fa-1" title="{{'main.process.cases.addField.copy'|translate}}" style="cursor: pointer;" (click)="copyCase(case)"></i>
             </td>
             <td contenteditable="true"  [textContent]="case.name" (blur)="case.name = $event.target.textContent"></td>
             <td>
