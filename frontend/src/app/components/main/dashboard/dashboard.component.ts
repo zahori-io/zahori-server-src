@@ -8,7 +8,6 @@ import { ExecutionStats } from '../../../model/executionStats';
 import { BrowserExecutionStats } from '../../../model/browserExecutionsStats';
 import { Observable } from 'rxjs';
 import { ServerVersions } from '../../../model/serverVersions';
-import { BannerOptions } from '../../utils/banner/banner';
 import {TranslateService} from '@ngx-translate/core';
 declare var $: any;
 
@@ -21,24 +20,13 @@ const SUCCESS_COLOR = 'alert alert-success';
 export class DashboardComponent implements OnInit {
 
   processes: Process[];
-  banner: BannerOptions;
+  serverVersions: ServerVersions;
 
   constructor(public dataService: DataService, private translate: TranslateService) { }
 
   ngOnInit(): void {
     this.dataService.getClientFromToken();
-    this.banner = new BannerOptions();
-    this.verifyNewServerVersionAvailable();
-  }
-
-  verifyNewServerVersionAvailable(): void{
-    const serverVersions: ServerVersions = history.state.serverVersions;
-    if (serverVersions && serverVersions.remoteVersion !== serverVersions.latestServerVersion){
-      console.log('latestServerVersion:: ' + serverVersions.latestServerVersion);
-      console.log('remoteVersion: ' + serverVersions.remoteVersion);
-      const bannerText  = this.translate.instant('banner.serverVersion', {latest: serverVersions.latestServerVersion, actual: serverVersions.remoteVersion});
-      this.banner = new BannerOptions(bannerText, '', SUCCESS_COLOR, true);
-    }
+    this.serverVersions = history.state.serverVersions;
   }
 
   getProcessLastExecutionStats(process: Process): ExecutionStats {
@@ -112,10 +100,6 @@ export class DashboardComponent implements OnInit {
   getNumberMaxTwoDecimals(percent: number): number {
     // Round parts per unit number (i.e.: 0.50): toFixed(n)  n=2 -> No decimal, n=3 -> one decimal
     return parseFloat(percent.toFixed(2));
-  }
-
-  closeBanner(): void {
-    this.banner = new BannerOptions;
   }
 
 }
