@@ -4,7 +4,7 @@ import { Tag } from 'src/app/model/tag';
 import { BannerOptions } from 'src/app/utils/banner/banner';
 import Swal from 'sweetalert2';
 import { DataService } from '../../../../services/data.service';
-import {Case} from '../../../../model/case';
+import { Case } from '../../../../model/case';
 
 const SUCCESS_COLOR = 'alert alert-success';
 const ERROR_COLOR = 'alert alert-danger';
@@ -36,7 +36,7 @@ export class CasesComponent implements OnInit {
     this.getTags();
   }
 
-  getTags(): void{
+  getTags(): void {
     this.dataService.getTags(String(this.dataService.processSelected.processId)).subscribe(
       (res: any) => {
         this.tags = res;
@@ -75,7 +75,8 @@ export class CasesComponent implements OnInit {
     newCase.clientTags = [];
     this.tableData.unshift(newCase);
   }
-  copyCase(cse: Case): void {
+
+  copyCase(cse: Case, index: number): void {
     let newCase: Case;
     newCase = JSON.parse(JSON.stringify(this.tableData[0]));
     newCase.clientTags = cse.clientTags;
@@ -84,7 +85,7 @@ export class CasesComponent implements OnInit {
     });
     newCase.active = true;
     newCase.caseId = 0;
-    this.tableData.unshift(newCase);
+    this.tableData.splice(index + 1, 0, newCase);
   }
 
   removeCase(tableData: {}[], cas: Case): void {
@@ -133,7 +134,7 @@ export class CasesComponent implements OnInit {
             const caseRow = tableData[0];
             for (const key of Object.keys(caseRow)) {
               if (key.toLowerCase() === value.toLowerCase()) {
-                return this.translate.instant('main.process.cases.addField.duplicatedName', {fieldName: value});
+                return this.translate.instant('main.process.cases.addField.duplicatedName', { fieldName: value });
               }
             }
           }
@@ -165,7 +166,7 @@ export class CasesComponent implements OnInit {
             const caseRow = tableData[0];
             for (const key of Object.keys(caseRow)) {
               if (value !== fieldName && key.toLowerCase() === value.toLowerCase()) {
-                return this.translate.instant('main.process.cases.addField.duplicatedName', {fieldName: value});
+                return this.translate.instant('main.process.cases.addField.duplicatedName', { fieldName: value });
               }
             }
           }
@@ -247,7 +248,8 @@ export class CasesComponent implements OnInit {
     const formattedCases = [];
 
     for (const caseRow of casesFromTableCopy) {
-      const formattedCase = { data: {},
+      const formattedCase = {
+        data: {},
         dataMap: undefined
       };
       fixedFields.forEach(
