@@ -277,6 +277,12 @@
 				"notes": "Notas",
 				"numExecutions": "Nº ejecuciones",
 				"periodic": "Periódica",
+				"rerun": {
+					"title": "Reejecutar",
+					"all": "Reejecutar todos",
+					"failed": "Reejecutar fallados",
+					"case": "Reejecutar caso"
+				},
 				"resolution": "Resolución",
 				"resolutions": "Resoluciones",
 				"running": "En ejecución...",
