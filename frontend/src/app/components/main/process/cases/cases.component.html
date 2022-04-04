@@ -12,7 +12,7 @@
     <div class="page-title-wrapper">
       <div class="page-title-heading">
         <div>{{'main.process.cases.cases'|translate}}</div>
-        <button type="button" title="Guardar casos" (click)="saveCases()" class="mt-2 ml-5 btn btn-zahoriPill btn-sm">{{'main.process.cases.save'|translate}}</button>
+        <button type="button" (click)="saveCases()" class="mt-2 ml-5 btn btn-zahoriPill btn-sm">{{'main.process.cases.save'|translate}}</button>
       </div>
     </div>
   </div>
@@ -52,11 +52,11 @@
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let case of tableData">
-          <tr *ngIf="case.active == true" class="showOnHover">
+        <ng-container *ngFor="let case of tableData; ; index as caseIndex">
+          <tr *ngIf="case.active == true" class="showOnHover" [class]="case.rowClass">
             <td>
               <i class="hide icon fa fa-trash fa-1" title="{{'main.process.cases.removeCase.iconText'|translate}}" (click)="removeCase(tableData, case)" style="cursor: pointer;"></i>
-              <i class="hide icon fa fa-copy fa-1" title="{{'main.process.cases.addField.copy'|translate}}" style="cursor: pointer;" (click)="copyCase(case)"></i>
+              <i class="hide icon fa fa-copy fa-1" title="{{'main.process.cases.addField.copy'|translate}}" style="cursor: pointer;" (click)="copyCase(case, caseIndex)"></i>
             </td>
             <td contenteditable="true"  [textContent]="case.name" (blur)="case.name = $event.target.textContent"></td>
             <td>

@@ -62,6 +62,12 @@
   background: #3ac47d;
 }
 
-banner {
+.banner {
   margin-top: 70px;
+  position: fixed;
+  left: 0px;
+  width: 50%;
+  margin-left: 25%;
+  text-align: center !important;
+  z-index: 19;
 }

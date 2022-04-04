@@ -2,7 +2,7 @@
 	"banner": {
 		"configDeleted": "Configuración eliminada",
 		"error": "Error: ",
-		"serverVersion": "Hay disponible una nueva versión del servidor: {{latest}} (actual: {{actual}})"
+		"serverVersion": "Hay disponible una nueva versión del servidor: {{latest}}"
 	},
 	"formError": {
 		"empty": "Este campo no puede estar vacío",
@@ -277,6 +277,12 @@
 				"notes": "Notas",
 				"numExecutions": "Nº ejecuciones",
 				"periodic": "Periódica",
+				"rerun": {
+					"title": "Reejecutar",
+					"all": "Reejecutar todos",
+					"failed": "Reejecutar fallados",
+					"case": "Reejecutar caso"
+				},
 				"resolution": "Resolución",
 				"resolutions": "Resoluciones",
 				"running": "En ejecución...",
