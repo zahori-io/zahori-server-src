@@ -28,7 +28,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.loadbalancer.LoadBalancerClient;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import io.zahori.server.model.Process;
 
@@ -47,12 +50,6 @@ public class EurekaService {
     private EurekaService() {
     }
 
-    /**
-     * Gets process url.
-     *
-     * @param process the process
-     * @return the process url
-     */
     public String getProcessUrl(Process process) {
         String serviceId = process.getClient().getClientId() + SERVICE_ID_SEPARATOR + process.getClientTeam().getId().getTeamId() + SERVICE_ID_SEPARATOR
                 + process.getName();
@@ -65,5 +62,15 @@ public class EurekaService {
 
         LOG.info("getUrl for process: " + serviceId + " -> '" + processUrl + "'");
         return processUrl;
+    }
+
+    public boolean isProcessRunning(String url) {
+        try {
+            RestTemplate restTemplate = new RestTemplate();
+            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+            return HttpStatus.OK.equals(response.getStatusCode());
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

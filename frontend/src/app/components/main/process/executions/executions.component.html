@@ -59,16 +59,16 @@
           <tbody>
             <ng-template ngFor let-execution [ngForOf]="dataService.processExecutions" let-i="index">
 
-              <tr data-toggle="collapse" [attr.data-target]="'#group-of-rows-'+ execution.executionId">
+              <tr data-toggle="collapse" [attr.data-target]="'#group-of-rows-'+ execution.executionId" class="showOnHover">
                 <td scope="row">{{execution.executionId}}</td>
                 <td>{{execution.name}}</td>
                 <td>
                   <ng-container *ngFor="let caseName of getCaseList(execution); let i = index">
-                    <button *ngIf="i < 3" class="mb-2 mr-2 btn-pill btn btn-light disabled btn-sm">
+                    <button *ngIf="i < 3" class="mr-2 btn-pill btn btn-light disabled btn-sm">
                       {{caseName}}
                     </button>
                     <button *ngIf="i == 3" title="más casos..."
-                      class="mb-2 mr-2 btn-pill btn btn-light disabled btn-sm">...</button>
+                      class="mr-2 btn-pill btn btn-light disabled btn-sm">...</button>
                   </ng-container>
                 </td>
                 <td class="text-center">
@@ -106,9 +106,21 @@
                     <i class="fas fa-clock"></i>
                   </button>
                 </td>
-                <td>
-                  <i title="rerun" class="fas fa-sync-alt fa-xs ml-3"
-                     style="cursor: pointer; color: grey; font-size: 0.7em;" (click)="rerun_execution(execution)"></i>
+                <td class="text-center">
+                  <div *ngIf="execution.status !== 'Running'" class="btn-group dropleft">
+                    <button type="button" class="btn" data-toggle="dropdown">
+                      <i title="{{'main.process.executions.rerun.title'|translate}}" class="hide fas fa-undo-alt" style="color: grey;"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-minimal">
+                      <ng-container *ngIf="execution.status === 'SUCCESS'">
+                        <a class="dropdown-item" (click)="rerunCases(execution, 'ALL')">{{'main.process.executions.rerun.title'|translate}}</a>
+                      </ng-container>
+                      <ng-container *ngIf="execution.status === 'FAILURE'">
+                        <a class="dropdown-item" (click)="rerunCases(execution, 'ALL')">{{'main.process.executions.rerun.all'|translate}}</a>
+                        <a *ngIf="execution.status === 'FAILURE'" class="dropdown-item" (click)="rerunCases(execution, 'FAILED')">{{'main.process.executions.rerun.failed'|translate}}</a>
+                      </ng-container>
+                    </div>
+                  </div>
                 </td>
               </tr>
 
@@ -117,6 +129,7 @@
                   <table class="mb-0 table table-hover" style="width: 100%;">
                     <thead>
                       <tr>
+                        <th>#</th>
                         <th>{{'main.process.executions.case'|translate}}</th>
                         <th class="text-center">{{'main.process.executions.dateHour'|translate}}</th>
                         <th class="text-center">{{'main.process.executions.duration'|translate}}</th>
@@ -134,10 +147,11 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr data-toggle="collapse" data-target=""
+                      <tr data-toggle="collapse" data-target="" class="showOnHover"
                         *ngFor="let caseExecution of execution.casesExecutions; index as l"
                         [ngClass]="caseExecutionSelected && caseExecutionSelected.caseExecutionId == caseExecution.caseExecutionId ? 'caseSelected' : ''">
-                        <td>{{caseExecution.caseExecutionId}} - {{caseExecution.cas.name}}</td>
+                        <td>{{caseExecution.caseExecutionId}}</td>
+                        <td>{{caseExecution.cas.name}}</td>
                         <td class="text-center">{{caseExecution.date}}</td>
                         <td class="text-center">
                           <span>{{caseExecution.durationSeconds}}</span>
@@ -181,24 +195,31 @@
                             class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriV btn-sm" data-backdrop="false"
                             data-toggle="modal" data-target="#videoModal"
                             title="{{'main.process.executions.show'|translate}}">
-                            <i class="fa fa-youtube"></i>
+                            <i class="fas fa-video"></i>
                           </button>
                         </td>
-                        <td class="text-center">
+                        <td>
                           <span
                             *ngIf="caseExecution.status === 'Not executed' && execution.status !== 'Running'">{{'main.process.executions.notExecuted'|translate}}</span>
                           <span *ngIf="caseExecution.status !== 'Not executed'">
                             {{caseExecution.notes}}
                           </span>
                         </td>
-                        <td>
-                          <i *ngIf="caseExecution.status === 'FAILED'" title="rerun" class="fas fa-sync-alt fa-xs ml-3"
-                             style="cursor: pointer; color: grey; font-size: 0.7em;" (click)="rerun_failed_case(execution, caseExecution)"></i>
+                        <td class="text-center">
+                          <div *ngIf="execution.status !== 'Running'" class="btn-group dropleft">
+                            <button type="button" class="btn" data-toggle="dropdown">
+                              <i title="{{'main.process.executions.rerun.title'|translate}}" class="hide fas fa-undo-alt" style="color: grey;"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-minimal">
+                              <a class="dropdown-item" (click)="rerunCase(execution, caseExecution)">{{'main.process.executions.rerun.case'|translate}}</a>
+                            </div>
+                          </div>          
                         </td>
                       </tr>
                     </tbody>
                     <tfoot>
                       <tr>
+                        <th>#</th>
                         <th>{{'main.process.executions.case'|translate}}</th>
                         <th class="text-center">{{'main.process.executions.dateHour'|translate}}</th>
                         <th class="text-center">{{'main.process.executions.duration'|translate}}</th>

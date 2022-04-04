@@ -1,7 +1,13 @@
 <div class="app-container">
   <div class="h-100">
 
-    <banner [banner]="banner" (click)="closeBanner()"></banner>
+    <div class="banner text-center alert alert-success" *ngIf="serverVersions && serverVersions.remoteVersion !== serverVersions.latestServerVersion">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <strong>
+        {{'banner.serverVersion'| translate:{'latest':serverVersions.latestServerVersion} }}
+        <a href="https://github.com/zahori-io/zahori-server/releases/tag/v{{serverVersions.latestServerVersion}}" target="blank"> (release notes)</a>
+      </strong>
+    </div>
 
     <div class="h-100 no-gutters justify-content-center align-items-center row">
 
