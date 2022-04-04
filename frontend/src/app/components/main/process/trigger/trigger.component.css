@@ -87,3 +87,6 @@
   border-color: #3d4246!important;
 }
   
+::placeholder {
+  color: #909ba5d9;
+}
