@@ -94,11 +94,11 @@
 					</mat-chip-list>
 				</div>
 
-				<form class="">
+				<form>
 					<div class="position-relative form-group">
-						<label for="execution_name" class="">{{'main.process.trigger.name'|translate}} *</label>
+						<label for="execution_name">{{'main.process.trigger.name'|translate}}</label>
 						<input id="execution_name" type="text" [(ngModel)]="execution.name" name="execution_name"
-							class="form-control" />
+							[placeholder]="getTimestampPlaceholder()" class="form-control" />
 					</div>
 
 					<div class="position-relative form-group">

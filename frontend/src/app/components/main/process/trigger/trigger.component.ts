@@ -28,7 +28,7 @@ export class TriggerComponent implements OnInit {
   massiveSelected: boolean;
   tags: Tag[] = [];
   selectedTags: Tag[] = [];
-  resolutions: Resolution[];
+  resolutions: Resolution[] = [];
   selectedResolutions: Array<Resolution>;
   dropdownSettings: IDropdownSettings = {};
   selectResolution: string;
@@ -79,19 +79,37 @@ export class TriggerComponent implements OnInit {
         this.resolutions.forEach(res => {
           res.widthAndHeight = res.width + 'x' + res.height;
         });
+
+        this.clearSelectedResolutions();
       }
     );
   }
 
   newExecution(): void {
     this.execution = new Execution();
-    this.execution.configuration = new Configuration();
+    this.clearConfiguration();
     this.execution.process = new Process();
     this.execution.process.processId = this.dataService.processSelected.processId;
     this.execution.casesExecutions = [];
     this.clearSelectedBrowsers();
     this.clearSelectedResolutions();
     this.clearSelectedCases();
+  }
+
+  getTimestampPlaceholder() {
+    const date = new Date();
+    return date.getFullYear().toString() + '-' + this.pad2(date.getMonth() + 1) + '-' + this.pad2(date.getDate()) + ' ' + this.pad2(date.getHours()) + ':' + this.pad2(date.getMinutes());
+  }
+
+  pad2(n: number) {
+    return n < 10 ? '0' + n : n;
+  }
+
+  clearConfiguration() {
+    this.execution.configuration = new Configuration();
+    if (this.dataService.processConfigurations.length === 1) {
+      this.execution.configuration = this.dataService.processConfigurations[0];
+    }
   }
 
   clearSelectedBrowsers(): void {
@@ -104,6 +122,9 @@ export class TriggerComponent implements OnInit {
 
   clearSelectedResolutions(): void {
     this.selectedResolutions = [];
+    if (this.resolutions.length === 1) {
+      this.selectedResolutions.push(this.resolutions[0]);
+    }
   }
 
   deselectCase(processCase: Case): void {
@@ -116,6 +137,10 @@ export class TriggerComponent implements OnInit {
     this.created = false;
     this.error = '';
 
+    if (!this.execution.name) {
+      this.execution.name = this.getTimestampPlaceholder();
+    }
+
     // Create caseExecutions
     this.execution.casesExecutions = [];
     for (let i = 0; i < this.dataService.processCases.length; i++) {
@@ -124,22 +149,14 @@ export class TriggerComponent implements OnInit {
         // PROCESS OF TYPE 'BROWSER'
         if (this.dataService.isWebProcess()) {
           for (const browser of this.browsers) {
-            if (browser.selected) {
-              if (this.selectedResolutions.length == 0) {
+            if (browser.selected && this.selectedResolutions.length > 0) {
+              this.selectedResolutions.forEach(resolution => {
                 const caseExecution = new CaseExecution();
                 caseExecution.browser = browser;
                 caseExecution.cas = this.dataService.processCases[i];
-                caseExecution.screenResolution = "";
+                caseExecution.screenResolution = resolution.widthAndHeight;
                 this.execution.casesExecutions.push(caseExecution);
-              } else {
-                this.selectedResolutions.forEach(resolution => {
-                  const caseExecution = new CaseExecution();
-                  caseExecution.browser = browser;
-                  caseExecution.cas = this.dataService.processCases[i];
-                  caseExecution.screenResolution = resolution.widthAndHeight;
-                  this.execution.casesExecutions.push(caseExecution);
-                });
-              }
+              });
             }
           }
         }
@@ -175,7 +192,6 @@ export class TriggerComponent implements OnInit {
     return (
       !this.thereAreCasesSelected()
       || this.dataService.processCases.length === 0
-      || !this.execution.name
       || (this.dataService.isWebProcess() && !this.thereAreBrowsersSelected())
       || (this.dataService.isWebProcess() && !this.thereAreResolutionsSelected())
       || !this.execution.configuration.configurationId
