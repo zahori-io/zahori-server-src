@@ -117,7 +117,11 @@ public class SelenoidService {
 
             caseExecutionsToUpdate = new ArrayList<>();
             for (SelenoidSession session : status.getSessions().values()) {
-                Long caseExecutionIdInSession = Long.valueOf(session.getCaps().getName());
+                Long caseExecutionIdInSession = getCaseExecutionId(session);
+                if (caseExecutionIdInSession == null) {
+                    continue;
+                }
+
                 LOG.info("######## caseExecutionIdInSession: " + caseExecutionIdInSession);
 
                 // Validate that executionId in this session is from a case in this execution
@@ -146,6 +150,15 @@ public class SelenoidService {
                 LOG.debug("There are still cases running or pending to be executed");
                 wait(waitSeconds);
             }
+        }
+    }
+
+    private Long getCaseExecutionId(SelenoidSession selenoidSession) {
+        try {
+            return Long.valueOf(selenoidSession.getCaps().getName());
+        } catch (Exception e) {
+            // Session name is not a number --> "Manual session"
+            return null;
         }
     }
 
