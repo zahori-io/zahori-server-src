@@ -59,7 +59,6 @@ public class ExecutionService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExecutionService.class);
 
-    private static final String NOT_EXECUTED = "Not executed";
     private static final String PASSED = "Passed";
     private static final String FAILED = "Failed";
     private static final String PENDING = "Pending";
@@ -67,92 +66,64 @@ public class ExecutionService {
     private static final String RUNNING = "Running";
     private static final String SUCCESS = "SUCCESS";
     private static final String FAILURE = "FAILURE";
-    private static final String DATE_FORMAT_JENKINS = "yyyyMMdd-HHmmss";
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     private ExecutionsRepository executionsRepository;
     private ProcessesRepository processesRepository;
     private EurekaService eurekaService;
-    private JenkinsService jenkinsService;
     private SelenoidService selenoidService;
     private CaseExecutionsRepository caseExecutionsRepository;
     private ConfigurationRepository configurationRepository;
 
-    /**
-     * Instantiates a new Execution service.
-     *
-     * @param executionsRepository     the executions repository
-     * @param processesRepository      the processes repository
-     * @param eurekaService            the eureka service
-     * @param jenkinsService           the jenkins service
-     * @param selenoidService          the selenoid service
-     * @param caseExecutionsRepository the case executions repository
-     */
     @Autowired
     public ExecutionService(ExecutionsRepository executionsRepository, ProcessesRepository processesRepository, EurekaService eurekaService,
-            JenkinsService jenkinsService, SelenoidService selenoidService, CaseExecutionsRepository caseExecutionsRepository,
-            ConfigurationRepository configurationRepository) {
+            SelenoidService selenoidService, CaseExecutionsRepository caseExecutionsRepository, ConfigurationRepository configurationRepository) {
         this.executionsRepository = executionsRepository;
         this.processesRepository = processesRepository;
         this.eurekaService = eurekaService;
-        this.jenkinsService = jenkinsService;
         this.selenoidService = selenoidService;
         this.caseExecutionsRepository = caseExecutionsRepository;
         this.configurationRepository = configurationRepository;
     }
 
-    /**
-     * Gets executions.
-     *
-     * @param clientId  the client id
-     * @param processId the process id
-     * @return the executions
-     */
     public Iterable<Execution> getExecutions(Long clientId, Long processId) {
         // log.info("#### getExecutions");
         return executionsRepository.findByClientIdAndProcessId(clientId, processId);
     }
 
-    /**
-     * Create execution.
-     *
-     * @param execution the execution
-     * @return the execution
-     * @throws Exception the exception
-     */
-    public Execution create(Execution execution) throws Exception {
-        try {
-            // Set server properties
-            execution.setTotalFailed(0);
-            execution.setTotalPassed(0);
-            execution.setStatus(CREATED);
-            execution.setDate(new SimpleDateFormat(DATE_FORMAT).format(new Date()));
-
-            for (CaseExecution caseExecution : execution.getCasesExecutions()) {
-                caseExecution.setStatus(PENDING);
-            }
-
-            Optional<Process> processOpt = processesRepository.findById(execution.getProcess().getProcessId());
-            if (processOpt.isPresent()) {
-                Process process = processOpt.get();
-                invokeProcess(process, execution);
-                return execution;
-            }
-
-            return execution;
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            throw new Exception(e.getMessage());
-        }
+    public Optional<Execution> getExecutionById(Long executionId) {
+        return executionsRepository.findById(executionId);
     }
 
-    private Execution invokeProcess(Process process, Execution execution) {
+    public Execution create(Execution execution) throws Exception {
+
+        /* Get Process from database */
+        Optional<Process> processOpt = processesRepository.findById(execution.getProcess().getProcessId());
+        if (!processOpt.isPresent()) {
+            throw new RuntimeException("El proceso no existe en la base de datos");
+        }
+        Process process = processOpt.get();
+
+        /* Verify if process is running */
         String processUrl = eurekaService.getProcessUrl(process);
+        String processNotReadyError = "El proceso parece estar offline! Si el proceso se inició recientemente vuelve a intentarlo pasados unos segundos, sino revisa que el proceso esté arrancado.";
 
         if (StringUtils.isBlank(processUrl)) {
             // TODO retry???
-            throw new RuntimeException(
-                    "El proceso parece estar offline! Si el proceso se inició recientemente vuelve a intentarlo pasados unos segundos, sino revisa que el proceso esté arrancado.");
+            throw new RuntimeException(processNotReadyError);
+        }
+
+        if (!eurekaService.isProcessRunning(processUrl)) {
+            throw new RuntimeException(processNotReadyError);
+        }
+
+        /* Set execution details */
+        execution.setTotalFailed(0);
+        execution.setTotalPassed(0);
+        execution.setStatus(CREATED);
+        execution.setDate(new SimpleDateFormat(DATE_FORMAT).format(new Date()));
+        for (CaseExecution caseExecution : execution.getCasesExecutions()) {
+            caseExecution.setStatus(PENDING);
         }
 
         // Create execution in database
@@ -167,41 +138,6 @@ public class ExecutionService {
         }
 
         return execution;
-    }
-
-    private io.zahori.model.process.Configuration getExecutionConfiguration(Execution execution) {
-        Long configurationId = execution.getConfiguration().getConfigurationId();
-        Optional<Configuration> configOpt = configurationRepository.findById(configurationId);
-        Configuration configuration = configOpt.get();
-
-        // Create configuration DTO for the process
-        io.zahori.model.process.Configuration execConfiguration = new io.zahori.model.process.Configuration();
-        execConfiguration.setName(configuration.getName());
-        execConfiguration.setEnvironmentName(configuration.getClientEnvironment().getName());
-        execConfiguration.setEnvironmentUrl(configuration.getClientEnvironment().getUrl());
-        execConfiguration.setRetries(configuration.getRetry().getRetryId());
-        execConfiguration.setTimeout(configuration.getTimeout().getTimeoutId());
-
-        execConfiguration.setGenerateEvidences(configuration.getEvidenceCase().getName());
-        for (EvidenceType evidenceType : configuration.getEvidenceTypes()) {
-            execConfiguration.getGenerateEvidencesTypes().add(evidenceType.getName());
-        }
-
-        execConfiguration.setUploadResults(configuration.getUploadResults());
-        if (execConfiguration.isUploadResults()) {
-            execConfiguration.setUploadRepositoryName(configuration.getTestRepository().getName());
-            if (configuration.getTestRepository().getClientTestRepos() != null && !configuration.getTestRepository().getClientTestRepos().isEmpty()) {
-                Iterator<ClientTestRepo> iterator = configuration.getTestRepository().getClientTestRepos().iterator();
-                ClientTestRepo firstClientTestRepo = iterator.next();
-
-                execConfiguration.setUploadRepositoryUrl(firstClientTestRepo.getUrl());
-                execConfiguration.setUploadRepositoryUser(firstClientTestRepo.getUser());
-                execConfiguration.setUploadRepositoryPass(firstClientTestRepo.getPassword());
-            }
-        }
-
-        return execConfiguration;
-
     }
 
     private void runProcess(String processUrl, Process process, Execution execution) {
@@ -278,6 +214,41 @@ public class ExecutionService {
                             executionsRepository.save(execution);
                         })//
                 .subscribe();
+    }
+
+    private io.zahori.model.process.Configuration getExecutionConfiguration(Execution execution) {
+        Long configurationId = execution.getConfiguration().getConfigurationId();
+        Optional<Configuration> configOpt = configurationRepository.findById(configurationId);
+        Configuration configuration = configOpt.get();
+
+        // Create configuration DTO for the process
+        io.zahori.model.process.Configuration execConfiguration = new io.zahori.model.process.Configuration();
+        execConfiguration.setName(configuration.getName());
+        execConfiguration.setEnvironmentName(configuration.getClientEnvironment().getName());
+        execConfiguration.setEnvironmentUrl(configuration.getClientEnvironment().getUrl());
+        execConfiguration.setRetries(configuration.getRetry().getRetryId());
+        execConfiguration.setTimeout(configuration.getTimeout().getTimeoutId());
+
+        execConfiguration.setGenerateEvidences(configuration.getEvidenceCase().getName());
+        for (EvidenceType evidenceType : configuration.getEvidenceTypes()) {
+            execConfiguration.getGenerateEvidencesTypes().add(evidenceType.getName());
+        }
+
+        execConfiguration.setUploadResults(configuration.getUploadResults());
+        if (execConfiguration.isUploadResults()) {
+            execConfiguration.setUploadRepositoryName(configuration.getTestRepository().getName());
+            if (configuration.getTestRepository().getClientTestRepos() != null && !configuration.getTestRepository().getClientTestRepos().isEmpty()) {
+                Iterator<ClientTestRepo> iterator = configuration.getTestRepository().getClientTestRepos().iterator();
+                ClientTestRepo firstClientTestRepo = iterator.next();
+
+                execConfiguration.setUploadRepositoryUrl(firstClientTestRepo.getUrl());
+                execConfiguration.setUploadRepositoryUser(firstClientTestRepo.getUser());
+                execConfiguration.setUploadRepositoryPass(firstClientTestRepo.getPassword());
+            }
+        }
+
+        return execConfiguration;
+
     }
 
     private CaseExecution updateCaseExecution(CaseExecution resultCaseExecution) {

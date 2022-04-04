@@ -2,7 +2,7 @@
 	"banner": {
 		"configDeleted": "Configuración eliminada",
 		"error": "Error: ",
-		"serverVersion": "Hay disponible una nueva versión del servidor: {{latest}} (actual: {{actual}})"
+		"serverVersion": "Hay disponible una nueva versión del servidor: {{latest}}"
 	},
 	"formError": {
 		"empty": "Este campo no puede estar vacío",
@@ -189,8 +189,10 @@
 			"cases": {
 				"addCase": "Añadir caso",
 				"addField": {
+					"actions": "Acciones",
 					"cancelButton": "Cancelar",
 					"confirmButton": "Añadir",
+					"copy": "Copiar caso",
 					"duplicatedName": "El campo '{{fieldName}}' ya existe, elige otro nombre",
 					"emptyNameWarning": "Escribe el nombre del campo!",
 					"placeholder": "Nombre del campo",
@@ -250,6 +252,7 @@
 				"search": "Buscar..."
 			},
 			"executions": {
+				"active": "Activa",
 				"browser": "Navegador",
 				"browsers": "Navegadores",
 				"case": "Caso",
@@ -265,11 +268,21 @@
 				"executionName": "Nombre",
 				"hour": "Hora",
 				"lastExecutions": "Últimas ejecuciones",
+				"lastManualExecutions": "Últimas ejecuciones manuales",
+				"lastPeriodicExecutions": "Últimas ejecuciones periódicas",
 				"loading": "Cargando...",
 				"manual": "Manual",
+				"nextDate": "Próxima  ejecución",
 				"notExecuted": "No ejecutado",
 				"notes": "Notas",
+				"numExecutions": "Nº ejecuciones",
 				"periodic": "Periódica",
+				"rerun": {
+					"title": "Reejecutar",
+					"all": "Reejecutar todos",
+					"failed": "Reejecutar fallados",
+					"case": "Reejecutar caso"
+				},
 				"resolution": "Resolución",
 				"resolutions": "Resoluciones",
 				"running": "En ejecución...",

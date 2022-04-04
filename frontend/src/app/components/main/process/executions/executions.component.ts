@@ -3,6 +3,8 @@ import { CaseExecution } from '../../../../model/caseExecution';
 import { Execution } from '../../../../model/excution';
 import { DataService } from '../../../../services/data.service';
 import RFB from "../../../../../../node_modules/@novnc/novnc/core/rfb.js";
+import Swal from 'sweetalert2';
+import { Process } from '../../../../model/process';
 
 @Component({
   selector: 'app-executions',
@@ -58,7 +60,7 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
   closeCapabilities() {
     this.showCapabilities = false;
   }
-  
+
   getProcessExecutions() {
     this.loading = true;
     this.dataService.getExecutions().subscribe(
@@ -158,6 +160,79 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
     this.getProcessExecutions();
   }
 
+  rerunCase(execution: Execution, caseExecution: CaseExecution): void {
+    console.log('failed case');
+    const newExecution: Execution = new Execution();
+    newExecution.process = new Process();
+    newExecution.process.processId = this.dataService.processSelected.processId;
+    newExecution.configuration = execution.configuration;
+    newExecution.name = execution.name;
+    const reducedExecution = new CaseExecution();
+    reducedExecution.cas = caseExecution.cas;
+    reducedExecution.screenResolution = caseExecution.screenResolution;
+    reducedExecution.browser = caseExecution.browser;
+    newExecution.casesExecutions = [reducedExecution];
+    this.dataService.createExecution(newExecution).subscribe(
+      () => {
+        this.reload();
+      },
+      (error) => {
+        console.log(error);
+        Swal.fire({
+          title: '',
+          text: error.error,
+          icon: 'error'
+        });
+        this.loading = false;
+      }
+    );
+  }
+
+  rerunCases(execution: Execution, status: string): void {
+    const newExecution: Execution = new Execution();
+    newExecution.process = new Process();
+    newExecution.process.processId = this.dataService.processSelected.processId;
+    newExecution.casesExecutions = execution.casesExecutions
+      .filter(caseExecution => {
+        if (status === 'ALL') {
+          return true;
+        }
+        return caseExecution.status === status;
+      })
+      .map(caseExecution => {
+        const reducedExecution = new CaseExecution();
+        reducedExecution.cas = caseExecution.cas;
+        reducedExecution.screenResolution = caseExecution.screenResolution;
+        reducedExecution.browser = caseExecution.browser;
+        return reducedExecution;
+      });
+    newExecution.configuration = execution.configuration;
+    newExecution.name = execution.name;
+    if (newExecution.casesExecutions.length > 0) {
+      this.dataService.createExecution(newExecution).subscribe(
+        () => {
+          this.reload();
+        },
+        (error) => {
+          console.log(error);
+          Swal.fire({
+            title: '',
+            text: error.error,
+            icon: 'error'
+          });
+          this.loading = false;
+        }
+      );
+    } else {
+      Swal.fire({
+        title: '',
+        text: 'There are no cases to be executed!',
+        icon: 'warning'
+      });
+      this.loading = false;
+    }
+  }
+
   getSelenoidUiHostAndPort() {
     this.dataService.getSelenoidUiHostAndPort().subscribe(
       hostAndPort => {
@@ -166,9 +241,9 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
       }
     );
   }
-  
+
   getNumberOfTableColumns(): number {
-    return this.dataService.isWebProcess() ? 11 : 9;
+    return this.dataService.isWebProcess() ? 12 : 10;
   }
 
 }
