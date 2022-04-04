@@ -60,7 +60,7 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
   closeCapabilities() {
     this.showCapabilities = false;
   }
-  
+
   getProcessExecutions() {
     this.loading = true;
     this.dataService.getExecutions().subscribe(
@@ -160,33 +160,7 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
     this.getProcessExecutions();
   }
 
-  rerun_execution(execution: Execution): void{
-    Swal.fire({
-      title: '',
-      text: 'Click an option',
-      icon: 'info',
-      showCancelButton: true,
-      showDenyButton: true,
-      confirmButtonText: 'Rerun all tests',
-      confirmButtonColor: 'green',
-      denyButtonText: 'Rerun failed tests',
-      cancelButtonText: 'Cancel',
-      backdrop: `
-          rgba(64, 69, 58,0.4)
-          left top
-          no-repeat`
-    }).then(result => {
-      if (result.isConfirmed){
-        this.rerun(execution, 'ALL');
-      }
-      if (result.isDenied){
-        this.rerun(execution, 'FAILED');
-      }
-    });
-
-  }
-
-  rerun_failed_case(execution: Execution, caseExecution: CaseExecution): void{
+  rerunCase(execution: Execution, caseExecution: CaseExecution): void {
     console.log('failed case');
     const newExecution: Execution = new Execution();
     newExecution.process = new Process();
@@ -207,32 +181,34 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
         Swal.fire({
           title: '',
           text: error.error,
-          icon: 'error'});
+          icon: 'error'
+        });
         this.loading = false;
       }
     );
   }
 
-  rerun(execution: Execution, type: string): void{
+  rerunCases(execution: Execution, status: string): void {
     const newExecution: Execution = new Execution();
     newExecution.process = new Process();
     newExecution.process.processId = this.dataService.processSelected.processId;
-    newExecution.casesExecutions = execution.casesExecutions.filter(caseExecution => {
-      if (type === 'ALL') {
-        return true;
-      }
-      return caseExecution.status === type;
-    })
-      .map( caseExecution => {
-      const reducedExecution = new CaseExecution();
-      reducedExecution.cas = caseExecution.cas;
-      reducedExecution.screenResolution = caseExecution.screenResolution;
-      reducedExecution.browser = caseExecution.browser;
-      return reducedExecution;
-    });
+    newExecution.casesExecutions = execution.casesExecutions
+      .filter(caseExecution => {
+        if (status === 'ALL') {
+          return true;
+        }
+        return caseExecution.status === status;
+      })
+      .map(caseExecution => {
+        const reducedExecution = new CaseExecution();
+        reducedExecution.cas = caseExecution.cas;
+        reducedExecution.screenResolution = caseExecution.screenResolution;
+        reducedExecution.browser = caseExecution.browser;
+        return reducedExecution;
+      });
     newExecution.configuration = execution.configuration;
     newExecution.name = execution.name;
-    if (newExecution.casesExecutions.length > 0){
+    if (newExecution.casesExecutions.length > 0) {
       this.dataService.createExecution(newExecution).subscribe(
         () => {
           this.reload();
@@ -242,15 +218,17 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
           Swal.fire({
             title: '',
             text: error.error,
-            icon: 'error'});
+            icon: 'error'
+          });
           this.loading = false;
         }
       );
     } else {
       Swal.fire({
         title: '',
-        text: 'There are no failed cases!',
-        icon: 'warning'});
+        text: 'There are no cases to be executed!',
+        icon: 'warning'
+      });
       this.loading = false;
     }
   }
@@ -263,9 +241,9 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
       }
     );
   }
-  
+
   getNumberOfTableColumns(): number {
-    return this.dataService.isWebProcess() ? 11 : 9;
+    return this.dataService.isWebProcess() ? 12 : 10;
   }
 
 }
