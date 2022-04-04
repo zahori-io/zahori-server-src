@@ -2,7 +2,7 @@
 	"banner": {
 		"configDeleted": "Configuración eliminada",
 		"error": "Error: ",
-		"serverVersion": "Hay disponible una nueva versión del servidor: {{latest}} (actual: {{actual}})"
+		"serverVersion": "Hay disponible una nueva versión del servidor: {{latest}}"
 	},
 	"formError": {
 		"empty": "Este campo no puede estar vacío",
