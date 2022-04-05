@@ -32,7 +32,7 @@
     "datatables.net-dt": "^1.11.5",
     "jquery": "^3.6.0",
     "jquery-circle-progress": "^1.2.2",
-    "ng-multiselect-dropdown": "^0.3.7",
+    "ng-multiselect-dropdown": "^0.3.8",
     "rxjs": "~6.6.7",
     "save": "^2.4.0",
     "sweetalert2": "^10.16.9",
