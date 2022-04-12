@@ -23,21 +23,27 @@ package io.zahori.server.controller;
  * #L%
  */
 
+import io.zahori.server.repository.ExecutionsRepository;
+import io.zahori.server.service.EvidencesService;
 import io.zahori.server.utils.FilePath;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -47,6 +53,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RestController
 @RequestMapping("/evidence")
 public class EvidencesController {
+
+    @Autowired
+    private EvidencesService evidencesService;
+
+    @Autowired
+    private ExecutionsRepository executionsRepository;
 
     private static final Logger LOG = LoggerFactory.getLogger(EvidencesController.class);
 
@@ -104,4 +116,40 @@ public class EvidencesController {
         return "uploadStatus";
     }
 
+    /**
+     * Delete the evidence files from the server
+     * @param path path of the files on the server (evidences/clientId/processId/date)
+     * @return Evidence files  remove status
+     * @exception Exception
+     */
+    @GetMapping("/remove")
+    public ResponseEntity<Object> removeEvidences(@RequestParam String path, @RequestParam String[] dates) {
+        List<String> fileDates= new ArrayList<String>();
+        for(String date: dates){
+            Calendar exeDate= Calendar.getInstance();
+            exeDate.setTime(new Date(date));
+            fileDates.add(String.valueOf(exeDate.get(Calendar.DAY_OF_MONTH))+String.valueOf(exeDate.get(Calendar.MONTH))+String.valueOf(exeDate.get(Calendar.YEAR)));
+        }
+        String response = evidencesService.removeEvidences(path,fileDates);
+       if(response==null) {
+           String processId = path.split("/")[1];
+           for(String date: dates){
+               executionsRepository.deleteExecutionsByDate(Long.valueOf(processId),new Date(date));
+           }
+           return new ResponseEntity<>("OK", HttpStatus.OK);
+       }else
+           return new ResponseEntity<>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @GetMapping("/remove/{executionId}")
+    public ResponseEntity<Object> removeEvidencesByExecution(@RequestParam String path, @RequestParam String date,@PathVariable Long executionId) {
+            Calendar exeDate= Calendar.getInstance();
+            exeDate.setTime(new Date(date));
+            String fileDate =String.valueOf(exeDate.get(Calendar.DAY_OF_MONTH))+String.valueOf(exeDate.get(Calendar.MONTH))+String.valueOf(exeDate.get(Calendar.YEAR));
+        String response = evidencesService.removeEvidenceByExecutionId(path,fileDate,executionId.toString());
+        if(response==null) {
+            executionsRepository.deleteById(executionId);
+            return new ResponseEntity<>("OK", HttpStatus.OK);
+        }else
+            return new ResponseEntity<>(response,HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 }

@@ -10,7 +10,8 @@ export class ProcessSchedule {
   cronExpression: string;
   nextExecution: Date;
   active: boolean;
-  constructor(processScheduleId: number, process: Process, executionId: number, cronExpression: string, nextExecution: Date, name: string, numExecutions: number){
+  maxExecutions: number;
+  constructor(processScheduleId: number, process: Process, executionId: number, cronExpression: string, nextExecution: Date, name: string, numExecutions: number, maxExecutions: number){
     this.process = process;
     this.executionId = executionId;
     this.cronExpression = cronExpression;
@@ -18,5 +19,6 @@ export class ProcessSchedule {
     this.active = true;
     this.numExecutions = numExecutions;
     this.name = name;
+    this.maxExecutions  = maxExecutions;
   }
 }

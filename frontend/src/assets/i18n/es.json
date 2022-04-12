@@ -440,6 +440,7 @@
 				"time": "Tiempo",
 				"title": "Casos a ejecutar",
 				"unselectAllResolutions": "Deseleccionar todas las resoluciones",
+        "maxExec": "Maximo de ejecuciones guardadas",
 				"week": {
 					"friday": {
 						"cronDay": "FRI",

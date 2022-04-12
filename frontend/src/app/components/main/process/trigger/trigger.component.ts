@@ -37,6 +37,7 @@ export class TriggerComponent implements OnInit {
   periodicHour: string;
   periodicDays: any;
   selectedDays: string[];
+  maxExec: number;
   periodicCreated: boolean;
 
   constructor(public dataService: DataService, private router: Router, private  translate: TranslateService) {
@@ -94,6 +95,7 @@ export class TriggerComponent implements OnInit {
     this.selectedDays = [];
     this.periodicHour = '00:00';
     this.periodicCreated = false;
+    this.maxExec = 5;
   }
   getTags(): void {
     this.dataService.getTags(String(this.dataService.processSelected.processId)).subscribe(
@@ -184,12 +186,13 @@ export class TriggerComponent implements OnInit {
       const cronExp = '0 ' + splitHour[1] + ' ' + splitHour[0] + ' ? * ' + days.substring(0, days.length -  2);
       this.execution.totalPassed = 0;
       this.execution.totalFailed = 0;
-      const ps: ProcessSchedule = new ProcessSchedule(0, this.dataService.processSelected, this.execution.executionId, cronExp, new Date(), '', 0);
+      const ps: ProcessSchedule = new ProcessSchedule(0, this.dataService.processSelected, this.execution.executionId, cronExp, new Date(), '', 0, this.maxExec);
       this.dataService.setExecution(this.execution).subscribe((exec: Execution) => {
         this.periodicCreated = true;
         this.loading = false;
         this.error = '';
         ps.executionId = exec.executionId;
+        ps.maxExecutions = this.maxExec;
         this.dataService.setPeriodicExecution(ps).subscribe(() => {},
             (error) => {
               this.error = error.error;
@@ -300,7 +303,6 @@ export class TriggerComponent implements OnInit {
           });
         }
       });
-      console.log(selectTags);
       selectTags.forEach((value: boolean, key: number) => {
         if (!value && this.selectedTags.some(e => e.tagId === key)){
             this.selectedTags.splice(this.selectedTags.indexOf(this.selectedTags.find(tg => tg.tagId === key)), 1);
@@ -332,12 +334,9 @@ export class TriggerComponent implements OnInit {
         if (value === e.target.value) { this.selectedDays.splice(index, 1); }
       });
     }
-    console.log(this.selectedDays);
-    console.log(this.periodicHour);
     const splitHour = this.periodicHour.split(':');
     const days = this.selectedDays.concat(',').toString();
 
     const cronExp = '0 ' + splitHour[1] + ' ' + splitHour[0] + ' ? * ' + days.substring(0, days.length -  2);
-    console.log(cronExp);
   }
 }

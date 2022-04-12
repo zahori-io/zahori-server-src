@@ -35,6 +35,10 @@ public class ProcessSchedule implements Serializable {
 
     @Column(name = "active")
     private Boolean active;
+
+    @Column(name = "maximum_executions")
+    private Long maxExecutions;
+
     @Transient
     private String name;
     @Transient
@@ -102,5 +106,13 @@ public class ProcessSchedule implements Serializable {
 
     public void setNumExecutions(Long numExecutions) {
         this.numExecutions = numExecutions;
+    }
+
+    public Long getMaxExecutions() {
+        return maxExecutions;
+    }
+
+    public void setMaxExecutions(Long maxExecutions) {
+        this.maxExecutions = maxExecutions;
     }
 }

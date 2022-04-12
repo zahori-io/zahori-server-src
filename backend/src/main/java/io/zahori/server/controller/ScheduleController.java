@@ -8,6 +8,7 @@ import io.zahori.server.repository.CaseExecutionsRepository;
 import io.zahori.server.repository.ExecutionsRepository;
 import io.zahori.server.repository.ProcessScheduleRepository;
 import io.zahori.server.repository.ProcessesRepository;
+import io.zahori.server.service.EvidencesService;
 import io.zahori.server.utils.scheduling.RunnableTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,10 +21,8 @@ import org.springframework.scheduling.support.CronSequenceGenerator;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.io.File;
+import java.util.*;
 
 @RestController
 @RequestMapping("/api/schedule")
@@ -41,7 +40,10 @@ public class ScheduleController {
     private ExecutionsRepository executionsRepository;
 
     @Autowired
-    private CaseExecutionsRepository caseExecutionsRepository;
+    private ProcessesRepository processesRepository;
+
+    @Autowired
+    private EvidencesService evidencesService;
 
 
     public ScheduleController () {
@@ -53,7 +55,6 @@ public class ScheduleController {
     public ResponseEntity<Object> postSchedule(@RequestBody ProcessSchedule processSchedule) {
         try {
             LOG.info("<--create process schedule-->");
-            LOG.info(processSchedule.toString());
             processSchedule.setNextExecution(getNextValidTime(processSchedule.getCronExpression()));
             ProcessSchedule ps = processScheduleRepository.save(processSchedule);
             Execution exec = executionsRepository.findById(ps.getExecutionId()).orElse(null);
@@ -208,12 +209,18 @@ public class ScheduleController {
         c.add(Calendar.DATE,1);
         List<ProcessSchedule> processList = processScheduleRepository.findProcessScheduleByDates(today,c.getTime());
         if(!processList.isEmpty())
-            processList.forEach(this::insertExecution);
-
+            processList.forEach((ps)->{
+                Optional<Process> pr = processesRepository.findById(ps.getProcess().getProcessId());
+                if(pr.isPresent()) {
+                    String path = File.separator+pr.get().getClient().getClientId()+ File.separator + ps.getProcess().getProcessId();
+                    this.controlProcessExecutions(ps.getProcessScheduleId(), ps.getMaxExecutions(), path);
+                }
+                this.insertExecution(ps);
+            });
     }
     //Insert execution task on pool
     private void insertExecution(ProcessSchedule ps){
-
+        LOG.info(ps.toString());
         Execution exec = executionsRepository.findById(ps.getExecutionId()).orElse(null);
         assert exec != null;
         exec.setExecutionId(0L);
@@ -234,6 +241,21 @@ public class ScheduleController {
         c.set(Calendar.HOUR, 23);
         if (processSchedule.getNextExecution().before(c.getTime()) && processSchedule.getNextExecution().after(today))
             insertExecution(processSchedule);
+    }
+    //Control number of executions saved in  the DB
+    private void controlProcessExecutions(Long psId,Long maxExecutions,String path){
+        List<Execution> executions = executionsRepository.findMainExecutionBypsIdDateOrder(psId);
+        List<String> dates= new  ArrayList<String>();
+        if(executions.size()>maxExecutions){
+            for(int i =(int) (maxExecutions-1);i<executions.size();i++){
+                Calendar exeDate= Calendar.getInstance();
+                exeDate.setTime(new Date(executions.get(i).getDate()));
+                dates.add(String.valueOf(exeDate.get(Calendar.DAY_OF_MONTH))+String.valueOf(exeDate.get(Calendar.MONTH))+String.valueOf(exeDate.get(Calendar.YEAR)));
+            }
+            evidencesService.removeEvidences(path,dates);
+            Date date = new Date(executions.get((int) (maxExecutions-1)).getDate());
+            executionsRepository.deleteExecutionsAfterDate(psId,date);
+        }
     }
 }
 

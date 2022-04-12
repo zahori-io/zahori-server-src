@@ -30,6 +30,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import io.zahori.server.model.Execution;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -59,11 +60,25 @@ public interface ExecutionsRepository extends CrudRepository<Execution, Long> {
     @Query("select p from Execution p where p.processSchedule.processScheduleId = :processScheduleId")
     List<Execution> findMainExecutionByProcessScheduleId(@Param("processScheduleId") Long processScheduleId);
 
+    @Query("select p from Execution p where p.processSchedule.processScheduleId = :processScheduleId order by p.date DESC")
+    List<Execution> findMainExecutionBypsIdDateOrder(@Param("processScheduleId") Long processScheduleId);
+
     @Query("SELECT COUNT(p)from Execution p where p.processSchedule.processScheduleId = :processScheduleId")
     Long countByProcessScheduleId(@Param("processScheduleId") Long processScheduleId);
 
     @Query("select p.name from Execution p where p.processSchedule.processScheduleId = :processScheduleId and p.totalPassed = 0 and p.totalFailed = 0")
     String getNameByProcessScheduleId(@Param("processScheduleId") Long processScheduleId);
+
+    /**
+     * Delete  all periodic executions after a passed date
+     * @param psId processSchedule Id
+     * @param date limit date to start delete
+     */
+    @Query("delete from Execution p where p.processSchedule.processScheduleId=:psId and p.date < :date  and p.totalPassed <> 0 or p.totalFailed <> 0")
+    void deleteExecutionsAfterDate(Long psId,Date date);
+
+    @Query("delete from Execution p where p.processSchedule.processScheduleId=:psId and p.date = :date  and p.totalPassed <> 0 or p.totalFailed <> 0")
+    void deleteExecutionsByDate(Long psId,Date date);
 }
 
 // and p.totalPassed <> 0 or p.totalFailed <> 0

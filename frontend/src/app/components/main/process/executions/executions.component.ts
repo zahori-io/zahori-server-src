@@ -74,6 +74,7 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
           } else {
             this.dataService.getPeriodicExecution(exec.processSchedule.processScheduleId).subscribe(ps =>  {
               let execList = new Array<Execution>();
+              console.log(this.periodicExecutionsData);
               if (this.periodicExecutionsData.has(ps.processScheduleId)){
                 execList = this.periodicExecutionsData.get(ps.processScheduleId);
               }
@@ -90,10 +91,6 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
         }, err => {
           console.log(err);
         });
-        console.log(this.periodicExecutions);
-        console.log(this.periodicExecutionsData);
-        console.log('===============================');
-        console.log(this.manualExecutions);
       },
       (error) => {
         console.error('Error loading executions: ' + error.message);
