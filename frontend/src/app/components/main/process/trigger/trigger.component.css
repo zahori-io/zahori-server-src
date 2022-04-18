@@ -86,7 +86,14 @@
 :host ::ng-deep .multiselect-item-checkbox input[type=checkbox] + div:after{
   border-color: #3d4246!important;
 }
-  
+
 ::placeholder {
   color: #909ba5d9;
+}
+
+[data-order="asc"]:hover::after {
+  content: "\25b2";
+}
+[data-order="desc"]:hover::after {
+  content: "\25bc";
 }
