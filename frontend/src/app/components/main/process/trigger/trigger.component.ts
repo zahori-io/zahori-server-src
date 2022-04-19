@@ -115,7 +115,11 @@ export class TriggerComponent implements OnInit {
       resolutions => {
         this.resolutions = resolutions;
         this.resolutions.forEach(res => {
-          res.widthAndHeight = res.width + 'x' + res.height;
+          if (res.name && res.name !== ''){
+            res.widthAndHeight = res.name;
+          } else {
+            res.widthAndHeight = res.width + 'x' + res.height;
+          }
         });
       }
     );
@@ -174,7 +178,6 @@ export class TriggerComponent implements OnInit {
           browser.browserName = 'NULLBROWSER';
           caseExecution.browser = browser;
           caseExecution.cas = this.dataService.processCases[i];
-
           this.execution.casesExecutions.push(caseExecution);
         }
       }

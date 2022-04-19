@@ -173,7 +173,12 @@ export class AdminPeriodicExecutionsComponent implements OnInit {
       resolutions => {
         this.resolutions = resolutions;
         this.resolutions.forEach(res => {
-          res.widthAndHeight = res.width + 'x' + res.height;
+
+          if (res.name && res.name !== ''){
+            res.widthAndHeight = res.name;
+          } else {
+            res.widthAndHeight = res.width + 'x' + res.height;
+          }
         });
       }
     );

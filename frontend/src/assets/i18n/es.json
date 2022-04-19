@@ -363,6 +363,7 @@
 					"addResolution": "Añadir resolución",
 					"allFieldsObligatory": "Todos los campos son obligatorios",
 					"height": "Alto",
+          "name": "Nombre",
 					"invalidResolution": "La resolución no es valida",
 					"resolution": {
 						"cancel": "Cancelar",
@@ -370,6 +371,7 @@
 						"edit": "Editar",
 						"insertHeight": "Alto",
 						"insertWidth": "Ancho",
+            "insertName": "",
 						"remove": "Eliminar",
 						"removeMessage": "Eliminar resolución: {{width}}x{{height}}",
 						"removeWarning": "Esta acción no puede deshacerse",
