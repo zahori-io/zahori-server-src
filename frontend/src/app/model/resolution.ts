@@ -7,6 +7,7 @@ export class Resolution {
   width: number;
   height: number;
   widthAndHeight: string;
+  name: string;
   constructor() {
     this.resolutionId = 0;
     this.active = true;
@@ -14,6 +15,7 @@ export class Resolution {
     this.width = 0;
     this.height = 0;
     this.widthAndHeight = '';
+    this.name = '';
   }
 
 }
