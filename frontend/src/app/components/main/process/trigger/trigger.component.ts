@@ -342,4 +342,11 @@ export class TriggerComponent implements OnInit {
 
     const cronExp = '0 ' + splitHour[1] + ' ' + splitHour[0] + ' ? * ' + days.substring(0, days.length -  2);
   }
+  getTimestampPlaceholder(): any {
+    const date = new Date();
+    return date.getFullYear().toString() + '-' + this.pad2(date.getMonth() + 1) + '-' + this.pad2(date.getDate()) + ' ' + this.pad2(date.getHours()) + ':' + this.pad2(date.getMinutes());
+  }
+  pad2(n: number): any {
+    return n < 10 ? '0' + n : n;
+  }
 }
