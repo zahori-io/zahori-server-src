@@ -269,4 +269,7 @@ public class ExecutionService {
         }
     }
 
+    public Optional<Execution> getExecutionById(Long executionId) {
+        return executionsRepository.findById(executionId);
+    }
 }

@@ -87,7 +87,7 @@ export class AdminPeriodicExecutionsComponent implements OnInit {
       unSelectAllText: this.translate.instant('main.process.trigger.unselectAllResolutions')
     };
     this.selectDays = this.translate.instant('main.process.processAdmin.periodicExecutions.selectDays');
-    this.processScheduledSelected = new ProcessSchedule(0, new Process(), 0, '', new Date(), '', 0,5);
+    this.processScheduledSelected = new ProcessSchedule(0, new Process(), 0, '', new Date(), '', 0, 5);
     this.periodicDays = [
       {
         name: this.translate.instant('main.process.trigger.week.monday.name'),

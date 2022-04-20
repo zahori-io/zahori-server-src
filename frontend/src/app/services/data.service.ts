@@ -94,12 +94,12 @@ export class DataService {
     );
   }
 
-  isWebProcess():boolean {
+  isWebProcess(): boolean {
     return this.processSelected.processType.name === 'BROWSER';
   }
 
-  isDashboardPage(){
-    return this.router.url === "/app/dashboard";
+  isDashboardPage(): any{
+    return this.router.url === '/app/dashboard';
   }
 
   /*
@@ -152,27 +152,26 @@ export class DataService {
   public createExecution(execution: Execution): Observable<Execution> {
     return this.http.post<Execution>(this.url + 'process/' + this.processSelected.processId + '/executions', JSON.stringify(execution), {});
   }
-  public getFile(fileUrl: string): Observable<any> {
+  public getFile(fileUrl: string): any {
     return this.http.get(this.url + 'process/' + this.processSelected.processId + '/file?path=' + fileUrl, { responseType: 'blob' });
   }
 
   public getEnvironments(processId: string): Observable<any> {
     return this.http.get<any>(this.url + 'process/' + processId + '/environments');
   }
-
-  public setEnvironment(envs: Environment[], processId: string): Observable<any> {
+  public setEnvironment(envs: Environment[], processId: string): any {
     return this.http.post(this.url + 'process/' + processId + '/environments', JSON.stringify(envs));
   }
 
-  public getTags(processId: string): Observable<any> {
+  public getTags(processId: String): any {
     return this.http.get(this.url + 'process/' + processId + '/tags');
   }
 
-  public setTags(tags: Tag[], processId: string): Observable<any> {
+  public setTags(tags: Tag[], processId: string): any {
     return this.http.post(this.url + 'process/' + processId + '/tags', JSON.stringify(tags));
   }
 
-  public getTestRepositories(): Observable<any> {
+  public getTestRepositories(): any {
     return this.http.get(this.url + 'repositories');
   }
 
