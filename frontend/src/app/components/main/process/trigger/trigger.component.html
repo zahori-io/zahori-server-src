@@ -41,7 +41,7 @@
 						</div>
 					</th>
 					<th>{{'main.process.trigger.id'|translate}}</th>
-					<th>{{'main.process.trigger.case'|translate}}</th>
+					<th [appSort]="dataService.processCases" data-order="asc" data-name="name" scope="col">{{'main.process.trigger.case'|translate}}  </th>
 					<th>{{'main.process.trigger.tags'|translate}}</th>
 				</tr>
 			</thead>
