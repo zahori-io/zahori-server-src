@@ -8,6 +8,13 @@
     border-top: none;
 }
 
+[data-order="asc"]:hover::after {
+  content: "\25b2";
+}
+[data-order="desc"]:hover::after {
+  content: "\25bc";
+}
+
 .table td {
     padding: 0 0 0 0.55rem;
 }
