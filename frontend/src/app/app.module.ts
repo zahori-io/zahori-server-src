@@ -50,6 +50,7 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { AdminResolutionsComponent } from './components/main/process/process-admin/admin-resolutions/admin-resolutions.component';
 import { ResolutionComponentComponent } from './components/main/process/process-admin/admin-resolutions/resolution-component/resolution-component.component';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
+import { SortDirective } from './directive/sort.directive';
 
 
 @NgModule({
@@ -90,7 +91,8 @@ import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
     ConfiguratorFormComponent,
     SignupComponent,
     AdminResolutionsComponent,
-    ResolutionComponentComponent
+    ResolutionComponentComponent,
+    SortDirective
   ],
     imports: [
         BrowserModule,

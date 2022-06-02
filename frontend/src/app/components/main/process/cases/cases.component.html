@@ -37,7 +37,7 @@
       <thead>
         <tr>
           <th><i title="{{'main.process.cases.addCase'|translate}}" class="fa fa-plus fa-1" style="cursor: pointer;" (click)="createNewCase()"></i></th>
-          <th>{{'main.process.cases.case'|translate}}</th>
+          <th [appSort]="tableData" data-order="asc" data-name="name" scope="col">{{'main.process.cases.case'|translate}}  </th>
           <th>{{'main.process.cases.tags'|translate}}</th>
           <ng-container *ngFor="let field Of tableData[0] | keyvalue">
             <th *ngIf="isVariableField(field.key)" class="showOnHover">
