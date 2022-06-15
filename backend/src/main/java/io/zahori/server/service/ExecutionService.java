@@ -268,8 +268,4 @@ public class ExecutionService {
             execution.setTotalFailed(execution.getTotalFailed() + 1);
         }
     }
-
-    public Optional<Execution> getExecutionById(Long executionId) {
-        return executionsRepository.findById(executionId);
-    }
 }
