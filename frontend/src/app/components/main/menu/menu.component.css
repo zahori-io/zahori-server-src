@@ -6,3 +6,19 @@
 .linkActive {
     color:#84986B;
 }
+.globe {
+  z-index: 1;
+}
+.lang-icon {
+  z-index: 2;
+  position: absolute;
+  top: 24px;
+  right: 6px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+}
+.lang-select{
+  background-color: #EADB86;
+  color: #0b0c0d;
+}

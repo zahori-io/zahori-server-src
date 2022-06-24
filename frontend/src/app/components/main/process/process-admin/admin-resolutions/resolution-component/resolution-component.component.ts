@@ -1,7 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {Resolution} from '../../../../../../model/resolution';
 import Swal from 'sweetalert2';
-import {DataService} from '../../../../../../services/data.service';
 import {TranslateService} from '@ngx-translate/core';
 
 @Component({
@@ -12,13 +11,10 @@ import {TranslateService} from '@ngx-translate/core';
 export class ResolutionComponentComponent {
   @Input()
   resolution: Resolution;
-
   @Output()
   deleted = new EventEmitter<Resolution>();
-
   @Output()
   updated = new EventEmitter<Resolution>();
-
   @Output()
   created = new EventEmitter<Resolution>();
   @Output()

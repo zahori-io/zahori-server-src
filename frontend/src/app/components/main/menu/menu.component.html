@@ -51,7 +51,9 @@
           <button type="button" data-toggle="dropdown" class="p-0 mr-2 btn btn-link">
             <span class="icon-wrapper icon-wrapper-alt rounded-circle">
               <span class="icon-wrapper-bg bg-primary"></span>
-              <span class="language-icon opacity-8 flag large E" [ngClass]="flag"></span>
+              <span class="lang-icon flag E" [ngClass]="flag"></span>
+              <i class="icon text-primary fas fa-globe  globe"></i>
+
             </span>
           </button>
           <div tabindex="-1" role="menu" aria-hidden="true" class="rm-pointers dropdown-menu dropdown-menu-right">
@@ -65,11 +67,11 @@
                 </div>
               </div>
             </div>
-            <button type="button" tabindex="0" class="dropdown-item" (click)="useLanguage('es')" data-toggle="dropdown">
+            <button type="button" tabindex="0" class="dropdown-item" [class.lang-select] = "flag === 'ES'" (click)="useLanguage('es')" data-toggle="dropdown">
               <span class="mr-3 opacity-8 flag large ES"></span>
               {{'main.menu.language.es'| translate}}
             </button>
-            <button type="button" tabindex="0" class="dropdown-item" (click)="useLanguage('en')" data-toggle="dropdown">
+            <button type="button" tabindex="0" class="dropdown-item" [class.lang-select] = "flag === 'GB'" (click)="useLanguage('en')" data-toggle="dropdown">
               <span class="mr-3 opacity-8 flag large GB"></span>
               {{'main.menu.language.en'| translate}}
             </button>

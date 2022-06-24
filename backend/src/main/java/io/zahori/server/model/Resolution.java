@@ -68,6 +68,9 @@ public class Resolution implements Serializable {
     @Column(name = "height")
     private Integer height;
 
+    @Column(name = "name")
+    private String name;
+
     public Long getResolutionId() {
         return resolutionId;
     }
@@ -161,5 +164,13 @@ public class Resolution implements Serializable {
      */
     public void setHeight(Integer height) {
         this.height = height;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
