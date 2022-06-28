@@ -57,22 +57,22 @@ export class CasesComponent implements OnInit {
   }
 
   createNewCase(): void {
-    let newCase: Case;
-    if (this.tableData.length === 0) {
-      newCase.name = this.translate.instant('main.process.cases.firstCaseName');
+    var newCase = {};
+    if (this.tableData.length == 0) {
+      newCase["name"] = this.translate.instant('main.process.cases.firstCaseName');
 
-      this.fixedFields.push('caseId');
-      this.fixedFields.push('name');
-      this.fixedFields.push('clientTags');
-      this.fixedFields.push('active');
+      this.fixedFields.push("caseId");
+      this.fixedFields.push("name");
+      this.fixedFields.push("clientTags");
+      this.fixedFields.push("active");
     } else {
       newCase = JSON.parse(JSON.stringify(this.tableData[0]));
-      Object.keys(newCase).forEach(prop => {
-        newCase[prop] = '';
+      Object.keys(newCase).forEach(function (prop) {
+        newCase[prop] = "";
       });
     }
-    newCase.active = true;
-    newCase.clientTags = [];
+    newCase["active"] = true;
+    newCase["clientTags"] = [];
     this.tableData.unshift(newCase);
   }
 
