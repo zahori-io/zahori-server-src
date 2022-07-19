@@ -58,7 +58,7 @@ export class TriggerComponent implements OnInit {
   }
 
   getTags(): void {
-    this.dataService.getTags(String(this.dataService.processSelected.processId)).subscribe(
+    this.dataService.getTags(this.dataService.processSelected.processId).subscribe(
       (res: any) => {
         this.tags = res;
       });
@@ -73,7 +73,7 @@ export class TriggerComponent implements OnInit {
   }
 
   getResolutions(): void {
-    this.dataService.getResolutions(String(this.dataService.processSelected.processId)).subscribe(
+    this.dataService.getResolutions(this.dataService.processSelected.processId).subscribe(
       resolutions => {
         this.resolutions = resolutions;
         this.resolutions.forEach(resolution => {

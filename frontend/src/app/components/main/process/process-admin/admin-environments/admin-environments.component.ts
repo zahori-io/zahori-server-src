@@ -37,7 +37,7 @@ export class AdminEnvironmentsComponent implements OnInit {
   }
 
   refresh(): void{
-    this.dataService.getEnvironments(String(this.dataService.processSelected.processId)).subscribe(
+    this.dataService.getEnvironments(this.dataService.processSelected.processId).subscribe(
       (res: any) => {
         this.envs = res;
       });
@@ -83,7 +83,7 @@ export class AdminEnvironmentsComponent implements OnInit {
   }
 
   sendPostPetition(env: Environment[], banner: BannerOptions): void{
-    this.dataService.setEnvironment(env, String(this.dataService.processSelected.processId)).subscribe(
+    this.dataService.setEnvironment(env, this.dataService.processSelected.processId).subscribe(
       () => {
         this.refresh();
         this.banner = banner;

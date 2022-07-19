@@ -37,7 +37,7 @@ export class CasesComponent implements OnInit {
   }
 
   getTags(): void {
-    this.dataService.getTags(String(this.dataService.processSelected.processId)).subscribe(
+    this.dataService.getTags(this.dataService.processSelected.processId).subscribe(
       (res: any) => {
         this.tags = res;
       });

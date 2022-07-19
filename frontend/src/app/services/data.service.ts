@@ -157,19 +157,19 @@ export class DataService {
     return this.http.get(this.url + 'process/' + this.processSelected.processId + '/file?path=' + fileUrl, { responseType: 'blob' });
   }
 
-  public getEnvironments(processId: string): Observable<any> {
+  public getEnvironments(processId: number): Observable<any> {
     return this.http.get<any>(this.url + 'process/' + processId + '/environments');
   }
 
-  public setEnvironment(envs: Environment[], processId: string) {
+  public setEnvironment(envs: Environment[], processId: number) {
     return this.http.post(this.url + 'process/' + processId + '/environments', JSON.stringify(envs));
   }
 
-  public getTags(processId: String) {
+  public getTags(processId: number) {
     return this.http.get(this.url + 'process/' + processId + '/tags');
   }
 
-  public setTags(tags: Tag[], processId: string) {
+  public setTags(tags: Tag[], processId: number) {
     return this.http.post(this.url + 'process/' + processId + '/tags', JSON.stringify(tags));
   }
 
@@ -213,11 +213,11 @@ export class DataService {
   public setSignUpUser(account: Account): Observable<Account> {
     return this.http.post<Account>('/users/sign-up', JSON.stringify(account), { headers: this.headers });
   }
-  public getResolutions(processId: string): Observable<any> {
+  public getResolutions(processId: number): Observable<Resolution[]> {
     return this.http.get<any>(this.url + 'resolutions/' + processId);
   }
 
-  public setResolutions(res: Resolution[], processId: string): Observable<object> {
+  public setResolutions(res: Resolution[], processId: number): Observable<object> {
     return this.http.post(this.url + 'resolutions/' + processId, JSON.stringify(res));
   }
   // get Jenkins artifact

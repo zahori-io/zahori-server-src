@@ -49,7 +49,7 @@ export class ConfiguratorComponent implements OnInit {
   }
 
   getEnvironments() {
-    this.dataService.getEnvironments(String(this.dataService.processSelected.processId)).subscribe(
+    this.dataService.getEnvironments(this.dataService.processSelected.processId).subscribe(
       (res: any) => {
         this.envs = res;
       });

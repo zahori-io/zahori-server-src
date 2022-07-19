@@ -16,19 +16,18 @@ const ERROR_COLOR = 'alert alert-danger';
 })
 export class AdminResolutionsComponent implements OnInit {
   banner: BannerOptions;
-  resolutions: Resolution[];
-  newResolutions: Resolution[];
+  resolutions: Resolution[] = [];
+  newResolutions: Resolution[] = [];
 
   constructor(public dataService: DataService, private translate: TranslateService) {
-    this.refresh();
-    this.newResolutions = [];
   }
 
   ngOnInit(): void {
+    this.refresh();
   }
 
   refresh(): void {
-    this.dataService.getResolutions(String(this.dataService.processSelected.processId)).subscribe(
+    this.dataService.getResolutions(this.dataService.processSelected.processId).subscribe(
       (res: any) => {
         this.resolutions = res;
       });
@@ -74,7 +73,7 @@ export class AdminResolutionsComponent implements OnInit {
   }
 
   saveResolution(res: Resolution[], banner: BannerOptions): void {
-    this.dataService.setResolutions(res, String(this.dataService.processSelected.processId)).subscribe(
+    this.dataService.setResolutions(res, this.dataService.processSelected.processId).subscribe(
       () => {
         this.refresh();
         this.banner = banner;

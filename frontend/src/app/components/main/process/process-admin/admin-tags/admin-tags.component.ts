@@ -20,16 +20,17 @@ export class AdminTagsComponent implements OnInit {
   myTags : Tag[] = [];
   banner: BannerOptions;
   showrow : boolean = false;
+  
+  constructor(public dataService: DataService, private translate: TranslateService) {
+  }
 
   ngOnInit() {
     this.refresh();
     this.banner = new BannerOptions();
   }  
-  constructor(public dataService: DataService, private translate: TranslateService) {
-  }
  
   refresh(){
-    this.dataService.getTags(String(this.dataService.processSelected.processId)).subscribe(
+    this.dataService.getTags(this.dataService.processSelected.processId).subscribe(
       (res : any) => {
         this.tags = res;
       });
@@ -106,7 +107,7 @@ export class AdminTagsComponent implements OnInit {
   }
  
   saveTags(tag : Tag[], banner : BannerOptions){
-    this.dataService.setTags(tag, String(this.dataService.processSelected.processId)).subscribe(
+    this.dataService.setTags(tag, this.dataService.processSelected.processId).subscribe(
       (res : any) => {
         this.refresh();
         this.banner = banner
