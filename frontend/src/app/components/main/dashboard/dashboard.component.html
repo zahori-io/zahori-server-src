@@ -15,7 +15,7 @@
         <app-team-process-selector></app-team-process-selector>
       </div>
 
-      <div style="margin-top: 75px;" class="h-100 d-flex bg-white justify-content-center align-items-center col-lg-8  p-5">
+      <div style="margin-top: 75px;" class="h-100 bg-white justify-content-center align-items-center col-lg-8  p-5">
 
         <div class="row w-100">
 
@@ -25,7 +25,8 @@
               {{dataService.teamSelectedInSelector.name}}
             </h3>
           </div>
-
+        </div>
+        <div class="row w-100">
           <div
             *ngIf="dataService.teamSelectedInSelector.processes && dataService.teamSelectedInSelector.processes.length == 0"
             style="zoom: 90%;" class="progress-box col-lg-6  mb-5">
@@ -37,23 +38,26 @@
             <h4>{{process.name}}</h4>
             <div class="row col-lg-12">
 
-              <!--Pintando Contadores Totales -->
-              <div class="circle mx-auto col-lg-5" [attr.id]="'contador-'+ process.processId" data-value="0.2"
-                data-size="180" data-thickness="5" data-animation-start-value="0.1"
-                *ngIf="getProcessLastExecutionStats(process); let lastExecutionStats">
-                <strong class="text-success"
-                  *ngIf="lastExecutionStats.totalPassed + lastExecutionStats.totalFailed == 0">0%</strong>
-                <strong class="text-success"
-                  *ngIf="lastExecutionStats.totalPassed + lastExecutionStats.totalFailed > 0">
-                  {{getPercent(lastExecutionStats)}}%
-                </strong>
-                <span class="titGrafica">{{'main.dashboard.total'| translate}}</span>
-                <span class="subtitGrafica">{{lastExecutionStats.totalPassed}} /
-                  {{lastExecutionStats.totalPassed + lastExecutionStats.totalFailed}}</span>
-                <!-- Total Failed: {{lastExecutionStats.totalFailed}} -->
-              </div>
+              <ng-container *ngIf="getProcessLastExecutionStats(process); let lastExecutionStats">
+                <!--Pintando Contadores Totales -->
+                <circle-progress
+                  [title]="lastExecutionStats.totalPassed + ' / ' + (lastExecutionStats.totalPassed + lastExecutionStats.totalFailed)"
+                  [titleFontSize]="25"
+                  [titleColor]="'#a9a9a9'"
+                  [subtitle]="lastExecutionStats.percent + '%'"
+                  [subtitleFontSize]="45"
+                  [subtitleColor]="'#3ac47d'"
+                  [percent]="lastExecutionStats.percent"
+                  [maxPercent]="100"
+                  [space]="-5"
+                  [outerStrokeWidth]="5"
+                  [outerStrokeColor]="'#3ac47d'"
+                  [innerStrokeWidth]="5"
+                  [innerStrokeColor]="'#e7e8ea'">
+                </circle-progress>
+              </ng-container>
 
-                <div class="  col-lg-7" *ngIf="getProcessLastExecutionStats(process); let lastExecutionStats">
+                <div class="  col-lg-6" *ngIf="getProcessLastExecutionStats(process); let lastExecutionStats">
                   <div class="row mb-2" *ngFor="let browserStats of lastExecutionStats.browserStats | keyvalue">
                     <div class="col-3 p-2 mr-1">
                       <i *ngIf="process.processType.name == 'BROWSER'" title="{{browserStats.key}}" class="mr-1 fab fa fa-{{browserStats.key}} fa-2"

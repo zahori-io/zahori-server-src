@@ -51,7 +51,7 @@ import { AdminResolutionsComponent } from './components/main/process/process-adm
 import { ResolutionComponentComponent } from './components/main/process/process-admin/admin-resolutions/resolution-component/resolution-component.component';
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import { SortDirective } from './directive/sort.directive';
-
+import { NgCircleProgressModule } from 'ng-circle-progress';
 
 @NgModule({
   declarations: [
@@ -110,7 +110,16 @@ import { SortDirective } from './directive/sort.directive';
                 deps: [HttpClient]
             }
         }),
-        NgMultiSelectDropDownModule
+        NgMultiSelectDropDownModule,
+        NgCircleProgressModule.forRoot({
+          // defaults:
+          backgroundPadding:0,
+				  showImage:false,
+				  animationDuration:0,
+				  showBackground:false,
+          showUnits:false,
+          showZeroOuterStroke:false
+        })
     ],
   providers: [
     AutenticacionService,

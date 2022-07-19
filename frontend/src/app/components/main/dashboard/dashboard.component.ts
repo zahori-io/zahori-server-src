@@ -56,28 +56,11 @@ export class DashboardComponent implements OnInit {
         }
       }
 
-      let percent = 0;
-      if (lastExecutionStats.totalPassed + lastExecutionStats.totalFailed > 0) {
-        percent = this.getPartsPerUnit(lastExecutionStats);
-      }
-
-      $('#contador-' + process.processId).circleProgress({
-        value: percent,
-        animation: false,
-        startAngle: -Math.PI / 2,
-        fill: {
-          color: '#3ac47d' // green
-          // gradient: ['#ff1e41', '#ff5f43']
-        }
-      });
-
+      lastExecutionStats.percent = this.getPercent(lastExecutionStats);
     } else {
-      $('#contador-' + process.processId).circleProgress({
-        value: 0,
-        animation: false,
-        fill: { color: '#3ac47d' }
-      });
+      lastExecutionStats.percent = 0;
     }
+    
     return lastExecutionStats;
   }
 
@@ -86,7 +69,11 @@ export class DashboardComponent implements OnInit {
   }
 
   getPercent(lastExecutionStats: ExecutionStats): number {
-    return this.getPartsPerUnit(lastExecutionStats) * 100;
+    if (lastExecutionStats.totalPassed + lastExecutionStats.totalFailed > 0) {
+      return this.getPartsPerUnit(lastExecutionStats) * 100;
+    } else {
+      return 0;
+    }
   }
 
   getBrowserPartsPerUnit(browserExecutionStats: BrowserExecutionStats): number {
