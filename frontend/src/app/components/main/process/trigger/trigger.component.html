@@ -153,11 +153,10 @@
 							</div>
 
 							<ng-multiselect-dropdown *ngIf="resolutions && resolutions.length > 0" id="resolutions" [settings]="dropdownSettings" [data]="resolutions"
-								[placeholder]="selectResolution" [(ngModel)]="selectedResolutions" name="resolutions">
+								[placeholder]="selectResolutionPlaceholder" [(ngModel)]="selectedResolutions" name="resolutions">
 							</ng-multiselect-dropdown>
 						</div>
 					</div>
-
 
 					<div class="position-relative form-group">
 						<div class="d-flex">

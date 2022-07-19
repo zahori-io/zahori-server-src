@@ -8,6 +8,7 @@ export class Resolution {
   height: number;
   widthAndHeight: string;
   name: string;
+  nameToDisplay: string;
   constructor() {
     this.resolutionId = 0;
     this.active = true;
@@ -16,6 +17,7 @@ export class Resolution {
     this.height = 0;
     this.widthAndHeight = '';
     this.name = '';
+    this.nameToDisplay = '';
   }
 
 }

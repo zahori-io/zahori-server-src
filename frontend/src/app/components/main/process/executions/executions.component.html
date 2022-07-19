@@ -94,7 +94,7 @@
                 </td>
                 <td class="text-center" *ngIf="dataService.isWebProcess()">
                   <div *ngFor="let resolution of getScreenResolutionsList(execution)" class="badge-resolutions btn-zahoriPill-resolutions mr-1 mb-1">
-                    {{resolution}}
+                    <span title="{{resolution}}">{{getScreenResolutionName(resolution)}}</span>
                   </div>
                 </td>
                 <td class="text-center">{{execution.date}}</td>
@@ -178,7 +178,7 @@
                         </td>
                         <td class="text-center" *ngIf="dataService.isWebProcess()">
                           <div class="badge-resolutions btn-zahoriPill-resolutions mr-1 mb-1">
-                            {{caseExecution.screenResolution}}
+                            <span title="{{caseExecution.screenResolution}}">{{getScreenResolutionName(caseExecution.screenResolution)}}</span>
                           </div>
                         </td>
                         <td class="text-center">
@@ -320,7 +320,7 @@
 
       </div>
 
-      <app-case-execution-details (onClose)="hideCaseExecutionDetails()" [caseExecution]="caseExecutionSelected">
+      <app-case-execution-details (onClose)="hideCaseExecutionDetails()" [caseExecution]="caseExecutionSelected" [resolutions]="resolutions">
       </app-case-execution-details>
 
     </div>
@@ -356,7 +356,7 @@
 
       <div class="modal-body">
         <span *ngIf="caseExecutionVideoSelected">{{caseExecutionVideoSelected.browser.browserName}}
-          {{caseExecutionVideoSelected.browserVersion}} ({{caseExecutionVideoSelected.screenResolution}})</span>
+          {{caseExecutionVideoSelected.browserVersion}} ({{getScreenResolutionName(caseExecutionVideoSelected.screenResolution)}})</span>
         <div id="screen">
           <!-- This is where the remote screen will appear -->
         </div>

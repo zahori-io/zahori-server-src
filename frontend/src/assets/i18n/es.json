@@ -330,11 +330,13 @@
 					"allFieldsObligatory": "Todos los campos son obligatorios",
 					"height": "Alto",
 					"invalidResolution": "La resolución no es valida",
+                    "name": "Nombre (opcional)",
 					"resolution": {
 						"cancel": "Cancelar",
 						"delete": "Eliminar",
 						"edit": "Editar",
 						"insertHeight": "Alto",
+                        "insertName": "Nombre",
 						"insertWidth": "Ancho",
 						"remove": "Eliminar",
 						"removeMessage": "Eliminar resolución: {{width}}x{{height}}",

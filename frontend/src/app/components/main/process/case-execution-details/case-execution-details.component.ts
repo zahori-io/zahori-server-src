@@ -14,6 +14,7 @@ declare var HarViewer: any;
 export class CaseExecutionDetailsComponent implements OnInit {
   @ViewChild('carousel') carousel: NgbCarousel;
   @Input() caseExecution: CaseExecution;
+  @Input() resolutions: Map<string, string>; // <"widthAndHeight", "name">
   @Output() onClose = new EventEmitter<any>();
   downloading = false;
   textFileContent: any;
@@ -159,5 +160,14 @@ export class CaseExecutionDetailsComponent implements OnInit {
 
   getWidthFromResolution(resolution: string): string{
     return resolution.substr(0, resolution.indexOf('x')); 
+  }
+
+  getScreenResolutionName(screenResolution: string): string {
+    const resolutionName = this.resolutions.get(screenResolution);
+    if (resolutionName && resolutionName !== ''){
+      return resolutionName;
+    } else {
+      return screenResolution;
+    }
   }
 }

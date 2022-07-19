@@ -21,6 +21,7 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
   rfb: RFB; // Vídeo streaming
   ngClass: string;
   showCapabilities: boolean = false;
+  resolutions: Map<string, string> = new Map<string, string>(); // <"widthAndHeight", "name">
 
   constructor(public dataService: DataService) {
   }
@@ -34,6 +35,7 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
         this.hideCaseExecutionDetails();
       });
     this.getSelenoidUiHostAndPort();
+    this.getResolutions();
   }
 
   ngAfterViewInit(): void {
@@ -66,21 +68,6 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
     this.dataService.getExecutions().subscribe(
       (executions) => {
         this.dataService.processExecutions = executions;
-
-        /*
-        this.dataTable = $(this.table.nativeElement);
-        this.dataTable.DataTable();
-        */
-
-        /*
-        $('#dataTableChild').each(function(idx, el){
-          console.log("tabla "+idx);
-          //here this/el refers to the current image dom reference
-          //do soemthing
-          var dataTableChild = $(el.nativeElement);
-          this.dataTableChild.DataTable();
-        })
-        */
       },
       (error) => {
         console.error("Error loading executions: " + error.message);
@@ -244,6 +231,23 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
 
   getNumberOfTableColumns(): number {
     return this.dataService.isWebProcess() ? 12 : 10;
+  }
+
+  getResolutions(): void {
+    this.dataService.getResolutions(this.dataService.processSelected.processId).subscribe(
+      resolutions => {
+        this.resolutions = new Map(resolutions.map(resolution => [resolution.width + 'x' +resolution.height, resolution.name]));
+      }
+    );
+  }
+
+  getScreenResolutionName(screenResolution: string): string {
+    const resolutionName = this.resolutions.get(screenResolution);
+    if (resolutionName && resolutionName !== ''){
+      return resolutionName;
+    } else {
+      return screenResolution;
+    }
   }
 
 }

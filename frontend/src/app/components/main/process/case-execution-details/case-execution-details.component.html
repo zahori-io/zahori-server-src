@@ -31,7 +31,7 @@
                             class="mr-1 fab fa fa-{{caseExecution.browser.browserName}}"></i>
                             
                             <div class="badge-resolutions btn-zahoriPill-resolutions ml-1 mb-1">
-                                {{caseExecution.screenResolution}}
+                                <span title="{{caseExecution.screenResolution}}">{{getScreenResolutionName(caseExecution.screenResolution)}}</span>
                             </div>
                         </div>
 
@@ -163,7 +163,7 @@
                     <i title="{{caseExecution.browser.browserName}} {{caseExecution.browserVersion}}"
                     class="mr-1 fab fa fa-{{caseExecution.browser.browserName}}"></i>
                     <div class="badge-resolutions btn-zahoriPill-resolutions ml-1">
-                        {{caseExecution.screenResolution}}
+                        <span title="{{caseExecution.screenResolution}}">{{getScreenResolutionName(caseExecution.screenResolution)}}</span>
                     </div>
                 </span>
                 

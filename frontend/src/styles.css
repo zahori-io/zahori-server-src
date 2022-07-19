@@ -196,7 +196,6 @@ a:hover {
 
 .badge-resolutions {
     font-weight: 400;
-    text-transform: lowercase;
     padding: 1px 5px;
     font-size: 0.89em;
     display: inline-block;

@@ -29,9 +29,9 @@ export class TriggerComponent implements OnInit {
   tags: Tag[] = [];
   selectedTags: Tag[] = [];
   resolutions: Resolution[] = [];
-  selectedResolutions: Array<Resolution>;
+  selectedResolutions: Resolution[] = [];
   dropdownSettings: IDropdownSettings = {};
-  selectResolution: string;
+  selectResolutionPlaceholder: string;
 
   constructor(public dataService: DataService, private router: Router, private translate: TranslateService) {
   }
@@ -46,10 +46,10 @@ export class TriggerComponent implements OnInit {
     this.loading = false;
     this.created = false;
     this.massiveSelected = false;
-    this.selectResolution = this.translate.instant('main.process.trigger.SelectResolutions');
+    this.selectResolutionPlaceholder = this.translate.instant('main.process.trigger.SelectResolutions');
     this.dropdownSettings = {
-      idField: 'resolutionId',
-      textField: 'widthAndHeight',
+      idField: 'widthAndHeight',
+      textField: 'nameToDisplay',
       noDataAvailablePlaceholderText: this.translate.instant('main.process.trigger.noResolutionsAvailable'),
       enableCheckAll: true,
       selectAllText: this.translate.instant('main.process.trigger.selectAllResolutions'),
@@ -76,8 +76,9 @@ export class TriggerComponent implements OnInit {
     this.dataService.getResolutions(String(this.dataService.processSelected.processId)).subscribe(
       resolutions => {
         this.resolutions = resolutions;
-        this.resolutions.forEach(res => {
-          res.widthAndHeight = res.width + 'x' + res.height;
+        this.resolutions.forEach(resolution => {
+            resolution.widthAndHeight = resolution.width + 'x' + resolution.height;
+            resolution.nameToDisplay = (resolution.name && resolution.name !== '') ? resolution.name : resolution.widthAndHeight;
         });
 
         this.clearSelectedResolutions();
