@@ -39,7 +39,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
  */
 @Entity
 @Table(name = "client_test_repos")
-//@NamedQuery(name="ClientTestRepo.findAll", query="SELECT c FROM ClientTestRepo c")
 public class ClientTestRepo implements Serializable {
 
     private static final long serialVersionUID = -8047179212309181277L;

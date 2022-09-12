@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import {DataService} from '../../../../services/data.service';
-import {ClientTestRepo} from '../../../../model/clientTestRepo';
-import {flatMap} from 'rxjs/internal/operators';
-import {TestRepository} from '../../../../model/test-repository';
-import {BannerOptions} from '../../../../utils/banner/banner';
+import { DataService } from '../../../../services/data.service';
+import { ClientTestRepo } from '../../../../model/clientTestRepo';
+import { flatMap } from 'rxjs/internal/operators';
+import { TestRepository } from '../../../../model/test-repository';
+import { BannerOptions } from '../../../../utils/banner/banner';
 import Swal from 'sweetalert2';
-import {Case} from '../../../../model/case';
+import { Case } from '../../../../model/case';
 
 const SUCCESS_COLOR = 'alert alert-success';
 const ERROR_COLOR = 'alert alert-danger';
@@ -16,8 +16,8 @@ const ERROR_COLOR = 'alert alert-danger';
   styleUrls: ['./admin-tms.component.css']
 })
 export class AdminTmsComponent implements OnInit {
-  clientTestRepo: ClientTestRepo[];
-  testRepo: Map<number, TestRepository>;
+  clientTestRepos: ClientTestRepo[];
+  testRepos: Map<number, TestRepository>;
   newTest: number[];
   loading = true;
   banner: BannerOptions;
@@ -27,18 +27,18 @@ export class AdminTmsComponent implements OnInit {
 
   ngOnInit(): void {
     this.banner = new BannerOptions();
-    this.dataService.getClientTestRepo().subscribe(
-      (clientTestRepo) => {
-        this.clientTestRepo = clientTestRepo;
+    this.dataService.getClientTestRepos().subscribe(
+      (clientTestRepos) => {
+        this.clientTestRepos = clientTestRepos;
       },
-      (error) => {},
+      (error) => { },
       () => {
-        this.testRepo = new Map<number, TestRepository>();
+        this.testRepos = new Map<number, TestRepository>();
         this.newTest = [];
-        this.clientTestRepo.forEach(clienttest => {
-          this.dataService.getTestRepository(clienttest.id.testRepoId.toString()).subscribe(
+        this.clientTestRepos.forEach(clienttest => {
+          this.dataService.getTestRepository(clienttest.id.testRepoId).subscribe(
             (testRepo) => {
-              this.testRepo.set(clienttest.id.testRepoId, testRepo);
+              this.testRepos.set(clienttest.id.testRepoId, testRepo);
             },
             (error) => {
               this.banner = new BannerOptions('Error al cargar los repositorios:', error, ERROR_COLOR, true);
@@ -49,46 +49,51 @@ export class AdminTmsComponent implements OnInit {
       }
     );
   }
+
   newTestRepository(): void {
     const clientTestRepo = new ClientTestRepo();
-    clientTestRepo.id.clientId = this.clientTestRepo.length > 0 ?
-                                 this.clientTestRepo[this.clientTestRepo.length - 1].id.clientId : 0;
-    clientTestRepo.id.testRepoId = this.clientTestRepo.length > 0 ?
-                                   this.clientTestRepo[this.clientTestRepo.length - 1].id.testRepoId + 1 : 0;
-    this.newTest.push( clientTestRepo.id.testRepoId);
-    this.clientTestRepo.push(clientTestRepo);
-    this.testRepo.set(clientTestRepo.id.testRepoId, new TestRepository());
+    clientTestRepo.id.clientId = this.clientTestRepos.length > 0 ?
+      this.clientTestRepos[this.clientTestRepos.length - 1].id.clientId : 0;
+    clientTestRepo.id.testRepoId = this.clientTestRepos.length > 0 ?
+      this.clientTestRepos[this.clientTestRepos.length - 1].id.testRepoId + 1 : 0;
+    this.newTest.push(clientTestRepo.id.testRepoId);
+    this.clientTestRepos.push(clientTestRepo);
+    this.testRepos.set(clientTestRepo.id.testRepoId, new TestRepository());
   }
+
   activateSwitch(clientTestRepo: ClientTestRepo, event: any): void {
     event.currentTarget.checked ? this.activate(clientTestRepo) : this.desactivate(clientTestRepo);
   }
-  save(testRepoId: number, index: number): void{
-    const testRepo: TestRepository = this.testRepo.get(testRepoId);
-    if (this.newTest.includes(testRepoId)){
+
+  save(testRepoId: number, index: number): void {
+    const testRepo: TestRepository = this.testRepos.get(testRepoId);
+    if (this.newTest.includes(testRepoId)) {
       testRepo.testRepoId = 0;
     }
+    
     testRepo.order = 1;
-    this.dataService.setTestRepository(testRepo).subscribe(
+    this.dataService.saveTestRepository(testRepo).subscribe(
       (newTestRepo: TestRepository) => {
-        this.clientTestRepo[index].id.testRepoId = newTestRepo.testRepoId;
-        this.testRepo.delete(testRepoId);
-        this.testRepo.set(newTestRepo.testRepoId, newTestRepo);
+        this.clientTestRepos[index].id.testRepoId = newTestRepo.testRepoId;
+        this.testRepos.delete(testRepoId);
+        this.testRepos.set(newTestRepo.testRepoId, newTestRepo);
         this.newTest.splice(this.newTest.indexOf(testRepoId), 1);
-        this.dataService.setClientTestRepo(this.clientTestRepo[index]).subscribe(
-          () => {},
+        this.dataService.saveClientTestRepo(this.clientTestRepos[index]).subscribe(
+          () => { },
           (error) => {
-            this.banner = new BannerOptions('Error al guardar el repositorio:', error, ERROR_COLOR, true);
+            this.banner = new BannerOptions('Error al guardar el repositorio:', error.message, ERROR_COLOR, true);
           }, () => {
             this.banner = new BannerOptions('Reposiotrio guardado', '', SUCCESS_COLOR, true);
           }
         );
       },
       (error) => {
-        this.banner = new BannerOptions('Error al guardar el repositorio:', error, ERROR_COLOR, true);
+        this.banner = new BannerOptions('Error al guardar el repositorio:', error.message, ERROR_COLOR, true);
       },
     );
   }
-  private activate(clientTestRepo: ClientTestRepo): void{
+
+  private activate(clientTestRepo: ClientTestRepo): void {
     Swal.fire({
       title: 'Activar Repositorio',
       text: 'Esta acción reactivara el repositorio quedando disponible',
@@ -102,22 +107,24 @@ export class AdminTmsComponent implements OnInit {
                 no-repeat`
     }).then((result) => {
       if (result.value) {
-        this.dataService.setClientTestRepo(clientTestRepo).subscribe(
+        clientTestRepo.active = true;
+        this.dataService.saveClientTestRepo(clientTestRepo).subscribe(
           (clientTestRepoReturned: ClientTestRepo) => {
             clientTestRepo = clientTestRepoReturned;
           },
           (error) => {
-            this.banner = new BannerOptions('Error al activar el repositorio:', error, ERROR_COLOR, true);
+            this.banner = new BannerOptions('Error al activar el repositorio:', error.message, ERROR_COLOR, true);
           }, () => {
             this.banner = new BannerOptions('Reposiotrio activado', '', SUCCESS_COLOR, true);
           }
         );
-      }else{
+      } else {
         clientTestRepo.active = false;
       }
     });
   }
-  private desactivate(clientTestRepo: ClientTestRepo): void{
+  
+  private desactivate(clientTestRepo: ClientTestRepo): void {
     Swal.fire({
       title: 'Desactivar Repositorio',
       text: 'Esta acción desactivara el repositorio',
@@ -132,24 +139,24 @@ export class AdminTmsComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         clientTestRepo.active = false;
-        this.dataService.setClientTestRepo(clientTestRepo).subscribe(
+        this.dataService.saveClientTestRepo(clientTestRepo).subscribe(
           (clientTestRepoReturned: ClientTestRepo) => {
             clientTestRepo = clientTestRepoReturned;
           },
           (error) => {
-            this.banner = new BannerOptions('Error al desactivar el repositorio:', error, ERROR_COLOR, true);
+            this.banner = new BannerOptions('Error al desactivar el repositorio:', error.message, ERROR_COLOR, true);
           }, () => {
             this.banner = new BannerOptions('Reposiotrio desactivado', '', SUCCESS_COLOR, true);
           }
         );
-      }else{
+      } else {
         clientTestRepo.active = true;
       }
     });
   }
 
   // tslint:disable-next-line:typedef
-  closeBanner(){
+  closeBanner() {
     // tslint:disable-next-line:new-parens
     this.banner = new BannerOptions;
   }

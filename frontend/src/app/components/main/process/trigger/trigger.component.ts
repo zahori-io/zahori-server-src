@@ -4,13 +4,14 @@ import { Browser } from '../../../../model/browser';
 import { Case } from '../../../../model/case';
 import { CaseExecution } from '../../../../model/caseExecution';
 import { Configuration } from '../../../../model/configuration';
-import { Execution } from '../../../../model/excution';
+import { Execution } from '../../../../model/execution';
 import { Process } from '../../../../model/process';
 import { DataService } from '../../../../services/data.service';
 import { Tag } from '../../../../model/tag';
 import { Resolution } from '../../../../model/resolution';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { TranslateService } from '@ngx-translate/core';
+import { Tms } from '../../../../utils/tms';
 
 @Component({
   selector: 'app-trigger',
@@ -33,7 +34,11 @@ export class TriggerComponent implements OnInit {
   dropdownSettings: IDropdownSettings = {};
   selectResolutionPlaceholder: string;
 
-  constructor(public dataService: DataService, private router: Router, private translate: TranslateService) {
+  constructor(
+    public dataService: DataService, 
+    public tms: Tms,
+    private router: Router, 
+    private translate: TranslateService) {
   }
 
   ngOnInit(): void {
@@ -197,6 +202,10 @@ export class TriggerComponent implements OnInit {
       || (this.dataService.isWebProcess() && !this.thereAreResolutionsSelected())
       || !this.execution.configuration.configurationId
       || this.loading
+      || (this.tms.isActivated(this.getSelectedConfiguration(this.execution.configuration.configurationId))
+						&& this.tms.requiresTestExecutionId(this.getSelectedConfiguration(this.execution.configuration.configurationId))
+            && !this.execution.tmsTestExecutionId)
+
     );
   }
 
@@ -302,6 +311,10 @@ export class TriggerComponent implements OnInit {
       });
       this.selectedTags = [].concat(this.tags);
     }
+  }
+
+  getSelectedConfiguration(configurationId: number) {
+    return this.dataService.processConfigurations.find((config) => config.configurationId == configurationId);
   }
 
 }

@@ -1,0 +1,10 @@
+
+<ng-container *ngIf="configuration">
+    <div class="form-group">
+        <label>{{configuration.testRepository.name}} *</label>
+        <input type="search" list="latest-test-execution-ids" id="tmsTestExecutionId" [(ngModel)]="execution.tmsTestExecutionId" placeholder="execution Id" class="form-control"/>
+        <datalist id="latest-test-execution-ids">
+            <option *ngFor="let latestTestExecutionId of latestTestExecutionIds" value="{{latestTestExecutionId}}">{{latestTestExecutionId}}</option>
+        </datalist>
+    </div>
+</ng-container>

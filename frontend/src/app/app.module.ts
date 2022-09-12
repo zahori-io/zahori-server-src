@@ -52,6 +52,7 @@ import { ResolutionComponentComponent } from './components/main/process/process-
 import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
 import { SortDirective } from './directive/sort.directive';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { TmsExecutionDetailsComponent } from './components/main/process/tms-execution-details/tms-execution-details.component';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
     SignupComponent,
     AdminResolutionsComponent,
     ResolutionComponentComponent,
-    SortDirective
+    SortDirective,
+    TmsExecutionDetailsComponent
   ],
     imports: [
         BrowserModule,

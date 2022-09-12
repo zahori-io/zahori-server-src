@@ -278,7 +278,7 @@
 				"numExecutions": "Nº executions",
 				"periodic": "Periodic",
 				"rerun": {
-					"title": "Rerun",
+					"title": "Rerun {{characters}} ",
 					"all": "Rerun All",
 					"failed": "Rerun Failed",
 					"case": "Rerun Case"
@@ -291,6 +291,14 @@
 				"search": "Search for...",
 				"show": "watch",
 				"state": "State",
+				"tmsModal": {
+					"description": "The <strong>{{configurationName}}</strong> configuration associated with this execution has enabled the results upload to <strong>{{repositoryName}}</strong> repository.",
+					"enterId": "Select or enter the execution Id to associate the execution with:",
+					"button": {
+						"cancel": "Cancel",
+						"execute": "Execute"
+					}
+				},
 				"trigger": "Trigger",
 				"type": "Trigger",
 				"video": "Video",

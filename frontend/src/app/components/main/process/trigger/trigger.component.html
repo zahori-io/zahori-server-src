@@ -95,33 +95,44 @@
 				</div>
 
 				<form>
-					<div class="position-relative form-group">
+					<div class="form-group">
 						<label for="execution_name">{{'main.process.trigger.name'|translate}}</label>
 						<input id="execution_name" type="text" [(ngModel)]="execution.name" name="execution_name"
 							[placeholder]="getTimestampPlaceholder()" class="form-control" />
 					</div>
 
-					<div class="position-relative form-group">
+					<div class="form-group">
 						<label for="execution_configurationId" class="">{{'main.process.trigger.configuration'|translate}} *</label>
-						<select id="execution_configurationId" *ngIf="dataService.processConfigurations.length > 0"
-							[(ngModel)]="execution.configuration.configurationId" name="execution_configurationId"
-							class="form-control">
-							<option *ngFor="let configuration of dataService.processConfigurations"
-								[value]="configuration.configurationId">
-								{{configuration.name}}
-							</option>
-						</select>
+						<ng-container *ngIf="dataService.processConfigurations.length > 0">
+							<select id="execution_configurationId"
+								[(ngModel)]="execution.configuration.configurationId" name="execution_configurationId"
+								class="form-control">
+								<option *ngFor="let configuration of dataService.processConfigurations"
+									[value]="configuration.configurationId">
+									{{configuration.name}}
+								</option>
+							</select>
+						</ng-container>
+
 						<div *ngIf="dataService.processConfigurations.length == 0">
 							<span class="text-danger">{{'main.process.trigger.noCaseYet'|translate}}</span>
 							<a routerLink="../configurator" routerLinkActive="linkActive">
 								<strong>{{'main.process.trigger.here'|translate}}</strong>
 							</a>
 						</div>
-
 					</div>
 
+					<!-- Select test execution id if required -->
+					<ng-container *ngIf="execution.configuration
+						&& execution.configuration.configurationId > 0 
+						&& tms.isActivated(getSelectedConfiguration(execution.configuration.configurationId))
+						&& tms.requiresTestExecutionId(getSelectedConfiguration(execution.configuration.configurationId))">
+						
+						<tms-execution-details [execution]="execution" [configuration]="getSelectedConfiguration(execution.configuration.configurationId)"></tms-execution-details>
+					</ng-container>
+
 					<div *ngIf="dataService.isWebProcess()">
-						<div class="position-relative form-group">
+						<div class="form-group">
 							<label for="browsers" class="">{{'main.process.trigger.browsers'|translate}} *</label>
 							<div>
 								<ng-template id="browsers" ngFor let-browser [ngForOf]="browsers"
@@ -141,7 +152,7 @@
 							</div>
 						</div>
 
-						<div class="position-relative form-group">
+						<div class="form-group">
 							<label for="resolutions" class="">{{'main.process.trigger.resolutions'|translate}} *</label>
 							
 							<div *ngIf="resolutions && resolutions.length == 0">
@@ -158,7 +169,7 @@
 						</div>
 					</div>
 
-					<div class="position-relative form-group">
+					<div class="form-group">
 						<div class="d-flex">
 							<span>{{'main.process.trigger.periodic'|translate}}</span>
 							<div class="ml-2 custom-control custom-switch">
@@ -168,7 +179,7 @@
 							</div>
 						</div>
 						<div class="d-flex mt-3" *ngIf="periodicExecutionEnabled">
-							<div class="position-relative form-group">
+							<div class="form-group">
 								<label for="exampleTime"></label>
 								<input name="time" id="exampleTime"
 									placeholder="{{'main.process.trigger.time'|translate}}" type="time"

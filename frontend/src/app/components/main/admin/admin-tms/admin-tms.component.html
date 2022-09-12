@@ -9,11 +9,11 @@
         </div>
     </div>
 
-    <div class="col-12" *ngIf="clientTestRepo.length == 0">
+    <div class="col-12" *ngIf="clientTestRepos.length == 0">
       {{'main.admin.tms.noRepo'|translate}}
     </div>
 
-    <div *ngIf="clientTestRepo.length > 0">
+    <div *ngIf="clientTestRepos.length > 0">
 
         <div class="row ml-1">
             <div class="col-2">
@@ -39,47 +39,45 @@
             </div>
         </div>
 
-        <div *ngFor="let elem of clientTestRepo; let i = index" class="row ml-1  mb-2">
+        <div *ngFor="let clientTestRepo of clientTestRepos; let i = index" class="row ml-1  mb-2">
 
             <div class="col-1 d-flex custom-control custom-switch">
-                <input [(ngModel)]="elem.active" type="checkbox"
-                    id="active-{{elem.id.testRepoId}}" (change)="activateSwitch(elem, $event)"
+                <input [(ngModel)]="clientTestRepo.active" type="checkbox"
+                    id="active-{{clientTestRepo.id.testRepoId}}" (change)="activateSwitch(clientTestRepo, $event)"
                     class="custom-control-input">
-                <label for="active-{{elem.id.testRepoId}}" class="custom-control-label"></label>
+                <label for="active-{{clientTestRepo.id.testRepoId}}" class="custom-control-label"></label>
             </div>
             <div class="col-2 d-flex">
-                <select name="reponame" id="{{'reponame-'+elem.id.testRepoId}}" class="form-control"
-                    [disabled]="!elem.active"
-                    [(ngModel)]="testRepo.get(elem.id.testRepoId).name">
-                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='Xray Server'">Xray Server</option>
-                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='Xray Cloud'">Xray Cloud</option>
-                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='Azure Test Plans'">Azure Test Plans
-                    </option>
-                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='TestLink'">TestLink</option>
-                    <option [selected]="testRepo.get(elem.id.testRepoId).name==='HP ALM'">HP ALM</option>
+                <select name="reponame" id="{{'reponame-' + clientTestRepo.id.testRepoId}}" class="form-control"
+                    [disabled]="!clientTestRepo.active"
+                    [(ngModel)]="testRepos.get(clientTestRepo.id.testRepoId).name">
+                    <option [selected]="testRepos.get(clientTestRepo.id.testRepoId).name == 'Jira Xray'">Jira Xray</option>
+                    <option [selected]="testRepos.get(clientTestRepo.id.testRepoId).name == 'Azure Test Plans'">Azure Test Plans</option>
+                    <option [selected]="testRepos.get(clientTestRepo.id.testRepoId).name == 'TestLink'">TestLink</option>
+                    <option [selected]="testRepos.get(clientTestRepo.id.testRepoId).name == 'Hp Alm'">Hp Alm</option>
                 </select>
             </div>
             <!--<div class="col-1 d-flex">
-          <input name="order" id="{{'order-'+elem.id.testRepoId}}" placeholder="{{testRepo.get(elem.id.testRepoId).order}}" [disabled]="!testRepo.get(elem.id.testRepoId).active" [(ngModel)]="testRepo.get(elem.id.testRepoId).order" type="number"min="1" max="99" class="form-control">
-        </div>-->
+                <input name="order" id="{{'order-'+clientTestRepo.id.testRepoId}}" placeholder="{{testRepos.get(clientTestRepo.id.testRepoId).order}}" [disabled]="!testRepos.get(clientTestRepo.id.testRepoId).active" [(ngModel)]="testRepos.get(clientTestRepo.id.testRepoId).order" type="number"min="1" max="99" class="form-control">
+            </div>-->
             <div class="col-4 d-flex">
-                <input name="url" id="{{'url-'+elem.id.testRepoId}}" placeholder="{{elem.url}}"
-                    [disabled]="!elem.active" [(ngModel)]="elem.url" type="text"
+                <input name="url" id="{{'url-'+clientTestRepo.id.testRepoId}}" placeholder="{{clientTestRepo.url}}"
+                    [disabled]="!clientTestRepo.active" [(ngModel)]="clientTestRepo.url" type="text"
                     class="form-control">
             </div>
             <div class="col-2 d-flex">
-                <input name="user" id="{{'user-'+elem.id.testRepoId}}" placeholder="{{elem.user}}"
-                    [disabled]="!elem.active" [(ngModel)]="elem.user" type="text"
+                <input name="user" id="{{'user-'+clientTestRepo.id.testRepoId}}" placeholder="{{clientTestRepo.user}}"
+                    [disabled]="!clientTestRepo.active" [(ngModel)]="clientTestRepo.user" type="text"
                     class="form-control">
             </div>
             <div class="col-2 d-flex">
-                <input name="password" id="{{'password-'+elem.id.testRepoId}}" placeholder="{{elem.password}}"
-                    [disabled]="!elem.active" [(ngModel)]="elem.password"
-                    ng-model="password" type="password" class="form-control">
+                <input name="password" id="{{'password-'+clientTestRepo.id.testRepoId}}"
+                    [disabled]="!clientTestRepo.active" [(ngModel)]="clientTestRepo.password"
+                    type="password" class="form-control">
             </div>
             <div class="col-1 d-flex p-2 mt-1">
-                <a (click)="save(elem.id.testRepoId, i)" title="{{'main.admin.tms.save'|translate}}"
-                    [hidden]="!elem.active">
+                <a (click)="save(clientTestRepo.id.testRepoId, i)" title="{{'main.admin.tms.save'|translate}}"
+                    [hidden]="!clientTestRepo.active">
                     <i class="fas fa-save mr-2"></i>
                 </a>
             </div>

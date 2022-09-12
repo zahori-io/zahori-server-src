@@ -112,12 +112,13 @@
                       <i title="{{'main.process.executions.rerun.title'|translate}}" class="hide fas fa-undo-alt" style="color: grey;"></i>
                     </button>
                     <div class="dropdown-menu dropdown-menu-minimal">
-                      <ng-container *ngIf="execution.status === 'SUCCESS'">
-                        <a class="dropdown-item" (click)="rerunCases(execution, 'ALL')">{{'main.process.executions.rerun.title'|translate}}</a>
-                      </ng-container>
-                      <ng-container *ngIf="execution.status === 'FAILURE'">
+                      <ng-container *ngIf="!tms.isActivated(execution.configuration) || !tms.requiresTestExecutionId(execution.configuration)">
                         <a class="dropdown-item" (click)="rerunCases(execution, 'ALL')">{{'main.process.executions.rerun.all'|translate}}</a>
                         <a *ngIf="execution.status === 'FAILURE'" class="dropdown-item" (click)="rerunCases(execution, 'FAILED')">{{'main.process.executions.rerun.failed'|translate}}</a>
+                      </ng-container>
+                      <ng-container *ngIf="tms.isActivated(execution.configuration) && tms.requiresTestExecutionId(execution.configuration)">
+                        <a class="dropdown-item" (click)="prepareRerunCases(execution, 'ALL')" data-backdrop="false" data-toggle="modal" data-target="#tmsModal">{{'main.process.executions.rerun.all'|translate}}</a>
+                        <a *ngIf="execution.status === 'FAILURE'" class="dropdown-item" (click)="prepareRerunCases(execution, 'FAILED')" data-backdrop="false" data-toggle="modal" data-target="#tmsModal">{{'main.process.executions.rerun.failed'|translate}}</a>
                       </ng-container>
                     </div>
                   </div>
@@ -211,7 +212,12 @@
                               <i title="{{'main.process.executions.rerun.title'|translate}}" class="hide fas fa-undo-alt" style="color: grey;"></i>
                             </button>
                             <div class="dropdown-menu dropdown-menu-minimal">
+                              <ng-container *ngIf="!tms.isActivated(execution.configuration) || !tms.requiresTestExecutionId(execution.configuration)">
                               <a class="dropdown-item" (click)="rerunCase(execution, caseExecution)">{{'main.process.executions.rerun.case'|translate}}</a>
+                              </ng-container>
+                              <ng-container *ngIf="tms.isActivated(execution.configuration) && tms.requiresTestExecutionId(execution.configuration)">
+                                <a class="dropdown-item" (click)="prepareRerunCase(execution, caseExecution)" data-backdrop="false" data-toggle="modal" data-target="#tmsModal">{{'main.process.executions.rerun.case'|translate}}</a>  
+                              </ng-container>
                             </div>
                           </div>          
                         </td>
@@ -370,5 +376,40 @@
       -->
 
     </div>
+  </div>
+</div>
+
+
+<!-- Modal - TMS execution details -->
+<div id="tmsModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="tmsModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-md" [ngClass]="modalMaximized ? 'modal-maximized' : ''"
+      role="document">
+      <div class="modal-content" *ngIf="newExecution.configuration && newExecution.configuration.testRepository">
+
+          <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">{{newExecution.configuration.testRepository.name}}</h5>
+
+              <div class="ml-auto">
+                  <button type="button" data-dismiss="modal" class="btn btn-default" aria-label="Left Align">
+                      <span class="fas fa-times fa-lg" style="color: grey;" aria-hidden="true"></span>
+                  </button>
+              </div>
+          </div>
+
+          <div class="modal-body">
+            <p [innerHTML]="'main.process.executions.tmsModal.description' | translate: {configurationName: newExecution.configuration.name, repositoryName: newExecution.configuration.testRepository.name}"></p>
+            <p>{{'main.process.executions.tmsModal.enterId'|translate}}</p>
+            <tms-execution-details [execution]="newExecution" [configuration]="newExecution.configuration"></tms-execution-details>
+          </div>
+
+          <div class="modal-footer">
+              <button type="button" class="btn btn-light" data-dismiss="modal">
+                {{'main.process.executions.tmsModal.button.cancel'|translate}}
+              </button>
+              <button class="btn-widemr-2 btn-icon btn btn-zahoriV" (click)="rerunTmsModal()" [disabled]="tms.isActivated(newExecution.configuration) && tms.requiresTestExecutionId(newExecution.configuration) && !newExecution.tmsTestExecutionId" data-dismiss="modal">
+                {{'main.process.executions.tmsModal.button.execute'|translate}}
+              </button>
+          </div>
+      </div>
   </div>
 </div>

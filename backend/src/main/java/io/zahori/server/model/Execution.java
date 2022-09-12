@@ -98,6 +98,9 @@ public class Execution implements Serializable {
     @Column(name = "jenkins_build")
     private String jenkinsBuild;
 
+    @Column(name = "tms_test_execution_id")
+    private String tmsTestExecutionId;
+
     /**
      * Instantiates a new Execution.
      */
@@ -318,6 +321,20 @@ public class Execution implements Serializable {
      */
     public void setJenkinsBuild(String jenkinsBuild) {
         this.jenkinsBuild = jenkinsBuild;
+    }
+
+    /**
+     * @return the tmsTestExecutionId
+     */
+    public String getTmsTestExecutionId() {
+        return tmsTestExecutionId;
+    }
+
+    /**
+     * @param tmsTestExecutionId the tmsTestExecutionId to set
+     */
+    public void setTmsTestExecutionId(String tmsTestExecutionId) {
+        this.tmsTestExecutionId = tmsTestExecutionId;
     }
 
     //	public User getUser() {

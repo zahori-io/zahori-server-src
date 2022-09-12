@@ -1,10 +1,11 @@
 import { AfterViewInit, Component, OnChanges, OnInit, SimpleChanges, ViewChild } from '@angular/core';
 import { CaseExecution } from '../../../../model/caseExecution';
-import { Execution } from '../../../../model/excution';
+import { Execution } from '../../../../model/execution';
 import { DataService } from '../../../../services/data.service';
 import RFB from "../../../../../../node_modules/@novnc/novnc/core/rfb.js";
 import Swal from 'sweetalert2';
 import { Process } from '../../../../model/process';
+import { Tms } from '../../../../utils/tms';
 
 @Component({
   selector: 'app-executions',
@@ -22,8 +23,9 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
   ngClass: string;
   showCapabilities: boolean = false;
   resolutions: Map<string, string> = new Map<string, string>(); // <"widthAndHeight", "name">
+  newExecution: Execution = new Execution();
 
-  constructor(public dataService: DataService) {
+    public tms: Tms) {
   }
 
   ngOnInit(): void {
@@ -147,19 +149,8 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
     this.getProcessExecutions();
   }
 
-  rerunCase(execution: Execution, caseExecution: CaseExecution): void {
-    console.log('failed case');
-    const newExecution: Execution = new Execution();
-    newExecution.process = new Process();
-    newExecution.process.processId = this.dataService.processSelected.processId;
-    newExecution.configuration = execution.configuration;
-    newExecution.name = execution.name;
-    const reducedExecution = new CaseExecution();
-    reducedExecution.cas = caseExecution.cas;
-    reducedExecution.screenResolution = caseExecution.screenResolution;
-    reducedExecution.browser = caseExecution.browser;
-    newExecution.casesExecutions = [reducedExecution];
-    this.dataService.createExecution(newExecution).subscribe(
+  createExecution(execution: Execution){
+    this.dataService.createExecution(execution).subscribe(
       () => {
         this.reload();
       },
@@ -175,11 +166,31 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
     );
   }
 
-  rerunCases(execution: Execution, status: string): void {
-    const newExecution: Execution = new Execution();
-    newExecution.process = new Process();
-    newExecution.process.processId = this.dataService.processSelected.processId;
-    newExecution.casesExecutions = execution.casesExecutions
+  prepareRerunCase(execution: Execution, caseExecution: CaseExecution): void  {
+    this.newExecution = new Execution();
+    this.newExecution.process = new Process();
+    this.newExecution.process.processId = this.dataService.processSelected.processId;
+    this.newExecution.configuration = execution.configuration;
+    this.newExecution.name = execution.name;
+    const reducedExecution = new CaseExecution();
+    reducedExecution.cas = caseExecution.cas;
+    reducedExecution.screenResolution = caseExecution.screenResolution;
+    reducedExecution.browser = caseExecution.browser;
+    this.newExecution.casesExecutions = [reducedExecution];
+  }
+
+  rerunCase(execution: Execution, caseExecution: CaseExecution): void {
+    this.prepareRerunCase(execution, caseExecution);
+    this.createExecution(this.newExecution);
+  }
+
+  prepareRerunCases(execution: Execution, status: string): void {
+    this.newExecution = new Execution();
+    this.newExecution.process = new Process();
+    this.newExecution.process.processId = this.dataService.processSelected.processId;
+    this.newExecution.configuration = execution.configuration;
+    this.newExecution.name = execution.name;
+    this.newExecution.casesExecutions = execution.casesExecutions
       .filter(caseExecution => {
         if (status === 'ALL') {
           return true;
@@ -209,15 +220,14 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
           });
           this.loading = false;
         }
-      );
-    } else {
-      Swal.fire({
-        title: '',
-        text: 'There are no cases to be executed!',
-        icon: 'warning'
-      });
-      this.loading = false;
+
+  rerunCases(execution: Execution, status: string): void {
+    this.prepareRerunCases(execution, status);
+    this.createExecution(this.newExecution);
     }
+
+  rerunTmsModal() {
+    this.createExecution(this.newExecution);
   }
 
   getSelenoidUiHostAndPort() {

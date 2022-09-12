@@ -15,4 +15,5 @@ export class Execution {
     configuration: Configuration;
     process: Process;
     periodicExecution: PeriodicExecution;
+    tmsTestExecutionId: string;
 }

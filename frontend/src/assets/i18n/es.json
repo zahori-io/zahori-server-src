@@ -291,6 +291,14 @@
 				"search": "Buscar...",
 				"show": "ver",
 				"state": "Estado",
+				"tmsModal": {
+					"description": "La configuración <strong>{{configurationName}}</strong> asociada a esta ejecución tiene activado la publicación de resultados en el repositorio <strong>{{repositoryName}}</strong>.",
+					"enterId": "Selecciona o introduce el Id de ejecución al que asociar esta ejecución:",
+					"button": {
+						"cancel": "Cancelar",
+						"execute": "Ejecutar"
+					}
+				},
 				"trigger": "Disparador",
 				"type": "Disparador",
 				"video": "Video",
