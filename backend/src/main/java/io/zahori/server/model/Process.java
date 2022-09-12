@@ -24,7 +24,6 @@ package io.zahori.server.model;
  */
 
 import java.io.Serializable;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -34,8 +33,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -75,9 +72,9 @@ public class Process implements Serializable {
     private ClientTeam clientTeam;
 
     // bi-directional many-to-one association to Execution
-    @OneToMany(mappedBy = "process")
-    @OrderBy("executionId DESC")
-    private List<Execution> executions;
+    //    @OneToMany(mappedBy = "process", fetch = FetchType.LAZY)
+    //    @OrderBy("executionId DESC")
+    //    private List<Execution> executions;
 
     @JsonIgnore
     @Column(name = "jenkins_token")
@@ -217,18 +214,18 @@ public class Process implements Serializable {
      *
      * @return the executions
      */
-    public List<Execution> getExecutions() {
-        return this.executions;
-    }
+    //public List<Execution> getExecutions() {
+    //    return this.executions;
+    //}
 
     /**
      * Sets executions.
      *
      * @param executions the executions
      */
-    public void setExecutions(List<Execution> executions) {
-        this.executions = executions;
-    }
+    //    public void setExecutions(List<Execution> executions) {
+    //        this.executions = executions;
+    //    }
 
     /**
      * Gets jenkins token.

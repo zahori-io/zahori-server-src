@@ -7,6 +7,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AutenticacionService } from './autenticacion.service';
 import { Client } from '../model/client';
 import { Execution } from '../model/execution';
+import { Page } from '../model/page';
+import { ApiResponse } from '../model/apiResponse';
 import { Process } from '../model/process';
 import { Team } from '../model/team';
 import { Case } from '../model/case';
@@ -38,7 +40,7 @@ export class DataService {
   teamSelected: Team = new Team();
   processSelected: Process = new Process();
   processSelectedChange: Subject<boolean> = new Subject<boolean>();
-  processExecutions: Execution[];
+  processExecutions: ApiResponse<Page<Execution>>;
   processCases: Case[] = [];
   processConfigurations: Configuration[] = [];
   showNotificationsWindow = false;
@@ -48,15 +50,6 @@ export class DataService {
     private autenticacionService: AutenticacionService,
     private router: Router
   ) { }
-
-  getClientFromToken(): void {
-    this.getClient().subscribe(
-      client => {
-        this.client = client;
-        this.setFirstTeam();
-      }
-    );
-  }
 
   setFirstTeam() {
     if (this.client.clientTeams && this.client.clientTeams.length > 0) {
@@ -105,12 +98,20 @@ export class DataService {
   /*
     API CALLS
    */
-  private getClient(): Observable<Client> {
+  public getClient(): Observable<Client> {
     return this.http.get<Client>(this.url + 'client', {});
   }
 
   public getExecutions(): Observable<Execution[]> {
     return this.http.get<Execution[]>(this.url + 'process/' + this.processSelected.processId + '/executions', {});
+  }
+
+  public getExecutionsPageable(page: number, size: number): Observable<ApiResponse<Page<Execution>>> {
+    return this.http.get<ApiResponse<Page<Execution>>>(this.url + 'process/' + this.processSelected.processId + '/executions/pageable?page=' + page + '&size=' + size, {});
+  }
+
+  public getLastExecution(processId: number): Observable<ApiResponse<Page<Execution>>> {
+    return this.http.get<ApiResponse<Page<Execution>>>(this.url + 'process/' + processId + '/executions/pageable?page=0&size=1', {});
   }
 
   public getCases(): Observable<Case[]> {

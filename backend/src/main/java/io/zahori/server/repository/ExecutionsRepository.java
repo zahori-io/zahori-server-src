@@ -1,5 +1,8 @@
 package io.zahori.server.repository;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 /*-
  * #%L
  * zahori-server
@@ -24,7 +27,7 @@ package io.zahori.server.repository;
  */
 
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
@@ -34,7 +37,7 @@ import io.zahori.server.model.Execution;
  * The interface Executions repository.
  */
 @RepositoryRestResource(path = "executions")
-public interface ExecutionsRepository extends CrudRepository<Execution, Long> {
+public interface ExecutionsRepository extends PagingAndSortingRepository<Execution, Long> {
 
     /**
      * Find by client id and process id iterable.
@@ -45,4 +48,7 @@ public interface ExecutionsRepository extends CrudRepository<Execution, Long> {
      */
     @Query("select e from Execution e inner join e.process p where p.processId = :processId and p.client.clientId = :clientId ORDER BY e.executionId DESC")
     Iterable<Execution> findByClientIdAndProcessId(@Param("clientId") Long clientId, @Param("processId") Long processId);
+
+    @Query("select e from Execution e inner join e.process p where p.processId = :processId and p.client.clientId = :clientId ORDER BY e.executionId DESC")
+    Page<Execution> findByClientIdAndProcessId(@Param("clientId") Long clientId, @Param("processId") Long processId, Pageable pageable);
 }

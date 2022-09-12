@@ -5,5 +5,5 @@ export class Team {
     id: TeamId;
     admin: boolean;
     name: string;
-    processes: Process[];
+    processes: Process[] = [];
 }

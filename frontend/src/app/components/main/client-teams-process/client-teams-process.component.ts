@@ -39,7 +39,7 @@ export class ClientTeamsProcessComponent implements OnInit {
   }
 
   getProcessExecutions() {
-    this.dataService.getExecutions().subscribe(
+    this.dataService.getExecutionsPageable(0, 10).subscribe(
       executions => {
         this.dataService.processExecutions = executions;
       }

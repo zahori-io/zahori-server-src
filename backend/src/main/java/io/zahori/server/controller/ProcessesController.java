@@ -2,6 +2,7 @@ package io.zahori.server.controller;
 
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -53,6 +55,7 @@ import io.zahori.server.model.ClientEnvironment;
 import io.zahori.server.model.ClientTag;
 import io.zahori.server.model.Configuration;
 import io.zahori.server.model.Execution;
+import io.zahori.server.model.HttpResponse;
 import io.zahori.server.model.Process;
 import io.zahori.server.repository.CasesRepository;
 import io.zahori.server.repository.ClientEnvironmentsRepository;
@@ -238,6 +241,31 @@ public class ProcessesController {
         } catch (Exception e) {
             LOG.error(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(path = "/{processId}/executions/pageable")
+    public ResponseEntity<HttpResponse> getExecutionByIdPageable(@PathVariable Long processId, @RequestParam Optional<Integer> page,
+            @RequestParam Optional<Integer> size, HttpServletRequest request) {
+        try {
+            LOG.info("get executions controller (pageable)");
+
+            Page<Execution> executions = executionService.getExecutionsPageable(JWTUtils.getClientId(request), processId, page.orElse(0), size.orElse(20));
+
+            HttpResponse httpResponse = new HttpResponse();
+            httpResponse.setStatus(HttpStatus.OK);
+            httpResponse.setStatusCode(HttpStatus.OK.value());
+            httpResponse.setData(executions);
+
+            return ResponseEntity.ok().body(httpResponse);
+
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            HttpResponse httpResponse = new HttpResponse();
+            httpResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            httpResponse.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            httpResponse.setMessage(e.getMessage());
+            return ResponseEntity.ok().body(httpResponse);
         }
     }
 

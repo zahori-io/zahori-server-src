@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -35,6 +36,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -87,8 +92,12 @@ public class ExecutionService {
     }
 
     public Iterable<Execution> getExecutions(Long clientId, Long processId) {
-        // log.info("#### getExecutions");
         return executionsRepository.findByClientIdAndProcessId(clientId, processId);
+    }
+
+    public Page<Execution> getExecutionsPageable(Long clientId, Long processId, int page, int size) {
+        Pageable pageRequest = PageRequest.of(page, size, Sort.by("executionId").descending());
+        return executionsRepository.findByClientIdAndProcessId(clientId, processId, pageRequest);
     }
 
     public Optional<Execution> getExecutionById(Long executionId) {
@@ -142,10 +151,15 @@ public class ExecutionService {
 
     private void runProcess(String processUrl, Process process, Execution execution) {
 
-        // Set configuration for each caseExecution
+        // Enrich caseExecution
         io.zahori.model.process.Configuration execConfig = getExecutionConfiguration(execution);
         for (CaseExecution caseExecution : execution.getCasesExecutions()) {
+            // Configuration
             caseExecution.setConfiguration(execConfig);
+            // TMS
+            Map<String, String> caseData = caseExecution.getCas().getDataMap();
+            caseData.put("TMS_TE_ID", execution.getTmsTestExecutionId());
+            caseExecution.getCas().setData(caseData);
         }
 
         List<CaseExecution> casesExecuted = new ArrayList<>();

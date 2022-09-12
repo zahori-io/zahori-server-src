@@ -8,6 +8,7 @@ export class Client {
     name: string;
     numParallel: number;
     clientTeams: Team[];
+
     constructor() {
       this.clientId = 1;
       this.active = true;
@@ -15,5 +16,6 @@ export class Client {
       this.logo = '';
       this.name = '';
       this.numParallel = 0;
+      this.clientTeams = [];
     }
 }

@@ -57,7 +57,7 @@
           </thead>
 
           <tbody>
-            <ng-template ngFor let-execution [ngForOf]="dataService.processExecutions" let-i="index">
+            <ng-template ngFor let-execution [ngForOf]="dataService.processExecutions.data.content" let-i="index">
 
               <tr data-toggle="collapse" [attr.data-target]="'#group-of-rows-'+ execution.executionId" class="showOnHover">
                 <td scope="row">{{execution.executionId}}</td>
@@ -213,7 +213,7 @@
                             </button>
                             <div class="dropdown-menu dropdown-menu-minimal">
                               <ng-container *ngIf="!tms.isActivated(execution.configuration) || !tms.requiresTestExecutionId(execution.configuration)">
-                              <a class="dropdown-item" (click)="rerunCase(execution, caseExecution)">{{'main.process.executions.rerun.case'|translate}}</a>
+                                <a class="dropdown-item" (click)="rerunCase(execution, caseExecution)">{{'main.process.executions.rerun.case'|translate}}</a>
                               </ng-container>
                               <ng-container *ngIf="tms.isActivated(execution.configuration) && tms.requiresTestExecutionId(execution.configuration)">
                                 <a class="dropdown-item" (click)="prepareRerunCase(execution, caseExecution)" data-backdrop="false" data-toggle="modal" data-target="#tmsModal">{{'main.process.executions.rerun.case'|translate}}</a>  
@@ -247,7 +247,7 @@
               </tr>
             </ng-template>
 
-            <tr *ngIf="!loading && dataService.processExecutions.length == 0">
+            <tr *ngIf="!loading && dataService.processExecutions.data.content.length == 0">
               <td [attr.colspan]="getNumberOfTableColumns()" class="text-center">
                 <span>{{'main.process.executions.withoutExecutionsYet'|translate}}
                   <a routerLink="../trigger"><strong>{{'main.process.executions.trigger'|translate}}</strong></a>
@@ -263,6 +263,22 @@
 
         </table>
         <!-- Fin de Tabla de Datos-->
+
+        <!-- Table pagination -->
+        <nav *ngIf="this.dataService.processExecutions.data && this.dataService.processExecutions.data.content && this.dataService.processExecutions.data.content.length > 0" style="margin-top: 10px;">
+          <span style="float:left;">Total executions: {{this.dataService.processExecutions.data.totalElements}} </span>
+          <ul class="pagination pagination-sm justify-content-end">
+            <li class="page-item" [ngClass]="0 == currentPage ? ' disabled' : ''">
+                <span (click)="goToNextOrPreviousPage('backward')" class="page-link">Previous</span>
+            </li>
+            <li *ngFor="let pageNumber of [].constructor(this.dataService.processExecutions.data.totalPages); let i = index;" class="page-item" [ngClass]="i == currentPage ? ' active' : ''">
+              <span (click)="goToPage(i)" class="page-link" href="#">{{ i + 1}}</span>
+            </li>
+            <li class="page-item" [ngClass]="(this.dataService.processExecutions.data.totalPages - 1 == currentPage ? ' disabled' : '')">
+              <span (click)="goToNextOrPreviousPage('forward')" class="page-link">Next</span>
+            </li>
+          </ul>
+        </nav>
 
       </div>
 

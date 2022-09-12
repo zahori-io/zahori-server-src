@@ -6,6 +6,11 @@ import RFB from "../../../../../../node_modules/@novnc/novnc/core/rfb.js";
 import Swal from 'sweetalert2';
 import { Process } from '../../../../model/process';
 import { Tms } from '../../../../utils/tms';
+import { ApiResponse } from 'src/app/model/apiResponse';
+import { Page } from 'src/app/model/page';
+import { catchError, startWith } from 'rxjs/operators';
+import { HttpErrorResponse } from '@angular/common/http';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-executions',
@@ -24,7 +29,12 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
   showCapabilities: boolean = false;
   resolutions: Map<string, string> = new Map<string, string>(); // <"widthAndHeight", "name">
   newExecution: Execution = new Execution();
+  
+  currentPage: number = 0;
+  pageSize = 10;
 
+  constructor(
+    public dataService: DataService, 
     public tms: Tms) {
   }
 
@@ -67,7 +77,7 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
 
   getProcessExecutions() {
     this.loading = true;
-    this.dataService.getExecutions().subscribe(
+    this.dataService.getExecutionsPageable(0, this.pageSize).subscribe(
       (executions) => {
         this.dataService.processExecutions = executions;
       },
@@ -204,27 +214,12 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
         reducedExecution.browser = caseExecution.browser;
         return reducedExecution;
       });
-    newExecution.configuration = execution.configuration;
-    newExecution.name = execution.name;
-    if (newExecution.casesExecutions.length > 0) {
-      this.dataService.createExecution(newExecution).subscribe(
-        () => {
-          this.reload();
-        },
-        (error) => {
-          console.log(error);
-          Swal.fire({
-            title: '',
-            text: error.error,
-            icon: 'error'
-          });
-          this.loading = false;
-        }
+  }
 
   rerunCases(execution: Execution, status: string): void {
     this.prepareRerunCases(execution, status);
     this.createExecution(this.newExecution);
-    }
+  }
 
   rerunTmsModal() {
     this.createExecution(this.newExecution);
@@ -258,6 +253,19 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
     } else {
       return screenResolution;
     }
+  }
+
+  goToPage(pageNumber: number): void {
+    this.dataService.getExecutionsPageable(pageNumber, this.pageSize).subscribe(
+      executions => {
+        this.dataService.processExecutions = executions;
+        this.currentPage = pageNumber;
+      }
+    )
+  };
+
+  goToNextOrPreviousPage(direction?: string): void {
+    this.goToPage(direction === 'forward' ? this.currentPage + 1 : this.currentPage - 1);
   }
 
 }

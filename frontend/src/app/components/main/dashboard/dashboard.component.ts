@@ -1,15 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { Process } from '../../../model/process';
 import { DataService } from '../../../services/data.service';
-import { ViewEncapsulation } from '@angular/core';
-import { Execution } from '../../../model/excution';
+import { Execution } from '../../../model/execution';
 import { CaseExecution } from '../../../model/caseExecution';
 import { ExecutionStats } from '../../../model/executionStats';
 import { BrowserExecutionStats } from '../../../model/browserExecutionsStats';
-import { Observable } from 'rxjs';
 import { ServerVersions } from '../../../model/serverVersions';
 import {TranslateService} from '@ngx-translate/core';
-declare var $: any;
 
 const SUCCESS_COLOR = 'alert alert-success';
 @Component({
@@ -25,42 +22,64 @@ export class DashboardComponent implements OnInit {
   constructor(public dataService: DataService, private translate: TranslateService) { }
 
   ngOnInit(): void {
-    this.dataService.getClientFromToken();
+    this.getClient();
     this.serverVersions = history.state.serverVersions;
   }
 
-  getProcessLastExecutionStats(process: Process): ExecutionStats {
-    const lastExecutionStats: ExecutionStats = new ExecutionStats();
-    if (process.executions.length > 0) {
-      // TODO validar que la ejecución no este Running
-      const lastExecution: Execution = process.executions[0];
-      lastExecutionStats.totalPassed = lastExecution.totalPassed;
-      lastExecutionStats.totalFailed = lastExecution.totalFailed;
-
-      for (let i = 0; i < lastExecution.casesExecutions.length; i++) {
-        const caseExecution: CaseExecution = lastExecution.casesExecutions[i];
-        let browserExecutionStats: BrowserExecutionStats = lastExecutionStats.browserStats.get(caseExecution.browser.browserName);
-        if (!browserExecutionStats) {
-          browserExecutionStats = new BrowserExecutionStats();
-          lastExecutionStats.browserStats.set(caseExecution.browser.browserName, browserExecutionStats);
-        }
-
-        if ('PASSED' === caseExecution.status) {
-          browserExecutionStats.totalPassed += 1;
-        }
-        if ('FAILED' === caseExecution.status) {
-          browserExecutionStats.totalFailed += 1;
-        }
-        if ('Not executed' === caseExecution.status) {
-          browserExecutionStats.totalFailed += 1;
+  getClient(): void {
+    this.dataService.getClient().subscribe(
+      client => {
+        this.dataService.client = client;
+        this.dataService.setFirstTeam();
+        for (let team of this.dataService.client.clientTeams) {
+          for (let process of team.processes) {
+            this.setProcessLastExecutionStats(process);
+          }
         }
       }
+    );
+  }
 
-      lastExecutionStats.percent = this.getPercent(lastExecutionStats);
-    } else {
-      lastExecutionStats.percent = 0;
+  setProcessLastExecutionStats(process: Process) {
+    this.dataService.getLastExecution(process.processId).subscribe(
+      (lastExecutionFromDb) => {
+        process
+        const lastExecutionStats: ExecutionStats = this.calculateStats(lastExecutionFromDb.data.content[0]);
+        process.lastExecutionStats = lastExecutionStats;
+      },
+      (error) => {
+        console.error("Error loading last execution for process '" + process.processId + "': " + error.message);
+      }
+    );
+  }
+
+  calculateStats(execution: Execution): ExecutionStats {
+    const lastExecutionStats: ExecutionStats = new ExecutionStats();
+
+    // TODO validar que la ejecución no este Running
+    lastExecutionStats.totalPassed = execution.totalPassed;
+    lastExecutionStats.totalFailed = execution.totalFailed;
+
+    for (let i = 0; i < execution.casesExecutions.length; i++) {
+      const caseExecution: CaseExecution = execution.casesExecutions[i];
+      let browserExecutionStats: BrowserExecutionStats = lastExecutionStats.browserStats.get(caseExecution.browser.browserName);
+      if (!browserExecutionStats) {
+        browserExecutionStats = new BrowserExecutionStats();
+        lastExecutionStats.browserStats.set(caseExecution.browser.browserName, browserExecutionStats);
+      }
+
+      if ('PASSED' === caseExecution.status) {
+        browserExecutionStats.totalPassed += 1;
+      }
+      if ('FAILED' === caseExecution.status) {
+        browserExecutionStats.totalFailed += 1;
+      }
+      if ('Not executed' === caseExecution.status) {
+        browserExecutionStats.totalFailed += 1;
+      }
     }
-    
+
+    lastExecutionStats.percent = this.getPercent(lastExecutionStats);
     return lastExecutionStats;
   }
 
