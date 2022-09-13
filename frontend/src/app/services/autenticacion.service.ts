@@ -4,6 +4,7 @@ import { HttpHeaders, HttpClient } from '@angular/common/http';
 @Injectable()
 export class AutenticacionService {
 
+
   public token: string;
   private isUserLoggedIn: boolean;
   private username: string;
@@ -81,9 +82,9 @@ export class AutenticacionService {
   }
 
   getUsername(): string {
-    if (this.isUserLoggedIn && localStorage.getItem('currentUser')){
+    if (this.isUserLoggedIn && localStorage.getItem('currentUser')) {
       return JSON.parse(localStorage.getItem('currentUser')).username;
-    }else{
+    } else {
       return "";
     }
   }

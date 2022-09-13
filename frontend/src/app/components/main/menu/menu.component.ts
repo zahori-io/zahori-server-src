@@ -22,6 +22,7 @@ export class MenuComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  
   logout(): void {
     this.authService.logout();
     this.router.navigate(['']);
@@ -30,10 +31,12 @@ export class MenuComponent implements OnInit {
   showNotifications(): void {
     this.dataService.showNotificationsWindow = true;
   }
+
   useLanguage(language: string): void {
     this.translate.use(language);
     this.selectFlag(language);
   }
+
   selectFlag(lang: string): void{
     if (lang === 'es'){
       this.flag = 'ES';

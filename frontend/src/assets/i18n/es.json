@@ -156,6 +156,7 @@
 				"text": "Idioma"
 			},
 			"logout": "Salir",
+            "profile": "Mi perfil",
 			"notifications": "Notificaciones"
 		},
 		"notifications": {
@@ -420,6 +421,16 @@
 			}
 		},
 		"profile": {
+            "changePassword": {
+                "confirmButton": "Confirmar",
+                "confirmPassword": "Confirmar nueva contraseña",
+                "currentPassword": "Contraseña actual",
+                "newPassword": "Contraseña nueva",
+                "title": "Cambiar contraseña"
+            },
+            "menu": {
+                "changePassword": "Cambiar contraseña"
+            },
 			"title": "Mi perfil"
 		}
 	},

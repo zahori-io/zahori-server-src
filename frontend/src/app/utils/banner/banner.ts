@@ -6,13 +6,12 @@ export class BannerOptions {
 
 
 
-    constructor(title? : string, subtitle? : string, color? : string, closable? : boolean){
+    constructor(title?: string, subtitle?: string, color?: string, closable?: boolean) {
         this.title = title;
         this.subtitle = subtitle;
         this.color = color;
         this.closable = closable;
     }
-  }
+}
 
- 
- 
+

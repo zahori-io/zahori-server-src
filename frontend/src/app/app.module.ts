@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {HttpClientModule, HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgSelectModule } from '@ng-select/ng-select';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -16,15 +16,14 @@ import { ConfiguratorComponent } from './components/main/process/configurator/co
 import { ConfiguratorFormComponent } from './components/main/process/configurator/configuratorForm/configuratorForm.component';
 import { CasesComponent } from './components/main/process/cases/cases.component';
 import { HelpComponent } from './components/main/help/help.component';
-import { ProfileComponent } from './components/main/profile/profile.component';
 import { AdminComponent } from './components/main/admin/admin.component';
 import { AdminGroupsComponent } from './components/main/admin/admin-groups/admin-groups.component';
 import { AdminPlatformsComponent } from './components/main/admin/admin-platforms/admin-platforms.component';
 import { AdminEnvironmentsComponent } from './components/main/process/process-admin/admin-environments/admin-environments.component';
-import { EnvironmentComponent } from  './components/main/process/process-admin/admin-environments/environmentComponent/environmentComponent';
+import { EnvironmentComponent } from './components/main/process/process-admin/admin-environments/environmentComponent/environmentComponent';
 import { AdminExecutionsComponent } from './components/main/admin/admin-executions/admin-executions.component';
 import { AdminTagsComponent } from './components/main/process/process-admin/admin-tags/admin-tags.component';
-import { tagComponent} from './components/main/process/process-admin/admin-tags/tagComponent/tagComponent';
+import { tagComponent } from './components/main/process/process-admin/admin-tags/tagComponent/tagComponent';
 import { AdminUsersComponent } from './components/main/admin/admin-users/admin-users.component';
 import { AdminTmsComponent } from './components/main/admin/admin-tms/admin-tms.component';
 import { AutenticacionService } from './services/autenticacion.service';
@@ -42,17 +41,20 @@ import { ClientTeamsComponent } from './components/main/client-teams/client-team
 import { ClientTeamsProcessComponent } from './components/main/client-teams-process/client-teams-process.component';
 import { NotificationsComponent } from './components/main/notifications/notifications.component';
 import { BannerComponent } from './components/utils/banner/banner.component';
-import {MatChipsModule } from '@angular/material/chips';
+import { MatChipsModule } from '@angular/material/chips';
 import { SignupComponent } from './components/signup/signup.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { AdminResolutionsComponent } from './components/main/process/process-admin/admin-resolutions/admin-resolutions.component';
 import { ResolutionComponentComponent } from './components/main/process/process-admin/admin-resolutions/resolution-component/resolution-component.component';
-import {NgMultiSelectDropDownModule} from 'ng-multiselect-dropdown';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { SortDirective } from './directive/sort.directive';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { TmsExecutionDetailsComponent } from './components/main/process/tms-execution-details/tms-execution-details.component';
+import { ProfileComponent } from './components/main/profile/profile.component';
+import { ProfileMenuComponent } from './components/main/profile/profile-menu/profile-menu.component';
+import { ProfileChangePasswordComponent } from './components/main/profile/profile-change-password/profile-change-password.component';
 
 @NgModule({
   declarations: [
@@ -94,35 +96,38 @@ import { TmsExecutionDetailsComponent } from './components/main/process/tms-exec
     AdminResolutionsComponent,
     ResolutionComponentComponent,
     SortDirective,
-    TmsExecutionDetailsComponent
+    TmsExecutionDetailsComponent,
+    ProfileComponent,
+    ProfileMenuComponent,
+    ProfileChangePasswordComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        FormsModule,
-        NgSelectModule,
-        MatChipsModule,
-        ReactiveFormsModule,
-        NgbModule,
-        TranslateModule.forRoot({
-            loader: {
-                provide: TranslateLoader,
-                useFactory: HttpLoaderFactory,
-                deps: [HttpClient]
-            }
-        }),
-        NgMultiSelectDropDownModule,
-        NgCircleProgressModule.forRoot({
-          // defaults:
-          backgroundPadding:0,
-				  showImage:false,
-				  animationDuration:0,
-				  showBackground:false,
-          showUnits:false,
-          showZeroOuterStroke:false
-        })
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    FormsModule,
+    NgSelectModule,
+    MatChipsModule,
+    ReactiveFormsModule,
+    NgbModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
+    NgMultiSelectDropDownModule,
+    NgCircleProgressModule.forRoot({
+      // defaults:
+      backgroundPadding: 0,
+      showImage: false,
+      animationDuration: 0,
+      showBackground: false,
+      showUnits: false,
+      showZeroOuterStroke: false
+    })
+  ],
   providers: [
     AutenticacionService,
     AuthGuard,

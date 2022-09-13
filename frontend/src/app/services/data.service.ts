@@ -218,4 +218,14 @@ export class DataService {
     return this.http.post(this.url + 'resolutions/' + processId, JSON.stringify(res));
   }
 
+  public changePassword(currentPassword: string, newPassword: string, confirmPassword: string): Observable<string> {
+    return this.http.post('/api/password',
+      JSON.stringify({
+        currentPassword: currentPassword,
+        newPassword: newPassword,
+        confirmPassword: confirmPassword
+      }), 
+      { responseType: 'text' }
+    );
+  }
 }

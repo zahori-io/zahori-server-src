@@ -19,7 +19,7 @@
     <div class="app-header-right">
       <div class="header-dots">
 
-        <div class="dropdown">
+        <div>
           <a routerLink="dashboard" routerLinkActive="linkActive" class="p-0 mr-2 btn ">
             <span class="icon-wrapper icon-wrapper-alt rounded-circle">
               <span class="icon-wrapper-bg bg-primary"></span>
@@ -28,7 +28,7 @@
           </a>
         </div>
 
-        <div class="dropdown">
+        <div>
           <a routerLink="admin/platforms" routerLinkActive="linkActive" class="p-0 mr-2 btn ">
             <span class="icon-wrapper icon-wrapper-alt rounded-circle">
               <span class="icon-wrapper-bg bg-primary"></span>
@@ -37,7 +37,7 @@
           </a>
         </div>
 
-        <div class="dropdown">
+        <div>
           <button (click)="showNotifications()" type="button" class="p-0 mr-2 btn open-right-drawer ">
             <span class="icon-wrapper icon-wrapper-alt rounded-circle">
               <span class="icon-wrapper-bg bg-primary"></span>
@@ -78,7 +78,7 @@
           </div>
         </div>
 
-        <div class="dropdown">
+        <div>
           <a routerLink="help" routerLinkActive="linkActive" class="p-0 mr-2 btn ">
             <span class="icon-wrapper icon-wrapper-alt rounded-circle">
               <span class="icon-wrapper-bg bg-primary"></span>
@@ -97,7 +97,7 @@
                   <img width="42" class="rounded-circle" src="/assets/images/avatars/1.jpg" alt="">
                 </a>
                 <div tabindex="-1" role="menu" aria-hidden="true"
-                  class="rm-pointers dropdown-menu-lg dropdown-menu dropdown-menu-right   bg-info">
+                  class="rm-pointers dropdown-menu-lg dropdown-menu dropdown-menu-right bg-info">
                   <div class="dropdown-menu-header m-0">
                     <div class="dropdown-menu-header-inner">
 
@@ -114,10 +114,16 @@
                               </div>
                             </div>
                             <div class="widget-content-right mr-2">
-                              <button class="btn-pill btn-shadow btn-shine btn btn-focus"
-                                (click)="logout();$event.preventDefault();$event.stopPropagation();">{{'main.menu.logout'|
-                                translate}}
-                              </button>
+                              <div>
+                                <a class="btn-pill btn-shadow btn-shine btn btn-focus mb-2 dropdown-item"
+                                  routerLink="profile/change-password">{{'main.menu.profile'| translate}}
+                                </a>
+                              </div>
+                              <div>
+                                <button class="btn-pill btn-shadow btn-shine btn btn-focus"
+                                  (click)="logout();$event.preventDefault();$event.stopPropagation();">{{'main.menu.logout'| translate}}
+                                </button>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -138,6 +144,7 @@
           </div>
         </div>
       </div>
+      
     </div>
   </div>
   <!--FIN MENU PRINCIPAL-->

@@ -16,11 +16,13 @@ const ERROR_COLOR = 'alert alert-danger';
   styleUrls: ['./admin-tms.component.css']
 })
 export class AdminTmsComponent implements OnInit {
+  
   clientTestRepos: ClientTestRepo[];
   testRepos: Map<number, TestRepository>;
   newTest: number[];
   loading = true;
   banner: BannerOptions;
+
   constructor(
     public dataService: DataService
   ) { }

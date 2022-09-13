@@ -22,8 +22,8 @@ import { AuthGuard } from './guards/auth.guard';
 import { ProcessComponent } from './components/main/process/process.component';
 import { ProcessAdminComponent } from './components/main/process/process-admin/process-admin.component';
 import { SignupComponent } from './components/signup/signup.component';
-import {AdminResolutionsComponent} from './components/main/process/process-admin/admin-resolutions/admin-resolutions.component';
-
+import { AdminResolutionsComponent } from './components/main/process/process-admin/admin-resolutions/admin-resolutions.component';
+import { ProfileChangePasswordComponent } from './components/main/profile/profile-change-password/profile-change-password.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -41,13 +41,15 @@ const routes: Routes = [
           { path: 'trigger', component: TriggerComponent },
           { path: 'configurator', component: ConfiguratorComponent },
           { path: 'cases', component: CasesComponent },
-          { path: 'admin', component: ProcessAdminComponent,
-            children:[
-              { path: '', component : AdminEnvironmentsComponent},
+          {
+            path: 'admin', component: ProcessAdminComponent,
+            children: [
+              { path: '', component: AdminEnvironmentsComponent },
               { path: 'environments', component: AdminEnvironmentsComponent },
-              { path: 'resolutions', component: AdminResolutionsComponent},
+              { path: 'resolutions', component: AdminResolutionsComponent },
               { path: 'tags', component: AdminTagsComponent }
-            ]}
+            ]
+          }
         ]
       },
       {
@@ -62,7 +64,13 @@ const routes: Routes = [
         ]
       },
       { path: 'help', component: HelpComponent },
-      { path: 'profile', component: ProfileComponent }
+      {
+        path: 'profile', component: ProfileComponent,
+        children: [
+          { path: '', component: ProfileChangePasswordComponent },
+          { path: 'change-password', component: ProfileChangePasswordComponent },
+        ]
+      }
     ]
   },
   { path: '**', redirectTo: '', pathMatch: 'full' }
