@@ -70,13 +70,9 @@ public class UserController {
         log.info("Sing-up user: " + user);
 
         try {
-            /* PREVENT USER SIGNUP UNTIL FUNCIONALITY IS READY
-                user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-                user = accountRepository.save(user);
-                return new ResponseEntity<>(user, HttpStatus.OK);
-            */
-            return new ResponseEntity<>(user, HttpStatus.NOT_IMPLEMENTED);
-
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            user = accountRepository.save(user);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         } catch (Exception e) {
             log.error(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
