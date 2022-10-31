@@ -10,7 +10,7 @@ export class AutenticacionService {
   private username: string;
   private headers = new HttpHeaders().set(
     'Content-Type', 'application/json');
-  private loginUrl = '/login';
+  private loginUrl = './login';
 
   constructor(private http: HttpClient) {
     this.isUserLoggedIn = false;
