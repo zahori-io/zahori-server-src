@@ -55,6 +55,7 @@ import { TmsExecutionDetailsComponent } from './components/main/process/tms-exec
 import { ProfileComponent } from './components/main/profile/profile.component';
 import { ProfileMenuComponent } from './components/main/profile/profile-menu/profile-menu.component';
 import { ProfileChangePasswordComponent } from './components/main/profile/profile-change-password/profile-change-password.component';
+import { PaginationComponent } from './components/utils/pagination/pagination.component';
 
 @NgModule({
   declarations: [
@@ -99,7 +100,8 @@ import { ProfileChangePasswordComponent } from './components/main/profile/profil
     TmsExecutionDetailsComponent,
     ProfileComponent,
     ProfileMenuComponent,
-    ProfileChangePasswordComponent
+    ProfileChangePasswordComponent,
+    PaginationComponent
   ],
   imports: [
     BrowserModule,

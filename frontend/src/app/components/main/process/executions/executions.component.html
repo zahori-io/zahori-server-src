@@ -265,20 +265,12 @@
         <!-- Fin de Tabla de Datos-->
 
         <!-- Table pagination -->
-        <nav *ngIf="this.dataService.processExecutions.data && this.dataService.processExecutions.data.content && this.dataService.processExecutions.data.content.length > 0" style="margin-top: 10px;">
-          <span style="float:left;">Total executions: {{this.dataService.processExecutions.data.totalElements}} </span>
-          <ul class="pagination pagination-sm justify-content-end">
-            <li class="page-item" [ngClass]="0 == currentPage ? ' disabled' : ''">
-                <span (click)="goToNextOrPreviousPage('backward')" class="page-link">Previous</span>
-            </li>
-            <li *ngFor="let pageNumber of [].constructor(this.dataService.processExecutions.data.totalPages); let i = index;" class="page-item" [ngClass]="i == currentPage ? ' active' : ''">
-              <span (click)="goToPage(i)" class="page-link" href="#">{{ i + 1}}</span>
-            </li>
-            <li class="page-item" [ngClass]="(this.dataService.processExecutions.data.totalPages - 1 == currentPage ? ' disabled' : '')">
-              <span (click)="goToNextOrPreviousPage('forward')" class="page-link">Next</span>
-            </li>
-          </ul>
-        </nav>
+        <pagination 
+          [totalElements]="this.dataService.processExecutions.data.totalElements" 
+          [totalPages]="this.dataService.processExecutions.data.totalPages" 
+          [currentPage]="currentPage" 
+          (onPageClick)="goToPage($event)" >
+        </pagination>
 
       </div>
 

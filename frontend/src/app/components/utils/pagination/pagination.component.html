@@ -1,0 +1,41 @@
+
+<nav style="margin-top: 10px;">
+    <span style="float:left;">Total executions: {{totalElements}} </span>
+    <ul class="pagination pagination-sm justify-content-end">
+
+      <li class="page-item" [ngClass]="currentPage <= 0  ? ' disabled' : ''">
+          <span (click)="goToPage(currentPage - 1)" class="page-link">Prev</span>
+      </li>
+      
+      <li *ngIf="currentPage >= 2">
+        <span (click)="goToPage(0)" class="page-link" href="#">1</span>
+      </li>
+
+      <li *ngIf="currentPage >= 3" class="page-item disabled">
+        <span class="page-link">...</span>
+      </li>
+
+      <li *ngIf="currentPage > 0" class="page-item">
+        <span (click)="goToPage(currentPage - 1)" class="page-link" href="#">{{currentPage}}</span>
+      </li>
+      <li class="page-item active">
+        <span class="page-link">{{ currentPage + 1 }}</span>
+      </li>
+      <li *ngIf="currentPage + 1 < totalPages" class="page-item">
+        <span (click)="goToPage(currentPage + 1)" class="page-link" href="#">{{currentPage + 2}}</span>
+      </li>
+
+      <li *ngIf="currentPage + 2 < totalPages - 1" class="page-item disabled">
+        <span class="page-link">...</span>
+      </li>
+
+      <li *ngIf="currentPage + 2 <= totalPages - 1">
+        <span (click)="goToPage(totalPages - 1)" class="page-link" href="#">{{totalPages}}</span>
+      </li>
+
+      <li class="page-item" [ngClass]="(currentPage >= totalPages - 1 ? ' disabled' : '')">
+        <span (click)="goToPage(currentPage + 1)" class="page-link">Next</span>
+      </li>
+
+    </ul>
+  </nav>

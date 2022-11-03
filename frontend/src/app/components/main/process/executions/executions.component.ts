@@ -264,8 +264,4 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
     )
   };
 
-  goToNextOrPreviousPage(direction?: string): void {
-    this.goToPage(direction === 'forward' ? this.currentPage + 1 : this.currentPage - 1);
-  }
-
 }
