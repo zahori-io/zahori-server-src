@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { DataService } from '../../../../services/data.service';
-import { ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-process-menu',

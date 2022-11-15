@@ -2,7 +2,6 @@ import {Component, Input, OnInit} from '@angular/core';
 import {BannerOptions} from '../../../../utils/banner/banner';
 import {Resolution} from '../../../../../model/resolution';
 import {DataService} from '../../../../../services/data.service';
-import {Observable, Subscription} from 'rxjs';
 import {TranslateService} from '@ngx-translate/core';
 
 const ERROR = '';

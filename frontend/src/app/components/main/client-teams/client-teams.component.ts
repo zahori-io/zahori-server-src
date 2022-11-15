@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Team } from '../../../model/team';
 import { DataService } from '../../../services/data.service';
-import { ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-client-teams',

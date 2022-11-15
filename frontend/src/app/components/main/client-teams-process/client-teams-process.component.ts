@@ -2,7 +2,6 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Process } from '../../../model/process';
 import { DataService } from '../../../services/data.service';
-import { ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-client-teams-process',

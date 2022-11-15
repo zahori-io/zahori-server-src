@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from '../../../../services/data.service';
 import { ClientTestRepo } from '../../../../model/clientTestRepo';
-import { flatMap } from 'rxjs/internal/operators';
 import { TestRepository } from '../../../../model/test-repository';
 import { BannerOptions } from '../../../../utils/banner/banner';
 import Swal from 'sweetalert2';
-import { Case } from '../../../../model/case';
 
 const SUCCESS_COLOR = 'alert alert-success';
 const ERROR_COLOR = 'alert alert-danger';

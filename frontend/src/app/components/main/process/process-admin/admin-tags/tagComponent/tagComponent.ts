@@ -1,7 +1,6 @@
 import { Component, Input, Output, EventEmitter, ViewContainerRef, Directive } from '@angular/core';
 import { Tag } from '../../../../../../model/tag';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
-import { Direct } from 'protractor/built/driverProviders';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

@@ -6,11 +6,6 @@ import RFB from "../../../../../../node_modules/@novnc/novnc/core/rfb.js";
 import Swal from 'sweetalert2';
 import { Process } from '../../../../model/process';
 import { Tms } from '../../../../utils/tms';
-import { ApiResponse } from 'src/app/model/apiResponse';
-import { Page } from 'src/app/model/page';
-import { catchError, startWith } from 'rxjs/operators';
-import { HttpErrorResponse } from '@angular/common/http';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-executions',

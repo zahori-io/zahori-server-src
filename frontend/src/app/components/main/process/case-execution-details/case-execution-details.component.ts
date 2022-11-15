@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 import { CaseExecution } from '../../../../model/caseExecution';
 import { DataService } from '../../../../services/data.service';
 import {NgbCarousel, NgbCarouselConfig, NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
-import { Step } from '../../../../model/step';
 declare var HarViewer: any;
 
 @Component({
