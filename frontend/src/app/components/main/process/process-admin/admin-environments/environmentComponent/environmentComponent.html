@@ -33,7 +33,7 @@
         </div>
 
         <a *ngIf= "!isNew(environment); else newEnv">
-            <i class="fas fa-save mr-2" title="{{'main.process.processAdmin.environments.environment.edit'|translate}}" style="cursor: pointer;" (click)="updateEnv(environment)"></i>
+            <i class="fas fa-save mr-2" title="{{'main.process.processAdmin.environments.environment.save'|translate}}" style="cursor: pointer;" (click)="updateEnv(environment)"></i>
             <i class="fas fa-times mt-2" title="{{'main.process.processAdmin.environments.environment.remove'|translate}}" style="cursor: pointer;" (click)="deleteEnv(environment)"></i>
         </a>
 

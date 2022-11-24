@@ -32,7 +32,7 @@
         </div>
 
         <a *ngIf= "!isNew(tag); else newEnv">
-            <i class="fas fa-save mr-2" title = "{{'main.process.processAdmin.tags.tag.edit'|translate}}" style="cursor: pointer;" (click) = "updateTag(tag)"></i>
+            <i class="fas fa-save mr-2" title = "{{'main.process.processAdmin.tags.tag.save'|translate}}" style="cursor: pointer;" (click) = "updateTag(tag)"></i>
             <i class="fas fa-times mt-2" title = "{{'main.process.processAdmin.tags.tag.remove'|translate}}" style="cursor: pointer;" (click) = deleteTag(tag)></i>
         </a>
 
