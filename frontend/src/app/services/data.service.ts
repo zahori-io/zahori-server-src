@@ -33,7 +33,7 @@ export class DataService {
 
 
   private headers = new HttpHeaders().set('Content-Type', 'application/json');
-  private url = '/api/';
+  public url = './api/';
 
   client: Client = new Client();
   teamSelectedInSelector: Team = new Team();
@@ -208,8 +208,9 @@ export class DataService {
   }
 
   public setSignUpUser(account: Account): Observable<Account> {
-    return this.http.post<Account>('/users/sign-up', JSON.stringify(account), { headers: this.headers });
+    return this.http.post<Account>('./users/sign-up', JSON.stringify(account), { headers: this.headers });
   }
+  
   public getResolutions(processId: number): Observable<Resolution[]> {
     return this.http.get<any>(this.url + 'resolutions/' + processId);
   }
@@ -219,7 +220,7 @@ export class DataService {
   }
 
   public changePassword(currentPassword: string, newPassword: string, confirmPassword: string): Observable<string> {
-    return this.http.post('/api/password',
+    return this.http.post(this.url + 'password',
       JSON.stringify({
         currentPassword: currentPassword,
         newPassword: newPassword,

@@ -142,7 +142,7 @@ export class CaseExecutionDetailsComponent implements OnInit {
   }
 
   getAttachmentUrl(attachment: string): string {
-    return '/api/process/' + this.dataService.processSelected.processId + '/file?path=' + attachment;
+    return this.dataService.url + 'process/' + this.dataService.processSelected.processId + '/file?path=' + attachment;
   }
 
   resetModalVariables(): void {

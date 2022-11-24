@@ -28,7 +28,7 @@ export class AuthInterceptor implements HttpInterceptor {
         if (error.status === 401 || error.status === 403) {
 			console.log("Http error " + error + " -> redirect to login");
 			this.autenticacionService.logout();
-			this.router.navigate(['/login']);
+			this.router.navigate(['./login']);
             // if you've caught / handled the error, you don't want to rethrow it unless you also want downstream consumers to have to handle it as well.
             return of(error.message); // or EMPTY may be appropriate here
         }
