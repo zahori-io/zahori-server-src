@@ -218,6 +218,7 @@ export class CasesComponent implements OnInit {
       const variableFields = JSON.parse(JSON.stringify(row.data));
       const rowFixedFields = JSON.parse(JSON.stringify(row));
       delete rowFixedFields.data;
+      delete rowFixedFields.dataMap;
 
       // Store fixed fields
       if (fixedFields.length === 0) {
@@ -250,7 +251,7 @@ export class CasesComponent implements OnInit {
     for (const caseRow of casesFromTableCopy) {
       const formattedCase = {
         data: {},
-        dataMap: undefined
+        dataMap: {}
       };
       fixedFields.forEach(
         field => {
