@@ -319,7 +319,7 @@
 						"remove": "Remove",
 						"removeMessage": "Remove environment: {{name}}",
 						"removeWarning": "This action cannot be undone",
-						"save": "Remove"
+						"save": "Save"
 					},
 					"environmentCreated": "Environment created: {{name}}",
 					"environmentModified": "Environment updated: {{name}}",
@@ -350,7 +350,7 @@
 						"remove": "Remove",
 						"removeMessage": "Remove resolution: {{width}}x{{height}}",
 						"removeWarning": "This action cannot be undone",
-						"save": "Remove"
+						"save": "Save"
 					},
 					"resolutionCreated": "Resolution created: {{width}}x{{height}}",
 					"resolutionModified": "Resolution updated: {{width}}x{{height}}",
