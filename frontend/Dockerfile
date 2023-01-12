@@ -11,6 +11,6 @@ COPY . /code/
 RUN ng build --prod
 
 FROM scratch
-COPY --from=angularbuilder /code/dist/front /
+COPY --from=angularbuilder /code/dist /
 
 
