@@ -1,3 +1,3 @@
 set DOCKER_BUILDKIT=1
 docker build -o backend/src/main/resources/static/ frontend
-docker build -t zahoriaut/zahori-server:0.1.14 backend
+docker build -t zahoriaut/zahori-server:0.1.15 backend
