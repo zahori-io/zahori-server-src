@@ -62,10 +62,9 @@ export class AutenticacionService {
   }
 
   logout(): void {
-    // limpiar el token y eliminar el usuario desde el Local 
-    // Storage para que el usuario cierre su sesión
+    // Remove token and clear the local storage
     this.token = null;
-    localStorage.removeItem('currentUser');
+    localStorage.clear();
     this.isUserLoggedIn = false;
   }
 

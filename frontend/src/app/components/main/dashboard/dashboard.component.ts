@@ -7,6 +7,7 @@ import { ExecutionStats } from '../../../model/executionStats';
 import { BrowserExecutionStats } from '../../../model/browserExecutionsStats';
 import { ServerVersions } from '../../../model/serverVersions';
 import {TranslateService} from '@ngx-translate/core';
+import { Router } from '@angular/router';
 
 const SUCCESS_COLOR = 'alert alert-success';
 @Component({
@@ -19,11 +20,15 @@ export class DashboardComponent implements OnInit {
   processes: Process[];
   serverVersions: ServerVersions;
 
-  constructor(public dataService: DataService, private translate: TranslateService) { }
+  constructor(
+    public dataService: DataService, 
+    private translate: TranslateService,
+    private router: Router) {
+  }
 
   ngOnInit(): void {
     this.getClient();
-    this.serverVersions = history.state.serverVersions;
+    this.getLastServerVersion();
   }
 
   getClient(): void {
@@ -108,4 +113,24 @@ export class DashboardComponent implements OnInit {
     return parseFloat(percent.toFixed(2));
   }
 
+  getLastServerVersion() {
+      const versionsVariableNameInStorage = 'serverVersions';
+
+      // Get latests versions from local storage
+      let serverVersionsInSession = localStorage.getItem(versionsVariableNameInStorage);
+      if (serverVersionsInSession){
+        this.serverVersions = JSON.parse(serverVersionsInSession);
+      } else {
+        // Get latests versions from server
+        this.dataService.getServerVersions().subscribe(
+          (serverVersions) => {
+            this.serverVersions = serverVersions;
+            localStorage.setItem(versionsVariableNameInStorage, JSON.stringify(serverVersions));
+          },
+          (error) => {
+            console.error('Error getting server versions: ' + error.message);
+          }
+        );
+      }
+  }
 }
