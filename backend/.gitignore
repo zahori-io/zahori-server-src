@@ -1,11 +1,12 @@
 /target
-/test-output
 /evidences
-/bin
+/logs
+/src/main/resources/static
+*~
+*.class
 .project
 .classpath
 .settings
 .idea/
+nbactions.xml
 *.iml
-/src/main/resources/static/*
-
