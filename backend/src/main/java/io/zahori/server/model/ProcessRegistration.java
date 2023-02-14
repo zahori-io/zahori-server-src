@@ -1,5 +1,9 @@
 package io.zahori.server.model;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import org.apache.commons.lang3.StringUtils;
+
 /*-
  * #%L
  * zahori-server
@@ -72,7 +76,11 @@ public class ProcessRegistration {
      * @param name the name
      */
     public void setName(String name) {
-        this.name = name;
+        if (name == null){
+            name = "";
+        }
+        
+        this.name = name.trim();
     }
 
     /**
@@ -129,4 +137,18 @@ public class ProcessRegistration {
         this.procTypeId = procTypeId;
     }
 
+    /*
+        Zahori process name:
+        - must not be empty
+        - must start with a letter,
+        - must end with a letter or digit
+        - and have as interior characters only letters, digits, blanck spaces and hyphen
+    */
+    public boolean hasValidName() {
+        final String regExp = "^[a-zA-Z](([a-zA-Z0-9\\-\\s])*[a-zA-Z0-9])*$";
+        
+        Pattern pattern = Pattern.compile(regExp);
+        Matcher matcher = pattern.matcher(StringUtils.trim(name));
+        return matcher.matches();
+    }
 }

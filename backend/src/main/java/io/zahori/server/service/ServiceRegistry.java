@@ -34,30 +34,37 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import io.zahori.server.model.Process;
+import io.zahori.server.utils.StringHelper;
+import java.net.URI;
+import java.util.Optional;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 
-/**
- * The type Eureka service.
- */
 @Service
-public class EurekaService {
+public class ServiceRegistry {
 
-    private static final Logger LOG = LoggerFactory.getLogger(EurekaService.class);
-    private static final String SERVICE_ID_SEPARATOR = ":";
+    private static final Logger LOG = LoggerFactory.getLogger(ServiceRegistry.class);
+    private static final String SERVICE_ID_SEPARATOR = "-";
 
     @Autowired
     private LoadBalancerClient loadBalancer;
-
-    private EurekaService() {
-    }
+    
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     public String getProcessUrl(Process process) {
-        String serviceId = process.getClient().getClientId() + SERVICE_ID_SEPARATOR + process.getClientTeam().getId().getTeamId() + SERVICE_ID_SEPARATOR
-                + process.getName();
-
+        String serviceId = formatToConsulServiceId(
+                process.getName() 
+                + SERVICE_ID_SEPARATOR + process.getClient().getClientId() 
+                + SERVICE_ID_SEPARATOR + process.getClientTeam().getId().getTeamId());
+        
+        Optional<URI> serviceUri = discoveryClient.getInstances(serviceId)
+          .stream().findFirst().map(si -> si.getUri());
+        
         String processUrl = "";
-        ServiceInstance serviceInstance = loadBalancer.choose(serviceId);
-        if (serviceInstance != null) {
-            processUrl = serviceInstance.getUri().toString();
+        
+        if (serviceUri.isPresent()) {
+            processUrl = serviceUri.get().toString();
         }
 
         LOG.info("getUrl for process: " + serviceId + " -> '" + processUrl + "'");
@@ -73,4 +80,17 @@ public class EurekaService {
             return false;
         }
     }
+    
+    /*
+        Consul service ids:
+        - must not be empty
+        - must start with a letter,
+        - must end with a letter or digit
+        - and have as interior characters only letters, digits and hyphen
+    */
+    private String formatToConsulServiceId(String processName){
+        String processNameWithoutBlanks = StringHelper.replaceBlanksWithHyphens(processName);
+        return StringHelper.removeDuplicatedHyphens(processNameWithoutBlanks);
+    }
+    
 }
