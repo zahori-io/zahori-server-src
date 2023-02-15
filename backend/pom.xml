@@ -38,7 +38,7 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.6.2</version>
-        <relativePath />
+        <relativePath/>
     </parent>
 
 	<properties>
@@ -53,7 +53,7 @@
 		<spring.version>5.3.20</spring.version>
 		<jackson.version>2.13.3</jackson.version>
     <spring-data.version>2.7.0</spring-data.version>
-		<spring-security.version>5.7.1</spring-security.version>
+		<spring-security.version>5.7.5</spring-security.version>
 		<spring-boot.version>2.7.0</spring-boot.version>
 
 		<sonar.projectKey>zahori-io_zahori-server</sonar.projectKey>
@@ -572,7 +572,7 @@
 								<id>enforce</id>
 								<configuration>
 									<rules>
-										<DependencyConvergence />
+										<DependencyConvergence/>
 										<requireMavenVersion>
 											<version>3.6.3</version>
 										</requireMavenVersion>
