@@ -38,6 +38,9 @@ import org.springframework.web.bind.annotation.RestController;
 import io.zahori.server.model.Process;
 import io.zahori.server.model.ProcessRegistration;
 import io.zahori.server.service.ProcessService;
+import io.zahori.server.utils.StringHelper;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * The type Process registration controller.
@@ -61,6 +64,16 @@ public class ProcessRegistrationController {
     @PostMapping
     public ResponseEntity<Object> postExecutions(@RequestBody ProcessRegistration processRegistration, HttpServletRequest request) {
         try {
+
+            if (!processRegistration.hasValidName()){
+                String message = "Error registering process on Zahori server: process name '"+processRegistration.getName()+"' declared in property 'zahori.process.name' must not be empty, must start with a letter, end with a letter or digit, and have as interior characters only letters, digits, blank spaces and hyphens";
+                LOG.warn(message);
+                return new ResponseEntity<>(message, HttpStatus.BAD_REQUEST);
+            }
+
+            // Remove internal blanks in process name
+            String processName = StringHelper.removeDuplicatedChars(processRegistration.getName(), ' ');
+            processRegistration.setName(processName);
 
             Process process = processService.findProcessRegistered(processRegistration);
             if (process != null) {

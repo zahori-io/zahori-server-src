@@ -75,17 +75,17 @@ public class ExecutionService {
 
     private ExecutionsRepository executionsRepository;
     private ProcessesRepository processesRepository;
-    private EurekaService eurekaService;
+    private ServiceRegistry serviceRegistry;
     private SelenoidService selenoidService;
     private CaseExecutionsRepository caseExecutionsRepository;
     private ConfigurationRepository configurationRepository;
 
     @Autowired
-    public ExecutionService(ExecutionsRepository executionsRepository, ProcessesRepository processesRepository, EurekaService eurekaService,
+    public ExecutionService(ExecutionsRepository executionsRepository, ProcessesRepository processesRepository, ServiceRegistry serviceRegistry,
             SelenoidService selenoidService, CaseExecutionsRepository caseExecutionsRepository, ConfigurationRepository configurationRepository) {
         this.executionsRepository = executionsRepository;
         this.processesRepository = processesRepository;
-        this.eurekaService = eurekaService;
+        this.serviceRegistry = serviceRegistry;
         this.selenoidService = selenoidService;
         this.caseExecutionsRepository = caseExecutionsRepository;
         this.configurationRepository = configurationRepository;
@@ -114,7 +114,7 @@ public class ExecutionService {
         Process process = processOpt.get();
 
         /* Verify if process is running */
-        String processUrl = eurekaService.getProcessUrl(process);
+        String processUrl = serviceRegistry.getProcessUrl(process);
         String processNotReadyError = "El proceso parece estar offline! Si el proceso se inició recientemente vuelve a intentarlo pasados unos segundos, sino revisa que el proceso esté arrancado.";
 
         if (StringUtils.isBlank(processUrl)) {
@@ -122,7 +122,7 @@ public class ExecutionService {
             throw new RuntimeException(processNotReadyError);
         }
 
-        if (!eurekaService.isProcessRunning(processUrl)) {
+        if (!serviceRegistry.isProcessRunning(processUrl)) {
             throw new RuntimeException(processNotReadyError);
         }
 
