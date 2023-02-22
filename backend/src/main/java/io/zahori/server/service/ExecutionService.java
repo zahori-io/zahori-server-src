@@ -1,48 +1,5 @@
 package io.zahori.server.service;
 
-/*-
- * #%L
- * zahori-server
- * $Id:$
- * $HeadURL:$
- * %%
- * Copyright (C) 2021 PANEL SISTEMAS INFORMATICOS,S.L
- * %%
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * #L%
- */
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.concurrent.TimeUnit;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-
 import io.zahori.server.model.CaseExecution;
 import io.zahori.server.model.ClientTestRepo;
 import io.zahori.server.model.Configuration;
@@ -53,6 +10,24 @@ import io.zahori.server.repository.CaseExecutionsRepository;
 import io.zahori.server.repository.ConfigurationRepository;
 import io.zahori.server.repository.ExecutionsRepository;
 import io.zahori.server.repository.ProcessesRepository;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.TimeUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.loadbalancer.reactive.ReactorLoadBalancerExchangeFilterFunction;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
@@ -79,16 +54,19 @@ public class ExecutionService {
     private SelenoidService selenoidService;
     private CaseExecutionsRepository caseExecutionsRepository;
     private ConfigurationRepository configurationRepository;
+    private ReactorLoadBalancerExchangeFilterFunction reactorLoadBalancer;
 
     @Autowired
     public ExecutionService(ExecutionsRepository executionsRepository, ProcessesRepository processesRepository, ServiceRegistry serviceRegistry,
-            SelenoidService selenoidService, CaseExecutionsRepository caseExecutionsRepository, ConfigurationRepository configurationRepository) {
+            SelenoidService selenoidService, CaseExecutionsRepository caseExecutionsRepository, ConfigurationRepository configurationRepository,
+            ReactorLoadBalancerExchangeFilterFunction reactorLoadBalancer) {
         this.executionsRepository = executionsRepository;
         this.processesRepository = processesRepository;
         this.serviceRegistry = serviceRegistry;
         this.selenoidService = selenoidService;
         this.caseExecutionsRepository = caseExecutionsRepository;
         this.configurationRepository = configurationRepository;
+        this.reactorLoadBalancer = reactorLoadBalancer;
     }
 
     public Iterable<Execution> getExecutions(Long clientId, Long processId) {
@@ -113,16 +91,10 @@ public class ExecutionService {
         }
         Process process = processOpt.get();
 
-        /* Verify if process is running */
-        String processUrl = serviceRegistry.getProcessUrl(process);
-        String processNotReadyError = "El proceso parece estar offline! Si el proceso se inició recientemente vuelve a intentarlo pasados unos segundos, sino revisa que el proceso esté arrancado.";
-
-        if (StringUtils.isBlank(processUrl)) {
-            // TODO retry???
-            throw new RuntimeException(processNotReadyError);
-        }
-
-        if (!serviceRegistry.isProcessRunning(processUrl)) {
+        /* Verify if process is registered in the serviceRegistry */
+        String serviceId = serviceRegistry.getServiceId(process);
+        if (!serviceRegistry.isServiceRegistered(serviceId)) {
+            String processNotReadyError = "El proceso parece estar offline! Si el proceso se inició recientemente vuelve a intentarlo pasados unos segundos, sino revisa que el proceso esté arrancado.";
             throw new RuntimeException(processNotReadyError);
         }
 
@@ -139,7 +111,7 @@ public class ExecutionService {
         execution = executionsRepository.save(execution);
 
         // Call process
-        runProcess(processUrl, process, execution);
+        runProcess(serviceId, process, execution);
 
         // Delegate to SelenoidService watch for each case execution in Selenoid
         if (process.getProcessType() != null && "BROWSER".equalsIgnoreCase(process.getProcessType().getName())) {
@@ -149,7 +121,7 @@ public class ExecutionService {
         return execution;
     }
 
-    private void runProcess(String processUrl, Process process, Execution execution) {
+    private void runProcess(String serviceId, Process process, Execution execution) {
 
         // Enrich caseExecution
         io.zahori.model.process.Configuration execConfig = getExecutionConfiguration(execution);
@@ -169,7 +141,11 @@ public class ExecutionService {
         Flux.fromIterable(execution.getCasesExecutions()).parallel().runOn(Schedulers.boundedElastic()) //
                 .flatMap( //
                         caseExecution -> //
-                        WebClient.create().post().uri(processUrl + "/run").bodyValue(caseExecution).retrieve().bodyToMono(CaseExecution.class) //
+                        // Without load balancing between processes:
+                        // WebClient.create().post().uri(processUrl + "/run").bodyValue(caseExecution).retrieve().bodyToMono(CaseExecution.class) //
+                        // With load balancing:
+                        WebClient.builder().baseUrl("http://" + serviceId).filter(reactorLoadBalancer).build().post().uri("/run").bodyValue(caseExecution)
+                                .retrieve().bodyToMono(CaseExecution.class) //
                                 .doOnRequest(req -> {
                                     String processCase = process.getName() + "' -> case '" + caseExecution.getCas().getName() + "' ("
                                             + caseExecution.getBrowser().getBrowserName() + ")";
