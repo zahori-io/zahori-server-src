@@ -26,6 +26,7 @@ package io.zahori.server;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.cloud.consul.discovery.ReregistrationPredicate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -55,5 +56,17 @@ public class ZahoriServerApp {
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    /*
+        Bean needed for reregistration if consul is restarted
+        Also need to set the following properties in application.properties
+        - spring.cloud.consul.discovery.heartbeat.enabled= true
+        - spring.cloud.consul.discovery.heartbeat.reregister-service-on-failure=true
+        See: https://github.com/spring-cloud/spring-cloud-consul/issues/727
+     */
+    @Bean
+    public ReregistrationPredicate reRegistrationPredicate() {
+        return e -> e.getStatusCode() >= 400;
     }
 }
