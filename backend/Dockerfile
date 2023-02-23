@@ -5,7 +5,7 @@ COPY .mvn .mvn
 COPY mvnw pom.xml ./
 RUN ./mvnw dependency:go-offline package -B
 
-COPY src ./
+COPY . ./
 RUN ./mvnw clean package
 
 FROM eclipse-temurin:17.0.6_10-jre-alpine
