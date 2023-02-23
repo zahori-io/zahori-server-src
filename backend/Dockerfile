@@ -1,13 +1,14 @@
-FROM adoptopenjdk/maven-openjdk11 as javabuilder
+FROM bellsoft/liberica-openjdk-alpine:17.0.6 as javabuilder
 
-COPY pom.xml /code/
 WORKDIR /code
-RUN mvn dependency:go-offline package -B
+COPY .mvn .mvn
+COPY mvnw pom.xml ./
+RUN ./mvnw dependency:go-offline package -B
 
-COPY . /code/
-RUN mvn clean package
+COPY src ./
+RUN ./mvnw clean package
 
-FROM adoptopenjdk/openjdk11:x86_64-alpine-jre-11.0.11_9
+FROM eclipse-temurin:17.0.6_10-jre-alpine
 
 COPY --from=javabuilder /code/target/app.jar /usr/app/app.jar
 WORKDIR /usr/app
