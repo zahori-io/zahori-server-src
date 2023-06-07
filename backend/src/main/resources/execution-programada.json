@@ -1,0 +1,111 @@
+{
+  "executionId" : 213,
+  "date" : "2023-06-02 18:12:00",
+  "name" : "2023-06-02 18:11",
+  "status" : "Created",
+  "totalFailed" : 0,
+  "totalPassed" : 0,
+  "durationSeconds" : null,
+  "configuration" : {
+    "configurationId" : 1,
+    "active" : true,
+    "name" : "Config example",
+    "uploadResults" : false,
+    "clientEnvironment" : {
+      "environmentId" : 2,
+      "active" : true,
+      "name" : "producción",
+      "order" : 2,
+      "url" : "https://wikipedia.org"
+    },
+    "evidenceCase" : {
+      "eviCaseId" : 1,
+      "active" : true,
+      "name" : "Sí",
+      "order" : 1
+    },
+    "testRepository" : null,
+    "retry" : {
+      "retryId" : 0,
+      "active" : true
+    },
+    "timeout" : {
+      "timeoutId" : 20,
+      "active" : true
+    },
+    "evidenceTypes" : [ {
+      "eviTypeId" : 2,
+      "active" : true,
+      "name" : "Screenshot",
+      "order" : 2
+    }, {
+      "eviTypeId" : 1,
+      "active" : true,
+      "name" : "Log",
+      "order" : 1
+    } ]
+  },
+  "casesExecutions" : [ {
+    "caseExecutionId" : 730,
+    "date" : null,
+    "log" : null,
+    "notes" : null,
+    "status" : "Pending",
+    "steps" : null,
+    "stepsJson" : [ ],
+    "video" : null,
+    "doc" : null,
+    "har" : null,
+    "attachments" : null,
+    "durationSeconds" : null,
+    "selenoidId" : null,
+    "screenResolution" : "1280x720",
+    "browserVersion" : null,
+    "browser" : {
+      "browserName" : "chrome",
+      "active" : true,
+      "defaultVersion" : "110.0",
+      "icon" : "chrome.webp",
+      "order" : 1
+    },
+    "cas" : {
+      "caseId" : 1,
+      "active" : true,
+      "name" : "Search RPA",
+      "data" : {
+        "Language" : "English",
+        "TMS_TE_ID" : null,
+        "Search" : "Robotic process automation"
+      },
+      "dataMap" : {
+        "Language" : "English",
+        "TMS_TE_ID" : null,
+        "Search" : "Robotic process automation"
+      },
+      "clientTags" : [ {
+        "tagId" : 2,
+        "active" : true,
+        "order" : 2,
+        "name" : "English",
+        "color" : "#e8e8e8"
+      } ]
+    },
+    "configuration" : {
+      "name" : "Config example",
+      "environmentName" : "producción",
+      "environmentUrl" : "https://wikipedia.org",
+      "retries" : 0,
+      "timeout" : 20,
+      "uploadResults" : false,
+      "uploadRepositoryName" : null,
+      "uploadRepositoryUrl" : null,
+      "uploadRepositoryUser" : null,
+      "uploadRepositoryPass" : null,
+      "generateEvidences" : "Sí",
+      "generateEvidencesTypes" : [ "Screenshot", "Log" ]
+    }
+  } ],
+  "periodicExecution" : null,
+  "jenkinsBuild" : null,
+  "tmsTestExecutionId" : null
+}

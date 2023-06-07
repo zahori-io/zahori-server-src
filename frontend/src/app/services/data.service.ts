@@ -25,6 +25,7 @@ import { EvidenceType } from '../model/evidence-type';
 import { ServerVersions } from '../model/serverVersions';
 import {Resolution} from '../model/resolution';
 import { Router } from '@angular/router';
+import { PeriodicExecution } from '../model/periodic-execution';
 
 @Injectable({
   providedIn: 'root'
@@ -112,6 +113,10 @@ export class DataService {
 
   public getLastExecution(processId: number): Observable<ApiResponse<Page<Execution>>> {
     return this.http.get<ApiResponse<Page<Execution>>>(this.url + 'process/' + processId + '/executions/pageable?page=0&size=1', {});
+  }
+
+  public getPeriodicExecutions(): Observable<PeriodicExecution[]> {
+    return this.http.get<PeriodicExecution[]>(this.url + 'process/' + this.processSelected.processId + '/periodic-executions', {});
   }
 
   public getCases(): Observable<Case[]> {

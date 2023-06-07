@@ -1,0 +1,60 @@
+{
+    "caseExecutionId": 702,
+    "date": null,
+    "log": null,
+    "notes": null,
+    "status": "Running",
+    "steps": null,
+    "stepsJson": [],
+    "video": null,
+    "doc": null,
+    "har": null,
+    "attachments": null,
+    "durationSeconds": null,
+    "selenoidId": null,
+    "screenResolution": "1280x720",
+    "browserVersion": null,
+    "browser": {
+        "browserName": "chrome",
+        "active": true,
+        "defaultVersion": "110.0",
+        "icon": "chrome.webp",
+        "order": 1
+    },
+    "cas": {
+        "caseId": 3,
+        "active": true,
+        "name": "Search viajes extraordinarios",
+        "data": {
+            "Language": "Español",
+            "TMS_TE_ID": null,
+            "Search": "Viajes extraordinarios"
+        },
+        "dataMap": {
+            "Language": "Español",
+            "TMS_TE_ID": null,
+            "Search": "Viajes extraordinarios"
+        },
+        "clientTags": [{
+                "tagId": 5,
+                "active": true,
+                "order": 1,
+                "name": "Español",
+                "color": "#6eeb81"
+            }]
+    },
+    "configuration": {
+        "name": "Config example",
+        "environmentName": "producción",
+        "environmentUrl": "https://wikipedia.org",
+        "retries": 0,
+        "timeout": 20,
+        "uploadResults": false,
+        "uploadRepositoryName": null,
+        "uploadRepositoryUrl": null,
+        "uploadRepositoryUser": null,
+        "uploadRepositoryPass": null,
+        "generateEvidences": "Sí",
+        "generateEvidencesTypes": ["Log", "Screenshot"]
+    }
+}

@@ -1,0 +1,44 @@
+<div class="Zahoricontent">
+
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div>{{'main.process.scheduler.title'|translate}}</div>
+            </div>
+        </div>
+    </div>
+
+    <table class="mb-0 table">
+        <thead>
+            <tr>
+                <th>{{'main.process.scheduler.active'|translate}}</th>
+                <th>{{'main.process.scheduler.name'|translate}}</th>
+                <th>{{'main.process.scheduler.time'|translate}} </th>
+                <th>{{'main.process.scheduler.days'|translate}} </th>
+                <th>{{'main.process.scheduler.cases'|translate}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="periodicExecutions.length == 0">
+                <td class="text-center" colspan="5">{{'main.process.scheduler.noSchedules'|translate}} <a
+                        routerLink="../trigger"><strong>{{'main.process.scheduler.noSchedulesAction'|translate}}</strong></a></td>
+            </tr>
+            <tr *ngFor="let periodicExecution of periodicExecutions; index as indexPeriodicExecution; last as lastPeriodicExecution;">
+                <td>
+                    <div class="ml-2 custom-control custom-switch">
+                        <input type="checkbox" [(ngModel)]="periodicExecution.active" name="periodicExecution-{{periodicExecution.periodicExecutionId}}"
+                            id="periodicExecution-{{periodicExecution.periodicExecutionId}}" [checked]="periodicExecution.active" [value]="periodicExecution.periodicExecutionId"
+                            class="custom-control-input" (change)="onCaseSelection(periodicExecution)">
+
+                        <label for="periodicExecution-{{periodicExecution.periodicExecutionId}}" class="custom-control-label"></label>
+                    </div>
+                </td>
+                <td>{{periodicExecution.name}}</td>
+                <td>{{periodicExecution.time}}</td>
+                <td>{{periodicExecution.days}}</td>
+                <td>casos...</td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

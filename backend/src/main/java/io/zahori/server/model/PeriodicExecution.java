@@ -12,29 +12,32 @@ package io.zahori.server.model;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.zahori.server.model.Process;
 import java.io.Serializable;
-import java.sql.Time;
-import java.util.List;
-
+import java.util.UUID;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * The type Periodic execution.
@@ -51,15 +54,28 @@ public class PeriodicExecution implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long periodicExecutionId;
 
-    private Boolean active;
+    private boolean active;
 
     private String days;
 
-    private Time time;
+//    @valid expression regular
+    private String time;
 
-    // bi-directional many-to-one association to Execution
-    @OneToMany(mappedBy = "periodicExecution")
-    private List<Execution> executions;
+//    @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
+//    @GeneratedValue(generator = "UUIDGenerator")
+//    // TODO: https://thorben-janssen.com/generate-uuids-primary-keys-hibernate/
+    private UUID uuid;
+
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "execution_id")
+    @JsonIgnore
+    @OneToOne(mappedBy = "periodicExecution")
+    private Execution execution;
+
+    @JsonBackReference(value = "process")
+    @ManyToOne
+    @JoinColumn(name = "process_id")
+    private Process process;
 
     /**
      * Instantiates a new Periodic execution.
@@ -67,120 +83,107 @@ public class PeriodicExecution implements Serializable {
     public PeriodicExecution() {
     }
 
-    /**
-     * Gets periodic execution id.
-     *
-     * @return the periodic execution id
-     */
     public Long getPeriodicExecutionId() {
         return this.periodicExecutionId;
     }
 
-    /**
-     * Sets periodic execution id.
-     *
-     * @param periodicExecutionId the periodic execution id
-     */
     public void setPeriodicExecutionId(Long periodicExecutionId) {
         this.periodicExecutionId = periodicExecutionId;
     }
 
-    /**
-     * Gets active.
-     *
-     * @return the active
-     */
-    public Boolean getActive() {
+    public boolean getActive() {
         return this.active;
     }
 
-    /**
-     * Sets active.
-     *
-     * @param active the active
-     */
-    public void setActive(Boolean active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
-    /**
-     * Gets days.
-     *
-     * @return the days
-     */
     public String getDays() {
         return this.days;
     }
 
-    /**
-     * Sets days.
-     *
-     * @param days the days
-     */
     public void setDays(String days) {
         this.days = days;
     }
 
-    /**
-     * Gets time.
-     *
-     * @return the time
-     */
-    public Time getTime() {
+    public String getTime() {
         return this.time;
     }
 
-    /**
-     * Sets time.
-     *
-     * @param time the time
-     */
-    public void setTime(Time time) {
-        this.time = time;
+    @JsonIgnore
+    public int getHour() {
+        String[] timeSplit = StringUtils.split(time, ':');
+        if (timeSplit == null) {
+            throw new RuntimeException("Invalid hour");
+        }
+
+        Integer hour;
+        if (timeSplit.length < 2) {
+            throw new RuntimeException("Invalid hour");
+        }
+
+        try {
+            hour = Integer.valueOf(timeSplit[0]);
+            if (hour < 0 || hour > 23) {
+                throw new RuntimeException("Invalid hour");
+            }
+        } catch (NumberFormatException nfe) {
+            throw new RuntimeException("Invalid hour");
+        }
+        return hour;
     }
 
-    /**
-     * Gets executions.
-     *
-     * @return the executions
-     */
-    public List<Execution> getExecutions() {
-        return this.executions;
+    @JsonIgnore
+    public int getMinute() {
+        String[] timeSplit = StringUtils.split(time, ':');
+        if (timeSplit == null) {
+            throw new RuntimeException("Invalid minutes");
+        }
+
+        Integer minutes;
+        if (timeSplit.length < 2) {
+            throw new RuntimeException("Invalid minutes");
+        }
+
+        try {
+            minutes = Integer.valueOf(timeSplit[1]);
+            if (minutes < 0 || minutes > 59) {
+                throw new RuntimeException("Invalid minutes");
+            }
+        } catch (NumberFormatException nfe) {
+            throw new RuntimeException("Invalid minutes");
+        }
+        return minutes;
     }
 
-    /**
-     * Sets executions.
-     *
-     * @param executions the executions
-     */
-    public void setExecutions(List<Execution> executions) {
-        this.executions = executions;
+    @JsonIgnore
+    public String getCronExpression() {
+        return "0 " + getMinute() + " " + getHour() + " ? * " + getDays(); // TODO: validar días de la semana
     }
 
-    /**
-     * Add execution execution.
-     *
-     * @param execution the execution
-     * @return the execution
-     */
-    public Execution addExecution(Execution execution) {
-        getExecutions().add(execution);
-        execution.setPeriodicExecution(this);
+    public UUID getUuid() {
+        return uuid;
+    }
 
+    public void setUuid(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public Execution getExecution() {
         return execution;
     }
 
-    /**
-     * Remove execution execution.
-     *
-     * @param execution the execution
-     * @return the execution
-     */
-    public Execution removeExecution(Execution execution) {
-        getExecutions().remove(execution);
-        execution.setPeriodicExecution(null);
+    public void setExecution(Execution execution) {
+        this.execution = execution;
+    }
 
-        return execution;
+    public Process getProcess() {
+        return process;
+    }
+
+    public void setProcess(Process process) {
+        this.process = process;
     }
 
 }

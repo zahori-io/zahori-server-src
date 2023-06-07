@@ -100,11 +100,13 @@
                 <td class="text-center">{{execution.date}}</td>
                 <td class="text-center">{{execution.configuration.name}}</td>
                 <td class="text-center">
-                  <span *ngIf="!execution.periodicExecution">{{'main.process.executions.manual'|translate}}</span>
+                  <span>{{execution.trigger}}</span><!-- TODO: i18n -->
+                  <!--
                   <button *ngIf="execution.periodicExecution" id="sidebarProgramarCollapse"
                     class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriV btn-sm">
                     <i class="fas fa-clock"></i>
                   </button>
+                  -->
                 </td>
                 <td class="text-center">
                   <div *ngIf="execution.status !== 'Running'" class="btn-group dropleft">

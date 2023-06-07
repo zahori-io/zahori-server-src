@@ -387,7 +387,8 @@
 				"cases": "Casos",
 				"configurator": "Configuraciones",
 				"lastExecutions": "Últimas ejecuciones",
-				"trigger": "Disparador"
+				"trigger": "Disparador",
+				"scheduler": "Programador"
 			},
 			"trigger": {
 				"ErrorOnCreateExecution": "Error al crear la ejecución",
@@ -418,7 +419,18 @@
 				"time": "Tiempo",
 				"title": "Casos a ejecutar",
 				"unselectAllResolutions": "Desmarcar todas"
+			},
+			"scheduler": {
+				"title": "Programador de ejecuciones",
+				"active": "Activa",
+				"name": "Nombre",
+				"time": "Hora",
+				"days": "Días",
+				"cases": "Casos",
+				"noSchedules": "No hay ejecuciones programadas, puedes programar una con ",
+				"noSchedulesAction": "disparador"
 			}
+
 		},
 		"profile": {
             "changePassword": {

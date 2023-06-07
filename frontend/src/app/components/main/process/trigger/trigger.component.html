@@ -41,7 +41,8 @@
 						</div>
 					</th>
 					<th>{{'main.process.trigger.id'|translate}}</th>
-					<th [appSort]="dataService.processCases" data-order="asc" data-name="name" scope="col">{{'main.process.trigger.case'|translate}}  </th>
+					<th [appSort]="dataService.processCases" data-order="asc" data-name="name" scope="col">
+						{{'main.process.trigger.case'|translate}} </th>
 					<th>{{'main.process.trigger.tags'|translate}}</th>
 				</tr>
 			</thead>
@@ -82,7 +83,8 @@
 
 				<span>{{'main.process.trigger.caseToExecute'|translate}}</span>
 				<div class="d-flex mt-2 mb-3" id="caseList">
-					<span *ngIf="!thereAreCasesSelected()" class="text-danger">{{'main.process.trigger.selectCaseToExecute'|translate}}</span>
+					<span *ngIf="!thereAreCasesSelected()"
+						class="text-danger">{{'main.process.trigger.selectCaseToExecute'|translate}}</span>
 
 					<mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal">
 						<mat-chip class="example-box" *ngFor="let case of dataService.processCases">
@@ -102,11 +104,11 @@
 					</div>
 
 					<div class="form-group">
-						<label for="execution_configurationId" class="">{{'main.process.trigger.configuration'|translate}} *</label>
+						<label for="execution_configurationId"
+							class="">{{'main.process.trigger.configuration'|translate}} *</label>
 						<ng-container *ngIf="dataService.processConfigurations.length > 0">
-							<select id="execution_configurationId"
-								[(ngModel)]="execution.configuration.configurationId" name="execution_configurationId"
-								class="form-control">
+							<select id="execution_configurationId" [(ngModel)]="execution.configuration.configurationId"
+								name="execution_configurationId" class="form-control">
 								<option *ngFor="let configuration of dataService.processConfigurations"
 									[value]="configuration.configurationId">
 									{{configuration.name}}
@@ -127,8 +129,9 @@
 						&& execution.configuration.configurationId > 0 
 						&& tms.isActivated(getSelectedConfiguration(execution.configuration.configurationId))
 						&& tms.requiresTestExecutionId(getSelectedConfiguration(execution.configuration.configurationId))">
-						
-						<tms-execution-details [execution]="execution" [configuration]="getSelectedConfiguration(execution.configuration.configurationId)"></tms-execution-details>
+
+						<tms-execution-details [execution]="execution"
+							[configuration]="getSelectedConfiguration(execution.configuration.configurationId)"></tms-execution-details>
 					</ng-container>
 
 					<div *ngIf="dataService.isWebProcess()">
@@ -154,37 +157,48 @@
 
 						<div class="form-group">
 							<label for="resolutions" class="">{{'main.process.trigger.resolutions'|translate}} *</label>
-							
+
 							<div *ngIf="resolutions && resolutions.length == 0">
-								<span class="text-danger">{{'main.process.trigger.noResolutionsAvailable'|translate}}</span>
+								<span
+									class="text-danger">{{'main.process.trigger.noResolutionsAvailable'|translate}}</span>
 								<span>
 									<a routerLink="../admin/resolutions"
 										routerLinkActive="linkActive"><strong>{{'main.process.trigger.here'|translate}}</strong></a>
 								</span>
 							</div>
 
-							<ng-multiselect-dropdown *ngIf="resolutions && resolutions.length > 0" id="resolutions" [settings]="dropdownSettings" [data]="resolutions"
-								[placeholder]="selectResolutionPlaceholder" [(ngModel)]="selectedResolutions" name="resolutions">
+							<ng-multiselect-dropdown *ngIf="resolutions && resolutions.length > 0" id="resolutions"
+								[settings]="dropdownSettings" [data]="resolutions"
+								[placeholder]="selectResolutionPlaceholder" [(ngModel)]="selectedResolutions"
+								name="resolutions">
 							</ng-multiselect-dropdown>
 						</div>
 					</div>
 
 					<div class="form-group">
+
 						<div class="d-flex">
 							<span>{{'main.process.trigger.periodic'|translate}}</span>
 							<div class="ml-2 custom-control custom-switch">
-								<input type="checkbox" class="custom-control-input" id="customSwitch1"
+								<input type="checkbox" class="custom-control-input" id="periodic"
 									(change)="enablePeriodicExecution($event)">
-								<label class="custom-control-label " for="customSwitch1"></label>
+								<label class="custom-control-label " for="periodic"></label>
 							</div>
 						</div>
-						<div class="d-flex mt-3" *ngIf="periodicExecutionEnabled">
-							<div class="form-group">
-								<label for="exampleTime"></label>
-								<input name="time" id="exampleTime"
+
+						<div class="d-flex mt-3" *ngIf="execution.periodicExecution && execution.periodicExecution.active">
+							<div>
+								<input name="time" id="periodicTime"
 									placeholder="{{'main.process.trigger.time'|translate}}" type="time"
-									class="form-control">
+									class="form-control" [(ngModel)]="execution.periodicExecution.time">
 							</div>
+							
+							<ng-multiselect-dropdown id="periodicWeekdays" [settings]="dropdownSettings"
+								[data]="periodicWeekdays" [placeholder]="selectWeekdaysPlaceholder"
+								[(ngModel)]="selectedWeekdays" name="selectedWeekdays">
+							</ng-multiselect-dropdown>
+
+							<!-- 
 							<div class="mt-4 pt-3 ml-3 d-flex">
 								<div class="custom-checkbox custom-control  mr-2">
 									<input type="checkbox" id="DayCheckbox1" class="custom-control-input">
@@ -210,54 +224,54 @@
 									<label class="custom-control-label" for="DayCheckbox5">V</label>
 								</div>
 							</div>
+							-->
+
 						</div>
 					</div>
-
-					<div class="text-center">
-						<button class="btn-wide btn-icon btn btn-zahoriV btn-sm"
-							[title]="invalidForm() ? 'Rellena los campos obligatorios' : ''" [disabled]="invalidForm()"
-							(click)="createExecution()">{{'main.process.trigger.execute'|translate}}</button>
-					</div>
-
-					<span *ngIf="loading">
-						<div class="text-center mt-2">
-							<span>{{'main.process.trigger.creatingExecution'|translate}}</span>
-							<span class="spinner-border spinner-border-sm text-primary ml-2" role="status"></span>
-						</div>
-					</span>
-
-					<span *ngIf="created">
-						<div class="text-center mt-2">
-							<div>
-								<span>{{'main.process.trigger.executionCreated'|translate}} <i
-										class="ml-2 fas fa-check text-success" aria-hidden="true"></i></span>
-							</div>
-							<div>
-								<span>{{'main.process.trigger.canYouSeeIn'|translate}}
-									<a routerLink="../executions"
-										routerLinkActive="linkActive"><strong>{{'main.process.trigger.lastExecutions'|translate}}
-										</strong></a>
-								</span>
-							</div>
-						</div>
-					</span>
-
-					<span *ngIf="error != ''">
-						<div class="text-center mt-2">
-							<div>
-								<span>{{'main.process.trigger.ErrorOnCreateExecution'|translate}} <i
-										class="ml-2 fas fa-times text-danger" aria-hidden="true"></i></span>
-							</div>
-							<div>
-								<span>{{error}}</span>
-							</div>
-						</div>
-					</span>
-
 				</form>
 			</div>
 
-		</div>
+			<div class="text-center">
+				<button class="btn-wide btn-icon btn btn-zahoriV btn-sm"
+					[title]="invalidForm() ? 'Rellena los campos obligatorios' : ''" [disabled]="invalidForm()"
+					(click)="createExecution()">{{'main.process.trigger.execute'|translate}}</button>
+			</div>
 
+			<span *ngIf="loading">
+				<div class="text-center mt-2">
+					<span>{{'main.process.trigger.creatingExecution'|translate}}</span>
+					<span class="spinner-border spinner-border-sm text-primary ml-2" role="status"></span>
+				</div>
+			</span>
+
+			<span *ngIf="created">
+				<div class="text-center mt-2">
+					<div>
+						<span>{{'main.process.trigger.executionCreated'|translate}} <i
+								class="ml-2 fas fa-check text-success" aria-hidden="true"></i></span>
+					</div>
+					<div>
+						<span>{{'main.process.trigger.canYouSeeIn'|translate}}
+							<a routerLink="../executions"
+								routerLinkActive="linkActive"><strong>{{'main.process.trigger.lastExecutions'|translate}}
+								</strong></a>
+						</span>
+					</div>
+				</div>
+			</span>
+
+			<span *ngIf="error != ''">
+				<div class="text-center mt-2">
+					<div>
+						<span>{{'main.process.trigger.ErrorOnCreateExecution'|translate}} <i
+								class="ml-2 fas fa-times text-danger" aria-hidden="true"></i></span>
+					</div>
+					<div>
+						<span>{{error}}</span>
+					</div>
+				</div>
+			</span>
+
+		</div>
 	</div>
 </div>

@@ -8,12 +8,13 @@ export class Execution {
     date: Date;
     name: string;
     status: string;
+    trigger: string;
     totalFailed: number;
     totalPassed: number;
     durationSeconds: number;
     casesExecutions: CaseExecution[];
     configuration: Configuration;
     process: Process;
-    periodicExecution: PeriodicExecution;
+    periodicExecution: PeriodicExecution|null;
     tmsTestExecutionId: string;
 }

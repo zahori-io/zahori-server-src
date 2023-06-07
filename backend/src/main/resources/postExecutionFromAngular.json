@@ -1,0 +1,95 @@
+{
+    "configuration": {
+        "configurationId": 1,
+        "active": true,
+        "name": "Config example",
+        "uploadResults": false,
+        "clientEnvironment": {
+            "environmentId": 2,
+            "active": true,
+            "name": "producción",
+            "order": 2,
+            "url": "https://wikipedia.org"
+        },
+        "evidenceCase": {
+            "eviCaseId": 1,
+            "active": true,
+            "name": "Sí",
+            "order": 1
+        },
+        "testRepository": null,
+        "retry": {
+            "retryId": 0,
+            "active": true
+        },
+        "timeout": {
+            "timeoutId": 20,
+            "active": true
+        },
+        "evidenceTypes": [{
+                "eviTypeId": 1,
+                "active": true,
+                "name": "Log",
+                "order": 1
+            }, {
+                "eviTypeId": 2,
+                "active": true,
+                "name": "Screenshot",
+                "order": 2
+            }]
+    },
+    "process": {
+        "lastExecutionStats": {
+            "percent": 0,
+            "totalPassed": 0,
+            "totalFailed": 0,
+            "browserStats": {}
+        },
+        "processId": 1
+    },
+    "casesExecutions": [{
+            "browser": {
+                "browserName": "chrome",
+                "active": true,
+                "defaultVersion": "110.0",
+                "icon": "chrome.webp",
+                "order": 1,
+                "selected": true
+            },
+            "cas": {
+                "caseId": 4,
+                "active": true,
+                "name": "Search gastronomía España",
+                "data": {
+                    "Language": "Español",
+                    "Search": "Gastronomía de España"
+                },
+                "dataMap": {
+                    "Language": "Español",
+                    "Search": "Gastronomía de España"
+                },
+                "clientTags": [{
+                        "tagId": 1,
+                        "active": true,
+                        "order": 1,
+                        "name": "Regression",
+                        "color": "#f2b7fe"
+                    }, {
+                        "tagId": 5,
+                        "active": true,
+                        "order": 1,
+                        "name": "Español",
+                        "color": "#6eeb81"
+                    }],
+                "selected": true
+            },
+            "screenResolution": "1280x720"
+        }],
+    "periodicExecution": {
+        "active": true,
+        "hour": "13",
+        "minute": "17",
+        "days": "THU"
+    },
+    "name": "2023-06-01 13:15"
+}

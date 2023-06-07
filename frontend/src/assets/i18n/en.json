@@ -387,7 +387,8 @@
 				"cases": "Cases",
 				"configurator": "Configurations",
 				"lastExecutions": "Last executions",
-				"trigger": "Trigger"
+				"trigger": "Trigger",
+				"scheduler": "Scheduler"
 			},
 			"trigger": {
 				"ErrorOnCreateExecution": "Error creating run",
@@ -418,6 +419,16 @@
 				"time": "Time",
 				"title": "Cases to be executed",
 				"unselectAllResolutions": "Unselect all"
+			},
+			"scheduler": {
+				"title": "Scheduler",
+				"active": "Active",
+				"name": "Name",
+				"time": "Hour",
+				"days": "Days",
+				"cases": "Cases",
+				"noSchedules": "No scheduled executions, you can schedule one using the ",
+				"noSchedulesAction": "trigger"
 			}
 		},
 		"profile": {

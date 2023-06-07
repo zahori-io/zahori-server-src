@@ -1,0 +1,66 @@
+{
+    "caseExecutionId": 700,
+    "date": null,
+    "log": null,
+    "notes": null,
+    "status": "Pending",
+    "steps": null,
+    "stepsJson": [],
+    "video": null,
+    "doc": null,
+    "har": null,
+    "attachments": null,
+    "durationSeconds": null,
+    "selenoidId": null,
+    "screenResolution": "810x1080",
+    "browserVersion": null,
+    "browser": {
+        "browserName": "safari",
+        "active": true,
+        "defaultVersion": "15.0",
+        "icon": "safari.webp",
+        "order": 3
+    },
+    "cas": {
+        "caseId": 4,
+        "active": true,
+        "name": "Search gastronomía España ----- PROGRAMADA",
+        "data": {
+            "Language": "Español",
+            "TMS_TE_ID": null,
+            "Search": "Gastronomía de España"
+        },
+        "dataMap": {
+            "Language": "Español",
+            "TMS_TE_ID": null,
+            "Search": "Gastronomía de España"
+        },
+        "clientTags": [{
+                "tagId": 1,
+                "active": true,
+                "order": 1,
+                "name": "Regression",
+                "color": "#f2b7fe"
+            }, {
+                "tagId": 5,
+                "active": true,
+                "order": 1,
+                "name": "Español",
+                "color": "#6eeb81"
+            }]
+    },
+    "configuration": {
+        "name": "Config example",
+        "environmentName": "producción",
+        "environmentUrl": "https://wikipedia.org",
+        "retries": 0,
+        "timeout": 20,
+        "uploadResults": false,
+        "uploadRepositoryName": null,
+        "uploadRepositoryUrl": null,
+        "uploadRepositoryUser": null,
+        "uploadRepositoryPass": null,
+        "generateEvidences": "Sí",
+        "generateEvidencesTypes": ["Log", "Screenshot"]
+    }
+}

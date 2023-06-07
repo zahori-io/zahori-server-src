@@ -12,17 +12,21 @@ package io.zahori.server.service;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
+import io.zahori.server.model.CaseExecution;
+import io.zahori.server.model.Execution;
+import io.zahori.server.model.selenoid.SelenoidSession;
+import io.zahori.server.model.selenoid.SelenoidStatus;
+import io.zahori.server.repository.CaseExecutionsRepository;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,7 +34,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,12 +46,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-
-import io.zahori.server.model.CaseExecution;
-import io.zahori.server.model.Execution;
-import io.zahori.server.model.selenoid.SelenoidSession;
-import io.zahori.server.model.selenoid.SelenoidStatus;
-import io.zahori.server.repository.CaseExecutionsRepository;
 
 /**
  * The type Selenoid service.
@@ -86,7 +83,6 @@ public class SelenoidService {
         LOG.info("Watching selenoid sessions for execution {}", execution.getExecutionId());
 
         Map<Long, CaseExecution> caseExecutions = getMap(execution);
-        LOG.info("######## caseExecutions map: " + caseExecutions.toString());
 
         // Timeout cuando aún queda algún caso que no se ha llegado ha ejecutar
         int maxTimeoutRetries = 20;

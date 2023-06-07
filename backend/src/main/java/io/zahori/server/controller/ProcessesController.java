@@ -1,11 +1,26 @@
 package io.zahori.server.controller;
 
+import io.zahori.server.model.Case;
+import io.zahori.server.model.Client;
+import io.zahori.server.model.ClientEnvironment;
+import io.zahori.server.model.ClientTag;
+import io.zahori.server.model.Configuration;
+import io.zahori.server.model.Execution;
+import io.zahori.server.model.HttpResponse;
+import io.zahori.server.model.Process;
+import io.zahori.server.repository.CasesRepository;
+import io.zahori.server.repository.ClientEnvironmentsRepository;
+import io.zahori.server.repository.ClientTagsRepository;
+import io.zahori.server.repository.ConfigurationRepository;
+import io.zahori.server.repository.ProcessesRepository;
+import io.zahori.server.security.JWTUtils;
+import io.zahori.server.service.ExecutionService;
+import io.zahori.server.service.JenkinsService;
+import io.zahori.server.utils.FilePath;
 import java.io.File;
 import java.util.List;
 import java.util.Optional;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -25,47 +40,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-/*-
- * #%L
- * zahori-server
- * $Id:$
- * $HeadURL:$
- * %%
- * Copyright (C) 2021 PANEL SISTEMAS INFORMATICOS,S.L
- * %%
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- * #L%
- */
-
-import io.zahori.server.model.Case;
-import io.zahori.server.model.Client;
-import io.zahori.server.model.ClientEnvironment;
-import io.zahori.server.model.ClientTag;
-import io.zahori.server.model.Configuration;
-import io.zahori.server.model.Execution;
-import io.zahori.server.model.HttpResponse;
-import io.zahori.server.model.Process;
-import io.zahori.server.repository.CasesRepository;
-import io.zahori.server.repository.ClientEnvironmentsRepository;
-import io.zahori.server.repository.ClientTagsRepository;
-import io.zahori.server.repository.ConfigurationRepository;
-import io.zahori.server.repository.ProcessesRepository;
-import io.zahori.server.security.JWTUtils;
-import io.zahori.server.service.ExecutionService;
-import io.zahori.server.service.JenkinsService;
-import io.zahori.server.utils.FilePath;
 
 /**
  * The type Processes controller.
@@ -123,7 +97,7 @@ public class ProcessesController {
      * Gets cases.
      *
      * @param processId the process id
-     * @param request   the request
+     * @param request the request
      * @return the cases
      */
     @GetMapping(path = "/{processId}/cases")
@@ -144,8 +118,8 @@ public class ProcessesController {
      * Post cases response entity.
      *
      * @param processId the process id
-     * @param cases     the cases
-     * @param request   the request
+     * @param cases the cases
+     * @param request the request
      * @return the response entity
      */
     @PostMapping(path = "/{processId}/cases")
@@ -193,9 +167,9 @@ public class ProcessesController {
     /**
      * Post configuration response entity.
      *
-     * @param processId      the process id
+     * @param processId the process id
      * @param configurations the configurations
-     * @param request        the request
+     * @param request the request
      * @return response entity
      */
     @PostMapping(path = "/{processId}/configurations")
@@ -227,7 +201,7 @@ public class ProcessesController {
      * Gets executions.
      *
      * @param processId the process id
-     * @param request   the request
+     * @param request the request
      * @return the executions
      */
     @GetMapping(path = "/{processId}/executions")
@@ -273,14 +247,19 @@ public class ProcessesController {
      * Post executions response entity.
      *
      * @param execution the execution
-     * @param request   the request
+     * @param request the request
      * @return the response entity
      */
     @PostMapping(path = "/{processId}/executions")
     public ResponseEntity<Object> postExecutions(@RequestBody Execution execution, HttpServletRequest request) {
         try {
             LOG.info("create execution controller");
-            execution = executionService.create(execution);
+
+            if (execution.getPeriodicExecution() != null && execution.getPeriodicExecution().getActive()) {
+                execution = executionService.createPeriodicExecution(execution);
+            } else {
+                execution = executionService.runManualExecution(execution);
+            }
 
             return new ResponseEntity<>(execution, HttpStatus.OK);
         } catch (Exception e) {
@@ -293,8 +272,8 @@ public class ProcessesController {
      * Gets evidence file.
      *
      * @param processId the process id
-     * @param path      the path
-     * @param request   the request
+     * @param path the path
+     * @param request the request
      * @return the evidence file
      */
     @GetMapping(path = "/{processId}/file")
@@ -334,8 +313,8 @@ public class ProcessesController {
      * Gets jenkins file.
      *
      * @param processId the process id
-     * @param url       the url
-     * @param request   the request
+     * @param url the url
+     * @param request the request
      * @return the jenkins file
      */
     @GetMapping(path = "/{processId}/artifact")
@@ -371,7 +350,7 @@ public class ProcessesController {
      * Gets environments.
      *
      * @param processId the process id
-     * @param request   the request
+     * @param request the request
      * @return the environments
      */
     @GetMapping(path = "/{processId}/environments")
@@ -389,9 +368,9 @@ public class ProcessesController {
     /**
      * Post environments response entity.
      *
-     * @param processId    the process id
+     * @param processId the process id
      * @param environments the environments
-     * @param request      the request
+     * @param request the request
      * @return the response entity
      */
     @PostMapping(path = "/{processId}/environments")
@@ -429,7 +408,7 @@ public class ProcessesController {
      * Gets tags.
      *
      * @param processId the process id
-     * @param request   the request
+     * @param request the request
      * @return the tags
      */
     @GetMapping(path = "/{processId}/tags")
@@ -448,8 +427,8 @@ public class ProcessesController {
      * Post tags response entity.
      *
      * @param processId the process id
-     * @param tags      the tags
-     * @param request   the request
+     * @param tags the tags
+     * @param request the request
      * @return the response entity
      */
     @PostMapping(path = "/{processId}/tags")

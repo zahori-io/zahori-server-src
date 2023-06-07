@@ -12,6 +12,7 @@ import { Resolution } from '../../../../model/resolution';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { TranslateService } from '@ngx-translate/core';
 import { Tms } from '../../../../utils/tms';
+import { PeriodicExecution } from '../../../../model/periodic-execution';
 
 @Component({
   selector: 'app-trigger',
@@ -25,7 +26,6 @@ export class TriggerComponent implements OnInit {
   created: boolean;
   browsers: Browser[];
   execution: Execution;
-  periodicExecutionEnabled = false;
   massiveSelected: boolean;
   tags: Tag[] = [];
   selectedTags: Tag[] = [];
@@ -33,11 +33,16 @@ export class TriggerComponent implements OnInit {
   selectedResolutions: Resolution[] = [];
   dropdownSettings: IDropdownSettings = {};
   selectResolutionPlaceholder: string;
+  // Peridodic executions
+  periodicWeekdays: String[] = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+  selectedWeekdays: String[] = [];
+  periodicDropdownSettings = {};
+  selectWeekdaysPlaceholder: string;
 
   constructor(
-    public dataService: DataService, 
+    public dataService: DataService,
     public tms: Tms,
-    private router: Router, 
+    private router: Router,
     private translate: TranslateService) {
   }
 
@@ -53,6 +58,15 @@ export class TriggerComponent implements OnInit {
     this.massiveSelected = false;
     this.selectResolutionPlaceholder = this.translate.instant('main.process.trigger.SelectResolutions');
     this.dropdownSettings = {
+      idField: 'widthAndHeight',
+      textField: 'nameToDisplay',
+      noDataAvailablePlaceholderText: this.translate.instant('main.process.trigger.noResolutionsAvailable'),
+      enableCheckAll: true,
+      selectAllText: this.translate.instant('main.process.trigger.selectAllResolutions'),
+      unSelectAllText: this.translate.instant('main.process.trigger.unselectAllResolutions')
+    };
+    this.selectWeekdaysPlaceholder = "Selecciona los días";
+    this.periodicDropdownSettings = {
       idField: 'widthAndHeight',
       textField: 'nameToDisplay',
       noDataAvailablePlaceholderText: this.translate.instant('main.process.trigger.noResolutionsAvailable'),
@@ -82,8 +96,8 @@ export class TriggerComponent implements OnInit {
       resolutions => {
         this.resolutions = resolutions;
         this.resolutions.forEach(resolution => {
-            resolution.widthAndHeight = resolution.width + 'x' + resolution.height;
-            resolution.nameToDisplay = (resolution.name && resolution.name !== '') ? resolution.name : resolution.widthAndHeight;
+          resolution.widthAndHeight = resolution.width + 'x' + resolution.height;
+          resolution.nameToDisplay = (resolution.name && resolution.name !== '') ? resolution.name : resolution.widthAndHeight;
         });
 
         this.clearSelectedResolutions();
@@ -97,6 +111,7 @@ export class TriggerComponent implements OnInit {
     this.execution.process = new Process();
     this.execution.process.processId = this.dataService.processSelected.processId;
     this.execution.casesExecutions = [];
+    this.execution.periodicExecution = new PeriodicExecution();
     this.clearSelectedBrowsers();
     this.clearSelectedResolutions();
     this.clearSelectedCases();
@@ -143,8 +158,16 @@ export class TriggerComponent implements OnInit {
     this.created = false;
     this.error = '';
 
+    // execution name
     if (!this.execution.name) {
       this.execution.name = this.getTimestampPlaceholder();
+    }
+
+    // periodic execution
+    if (this.execution.periodicExecution && !this.execution.periodicExecution.active) {
+      this.execution.periodicExecution = null;
+    } else {
+      this.execution.periodicExecution.days = this.selectedWeekdays.join(',');
     }
 
     // Create caseExecutions
@@ -203,8 +226,8 @@ export class TriggerComponent implements OnInit {
       || !this.execution.configuration.configurationId
       || this.loading
       || (this.tms.isActivated(this.getSelectedConfiguration(this.execution.configuration.configurationId))
-						&& this.tms.requiresTestExecutionId(this.getSelectedConfiguration(this.execution.configuration.configurationId))
-            && !this.execution.tmsTestExecutionId)
+        && this.tms.requiresTestExecutionId(this.getSelectedConfiguration(this.execution.configuration.configurationId))
+        && !this.execution.tmsTestExecutionId)
 
     );
   }
@@ -238,7 +261,10 @@ export class TriggerComponent implements OnInit {
   }
 
   enablePeriodicExecution(event: any): void {
-    this.periodicExecutionEnabled = event.currentTarget.checked;
+    if (!this.execution.periodicExecution) {
+      this.execution.periodicExecution = new PeriodicExecution();
+    }
+    this.execution.periodicExecution.active = event.currentTarget.checked;
   }
 
   onTagClick(tag: Tag): void {
