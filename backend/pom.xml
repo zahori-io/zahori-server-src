@@ -293,6 +293,15 @@
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
         </dependency>
+        
+        <!-- Library fro mapping java arrays to postgre: String[] -> text[] --> 
+        <dependency>
+            <groupId>com.mopano</groupId>
+            <artifactId>hibernate-array-contributor</artifactId>
+            <version>1.2</version>
+        </dependency>
+        
+        
     </dependencies>
 
 

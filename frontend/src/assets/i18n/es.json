@@ -421,7 +421,7 @@
 				"unselectAllResolutions": "Desmarcar todas"
 			},
 			"scheduler": {
-				"title": "Programador de ejecuciones",
+				"title": "Ejecuciones programadas",
 				"active": "Activa",
 				"name": "Nombre",
 				"time": "Hora",

@@ -22,10 +22,13 @@ package io.zahori.server.controller;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-import io.zahori.server.model.PeriodicExecution;
+import io.zahori.server.model.Execution;
+import io.zahori.server.model.Process;
+import io.zahori.server.repository.ExecutionsRepository;
 import io.zahori.server.security.JWTUtils;
 import io.zahori.server.service.ExecutionService;
 import io.zahori.server.service.PeriodicExecutionService;
+import java.util.List;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -35,6 +38,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,12 +56,44 @@ public class PeriodicExecutionsController {
     private ExecutionService executionService;
 
     @Autowired
+    private ExecutionsRepository executionsRepository;
+
+    @Autowired
     private PeriodicExecutionService periodicExecutionService;
 
     @GetMapping(path = "/api/process/{processId}/periodic-executions")
     public ResponseEntity<Object> getPeriodicExecutions(@PathVariable Long processId, HttpServletRequest request) {
         try {
-            Iterable<PeriodicExecution> periodicExecutions = periodicExecutionService.getPeriodicExecutions(JWTUtils.getClientId(request), processId);
+            Iterable<Execution> periodicExecutions = periodicExecutionService.getPeriodicExecutions(JWTUtils.getClientId(request), processId);
+            return new ResponseEntity<>(periodicExecutions, HttpStatus.OK);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping(path = "/api/process/{processId}/periodic-executions")
+    public ResponseEntity<Object> savePeriodicExecutions(@PathVariable Long processId, @RequestBody List<Execution> executions, HttpServletRequest request) {
+        try {
+            LOG.info("save periodic executions for process {}", processId);
+
+            //TODO: no fiarse del processId que venga, y también tener en cuenta el cliente
+            if (!executions.isEmpty()) {
+                for (Execution execution : executions) {
+                    Process process = new Process();
+                    process.setProcessId(processId);
+                    execution.setProcess(process);
+
+//                    for (PeriodicExecution periodicExecution : execution.getPeriodicExecutions()) {
+//                        Execution associatedExecution = new Execution();
+//                        associatedExecution.setExecutionId(execution.getExecutionId());
+//                        periodicExecution.setExecution(associatedExecution);
+//                    }
+                }
+            }
+            Iterable<Execution> periodicExecutions = executionsRepository.saveAll(executions);
+            // TODO requests to update scheduler
+
             return new ResponseEntity<>(periodicExecutions, HttpStatus.OK);
         } catch (Exception e) {
             LOG.error(e.getMessage());

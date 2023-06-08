@@ -34,8 +34,8 @@ export class TriggerComponent implements OnInit {
   dropdownSettings: IDropdownSettings = {};
   selectResolutionPlaceholder: string;
   // Peridodic executions
-  periodicWeekdays: String[] = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-  selectedWeekdays: String[] = [];
+  periodicWeekdays: string[] = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+  selectedWeekdays: string[] = [];
   periodicDropdownSettings = {};
   selectWeekdaysPlaceholder: string;
 
@@ -111,7 +111,7 @@ export class TriggerComponent implements OnInit {
     this.execution.process = new Process();
     this.execution.process.processId = this.dataService.processSelected.processId;
     this.execution.casesExecutions = [];
-    this.execution.periodicExecution = new PeriodicExecution();
+    this.clearPeriodicExecutions();
     this.clearSelectedBrowsers();
     this.clearSelectedResolutions();
     this.clearSelectedCases();
@@ -148,6 +148,11 @@ export class TriggerComponent implements OnInit {
     }
   }
 
+  clearPeriodicExecutions(){
+    this.execution.periodicExecutions = [];
+    this.selectedWeekdays = [];
+  }
+
   deselectCase(processCase: Case): void {
     processCase.selected = false;
     this.onCaseSelection(processCase);
@@ -164,10 +169,9 @@ export class TriggerComponent implements OnInit {
     }
 
     // periodic execution
-    if (this.execution.periodicExecution && !this.execution.periodicExecution.active) {
-      this.execution.periodicExecution = null;
-    } else {
-      this.execution.periodicExecution.days = this.selectedWeekdays.join(',');
+    if (this.execution.periodicExecutions && this.execution.periodicExecutions.length > 0 && this.execution.periodicExecutions[0].active) {
+      //this.execution.periodicExecutions[0].days = this.selectedWeekdays.join(',');
+      this.execution.periodicExecutions[0].days = this.selectedWeekdays;
     }
 
     // Create caseExecutions
@@ -261,10 +265,12 @@ export class TriggerComponent implements OnInit {
   }
 
   enablePeriodicExecution(event: any): void {
-    if (!this.execution.periodicExecution) {
-      this.execution.periodicExecution = new PeriodicExecution();
+    this.clearPeriodicExecutions();
+    if (event.currentTarget.checked) {
+        let periodicExecution = new PeriodicExecution();
+        periodicExecution.active = true;
+        this.execution.periodicExecutions.push(periodicExecution);
     }
-    this.execution.periodicExecution.active = event.currentTarget.checked;
   }
 
   onTagClick(tag: Tag): void {

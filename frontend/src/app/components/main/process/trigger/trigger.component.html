@@ -181,16 +181,16 @@
 							<span>{{'main.process.trigger.periodic'|translate}}</span>
 							<div class="ml-2 custom-control custom-switch">
 								<input type="checkbox" class="custom-control-input" id="periodic"
-									(change)="enablePeriodicExecution($event)">
+									(change)="enablePeriodicExecution($event)" [checked]="execution.periodicExecutions && execution.periodicExecutions.length > 0">
 								<label class="custom-control-label " for="periodic"></label>
 							</div>
 						</div>
 
-						<div class="d-flex mt-3" *ngIf="execution.periodicExecution && execution.periodicExecution.active">
+						<div class="d-flex mt-3" *ngIf="execution.periodicExecutions && execution.periodicExecutions.length > 0">
 							<div>
 								<input name="time" id="periodicTime"
 									placeholder="{{'main.process.trigger.time'|translate}}" type="time"
-									class="form-control" [(ngModel)]="execution.periodicExecution.time">
+									class="form-control" [(ngModel)]="execution.periodicExecutions[0].time">
 							</div>
 							
 							<ng-multiselect-dropdown id="periodicWeekdays" [settings]="dropdownSettings"

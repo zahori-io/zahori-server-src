@@ -1,4 +1,4 @@
-<div class="Zahoricontent">
+<div class="app-main__inner">
 
     <div class="app-page-title">
         <div class="page-title-wrapper">
@@ -19,26 +19,53 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngIf="periodicExecutions.length == 0">
+            <tr *ngIf="executions.length == 0">
                 <td class="text-center" colspan="5">{{'main.process.scheduler.noSchedules'|translate}} <a
-                        routerLink="../trigger"><strong>{{'main.process.scheduler.noSchedulesAction'|translate}}</strong></a></td>
+                        routerLink="../trigger"><strong>{{'main.process.scheduler.noSchedulesAction'|translate}}</strong></a>
+                </td>
             </tr>
-            <tr *ngFor="let periodicExecution of periodicExecutions; index as indexPeriodicExecution; last as lastPeriodicExecution;">
+            <tr *ngFor="let execution of executions; index as indexExecution; last as lastExecution;">
                 <td>
                     <div class="ml-2 custom-control custom-switch">
-                        <input type="checkbox" [(ngModel)]="periodicExecution.active" name="periodicExecution-{{periodicExecution.periodicExecutionId}}"
-                            id="periodicExecution-{{periodicExecution.periodicExecutionId}}" [checked]="periodicExecution.active" [value]="periodicExecution.periodicExecutionId"
-                            class="custom-control-input" (change)="onCaseSelection(periodicExecution)">
+                        <input type="checkbox" [(ngModel)]="execution.periodicExecutions[0].active"
+                            name="periodicExecution-{{execution.periodicExecutions[0].periodicExecutionId}}"
+                            id="periodicExecution-{{execution.periodicExecutions[0].periodicExecutionId}}"
+                            [checked]="execution.periodicExecutions[0].active"
+                            [value]="execution.periodicExecutions[0].periodicExecutionId" class="custom-control-input"
+                            (change)="onCaseSelection(periodicExecution)">
 
-                        <label for="periodicExecution-{{periodicExecution.periodicExecutionId}}" class="custom-control-label"></label>
+                        <label for="periodicExecution-{{execution.periodicExecutions[0].periodicExecutionId}}"
+                            class="custom-control-label"></label>
                     </div>
                 </td>
-                <td>{{periodicExecution.name}}</td>
-                <td>{{periodicExecution.time}}</td>
-                <td>{{periodicExecution.days}}</td>
-                <td>casos...</td>
+                <td>
+                    <input name="execution-{{indexExecution}}.name" id="execution-{{indexExecution}}.name"
+                        type="text" class="form-control" [(ngModel)]="execution.name">
+                </td>
+                <td>
+                    <input name="time" id="periodicTime" placeholder="{{'main.process.trigger.time'|translate}}"
+                        type="time" class="form-control" [(ngModel)]="execution.periodicExecutions[0].time">
+                </td>
+                <td>
+                    <ng-multiselect-dropdown id="periodicExecution-{{indexExecution}}-days" [settings]="dropdownSettings"
+                        [data]="periodicWeekdays" [placeholder]="selectWeekdaysPlaceholder"
+                        [(ngModel)]="execution.periodicExecutions[0].daysArray" name="periodicExecution-{{indexExecution}}-days">
+                    </ng-multiselect-dropdown>
+                </td>
+                <td>
+                    <ng-container *ngFor="let caseName of getCaseList(execution); let i = index">
+                        <button *ngIf="i < 20" class="mr-2 btn-pill btn btn-light disabled btn-sm">
+                            {{caseName}}
+                        </button>
+                        <button *ngIf="i == 20" title="más casos..."
+                            class="mr-2 btn-pill btn btn-light disabled btn-sm">...</button>
+                    </ng-container>
+                </td>
+                {{execution.periodicExecutions[0]|json}}
             </tr>
         </tbody>
     </table>
+
+    <button class="btn-wide  btn-icon btn btn-zahoriAz btn-sm" (click)="savePeriodicExecutions()">Guardar</button>
 
 </div>

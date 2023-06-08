@@ -22,8 +22,9 @@ package io.zahori.server.service;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-import io.zahori.server.model.PeriodicExecution;
+import io.zahori.server.model.Execution;
 import io.zahori.server.model.PeriodicExecutionView;
+import io.zahori.server.repository.ExecutionsRepository;
 import io.zahori.server.repository.PeriodicExecutionsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -44,6 +45,9 @@ public class PeriodicExecutionService {
     @Autowired
     private PeriodicExecutionsRepository periodicExecutionsRepository;
 
+    @Autowired
+    private ExecutionsRepository executionsRepository;
+
     @Value("${zahori.scheduler.url:}")
     private String zahoriSchedulerUrl;
 
@@ -54,8 +58,8 @@ public class PeriodicExecutionService {
         this.restTemplate = restTemplate;
     }
 
-    public Iterable<PeriodicExecution> getPeriodicExecutions(Long clientId, Long processId) {
-        return periodicExecutionsRepository.findByClientIdAndProcessId(clientId, processId);
+    public Iterable<Execution> getPeriodicExecutions(Long clientId, Long processId) {
+        return executionsRepository.findByClientIdAndProcessIdAndStatus(clientId, processId, "Scheduled");
     }
 
     public void loadSchedules() throws Exception {

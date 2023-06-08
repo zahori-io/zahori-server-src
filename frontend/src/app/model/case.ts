@@ -7,6 +7,7 @@ export class Case {
   clientTags: Tag[];
   data: Map<string, string> = new Map();
   selected: boolean;
+  
   constructor() {
     this.selected = false;
   }

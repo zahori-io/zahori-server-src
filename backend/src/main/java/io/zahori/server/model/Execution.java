@@ -36,7 +36,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 /**
@@ -75,16 +74,17 @@ public class Execution implements Serializable {
     @JoinColumn(name = "configuration_id")
     private Configuration configuration;
 
-    // uni-directional many-to-one association to CasesExecution
+    // uni-directional one-to-many association to CasesExecution
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "execution_id", nullable = false)
     private List<CaseExecution> casesExecutions;
 
     //@JsonIgnore
-    //@OneToMany(mappedBy = "execution")
-    @OneToOne(cascade = CascadeType.ALL, optional = true)
-    @JoinColumn(name = "periodic_execution_id", nullable = true)
-    private PeriodicExecution periodicExecution;
+    // uni-directional one-to-many association to PeriodicExecution
+    @OneToMany(cascade = CascadeType.ALL)
+//    @OneToOne(cascade = CascadeType.ALL, optional = true)
+    @JoinColumn(name = "execution_id", nullable = true)
+    private List<PeriodicExecution> periodicExecutions;
 
     // bi-directional many-to-one association to Process
     @JsonBackReference(value = "process")
@@ -278,12 +278,12 @@ public class Execution implements Serializable {
         this.configuration = configuration;
     }
 
-    public PeriodicExecution getPeriodicExecution() {
-        return periodicExecution;
+    public List<PeriodicExecution> getPeriodicExecutions() {
+        return periodicExecutions;
     }
 
-    public void setPeriodicExecution(PeriodicExecution periodicExecution) {
-        this.periodicExecution = periodicExecution;
+    public void setPeriodicExecutions(List<PeriodicExecution> periodicExecutions) {
+        this.periodicExecutions = periodicExecutions;
     }
 
     /**

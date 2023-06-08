@@ -421,7 +421,7 @@
 				"unselectAllResolutions": "Unselect all"
 			},
 			"scheduler": {
-				"title": "Scheduler",
+				"title": "Scheduled executions",
 				"active": "Active",
 				"name": "Name",
 				"time": "Hour",

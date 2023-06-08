@@ -115,8 +115,12 @@ export class DataService {
     return this.http.get<ApiResponse<Page<Execution>>>(this.url + 'process/' + processId + '/executions/pageable?page=0&size=1', {});
   }
 
-  public getPeriodicExecutions(): Observable<PeriodicExecution[]> {
-    return this.http.get<PeriodicExecution[]>(this.url + 'process/' + this.processSelected.processId + '/periodic-executions', {});
+  public getPeriodicExecutions(): Observable<Execution[]> {
+    return this.http.get<Execution[]>(this.url + 'process/' + this.processSelected.processId + '/periodic-executions', {});
+  }
+
+  public savePeriodicExecutions(executions: Execution[]): Observable<Execution[]> {
+    return this.http.post<Execution[]>(this.url + 'process/' + this.processSelected.processId + '/periodic-executions', JSON.stringify(executions));
   }
 
   public getCases(): Observable<Case[]> {

@@ -22,9 +22,7 @@ package io.zahori.server.model;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.zahori.server.model.Process;
 import java.io.Serializable;
 import java.util.UUID;
 import javax.persistence.Column;
@@ -32,11 +30,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -56,7 +52,11 @@ public class PeriodicExecution implements Serializable {
 
     private boolean active;
 
-    private String days;
+    @Column(columnDefinition = "text[]")
+    private String[] days = {};
+
+    @Transient
+    private String[] daysArray;
 
 //    @valid expression regular
     private String time;
@@ -66,17 +66,15 @@ public class PeriodicExecution implements Serializable {
 //    // TODO: https://thorben-janssen.com/generate-uuids-primary-keys-hibernate/
     private UUID uuid;
 
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    @JoinColumn(name = "execution_id")
-    @JsonIgnore
-    @OneToOne(mappedBy = "periodicExecution")
-    private Execution execution;
-
-    @JsonBackReference(value = "process")
-    @ManyToOne
-    @JoinColumn(name = "process_id")
-    private Process process;
-
+//    @JsonBackReference(value = "execution")
+//    @JsonIgnore
+//    @ManyToOne
+//    @JoinColumn(name = "execution_id", nullable = false)
+//    private Execution execution;
+//    @JsonBackReference(value = "process")
+//    @ManyToOne
+//    @JoinColumn(name = "process_id")
+//    private Process process;
     /**
      * Instantiates a new Periodic execution.
      */
@@ -99,12 +97,21 @@ public class PeriodicExecution implements Serializable {
         this.active = active;
     }
 
-    public String getDays() {
+    public String[] getDays() {
         return this.days;
     }
 
-    public void setDays(String days) {
+    public void setDays(String[] days) {
         this.days = days;
+    }
+
+    public String[] getDaysArray() {
+//        return StringUtils.split(days, ",");
+        return days;
+    }
+
+    public void setDaysArray(String[] daysArray) {
+        this.daysArray = daysArray;
     }
 
     public String getTime() {
@@ -159,7 +166,7 @@ public class PeriodicExecution implements Serializable {
 
     @JsonIgnore
     public String getCronExpression() {
-        return "0 " + getMinute() + " " + getHour() + " ? * " + getDays(); // TODO: validar días de la semana
+        return "0 " + getMinute() + " " + getHour() + " ? * " + StringUtils.replace(String.join(",", days), " ", ""); // TODO: validar días de la semana
     }
 
     public UUID getUuid() {
@@ -170,20 +177,18 @@ public class PeriodicExecution implements Serializable {
         this.uuid = uuid;
     }
 
-    public Execution getExecution() {
-        return execution;
-    }
-
-    public void setExecution(Execution execution) {
-        this.execution = execution;
-    }
-
-    public Process getProcess() {
-        return process;
-    }
-
-    public void setProcess(Process process) {
-        this.process = process;
-    }
-
+//    public Execution getExecution() {
+//        return execution;
+//    }
+//
+//    public void setExecution(Execution execution) {
+//        this.execution = execution;
+//    }
+//    public Process getProcess() {
+//        return process;
+//    }
+//
+//    public void setProcess(Process process) {
+//        this.process = process;
+//    }
 }

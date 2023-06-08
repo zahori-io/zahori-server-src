@@ -9,6 +9,7 @@ export class Resolution {
   widthAndHeight: string;
   name: string;
   nameToDisplay: string;
+  
   constructor() {
     this.resolutionId = 0;
     this.active = true;

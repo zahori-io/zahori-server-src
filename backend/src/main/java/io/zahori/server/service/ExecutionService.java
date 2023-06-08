@@ -52,7 +52,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -136,7 +135,7 @@ public class ExecutionService {
 
         newExecution.setExecutionId(null);
         newExecution.setDate("");
-        newExecution.setPeriodicExecution(null);
+        newExecution.setPeriodicExecutions(null);
         newExecution.setTrigger(TRIGGER_SCHEDULER);
 
         newExecution.setCasesExecutions(new ArrayList<>());
@@ -158,13 +157,15 @@ public class ExecutionService {
 
     public Execution createPeriodicExecution(Execution execution) throws Exception {
         UUID uuid = UUID.randomUUID();
-        execution.getPeriodicExecution().setUuid(uuid);
+        execution.getPeriodicExecutions().get(0).setUuid(uuid);
 
-        Task task = new Task(uuid, execution.getPeriodicExecution().getCronExpression());
+        LOG.info("---------------- cron: " + execution.getPeriodicExecutions().get(0).getCronExpression());
+        Task task = new Task(uuid, execution.getPeriodicExecutions().get(0).getCronExpression());
 
         try {
+            // TODO implement validate endpoint in scheduler to test before adding to scheduler
             ResponseEntity<String> response = restTemplate.postForEntity(zahoriSchedulerUrl, task, String.class);
-            LOG.info("TASK SCHEDULER response: " + HttpStatus.OK.equals(response.getStatusCode()));
+            LOG.info("TASK SCHEDULER response --> " + response.getStatusCode());
 
             if (response.getStatusCode().is2xxSuccessful()) {
                 execution.setTotalFailed(0);
@@ -183,7 +184,17 @@ public class ExecutionService {
             LOG.error("Error from task scheduler: " + e.getMessage());
             throw new RuntimeException("Error al crear la ejecución programada: " + e.getMessage());
         }
-        return executionsRepository.save(execution);
+
+        Execution savedExecution = null;
+        try {
+            executionsRepository.save(execution);
+        } catch (Exception e) {
+            // Cancel task in scheduler
+            restTemplate.delete(zahoriSchedulerUrl + "/" + task.getUuid());
+            throw e;
+        }
+
+        return execution;
     }
 
     private Process getProcessFromDB(Long processId) {
