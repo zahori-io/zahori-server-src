@@ -97,6 +97,20 @@ public class PeriodicExecution implements Serializable {
         return this.days;
     }
 
+    @JsonIgnore
+    public String getDays(String[] daysArray) {
+        if (daysArray == null) {
+            throw new RuntimeException("No days");
+        }
+        String daysSplitted = StringUtils.replace(String.join(",", daysArray), " ", "");
+        if (StringUtils.isAllBlank(daysSplitted)) {
+            throw new RuntimeException("No days");
+        }
+
+        // TODO validar días: MON, TUE, ...
+        return daysSplitted;
+    }
+
     public void setDays(String[] days) {
         this.days = days;
     }
@@ -153,7 +167,7 @@ public class PeriodicExecution implements Serializable {
 
     @JsonIgnore
     public String getCronExpression() {
-        return "0 " + getMinute() + " " + getHour() + " ? * " + StringUtils.replace(String.join(",", days), " ", ""); // TODO: validar días de la semana
+        return "0 " + getMinute() + " " + getHour() + " ? * " + getDays(days);
     }
 
     public UUID getUuid() {

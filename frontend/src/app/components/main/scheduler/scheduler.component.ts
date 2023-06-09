@@ -89,7 +89,6 @@ export class SchedulerComponent implements OnInit {
             no-repeat`
     }).then((result) => {
       if (result.value) {
-        alert("Execution: " + execution.executionId);
         this.dataService.deletePeriodicExecution(execution).subscribe(
           () => {
             this.executions.splice(index, 1);

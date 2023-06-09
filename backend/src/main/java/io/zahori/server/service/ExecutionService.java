@@ -177,6 +177,9 @@ public class ExecutionService {
                     caseExecution.setStatus(SCHEDULED);
                 }
             } else {
+                // TODO diferenciar 2 errores:
+                // - que el scheduler esté caido (hacer un ping antes)
+                // - que falle al programar la tarea (implementar este último antes con un validateCron)
                 throw new RuntimeException("Error al crear la ejecución programada");
             }
         } catch (Exception e) {

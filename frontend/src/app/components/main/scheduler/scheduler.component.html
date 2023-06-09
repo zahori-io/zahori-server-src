@@ -71,7 +71,7 @@
         </tbody>
     </table>
 
-    <div class="text-center">
+    <div class="text-center" *ngIf="executions && executions.length > 0">
         <button class="btn-wide mt-3 mb-3 btn-icon btn btn-zahoriV btn-sm" (click)="savePeriodicExecutions()">Guardar</button>
     </div>
 
