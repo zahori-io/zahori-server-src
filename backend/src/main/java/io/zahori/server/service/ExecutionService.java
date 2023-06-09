@@ -210,12 +210,12 @@ public class ExecutionService {
 
         /* Verify if process is registered in the serviceRegistry */
         String serviceId = serviceRegistry.getServiceId(process);
-//        if (!serviceRegistry.isServiceRegistered(serviceId)) {
-//            // TODO: i18nEl proceso no existe en la base de datos
-//            String processNotReadyError = "El proceso parece estar offline! Si el proceso se inició recientemente vuelve a intentarlo pasados unos segundos, sino revisa que el proceso esté arrancado.";
+        if (!serviceRegistry.isServiceRegistered(serviceId)) {
+            // TODO: i18nEl proceso no existe en la base de datos
+            String processNotReadyError = "El proceso parece estar offline! Si el proceso se inició recientemente vuelve a intentarlo pasados unos segundos, sino revisa que el proceso esté arrancado.";
 //              TODO: si la ejecución es periódica sí guardarla en BD como Fallada e indicar que el proceso estaba offline
-//            throw new RuntimeException(processNotReadyError);
-//        }
+            throw new RuntimeException(processNotReadyError);
+        }
 
         /* Set execution details */
         execution.setTotalFailed(0);
@@ -275,7 +275,7 @@ public class ExecutionService {
 //        try {
 //            json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(execution);
 //        } catch (JsonProcessingException ex) {
-//            java.util.logging.Logger.getLogger(ExecutionService.class.getName()).log(Level.SEVERE, null, ex);
+//            LOG.error(ex.getMessage());
 //        }
 //        System.out.println(json);
         ////////

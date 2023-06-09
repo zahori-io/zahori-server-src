@@ -427,7 +427,7 @@
 				"time": "Hora",
 				"days": "Días",
 				"cases": "Casos",
-				"noSchedules": "No hay ejecuciones programadas, puedes programar una con ",
+				"noSchedules": "No hay ejecuciones programadas, puedes programar una con el ",
 				"noSchedulesAction": "disparador"
 			}
 

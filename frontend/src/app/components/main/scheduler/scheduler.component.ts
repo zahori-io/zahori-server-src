@@ -3,6 +3,11 @@ import { DataService } from '../../../services/data.service';
 import { PeriodicExecution } from '../../../model/periodic-execution';
 import { Execution } from '../../../model/execution';
 import { TranslateService } from '@ngx-translate/core';
+import Swal from 'sweetalert2';
+import { BannerOptions } from '../../../utils/banner/banner';
+
+const SUCCESS_COLOR = 'alert alert-success';
+const ERROR_COLOR = 'alert alert-danger';
 
 @Component({
   selector: 'app-scheduler',
@@ -15,6 +20,7 @@ export class SchedulerComponent implements OnInit {
   periodicWeekdays: String[] = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
   periodicDropdownSettings = {};
   selectWeekdaysPlaceholder: string;
+  banner: BannerOptions;
 
   constructor(
     public dataService: DataService,
@@ -22,6 +28,8 @@ export class SchedulerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.banner = new BannerOptions();
+
     this.getPeriodicExecutions();
 
     this.selectWeekdaysPlaceholder = "Selecciona los días";
@@ -38,15 +46,6 @@ export class SchedulerComponent implements OnInit {
   getPeriodicExecutions(): void {
     this.dataService.getPeriodicExecutions().subscribe(
       executions => {
-        
-        /*
-        executions.forEach(execution => {
-          execution.periodicExecutions.forEach(periodicExecution => {
-            // periodicExecution.setDaysArray();
-          });
-        });
-        */
-
         this.executions = executions;
       }
     );
@@ -62,16 +61,51 @@ export class SchedulerComponent implements OnInit {
     return caseNames;
   }
 
-  savePeriodicExecutions(){
+  savePeriodicExecutions() {
     this.dataService.savePeriodicExecutions(this.executions).subscribe(
       (executions) => {
         console.log('Executions saved');
         this.executions = executions;
+        this.banner = new BannerOptions('Programaciones actualizadas', '', SUCCESS_COLOR, true);
       },
       (error) => {
-        // TODO
-        //this.banner = new BannerOptions('', this.translate.instant('banner.error') + error.message, ERROR_COLOR, true);
+        // TODO i18n
+        this.banner = new BannerOptions('Error al guardar las programaciones:', error.message, ERROR_COLOR, true);
       }
     );
   }
+
+  deletePeriodicExecution(execution: Execution, index: number): void {
+    Swal.fire({
+      title: this.translate.instant('main.process.cases.removeCase.title') + execution.name,
+      text: this.translate.instant('main.process.cases.removeCase.warning'),
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: this.translate.instant('main.process.cases.removeCase.confirmButton'),
+      cancelButtonText: this.translate.instant('main.process.cases.removeCase.cancelButton'),
+      backdrop: `
+            rgba(64, 69, 58,0.4)
+            left top
+            no-repeat`
+    }).then((result) => {
+      if (result.value) {
+        alert("Execution: " + execution.executionId);
+        this.dataService.deletePeriodicExecution(execution).subscribe(
+          () => {
+            this.executions.splice(index, 1);
+          },
+          (error) => {
+            this.banner = new BannerOptions('Error al eliminar la ejecución programada:', error.message, ERROR_COLOR, true);
+          }, () => {
+            this.banner = new BannerOptions('Ejecución programada eliminada', '', SUCCESS_COLOR, true);
+          }
+        );
+      }
+    });
+  }
+
+  closeBanner(): void {
+    this.banner = new BannerOptions();
+  }
+
 }

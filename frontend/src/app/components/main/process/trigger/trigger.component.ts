@@ -24,6 +24,7 @@ export class TriggerComponent implements OnInit {
   error: string;
   loading: boolean;
   created: boolean;
+  scheduled: boolean;
   browsers: Browser[];
   execution: Execution;
   massiveSelected: boolean;
@@ -55,6 +56,7 @@ export class TriggerComponent implements OnInit {
     this.error = '';
     this.loading = false;
     this.created = false;
+    this.scheduled = false;
     this.massiveSelected = false;
     this.selectResolutionPlaceholder = this.translate.instant('main.process.trigger.SelectResolutions');
     this.dropdownSettings = {
@@ -148,7 +150,7 @@ export class TriggerComponent implements OnInit {
     }
   }
 
-  clearPeriodicExecutions(){
+  clearPeriodicExecutions() {
     this.execution.periodicExecutions = [];
     this.selectedWeekdays = [];
   }
@@ -161,6 +163,7 @@ export class TriggerComponent implements OnInit {
   createExecution(): void {
     this.loading = true;
     this.created = false;
+    this.scheduled = false;
     this.error = '';
 
     // execution name
@@ -209,10 +212,18 @@ export class TriggerComponent implements OnInit {
     // submit execution to backend
     this.dataService.createExecution(this.execution).subscribe(
       () => {
+        this.loading = false;
+
+        if (this.execution.periodicExecutions && this.execution.periodicExecutions.length > 0 && this.execution.periodicExecutions[0].active) {
+          this.scheduled = true;
+          this.created = false;
+        } else {
+          this.scheduled = false;
+          this.created = true;
+        }
+
         this.newExecution();
         this.error = '';
-        this.created = true;
-        this.loading = false;
       },
       (error) => {
         this.error = error.error;
@@ -267,9 +278,9 @@ export class TriggerComponent implements OnInit {
   enablePeriodicExecution(event: any): void {
     this.clearPeriodicExecutions();
     if (event.currentTarget.checked) {
-        let periodicExecution = new PeriodicExecution();
-        periodicExecution.active = true;
-        this.execution.periodicExecutions.push(periodicExecution);
+      let periodicExecution = new PeriodicExecution();
+      periodicExecution.active = true;
+      this.execution.periodicExecutions.push(periodicExecution);
     }
   }
 

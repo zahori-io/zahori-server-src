@@ -260,6 +260,21 @@
 				</div>
 			</span>
 
+			<span *ngIf="scheduled">
+				<div class="text-center mt-2">
+					<div>
+						<span>Ejecución programada<i class="ml-2 fas fa-check text-success" aria-hidden="true"></i></span>
+					</div>
+					<div>
+						<span>Puedes gestionarla en el 
+							<a routerLink="../scheduler"
+								routerLinkActive="linkActive">programador<strong>
+								</strong></a>
+						</span>
+					</div>
+				</div>
+			</span>
+
 			<span *ngIf="error != ''">
 				<div class="text-center mt-2">
 					<div>

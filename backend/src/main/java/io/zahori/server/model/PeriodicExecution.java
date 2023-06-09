@@ -32,7 +32,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import org.apache.commons.lang3.StringUtils;
 
 /**
@@ -54,9 +53,6 @@ public class PeriodicExecution implements Serializable {
 
     @Column(columnDefinition = "text[]")
     private String[] days = {};
-
-    @Transient
-    private String[] daysArray;
 
 //    @valid expression regular
     private String time;
@@ -103,15 +99,6 @@ public class PeriodicExecution implements Serializable {
 
     public void setDays(String[] days) {
         this.days = days;
-    }
-
-    public String[] getDaysArray() {
-//        return StringUtils.split(days, ",");
-        return days;
-    }
-
-    public void setDaysArray(String[] daysArray) {
-        this.daysArray = daysArray;
     }
 
     public String getTime() {

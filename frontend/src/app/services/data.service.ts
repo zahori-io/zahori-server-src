@@ -123,6 +123,10 @@ export class DataService {
     return this.http.post<Execution[]>(this.url + 'process/' + this.processSelected.processId + '/periodic-executions', JSON.stringify(executions));
   }
 
+  public deletePeriodicExecution(execution: Execution): Observable<any> {
+    return this.http.delete<any>(this.url + 'process/' + this.processSelected.processId + '/periodic-executions/'+execution.executionId, {});
+  }
+
   public getCases(): Observable<Case[]> {
     return this.http.get<Case[]>(this.url + 'process/' + this.processSelected.processId + '/cases', {});
   }

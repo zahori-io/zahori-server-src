@@ -1,3 +1,5 @@
+<banner [banner]="banner" (click)="closeBanner()"></banner>
+
 <div class="app-main__inner">
 
     <div class="app-page-title">
@@ -13,9 +15,10 @@
             <tr>
                 <th>{{'main.process.scheduler.active'|translate}}</th>
                 <th>{{'main.process.scheduler.name'|translate}}</th>
+                <th>{{'main.process.scheduler.cases'|translate}}</th>
                 <th>{{'main.process.scheduler.time'|translate}} </th>
                 <th>{{'main.process.scheduler.days'|translate}} </th>
-                <th>{{'main.process.scheduler.cases'|translate}}</th>
+                <th>Eliminar</th>
             </tr>
         </thead>
         <tbody>
@@ -43,16 +46,6 @@
                         type="text" class="form-control" [(ngModel)]="execution.name">
                 </td>
                 <td>
-                    <input name="time" id="periodicTime" placeholder="{{'main.process.trigger.time'|translate}}"
-                        type="time" class="form-control" [(ngModel)]="execution.periodicExecutions[0].time">
-                </td>
-                <td>
-                    <ng-multiselect-dropdown id="periodicExecution-{{indexExecution}}-days" [settings]="dropdownSettings"
-                        [data]="periodicWeekdays" [placeholder]="selectWeekdaysPlaceholder"
-                        [(ngModel)]="execution.periodicExecutions[0].daysArray" name="periodicExecution-{{indexExecution}}-days">
-                    </ng-multiselect-dropdown>
-                </td>
-                <td>
                     <ng-container *ngFor="let caseName of getCaseList(execution); let i = index">
                         <button *ngIf="i < 20" class="mr-2 btn-pill btn btn-light disabled btn-sm">
                             {{caseName}}
@@ -61,11 +54,25 @@
                             class="mr-2 btn-pill btn btn-light disabled btn-sm">...</button>
                     </ng-container>
                 </td>
-                {{execution.periodicExecutions[0]|json}}
+                <td>
+                    <input name="time" id="periodicTime" placeholder="{{'main.process.trigger.time'|translate}}"
+                        type="time" class="form-control" [(ngModel)]="execution.periodicExecutions[0].time">
+                </td>
+                <td>
+                    <ng-multiselect-dropdown id="periodicExecution-{{indexExecution}}-days" [settings]="dropdownSettings"
+                        [data]="periodicWeekdays" [placeholder]="selectWeekdaysPlaceholder"
+                        [(ngModel)]="execution.periodicExecutions[0].days" name="periodicExecution-{{indexExecution}}-days">
+                    </ng-multiselect-dropdown>
+                </td>
+                <td>
+                    <i class="hide icon fa fa-trash fa-1" title="" (click)="deletePeriodicExecution(execution, indexExecution)" style="cursor: pointer;"></i>
+                </td>
             </tr>
         </tbody>
     </table>
 
-    <button class="btn-wide  btn-icon btn btn-zahoriAz btn-sm" (click)="savePeriodicExecutions()">Guardar</button>
+    <div class="text-center">
+        <button class="btn-wide mt-3 mb-3 btn-icon btn btn-zahoriV btn-sm" (click)="savePeriodicExecutions()">Guardar</button>
+    </div>
 
 </div>
