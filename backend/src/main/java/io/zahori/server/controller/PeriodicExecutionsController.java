@@ -114,13 +114,41 @@ public class PeriodicExecutionsController {
                     for (PeriodicExecution periodicExecution : execution.getPeriodicExecutions()) {
                         Task task = new Task(periodicExecution.getUuid(), execution.getPeriodicExecutions().get(0).getCronExpression());
 
-                        try {
-                            restTemplate.put(zahoriSchedulerUrl, task);
-                            LOG.info("TASK UPDATED in SCHEDULER");
+                        if (periodicExecution.getActive()) {
+                            // 1. Add
+                            //      1.a OK
+                            //      1.b Error ya existe --> update
+                            try {
+                                // 1.a
+                                ResponseEntity<String> response = restTemplate.postForEntity(zahoriSchedulerUrl, task, String.class);
+                                LOG.info("TASK SCHEDULER response --> " + response.getStatusCode());
+                                LOG.info("TASK ADDED to SCHEDULER");
+                            } catch (Exception e) {
+                                // 1.b
+                                LOG.error("Error adding task {} to scheduler: {}", periodicExecution.getUuid(), e.getMessage());
+                                try {
+                                    restTemplate.put(zahoriSchedulerUrl, task);
+                                    LOG.info("TASK UPDATED in SCHEDULER");
 
-                        } catch (Exception e) {
-                            LOG.error("Error updating task {} in scheduler: {}", periodicExecution.getUuid(), e.getMessage());
+                                } catch (Exception ex) {
+                                    // TODO: que pasa si el shceduler está caído, se captura aquí?
+                                    LOG.error("Error updating task {} in scheduler: {}", periodicExecution.getUuid(), e.getMessage());
+                                }
+                            }
+                        } else {
+                            // 2. Delete
+                            //      2.a OK
+                            //      2.b Error no existe --> nada que hacer
+                            try {
+                                // 2.a
+                                restTemplate.delete(zahoriSchedulerUrl + "/" + periodicExecution.getUuid());
+                                LOG.info("TASK DELETED from SCHEDULER");
+                            } catch (Exception e) {
+                                // 2.b
+                                LOG.error("Error deleting task {} from scheduler: {}", periodicExecution.getUuid(), e.getMessage());
+                            }
                         }
+
                     }
                 }
             }
