@@ -23,16 +23,19 @@ package io.zahori.server.service;
  * #L%
  */
 import io.zahori.server.model.Execution;
+import io.zahori.server.model.PeriodicExecution;
 import io.zahori.server.model.PeriodicExecutionView;
+import io.zahori.server.model.Process;
+import io.zahori.server.model.Task;
 import io.zahori.server.repository.ExecutionsRepository;
 import io.zahori.server.repository.PeriodicExecutionsRepository;
+import java.util.List;
+import java.util.Optional;
+import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 /**
  * The type Execution service.
@@ -48,14 +51,10 @@ public class PeriodicExecutionService {
     @Autowired
     private ExecutionsRepository executionsRepository;
 
-    @Value("${zahori.scheduler.url:}")
-    private String zahoriSchedulerUrl;
-
-    private RestTemplate restTemplate;
-
     @Autowired
-    public PeriodicExecutionService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    private SchedulerService schedulerService;
+
+    public PeriodicExecutionService() {
     }
 
     public Iterable<Execution> getPeriodicExecutions(Long clientId, Long processId) {
@@ -63,18 +62,78 @@ public class PeriodicExecutionService {
     }
 
     public void loadSchedules() throws Exception {
-        Iterable<PeriodicExecutionView> tasks = periodicExecutionsRepository.findAllProjectedBy();
+        Iterable<PeriodicExecutionView> tasks = periodicExecutionsRepository.findAllProjectedByActive(true);
         for (PeriodicExecutionView task : tasks) {
-            ResponseEntity<String> response = null;
-            try {
-                response = restTemplate.postForEntity(zahoriSchedulerUrl, task, String.class);
-                LOG.info("Task added to scheduler {} --> {}", task, response.getStatusCode());
-                // TODO si alguna falla devolver error?
-            } catch (Exception e) {
-                // TODO: que pasa si el shceduler está caído, se captura aquí?
-                if (response != null) {
-                    LOG.error("Task not added to scheduler {} --> {}", task, response.getStatusCode());
+            schedulerService.create(new Task(task.getUuid(), task.getCronExpression()));
+        }
+    }
+
+    @Transactional
+    public Iterable<Execution> save(Long processId, List<Execution> executions) {
+        if (executions == null || executions.isEmpty()) {
+            return executions;
+        }
+
+        // TODO validar contra el scheduler
+        for (Execution execution : executions) {
+            Process process = new Process();
+            process.setProcessId(processId);
+            execution.setProcess(process);
+        }
+
+        Iterable<Execution> periodicExecutions = executionsRepository.saveAll(executions);
+
+        // Update tasks in scheduler
+        for (Execution execution : executions) {
+            if (execution.getPeriodicExecutions() != null) {
+                for (PeriodicExecution periodicExecution : execution.getPeriodicExecutions()) {
+                    // TODO get(0)
+                    Task task = new Task(periodicExecution.getUuid(), execution.getPeriodicExecutions().get(0).getCronExpression());
+
+                    Task taskInScheduler = schedulerService.get(task.getUuid());
+                    // Update
+                    if (periodicExecution.isActive() && taskInScheduler != null) {
+                        schedulerService.update(task);
+                    }
+                    // Create
+                    if (periodicExecution.isActive() && taskInScheduler == null) {
+                        schedulerService.create(task);
+                    }
+                    // Delete
+                    if (!periodicExecution.isActive() && taskInScheduler != null) {
+                        schedulerService.delete(task.getUuid());
+                    }
+                    //
+                    if (!periodicExecution.isActive() && taskInScheduler == null) {
+                        // nothing to do
+                    }
                 }
+            }
+        }
+
+        return periodicExecutions;
+    }
+
+    @Transactional
+    public void delete(Long executionId) {
+        // TODO incluir y validar clientId y processId
+
+        // get execution from db
+        Optional<Execution> optionalExecution = executionsRepository.findById(executionId);
+
+        if (optionalExecution.isEmpty()) {
+            // TODO throw exception 404
+            throw new RuntimeException("Execution not present");
+        }
+        Execution execution = optionalExecution.get();
+
+        // delete execution from DB
+        executionsRepository.deleteById(execution.getExecutionId());
+
+        // delete periodic executions from scheduler
+        if (execution.getPeriodicExecutions() != null) {
+            for (PeriodicExecution periodicExecution : execution.getPeriodicExecutions()) {
+                schedulerService.delete(periodicExecution.getUuid());
             }
         }
     }

@@ -85,7 +85,7 @@ public class PeriodicExecution implements Serializable {
         this.periodicExecutionId = periodicExecutionId;
     }
 
-    public boolean getActive() {
+    public boolean isActive() {
         return this.active;
     }
 
@@ -143,7 +143,7 @@ public class PeriodicExecution implements Serializable {
     }
 
     @JsonIgnore
-    public int getMinute() {
+    public int getMinutes() {
         String[] timeSplit = StringUtils.split(time, ':');
         if (timeSplit == null) {
             throw new RuntimeException("Invalid minutes");
@@ -167,7 +167,7 @@ public class PeriodicExecution implements Serializable {
 
     @JsonIgnore
     public String getCronExpression() {
-        return "0 " + getMinute() + " " + getHour() + " ? * " + getDays(days);
+        return "0 " + getMinutes() + " " + getHour() + " ? * " + getDays(days);
     }
 
     public UUID getUuid() {

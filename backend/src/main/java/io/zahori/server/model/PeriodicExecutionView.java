@@ -7,7 +7,7 @@ public abstract interface PeriodicExecutionView {
 
     UUID getUuid();
 
-    @Value("#{'0 ' + target.minute + ' ' + target.hour + ' ? * ' + target.days}")
+    @Value("#{'0 ' + target.minutes + ' ' + target.hour + ' ? * ' + target.days}")
     String getCronExpression();
 
 //    @Override

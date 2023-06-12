@@ -8,6 +8,10 @@ public class Task {
     private UUID uuid;
     private String cronExpression;
 
+    public Task() {
+
+    }
+
     public Task(UUID uuid, String cronExpression) {
         this.uuid = uuid;
         this.cronExpression = cronExpression;

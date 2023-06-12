@@ -11,5 +11,5 @@ public interface PeriodicExecutionsRepository extends CrudRepository<PeriodicExe
 
 //    @Query("select pe from PeriodicExecution pe inner join pe.process p where p.processId = :processId and p.client.clientId = :clientId ORDER BY pe.periodicExecutionId DESC")
 //    Iterable<PeriodicExecution> findByClientIdAndProcessId(@Param("clientId") Long clientId, @Param("processId") Long processId);
-    List<PeriodicExecutionView> findAllProjectedBy();
+    List<PeriodicExecutionView> findAllProjectedByActive(boolean active);
 }
