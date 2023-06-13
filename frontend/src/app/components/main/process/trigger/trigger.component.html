@@ -193,7 +193,7 @@
 									class="form-control" [(ngModel)]="execution.periodicExecutions[0].time">
 							</div>
 							
-							<ng-multiselect-dropdown id="periodicWeekdays" [settings]="dropdownSettings"
+							<ng-multiselect-dropdown id="periodicWeekdays" [settings]="periodicDropdownSettings"
 								[data]="periodicWeekdays" [placeholder]="selectWeekdaysPlaceholder"
 								[(ngModel)]="selectedWeekdays" name="selectedWeekdays">
 							</ng-multiselect-dropdown>
@@ -263,12 +263,12 @@
 			<span *ngIf="scheduled">
 				<div class="text-center mt-2">
 					<div>
-						<span>Ejecución programada<i class="ml-2 fas fa-check text-success" aria-hidden="true"></i></span>
+						<span>{{'main.process.trigger.executionScheduledOk'|translate}}<i class="ml-2 fas fa-check text-success" aria-hidden="true"></i></span>
 					</div>
 					<div>
-						<span>Puedes gestionarla en el 
+						<span>{{'main.process.trigger.executionScheduledOkDetail'|translate}}
 							<a routerLink="../scheduler"
-								routerLinkActive="linkActive">programador<strong>
+								routerLinkActive="linkActive">{{'main.process.processMenu.scheduler'|translate}}<strong>
 								</strong></a>
 						</span>
 					</div>

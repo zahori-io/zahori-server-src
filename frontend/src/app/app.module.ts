@@ -56,7 +56,7 @@ import { ProfileComponent } from './components/main/profile/profile.component';
 import { ProfileMenuComponent } from './components/main/profile/profile-menu/profile-menu.component';
 import { ProfileChangePasswordComponent } from './components/main/profile/profile-change-password/profile-change-password.component';
 import { PaginationComponent } from './components/utils/pagination/pagination.component';
-import { SchedulerComponent } from './components/main/scheduler/scheduler.component';
+import { SchedulerComponent } from './components/main/process/scheduler/scheduler.component';
 
 @NgModule({
   declarations: [

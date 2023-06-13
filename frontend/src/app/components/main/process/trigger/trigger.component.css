@@ -65,6 +65,10 @@
   color: dimgrey!important;
 }
 
+ng-multiselect-dropdown {
+  width: 100%;
+}
+
 :host ::ng-deep .multiselect-dropdown {
   border: 1px solid #eee!important;
   background-color: #fff!important;

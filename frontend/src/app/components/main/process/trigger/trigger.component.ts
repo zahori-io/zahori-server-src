@@ -37,7 +37,7 @@ export class TriggerComponent implements OnInit {
   // Peridodic executions
   periodicWeekdays: string[] = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
   selectedWeekdays: string[] = [];
-  periodicDropdownSettings = {};
+  periodicDropdownSettings: IDropdownSettings = {};
   selectWeekdaysPlaceholder: string;
 
   constructor(
@@ -67,14 +67,14 @@ export class TriggerComponent implements OnInit {
       selectAllText: this.translate.instant('main.process.trigger.selectAllResolutions'),
       unSelectAllText: this.translate.instant('main.process.trigger.unselectAllResolutions')
     };
-    this.selectWeekdaysPlaceholder = "Selecciona los días";
+    this.selectWeekdaysPlaceholder = this.translate.instant('main.process.scheduler.daysPlaceholder');
     this.periodicDropdownSettings = {
       idField: 'widthAndHeight',
       textField: 'nameToDisplay',
-      noDataAvailablePlaceholderText: this.translate.instant('main.process.trigger.noResolutionsAvailable'),
+      noDataAvailablePlaceholderText: this.translate.instant('main.process.scheduler.daysNotAvailable'),
       enableCheckAll: true,
-      selectAllText: this.translate.instant('main.process.trigger.selectAllResolutions'),
-      unSelectAllText: this.translate.instant('main.process.trigger.unselectAllResolutions')
+      selectAllText: this.translate.instant('main.process.scheduler.daysSelectAll'),
+      unSelectAllText: this.translate.instant('main.process.scheduler.daysUnselectAll')
     };
   }
 
