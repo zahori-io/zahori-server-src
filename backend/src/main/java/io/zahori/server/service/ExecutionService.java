@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -171,7 +172,7 @@ public class ExecutionService {
                 execution.setTotalFailed(0);
                 execution.setTotalPassed(0);
                 execution.setStatus(SCHEDULED);
-                execution.setDate(new SimpleDateFormat(DATE_FORMAT).format(new Date()));
+                execution.setDate(getTimestamp());
 
                 for (CaseExecution caseExecution : execution.getCasesExecutions()) {
                     caseExecution.setStatus(SCHEDULED);
@@ -224,7 +225,11 @@ public class ExecutionService {
         execution.setTotalFailed(0);
         execution.setTotalPassed(0);
         execution.setStatus(CREATED);
-        execution.setDate(new SimpleDateFormat(DATE_FORMAT).format(new Date()));
+        execution.setDate(getTimestamp());
+        if (StringUtils.isBlank(execution.getName())) {
+            execution.setName(getTimestamp());
+        }
+
         for (CaseExecution caseExecution : execution.getCasesExecutions()) {
             caseExecution.setStatus(PENDING);
         }
@@ -411,4 +416,7 @@ public class ExecutionService {
         }
     }
 
+    private String getTimestamp() {
+        return new SimpleDateFormat(DATE_FORMAT).format(new Date());
+    }
 }

@@ -181,51 +181,24 @@
 							<span>{{'main.process.trigger.periodic'|translate}}</span>
 							<div class="ml-2 custom-control custom-switch">
 								<input type="checkbox" class="custom-control-input" id="periodic"
-									(change)="enablePeriodicExecution($event)" [checked]="execution.periodicExecutions && execution.periodicExecutions.length > 0">
+									(change)="enablePeriodicExecution($event)" [checked]="periodicExecutionActivated">
 								<label class="custom-control-label " for="periodic"></label>
 							</div>
 						</div>
 
-						<div class="d-flex mt-3" *ngIf="execution.periodicExecutions && execution.periodicExecutions.length > 0">
-							<div>
-								<input name="time" id="periodicTime"
-									placeholder="{{'main.process.trigger.time'|translate}}" type="time"
-									class="form-control" [(ngModel)]="execution.periodicExecutions[0].time">
+						<div *ngIf="periodicExecutionActivated">
+							<div class="d-flex mt-3" *ngFor="let periodicExecution of execution.periodicExecutions; index as indexPeriodicExecution; last as lastPeriodicExecution;">
+								<div>
+									<input name="periodicExecution-{{indexPeriodicExecution}}.time" id="periodicExecution-{{indexPeriodicExecution}}.time"
+										placeholder="{{'main.process.trigger.time'|translate}}" type="time"
+										class="form-control" [(ngModel)]="periodicExecution.time">
+								</div>
+								
+								<ng-multiselect-dropdown id="periodicExecution-{{indexPeriodicExecution}}.days" [settings]="periodicDropdownSettings"
+									[data]="periodicWeekdays" [placeholder]="selectWeekdaysPlaceholder"
+									[(ngModel)]="periodicExecution.days" name="periodicExecution-{{indexPeriodicExecution}}.days">
+								</ng-multiselect-dropdown>
 							</div>
-							
-							<ng-multiselect-dropdown id="periodicWeekdays" [settings]="periodicDropdownSettings"
-								[data]="periodicWeekdays" [placeholder]="selectWeekdaysPlaceholder"
-								[(ngModel)]="selectedWeekdays" name="selectedWeekdays">
-							</ng-multiselect-dropdown>
-
-							<!-- 
-							<div class="mt-4 pt-3 ml-3 d-flex">
-								<div class="custom-checkbox custom-control  mr-2">
-									<input type="checkbox" id="DayCheckbox1" class="custom-control-input">
-									<label class="custom-control-label" for="DayCheckbox1">L</label>
-								</div>
-								<div class="custom-checkbox custom-control mr-2">
-									<input type="checkbox" id="DayCheckbox2" class="custom-control-input">
-									<label class="custom-control-label" for="DayCheckbox2">M</label>
-								</div>
-
-								<div class="custom-checkbox custom-control mr-2">
-									<input type="checkbox" id="DayCheckbox3" class="custom-control-input">
-									<label class="custom-control-label" for="DayCheckbox3">X</label>
-								</div>
-
-								<div class="custom-checkbox custom-control mr-2">
-									<input type="checkbox" id="DayCheckbox4" class="custom-control-input">
-									<label class="custom-control-label" for="DayCheckbox4">J</label>
-								</div>
-
-								<div class="custom-checkbox custom-control mr-2">
-									<input type="checkbox" id="DayCheckbox5" class="custom-control-input">
-									<label class="custom-control-label" for="DayCheckbox5">V</label>
-								</div>
-							</div>
-							-->
-
 						</div>
 					</div>
 				</form>

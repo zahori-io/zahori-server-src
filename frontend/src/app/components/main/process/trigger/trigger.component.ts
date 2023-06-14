@@ -35,8 +35,8 @@ export class TriggerComponent implements OnInit {
   dropdownSettings: IDropdownSettings = {};
   selectResolutionPlaceholder: string;
   // Peridodic executions
+  periodicExecutionActivated: boolean = false;
   periodicWeekdays: string[] = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-  selectedWeekdays: string[] = [];
   periodicDropdownSettings: IDropdownSettings = {};
   selectWeekdaysPlaceholder: string;
 
@@ -151,8 +151,8 @@ export class TriggerComponent implements OnInit {
   }
 
   clearPeriodicExecutions() {
+    this.periodicExecutionActivated = false;
     this.execution.periodicExecutions = [];
-    this.selectedWeekdays = [];
   }
 
   deselectCase(processCase: Case): void {
@@ -169,12 +169,6 @@ export class TriggerComponent implements OnInit {
     // execution name
     if (!this.execution.name) {
       this.execution.name = this.getTimestampPlaceholder();
-    }
-
-    // periodic execution
-    if (this.execution.periodicExecutions && this.execution.periodicExecutions.length > 0 && this.execution.periodicExecutions[0].active) {
-      //this.execution.periodicExecutions[0].days = this.selectedWeekdays.join(',');
-      this.execution.periodicExecutions[0].days = this.selectedWeekdays;
     }
 
     // Create caseExecutions
@@ -213,14 +207,8 @@ export class TriggerComponent implements OnInit {
     this.dataService.createExecution(this.execution).subscribe(
       () => {
         this.loading = false;
-
-        if (this.execution.periodicExecutions && this.execution.periodicExecutions.length > 0 && this.execution.periodicExecutions[0].active) {
-          this.scheduled = true;
-          this.created = false;
-        } else {
-          this.scheduled = false;
-          this.created = true;
-        }
+        this.scheduled = this.periodicExecutionActivated;
+        this.created = !this.periodicExecutionActivated;
 
         this.newExecution();
         this.error = '';
@@ -243,7 +231,7 @@ export class TriggerComponent implements OnInit {
       || (this.tms.isActivated(this.getSelectedConfiguration(this.execution.configuration.configurationId))
         && this.tms.requiresTestExecutionId(this.getSelectedConfiguration(this.execution.configuration.configurationId))
         && !this.execution.tmsTestExecutionId)
-
+      || (this.periodicExecutionActivated && (this.execution.periodicExecutions.length == 0 || this.execution.periodicExecutions[0].time == "" || this.execution.periodicExecutions[0].days.length == 0))
     );
   }
 
@@ -277,11 +265,16 @@ export class TriggerComponent implements OnInit {
 
   enablePeriodicExecution(event: any): void {
     this.clearPeriodicExecutions();
-    if (event.currentTarget.checked) {
-      let periodicExecution = new PeriodicExecution();
-      periodicExecution.active = true;
-      this.execution.periodicExecutions.push(periodicExecution);
+    this.periodicExecutionActivated = event.currentTarget.checked;
+    if (this.periodicExecutionActivated) {
+      this.addNewPeriodicExecution();
     }
+  }
+
+  addNewPeriodicExecution(){
+    let periodicExecution = new PeriodicExecution();
+    periodicExecution.active = true;
+    this.execution.periodicExecutions.push(periodicExecution);
   }
 
   onTagClick(tag: Tag): void {

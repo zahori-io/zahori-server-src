@@ -393,7 +393,7 @@
 				"scheduler": "Scheduler"
 			},
 			"trigger": {
-				"ErrorOnCreateExecution": "Error creating run",
+				"ErrorOnCreateExecution": "Error creating the execution",
 				"SelectResolutions": "Select resolutions",
 				"browsers": "Browsers",
 				"canYouSeeIn": "You can see it in",
@@ -441,8 +441,11 @@
 				"deleteMessageOk": "Schedule removed",
 				"deleteTitle": "Remove schedule: ",
 				"deleteWarning": "This action cannot be undone",
+				"formError": "Fill in the required fields",
 				"moreCases": "more cases...",
 				"name": "Name",
+				"namePlaceholder": "yyyy-mm-dd hh:mm",
+				"nameTitle": "Leave blank to use the timestamp as the execution name",
 				"noSchedules": "No scheduled executions, you can schedule one using the ",
 				"noSchedulesAction": "trigger",
 				"resolutions": "Resolutions",

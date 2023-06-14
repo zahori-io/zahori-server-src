@@ -15,6 +15,6 @@ export class Execution {
     casesExecutions: CaseExecution[];
     configuration: Configuration;
     process: Process;
-    periodicExecutions: PeriodicExecution[];
+    periodicExecutions: PeriodicExecution[] = [];
     tmsTestExecutionId: string;
 }

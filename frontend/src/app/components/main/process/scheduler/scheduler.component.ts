@@ -19,11 +19,11 @@ export class SchedulerComponent implements OnInit {
 
   executions: Execution[] = [];
   periodicWeekdays: String[] = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
-  periodicDropdownSettings: IDropdownSettings  = {};
+  periodicDropdownSettings: IDropdownSettings = {};
   selectWeekdaysPlaceholder: string;
   banner: BannerOptions;
   resolutions: Map<string, string> = new Map<string, string>(); // <"widthAndHeight", "name">
-  
+
   constructor(
     public dataService: DataService,
     private translate: TranslateService
@@ -55,11 +55,16 @@ export class SchedulerComponent implements OnInit {
   }
 
   savePeriodicExecutions() {
+    if (this.invalidForm()) {
+      this.banner = new BannerOptions(this.translate.instant('main.process.scheduler.formError'), '', ERROR_COLOR, true);
+      return;
+    }
+
     this.dataService.savePeriodicExecutions(this.executions).subscribe(
       (executions) => {
         console.log('Schedules saved');
         this.executions = executions;
-                    
+
         this.banner = new BannerOptions(this.translate.instant('main.process.scheduler.saveMessageOk'), '', SUCCESS_COLOR, true);
       },
       (error) => {
@@ -142,7 +147,7 @@ export class SchedulerComponent implements OnInit {
 
   getScreenResolutionName(screenResolution: string): string {
     const resolutionName = this.resolutions.get(screenResolution);
-    if (resolutionName && resolutionName !== ''){
+    if (resolutionName && resolutionName !== '') {
       return resolutionName;
     } else {
       return screenResolution;
@@ -152,9 +157,20 @@ export class SchedulerComponent implements OnInit {
   getResolutions(): void {
     this.dataService.getResolutions(this.dataService.processSelected.processId).subscribe(
       resolutions => {
-        this.resolutions = new Map(resolutions.map(resolution => [resolution.width + 'x' +resolution.height, resolution.name]));
+        this.resolutions = new Map(resolutions.map(resolution => [resolution.width + 'x' + resolution.height, resolution.name]));
       }
     );
   }
-  
+
+  invalidForm(): boolean {
+    for (let execution of this.executions) {
+      for (let periodicExecution of execution.periodicExecutions) {
+        if (!periodicExecution.time || periodicExecution.time == "" || !periodicExecution.days || periodicExecution.days.length == 0) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
 }
