@@ -68,8 +68,8 @@ public class ExecutionService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExecutionService.class);
 
-    private static final String PASSED = "Passed";
-    private static final String FAILED = "Failed";
+    private static final String PASSED = "PASSED";
+    private static final String FAILED = "FAILED";
     private static final String PENDING = "Pending";
     private static final String CREATED = "Created";
     private static final String SCHEDULED = "Scheduled";
@@ -136,7 +136,6 @@ public class ExecutionService {
 
         newExecution.setExecutionId(null);
         newExecution.setDate("");
-        newExecution.setPeriodicExecutions(null);
         newExecution.setTrigger(TRIGGER_SCHEDULER);
 
         newExecution.setCasesExecutions(new ArrayList<>());
@@ -215,30 +214,27 @@ public class ExecutionService {
         /* Verify if process is registered in the serviceRegistry */
         String serviceId = serviceRegistry.getServiceId(process);
         if (!serviceRegistry.isServiceRegistered(serviceId)) {
-            // TODO: i18nEl proceso no existe en la base de datos
+
+            if (isPeriodicExecution(execution)) {
+                execution.setDurationSeconds(0);
+                execution.setDate(getTimestamp());
+                for (CaseExecution caseExecution : execution.getCasesExecutions()) {
+                    caseExecution.setDate(getTimestamp());
+                    caseExecution.setDurationSeconds(0);
+                }
+                return updateExecutionInDB(execution, FAILURE, FAILED, "Process is offline");
+            }
+
+            // TODO: i18n
             String processNotReadyError = "El proceso parece estar offline! Si el proceso se inició recientemente vuelve a intentarlo pasados unos segundos, sino revisa que el proceso esté arrancado.";
-//              TODO: si la ejecución es periódica sí guardarla en BD como Fallada e indicar que el proceso estaba offline
             throw new RuntimeException(processNotReadyError);
         }
 
-        /* Set execution details */
-        execution.setTotalFailed(0);
-        execution.setTotalPassed(0);
-        execution.setStatus(CREATED);
-        execution.setDate(getTimestamp());
-        if (StringUtils.isBlank(execution.getName())) {
-            execution.setName(getTimestamp());
-        }
-
-        for (CaseExecution caseExecution : execution.getCasesExecutions()) {
-            caseExecution.setStatus(PENDING);
-        }
-
-        // Create execution in database
-        execution = executionsRepository.save(execution);
+        // Verify if process is running: the process is stopped or there is no connectivity
+        // Update execution in DB
+        updateExecutionInDB(execution, CREATED, PENDING);
 
         // Call process
-//        serviceId = "127.0.0.1:5555";
         runProcess(serviceId, process, execution);
 
         // Delegate to SelenoidService watch for each case execution in Selenoid
@@ -247,6 +243,30 @@ public class ExecutionService {
         }
 
         return execution;
+    }
+
+    private Execution updateExecutionInDB(Execution execution, String executionStatus, String caseStatus) {
+        return updateExecutionInDB(execution, executionStatus, caseStatus, "");
+    }
+
+    private Execution updateExecutionInDB(Execution execution, String executionStatus, String caseStatus, String caseNotes) {
+        /* Set execution details */
+        execution.setTotalFailed(0);
+        execution.setTotalPassed(0);
+        execution.setStatus(executionStatus);
+        execution.setDate(getTimestamp());
+        execution.setPeriodicExecutions(null);
+        if (StringUtils.isBlank(execution.getName())) {
+            execution.setName(getTimestamp());
+        }
+
+        for (CaseExecution caseExecution : execution.getCasesExecutions()) {
+            caseExecution.setStatus(caseStatus);
+            caseExecution.setNotes(caseNotes);
+        }
+
+        // Create execution in database
+        return executionsRepository.save(execution);
     }
 
     private void runProcess(String serviceId, Process process, Execution execution) {
@@ -265,18 +285,6 @@ public class ExecutionService {
         List<CaseExecution> casesExecuted = new ArrayList<>();
         long startExecutionTime = System.currentTimeMillis();
 
-        LOG.info("................. enviando petición al proceso: " + serviceId);
-
-        ///////////
-//        for (CaseExecution caseExecution : execution.getCasesExecutions()) {
-//            HttpEntity<CaseExecution> request = new HttpEntity<>(caseExecution);
-//            String response = new RestTemplate().postForObject("http://localhost:5555/run", request, String.class);
-//
-//            if (true) {
-//                return;
-//            }
-//        }
-        ///////////
         //////// print object as json
 //        ObjectMapper mapper = new ObjectMapper();
 //        String json = "";
@@ -418,5 +426,9 @@ public class ExecutionService {
 
     private String getTimestamp() {
         return new SimpleDateFormat(DATE_FORMAT).format(new Date());
+    }
+
+    public boolean isPeriodicExecution(Execution execution) {
+        return execution.getPeriodicExecutions() != null && !execution.getPeriodicExecutions().isEmpty();
     }
 }

@@ -255,7 +255,7 @@ public class ProcessesController {
         try {
             LOG.info("create execution controller");
 
-            if (execution.getPeriodicExecutions() != null && !execution.getPeriodicExecutions().isEmpty()) {
+            if (executionService.isPeriodicExecution(execution)) {
                 execution = executionService.createPeriodicExecution(execution);
             } else {
                 execution = executionService.runManualExecution(execution);
