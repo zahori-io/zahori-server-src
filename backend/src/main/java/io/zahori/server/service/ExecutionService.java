@@ -27,6 +27,7 @@ import io.zahori.server.model.ClientTestRepo;
 import io.zahori.server.model.Configuration;
 import io.zahori.server.model.EvidenceType;
 import io.zahori.server.model.Execution;
+import io.zahori.server.model.PeriodicExecution;
 import io.zahori.server.model.Process;
 import io.zahori.server.model.Task;
 import io.zahori.server.repository.CaseExecutionsRepository;
@@ -47,15 +48,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.loadbalancer.reactive.ReactorLoadBalancerExchangeFilterFunction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
@@ -80,9 +79,6 @@ public class ExecutionService {
     private static final String TRIGGER_SCHEDULER = "Scheduler";
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
-    @Value("${zahori.scheduler.url:}")
-    private String zahoriSchedulerUrl;
-
     private ExecutionsRepository executionsRepository;
     private ProcessesRepository processesRepository;
     private ServiceRegistry serviceRegistry;
@@ -90,12 +86,12 @@ public class ExecutionService {
     private CaseExecutionsRepository caseExecutionsRepository;
     private ConfigurationRepository configurationRepository;
     private ReactorLoadBalancerExchangeFilterFunction reactorLoadBalancer;
-    private RestTemplate restTemplate;
+    private SchedulerService schedulerService;
 
     @Autowired
     public ExecutionService(ExecutionsRepository executionsRepository, ProcessesRepository processesRepository, ServiceRegistry serviceRegistry,
             SelenoidService selenoidService, CaseExecutionsRepository caseExecutionsRepository, ConfigurationRepository configurationRepository,
-            ReactorLoadBalancerExchangeFilterFunction reactorLoadBalancer, RestTemplate restTemplate) {
+            ReactorLoadBalancerExchangeFilterFunction reactorLoadBalancer, SchedulerService schedulerService) {
         this.executionsRepository = executionsRepository;
         this.processesRepository = processesRepository;
         this.serviceRegistry = serviceRegistry;
@@ -103,7 +99,7 @@ public class ExecutionService {
         this.caseExecutionsRepository = caseExecutionsRepository;
         this.configurationRepository = configurationRepository;
         this.reactorLoadBalancer = reactorLoadBalancer;
-        this.restTemplate = restTemplate;
+        this.schedulerService = schedulerService;
     }
 
     public Iterable<Execution> getExecutions(Long clientId, Long processId) {
@@ -119,12 +115,12 @@ public class ExecutionService {
         return executionsRepository.findById(executionId);
     }
 
-    public Execution runManualExecution(Execution execution) throws Exception {
+    public Execution runManualExecution(Execution execution) {
         execution.setTrigger(TRIGGER_MANUAL);
         return create(execution);
     }
 
-    public Execution runPeriodicExecution(UUID uuid) throws Exception {
+    public Execution runPeriodicExecution(UUID uuid) {
         Execution executionFromDB = executionsRepository.findByPeriodicExecutionUuid(uuid);
         if (executionFromDB == null) {
             // TODO devolver un 400 en lugar de un 500
@@ -155,49 +151,33 @@ public class ExecutionService {
         return create(newExecution);
     }
 
-    public Execution createPeriodicExecution(Execution execution) throws Exception {
-        UUID uuid = UUID.randomUUID();
-        execution.getPeriodicExecutions().get(0).setUuid(uuid);
+    @Transactional
+    public Execution createPeriodicExecution(Execution execution) {
+        schedulerService.validateSchedulerIsUp();
 
-        LOG.info("---------------- cron: " + execution.getPeriodicExecutions().get(0).getCronExpression());
-        Task task = new Task(uuid, execution.getPeriodicExecutions().get(0).getCronExpression());
-
-        try {
-            // TODO implement validate endpoint in scheduler to test before adding to scheduler
-            ResponseEntity<String> response = restTemplate.postForEntity(zahoriSchedulerUrl, task, String.class);
-            LOG.info("TASK SCHEDULER response --> " + response.getStatusCode());
-
-            if (response.getStatusCode().is2xxSuccessful()) {
-                execution.setTotalFailed(0);
-                execution.setTotalPassed(0);
-                execution.setStatus(SCHEDULED);
-                execution.setDate(getTimestamp());
-
-                for (CaseExecution caseExecution : execution.getCasesExecutions()) {
-                    caseExecution.setStatus(SCHEDULED);
-                }
-            } else {
-                // TODO diferenciar 2 errores:
-                // - que el scheduler esté caido (hacer un ping antes)
-                // - que falle al programar la tarea (implementar este último antes con un validateCron)
-                throw new RuntimeException("Error al crear la ejecución programada");
-            }
-        } catch (Exception e) {
-            // TODO: que pasa si el shceduler está caído, se captura aquí?
-            LOG.error("Error from task scheduler: " + e.getMessage());
-            throw new RuntimeException("Error al crear la ejecución programada: " + e.getMessage());
+        List<Task> tasks = new ArrayList<>();
+        for (PeriodicExecution periodicExecution : execution.getPeriodicExecutions()) {
+            UUID uuid = UUID.randomUUID();
+            periodicExecution.setUuid(uuid);
+            Task task = new Task(periodicExecution.getUuid(), periodicExecution.getCronExpression());
+            tasks.add(task);
         }
 
-        Execution savedExecution = null;
-        try {
-            executionsRepository.save(execution);
-        } catch (Exception e) {
-            // Cancel task in scheduler
-            restTemplate.delete(zahoriSchedulerUrl + "/" + task.getUuid());
-            throw e;
+        execution.setTotalFailed(0);
+        execution.setTotalPassed(0);
+        execution.setStatus(SCHEDULED);
+        execution.setDate(getTimestamp());
+        for (CaseExecution caseExecution : execution.getCasesExecutions()) {
+            caseExecution.setStatus(SCHEDULED);
         }
 
-        return execution;
+        Execution savedExecution = executionsRepository.save(execution);
+
+        for (Task task : tasks) {
+            schedulerService.create(task);
+        }
+
+        return savedExecution;
     }
 
     private Process getProcessFromDB(Long processId) {
@@ -208,7 +188,7 @@ public class ExecutionService {
         return processOpt.get();
     }
 
-    public Execution create(Execution execution) throws Exception {
+    public Execution create(Execution execution) {
         Process process = getProcessFromDB(execution.getProcess().getProcessId());
 
         /* Verify if process is registered in the serviceRegistry */

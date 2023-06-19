@@ -68,7 +68,7 @@ export class SchedulerComponent implements OnInit {
         this.banner = new BannerOptions(this.translate.instant('main.process.scheduler.saveMessageOk'), '', SUCCESS_COLOR, true);
       },
       (error) => {
-        this.banner = new BannerOptions(this.translate.instant('main.process.scheduler.saveMessageKo'), error.message, ERROR_COLOR, true);
+        this.banner = new BannerOptions(this.translate.instant('main.process.scheduler.saveMessageKo'), error.error, ERROR_COLOR, true);
       }
     );
   }
@@ -92,7 +92,7 @@ export class SchedulerComponent implements OnInit {
             this.executions.splice(index, 1);
           },
           (error) => {
-            this.banner = new BannerOptions(this.translate.instant('main.process.scheduler.deleteMessageKo'), error.message, ERROR_COLOR, true);
+            this.banner = new BannerOptions(this.translate.instant('main.process.scheduler.deleteMessageKo'), error.error, ERROR_COLOR, true);
           }, () => {
             this.banner = new BannerOptions(this.translate.instant('main.process.scheduler.deleteMessageOk'), '', SUCCESS_COLOR, true);
           }

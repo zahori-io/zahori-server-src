@@ -31,11 +31,11 @@ import io.zahori.server.repository.ExecutionsRepository;
 import io.zahori.server.repository.PeriodicExecutionsRepository;
 import java.util.List;
 import java.util.Optional;
-import javax.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * The type Execution service.
@@ -74,49 +74,54 @@ public class PeriodicExecutionService {
             return executions;
         }
 
-        // TODO validar contra el scheduler
+        // Validate scheduler is up
+        schedulerService.validateSchedulerIsUp();
+
+        // TODO validate processId and clientId
         for (Execution execution : executions) {
             Process process = new Process();
             process.setProcessId(processId);
             execution.setProcess(process);
         }
 
-        Iterable<Execution> periodicExecutions = executionsRepository.saveAll(executions);
+        Iterable<Execution> executionsSavedInDB = executionsRepository.saveAll(executions);
 
         // Update tasks in scheduler
-        for (Execution execution : executions) {
+        for (Execution execution : executionsSavedInDB) {
             if (execution.getPeriodicExecutions() != null) {
                 for (PeriodicExecution periodicExecution : execution.getPeriodicExecutions()) {
-                    // TODO get(0)
-                    Task task = new Task(periodicExecution.getUuid(), execution.getPeriodicExecutions().get(0).getCronExpression());
+                    Task task = new Task(periodicExecution.getUuid(), periodicExecution.getCronExpression());
 
-                    Task taskInScheduler = schedulerService.get(task.getUuid());
+                    boolean taskIsInScheduler = schedulerService.isTaskScheduled(task.getUuid());
                     // Update
-                    if (periodicExecution.isActive() && taskInScheduler != null) {
+                    if (periodicExecution.isActive() && taskIsInScheduler) {
                         schedulerService.update(task);
                     }
                     // Create
-                    if (periodicExecution.isActive() && taskInScheduler == null) {
+                    if (periodicExecution.isActive() && !taskIsInScheduler) {
                         schedulerService.create(task);
                     }
                     // Delete
-                    if (!periodicExecution.isActive() && taskInScheduler != null) {
+                    if (!periodicExecution.isActive() && taskIsInScheduler) {
                         schedulerService.delete(task.getUuid());
                     }
                     //
-                    if (!periodicExecution.isActive() && taskInScheduler == null) {
+                    if (!periodicExecution.isActive() && !taskIsInScheduler) {
                         // nothing to do
                     }
                 }
             }
         }
 
-        return periodicExecutions;
+        return executionsSavedInDB;
     }
 
     @Transactional
     public void delete(Long executionId) {
-        // TODO incluir y validar clientId y processId
+        // TODO include and validate processId and clientId
+
+        // Validate scheduler is up
+        schedulerService.validateSchedulerIsUp();
 
         // get execution from db
         Optional<Execution> optionalExecution = executionsRepository.findById(executionId);
@@ -133,7 +138,9 @@ public class PeriodicExecutionService {
         // delete periodic executions from scheduler
         if (execution.getPeriodicExecutions() != null) {
             for (PeriodicExecution periodicExecution : execution.getPeriodicExecutions()) {
-                schedulerService.delete(periodicExecution.getUuid());
+                if (schedulerService.isTaskScheduled(periodicExecution.getUuid())) {
+                    schedulerService.delete(periodicExecution.getUuid());
+                }
             }
         }
     }

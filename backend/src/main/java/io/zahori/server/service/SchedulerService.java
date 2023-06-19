@@ -48,28 +48,42 @@ public class SchedulerService {
 
     }
 
+    public void validateSchedulerIsUp() {
+        try {
+            ResponseEntity<String> response = restTemplate.getForEntity(zahoriSchedulerUrl + "healthcheck", String.class);
+            LOG.info("Scheduler is up --> {}", response.getStatusCode());
+        } catch (Exception e) {
+            LOG.error("Scheduler is offline");
+            throw new RuntimeException("Scheduler is offline");
+        }
+    }
+
+    public boolean isTaskScheduled(UUID uuid) {
+        try {
+            Task task = get(uuid);
+            LOG.debug("{} is present in the scheduler", task);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public Task get(UUID uuid) {
         try {
             ResponseEntity<Task> response = restTemplate.getForEntity(zahoriSchedulerUrl + uuid, Task.class);
             LOG.info("Get task {} from scheduler --> {}", uuid, response.getStatusCode());
             return response.getBody();
         } catch (Exception e) {
-            LOG.error("Error getting task {} from scheduler: {}", uuid, e.getMessage());
-            return null;
+            throw new RuntimeException("Error getting task " + uuid + " from scheduler: " + e.getMessage());
         }
     }
 
     public void create(Task task) {
-        ResponseEntity<String> response = null;
         try {
-            response = restTemplate.postForEntity(zahoriSchedulerUrl, task, String.class);
+            ResponseEntity<String> response = restTemplate.postForEntity(zahoriSchedulerUrl, task, String.class);
             LOG.info("Task added to scheduler {} --> {}", task, response.getStatusCode());
-            // TODO si alguna falla devolver error?
         } catch (Exception e) {
-            // TODO: que pasa si el shceduler está caído, se captura aquí?
-            if (response != null) {
-                LOG.error("Error creating {} in scheduler --> {}: {}", task, response.getStatusCode(), e.getMessage());
-            }
+            throw new RuntimeException("Error creating task in scheduler: " + e.getMessage());
         }
     }
 
@@ -77,10 +91,8 @@ public class SchedulerService {
         try {
             restTemplate.put(zahoriSchedulerUrl, task);
             LOG.info("Task updated in scheduler {}", task);
-            // TODO si alguna falla devolver error?
         } catch (Exception e) {
-            // TODO: que pasa si el shceduler está caído, se captura aquí?
-            LOG.error("Error updating {} in scheduler --> {}", task, e.getMessage());
+            throw new RuntimeException("Error updating task in scheduler: " + e.getMessage());
         }
     }
 
@@ -89,7 +101,7 @@ public class SchedulerService {
             restTemplate.delete(zahoriSchedulerUrl + "/" + uuid);
             LOG.info("Task deleted from scheduler {}", uuid);
         } catch (Exception e) {
-            LOG.error("Error deleting task {} from scheduler: {}", uuid, e.getMessage());
+            throw new RuntimeException("Error deleting task in scheduler: " + e.getMessage());
         }
     }
 }
