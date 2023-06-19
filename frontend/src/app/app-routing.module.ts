@@ -24,6 +24,7 @@ import { ProcessAdminComponent } from './components/main/process/process-admin/p
 import { SignupComponent } from './components/signup/signup.component';
 import { AdminResolutionsComponent } from './components/main/process/process-admin/admin-resolutions/admin-resolutions.component';
 import { ProfileChangePasswordComponent } from './components/main/profile/profile-change-password/profile-change-password.component';
+import { SchedulerComponent } from './components/main/process/scheduler/scheduler.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -39,6 +40,7 @@ const routes: Routes = [
         children: [
           { path: 'executions', component: ExecutionsComponent },
           { path: 'trigger', component: TriggerComponent },
+          { path: 'scheduler', component: SchedulerComponent },
           { path: 'configurator', component: ConfiguratorComponent },
           { path: 'cases', component: CasesComponent },
           {

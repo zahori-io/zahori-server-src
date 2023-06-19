@@ -1,0 +1,90 @@
+<banner [banner]="banner" (click)="closeBanner()"></banner>
+
+<div class="app-main__inner">
+
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div>{{'main.process.scheduler.title'|translate}}</div>
+            </div>
+        </div>
+    </div>
+
+    <table class="mb-0 table">
+        <thead>
+            <tr>
+                <th>{{'main.process.scheduler.active'|translate}}</th>
+                <th>{{'main.process.scheduler.name'|translate}}</th>
+                <th>{{'main.process.scheduler.cases'|translate}}</th>
+                <th *ngIf="dataService.isWebProcess()">{{'main.process.scheduler.browsers'|translate}}</th>
+                <th *ngIf="dataService.isWebProcess()">{{'main.process.scheduler.resolutions'|translate}}</th>
+                <th>{{'main.process.scheduler.time'|translate}}*</th>
+                <th>{{'main.process.scheduler.days'|translate}}*</th>
+                <th>{{'main.process.scheduler.actions'|translate}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngIf="executions.length == 0">
+                <td class="text-center" colspan="8">{{'main.process.scheduler.noSchedules'|translate}} <a
+                        routerLink="../trigger"><strong>{{'main.process.scheduler.noSchedulesAction'|translate}}</strong></a>
+                </td>
+            </tr>
+            <tr *ngFor="let execution of executions; index as indexExecution; last as lastExecution;">
+                <td>
+                    <div class="ml-2 custom-control custom-switch">
+                        <input type="checkbox" [(ngModel)]="execution.periodicExecutions[0].active"
+                            name="periodicExecution-{{execution.periodicExecutions[0].periodicExecutionId}}"
+                            id="periodicExecution-{{execution.periodicExecutions[0].periodicExecutionId}}"
+                            [checked]="execution.periodicExecutions[0].active"
+                            [value]="execution.periodicExecutions[0].periodicExecutionId" class="custom-control-input"
+                            (change)="onCaseSelection(periodicExecution)">
+
+                        <label for="periodicExecution-{{execution.periodicExecutions[0].periodicExecutionId}}"
+                            class="custom-control-label"></label>
+                    </div>
+                </td>
+                <td>
+                    <input name="execution-{{indexExecution}}.name" id="execution-{{indexExecution}}.name"
+                        type="text" class="form-control" [(ngModel)]="execution.name" title="{{'main.process.scheduler.nameTitle'|translate}}" placeholder="{{'main.process.scheduler.namePlaceholder'|translate}}">
+                </td>
+                <td [title]="getCaseListForTitle(execution)">
+                    <ng-container *ngFor="let caseName of getCaseList(execution); let i = index">
+                        <button *ngIf="i < 20" class="mr-2 btn-pill btn btn-light disabled btn-sm">
+                            {{caseName}}
+                        </button>
+                        <button *ngIf="i == 20" title="{{'main.process.scheduler.time'|translate}}"
+                            class="mr-2 btn-pill btn btn-light disabled btn-sm">...</button>
+                    </ng-container>
+                </td>
+                <td *ngIf="dataService.isWebProcess()" class="text-center">
+                    <i *ngFor="let browserName of getBrowserList(execution)" title="{{browserName}}"
+                      class="mr-1 fab fa fa-{{browserName}}"></i>
+                </td>
+                <td *ngIf="dataService.isWebProcess()" class="text-center">
+                  <div *ngFor="let resolution of getScreenResolutionsList(execution)" class="badge-resolutions btn-zahoriPill-resolutions mr-1 mb-1">
+                    <span title="{{resolution}}">{{getScreenResolutionName(resolution)}}</span>
+                  </div>
+                </td>
+                <td>
+                    <input name="time" id="periodicTime"
+                        type="time" class="form-control" [(ngModel)]="execution.periodicExecutions[0].time">
+                </td>
+                <td>
+                    <ng-multiselect-dropdown id="periodicExecution-{{indexExecution}}-days" [settings]="periodicDropdownSettings"
+                        [data]="periodicWeekdays" [placeholder]="selectWeekdaysPlaceholder"
+                        [(ngModel)]="execution.periodicExecutions[0].days" name="periodicExecution-{{indexExecution}}-days">
+                    </ng-multiselect-dropdown>
+                </td>
+                <td class="text-center">
+                    <i class="icon fa fa-trash fa-1" title="{{'main.process.scheduler.deleteButtonTitle'|translate}}" (click)="deletePeriodicExecution(execution, indexExecution)" style="cursor: pointer;"></i>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="text-center" *ngIf="executions && executions.length > 0">
+        <button class="btn-wide mt-3 mb-3 btn-icon btn btn-zahoriV btn-sm" 
+            (click)="savePeriodicExecutions()">{{'main.process.scheduler.saveButton'|translate}}</button>
+    </div>
+    
+</div>

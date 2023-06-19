@@ -12,25 +12,29 @@ package io.zahori.server.model;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.zahori.server.model.Process;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,15 +46,9 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * The type Case.
@@ -89,8 +87,10 @@ public class Case implements Serializable {
     private List<CaseExecution> casesExecutions;
 
     // bi-directional many-to-many association to ClientTag
-    @ManyToMany
-    @JoinTable(name = "cases_tags", joinColumns = { @JoinColumn(name = "case_id") }, inverseJoinColumns = { @JoinColumn(name = "tag_id") })
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "cases_tags", joinColumns = {
+        @JoinColumn(name = "case_id")}, inverseJoinColumns = {
+        @JoinColumn(name = "tag_id")})
     private List<ClientTag> clientTags;
 
     /**
@@ -188,10 +188,10 @@ public class Case implements Serializable {
     }
 
     /**
-    * Gets data map.
-    *
-    * @return the data map
-    */
+     * Gets data map.
+     *
+     * @return the data map
+     */
     public Map<String, String> getDataMap() {
         ObjectMapper mapper = new ObjectMapper();
         try {
@@ -307,23 +307,30 @@ public class Case implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null) {
             return false;
-        if (getClass() != obj.getClass())
+        }
+        if (getClass() != obj.getClass()) {
             return false;
+        }
         Case other = (Case) obj;
         if (caseId == null) {
-            if (other.caseId != null)
+            if (other.caseId != null) {
                 return false;
-        } else if (!caseId.equals(other.caseId))
+            }
+        } else if (!caseId.equals(other.caseId)) {
             return false;
+        }
         if (name == null) {
-            if (other.name != null)
+            if (other.name != null) {
                 return false;
-        } else if (!name.equals(other.name))
+            }
+        } else if (!name.equals(other.name)) {
             return false;
+        }
         return true;
     }
 

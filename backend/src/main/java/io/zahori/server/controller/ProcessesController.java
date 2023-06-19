@@ -1,31 +1,5 @@
 package io.zahori.server.controller;
 
-import java.io.File;
-import java.util.List;
-import java.util.Optional;
-
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ByteArrayResource;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
 /*-
  * #%L
  * zahori-server
@@ -66,6 +40,29 @@ import io.zahori.server.security.JWTUtils;
 import io.zahori.server.service.ExecutionService;
 import io.zahori.server.service.JenkinsService;
 import io.zahori.server.utils.FilePath;
+import java.io.File;
+import java.util.List;
+import java.util.Optional;
+import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * The type Processes controller.
@@ -123,7 +120,7 @@ public class ProcessesController {
      * Gets cases.
      *
      * @param processId the process id
-     * @param request   the request
+     * @param request the request
      * @return the cases
      */
     @GetMapping(path = "/{processId}/cases")
@@ -144,8 +141,8 @@ public class ProcessesController {
      * Post cases response entity.
      *
      * @param processId the process id
-     * @param cases     the cases
-     * @param request   the request
+     * @param cases the cases
+     * @param request the request
      * @return the response entity
      */
     @PostMapping(path = "/{processId}/cases")
@@ -193,9 +190,9 @@ public class ProcessesController {
     /**
      * Post configuration response entity.
      *
-     * @param processId      the process id
+     * @param processId the process id
      * @param configurations the configurations
-     * @param request        the request
+     * @param request the request
      * @return response entity
      */
     @PostMapping(path = "/{processId}/configurations")
@@ -227,7 +224,7 @@ public class ProcessesController {
      * Gets executions.
      *
      * @param processId the process id
-     * @param request   the request
+     * @param request the request
      * @return the executions
      */
     @GetMapping(path = "/{processId}/executions")
@@ -273,14 +270,19 @@ public class ProcessesController {
      * Post executions response entity.
      *
      * @param execution the execution
-     * @param request   the request
+     * @param request the request
      * @return the response entity
      */
     @PostMapping(path = "/{processId}/executions")
     public ResponseEntity<Object> postExecutions(@RequestBody Execution execution, HttpServletRequest request) {
         try {
             LOG.info("create execution controller");
-            execution = executionService.create(execution);
+
+            if (executionService.isPeriodicExecution(execution)) {
+                execution = executionService.createPeriodicExecution(execution);
+            } else {
+                execution = executionService.runManualExecution(execution);
+            }
 
             return new ResponseEntity<>(execution, HttpStatus.OK);
         } catch (Exception e) {
@@ -293,8 +295,8 @@ public class ProcessesController {
      * Gets evidence file.
      *
      * @param processId the process id
-     * @param path      the path
-     * @param request   the request
+     * @param path the path
+     * @param request the request
      * @return the evidence file
      */
     @GetMapping(path = "/{processId}/file")
@@ -334,8 +336,8 @@ public class ProcessesController {
      * Gets jenkins file.
      *
      * @param processId the process id
-     * @param url       the url
-     * @param request   the request
+     * @param url the url
+     * @param request the request
      * @return the jenkins file
      */
     @GetMapping(path = "/{processId}/artifact")
@@ -371,7 +373,7 @@ public class ProcessesController {
      * Gets environments.
      *
      * @param processId the process id
-     * @param request   the request
+     * @param request the request
      * @return the environments
      */
     @GetMapping(path = "/{processId}/environments")
@@ -389,9 +391,9 @@ public class ProcessesController {
     /**
      * Post environments response entity.
      *
-     * @param processId    the process id
+     * @param processId the process id
      * @param environments the environments
-     * @param request      the request
+     * @param request the request
      * @return the response entity
      */
     @PostMapping(path = "/{processId}/environments")
@@ -429,7 +431,7 @@ public class ProcessesController {
      * Gets tags.
      *
      * @param processId the process id
-     * @param request   the request
+     * @param request the request
      * @return the tags
      */
     @GetMapping(path = "/{processId}/tags")
@@ -448,8 +450,8 @@ public class ProcessesController {
      * Post tags response entity.
      *
      * @param processId the process id
-     * @param tags      the tags
-     * @param request   the request
+     * @param tags the tags
+     * @param request the request
      * @return the response entity
      */
     @PostMapping(path = "/{processId}/tags")

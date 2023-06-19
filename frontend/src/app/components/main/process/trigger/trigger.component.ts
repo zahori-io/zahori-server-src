@@ -12,6 +12,7 @@ import { Resolution } from '../../../../model/resolution';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
 import { TranslateService } from '@ngx-translate/core';
 import { Tms } from '../../../../utils/tms';
+import { PeriodicExecution } from '../../../../model/periodic-execution';
 
 @Component({
   selector: 'app-trigger',
@@ -23,9 +24,9 @@ export class TriggerComponent implements OnInit {
   error: string;
   loading: boolean;
   created: boolean;
+  scheduled: boolean;
   browsers: Browser[];
   execution: Execution;
-  periodicExecutionEnabled = false;
   massiveSelected: boolean;
   tags: Tag[] = [];
   selectedTags: Tag[] = [];
@@ -33,11 +34,16 @@ export class TriggerComponent implements OnInit {
   selectedResolutions: Resolution[] = [];
   dropdownSettings: IDropdownSettings = {};
   selectResolutionPlaceholder: string;
+  // Peridodic executions
+  periodicExecutionActivated: boolean = false;
+  periodicWeekdays: string[] = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
+  periodicDropdownSettings: IDropdownSettings = {};
+  selectWeekdaysPlaceholder: string;
 
   constructor(
-    public dataService: DataService, 
+    public dataService: DataService,
     public tms: Tms,
-    private router: Router, 
+    private router: Router,
     private translate: TranslateService) {
   }
 
@@ -50,6 +56,7 @@ export class TriggerComponent implements OnInit {
     this.error = '';
     this.loading = false;
     this.created = false;
+    this.scheduled = false;
     this.massiveSelected = false;
     this.selectResolutionPlaceholder = this.translate.instant('main.process.trigger.SelectResolutions');
     this.dropdownSettings = {
@@ -59,6 +66,15 @@ export class TriggerComponent implements OnInit {
       enableCheckAll: true,
       selectAllText: this.translate.instant('main.process.trigger.selectAllResolutions'),
       unSelectAllText: this.translate.instant('main.process.trigger.unselectAllResolutions')
+    };
+    this.selectWeekdaysPlaceholder = this.translate.instant('main.process.scheduler.daysPlaceholder');
+    this.periodicDropdownSettings = {
+      idField: 'widthAndHeight',
+      textField: 'nameToDisplay',
+      noDataAvailablePlaceholderText: this.translate.instant('main.process.scheduler.daysNotAvailable'),
+      enableCheckAll: true,
+      selectAllText: this.translate.instant('main.process.scheduler.daysSelectAll'),
+      unSelectAllText: this.translate.instant('main.process.scheduler.daysUnselectAll')
     };
   }
 
@@ -82,8 +98,8 @@ export class TriggerComponent implements OnInit {
       resolutions => {
         this.resolutions = resolutions;
         this.resolutions.forEach(resolution => {
-            resolution.widthAndHeight = resolution.width + 'x' + resolution.height;
-            resolution.nameToDisplay = (resolution.name && resolution.name !== '') ? resolution.name : resolution.widthAndHeight;
+          resolution.widthAndHeight = resolution.width + 'x' + resolution.height;
+          resolution.nameToDisplay = (resolution.name && resolution.name !== '') ? resolution.name : resolution.widthAndHeight;
         });
 
         this.clearSelectedResolutions();
@@ -97,6 +113,7 @@ export class TriggerComponent implements OnInit {
     this.execution.process = new Process();
     this.execution.process.processId = this.dataService.processSelected.processId;
     this.execution.casesExecutions = [];
+    this.clearPeriodicExecutions();
     this.clearSelectedBrowsers();
     this.clearSelectedResolutions();
     this.clearSelectedCases();
@@ -133,6 +150,11 @@ export class TriggerComponent implements OnInit {
     }
   }
 
+  clearPeriodicExecutions() {
+    this.periodicExecutionActivated = false;
+    this.execution.periodicExecutions = [];
+  }
+
   deselectCase(processCase: Case): void {
     processCase.selected = false;
     this.onCaseSelection(processCase);
@@ -141,8 +163,10 @@ export class TriggerComponent implements OnInit {
   createExecution(): void {
     this.loading = true;
     this.created = false;
+    this.scheduled = false;
     this.error = '';
 
+    // execution name
     if (!this.execution.name) {
       this.execution.name = this.getTimestampPlaceholder();
     }
@@ -182,10 +206,12 @@ export class TriggerComponent implements OnInit {
     // submit execution to backend
     this.dataService.createExecution(this.execution).subscribe(
       () => {
+        this.loading = false;
+        this.scheduled = this.periodicExecutionActivated;
+        this.created = !this.periodicExecutionActivated;
+
         this.newExecution();
         this.error = '';
-        this.created = true;
-        this.loading = false;
       },
       (error) => {
         this.error = error.error;
@@ -203,9 +229,9 @@ export class TriggerComponent implements OnInit {
       || !this.execution.configuration.configurationId
       || this.loading
       || (this.tms.isActivated(this.getSelectedConfiguration(this.execution.configuration.configurationId))
-						&& this.tms.requiresTestExecutionId(this.getSelectedConfiguration(this.execution.configuration.configurationId))
-            && !this.execution.tmsTestExecutionId)
-
+        && this.tms.requiresTestExecutionId(this.getSelectedConfiguration(this.execution.configuration.configurationId))
+        && !this.execution.tmsTestExecutionId)
+      || (this.periodicExecutionActivated && (this.execution.periodicExecutions.length == 0 || this.execution.periodicExecutions[0].time == "" || this.execution.periodicExecutions[0].days.length == 0))
     );
   }
 
@@ -238,7 +264,17 @@ export class TriggerComponent implements OnInit {
   }
 
   enablePeriodicExecution(event: any): void {
-    this.periodicExecutionEnabled = event.currentTarget.checked;
+    this.clearPeriodicExecutions();
+    this.periodicExecutionActivated = event.currentTarget.checked;
+    if (this.periodicExecutionActivated) {
+      this.addNewPeriodicExecution();
+    }
+  }
+
+  addNewPeriodicExecution(){
+    let periodicExecution = new PeriodicExecution();
+    periodicExecution.active = true;
+    this.execution.periodicExecutions.push(periodicExecution);
   }
 
   onTagClick(tag: Tag): void {

@@ -10,6 +10,7 @@ export class Account {
   locked: boolean;
   client: Client;
   roles: Role[];
+  
   constructor(username: string, password: string) {
     this.username = username;
     this.password = password;

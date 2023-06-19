@@ -32,7 +32,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -45,6 +44,9 @@ public class ServiceRegistry {
 
     @Autowired
     private DiscoveryClient discoveryClient;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     public String getServiceId(Process process) {
         return formatToConsulServiceId(
@@ -63,7 +65,20 @@ public class ServiceRegistry {
         return !serviceInstances.isEmpty();
     }
 
-    public String getProcessUrl(Process process) {
+    public boolean isProcessRunning(Process process) {
+        return isProcessRunning(getProcessUrl(process));
+    }
+
+    private boolean isProcessRunning(String url) {
+        try {
+            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
+            return response.getStatusCode().is2xxSuccessful();
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private String getProcessUrl(Process process) {
         String serviceId = formatToConsulServiceId(
                 process.getName()
                 + SERVICE_ID_SEPARATOR + process.getClient().getClientId()
@@ -80,16 +95,6 @@ public class ServiceRegistry {
 
         LOG.info("getUrl for process: " + serviceId + " -> '" + processUrl + "'");
         return processUrl;
-    }
-
-    public boolean isProcessRunning(String url) {
-        try {
-            RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<String> response = restTemplate.getForEntity(url, String.class);
-            return HttpStatus.OK.equals(response.getStatusCode());
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     /*

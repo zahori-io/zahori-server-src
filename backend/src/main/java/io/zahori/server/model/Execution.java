@@ -12,20 +12,20 @@ package io.zahori.server.model;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.zahori.server.model.Process;
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,8 +37,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * The type Execution.
@@ -61,6 +59,8 @@ public class Execution implements Serializable {
 
     private String status;
 
+    private String trigger;
+
     @Column(name = "total_failed")
     private Integer totalFailed;
 
@@ -74,26 +74,21 @@ public class Execution implements Serializable {
     @JoinColumn(name = "configuration_id")
     private Configuration configuration;
 
-    // uni-directional many-to-one association to CasesExecution
+    // uni-directional one-to-many association to CasesExecution
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "execution_id", nullable = false)
     private List<CaseExecution> casesExecutions;
 
-    // bi-directional many-to-one association to PeriodicExecution
-    @ManyToOne
-    @JoinColumn(name = "periodic_execution_id")
-    private PeriodicExecution periodicExecution;
+    // uni-directional one-to-many association to PeriodicExecution
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "execution_id", nullable = true)
+    private List<PeriodicExecution> periodicExecutions;
 
     // bi-directional many-to-one association to Process
     @JsonBackReference(value = "process")
     @ManyToOne
     @JoinColumn(name = "process_id")
     private Process process;
-
-    // bi-directional many-to-one association to User
-    //	@ManyToOne
-    //	@JoinColumn(name="user_id")
-    //	private User user;
 
     @Column(name = "jenkins_build")
     private String jenkinsBuild;
@@ -177,6 +172,14 @@ public class Execution implements Serializable {
      */
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getTrigger() {
+        return trigger;
+    }
+
+    public void setTrigger(String trigger) {
+        this.trigger = trigger;
     }
 
     /**
@@ -269,22 +272,12 @@ public class Execution implements Serializable {
         this.configuration = configuration;
     }
 
-    /**
-     * Gets periodic execution.
-     *
-     * @return the periodic execution
-     */
-    public PeriodicExecution getPeriodicExecution() {
-        return this.periodicExecution;
+    public List<PeriodicExecution> getPeriodicExecutions() {
+        return periodicExecutions;
     }
 
-    /**
-     * Sets periodic execution.
-     *
-     * @param periodicExecution the periodic execution
-     */
-    public void setPeriodicExecution(PeriodicExecution periodicExecution) {
-        this.periodicExecution = periodicExecution;
+    public void setPeriodicExecutions(List<PeriodicExecution> periodicExecutions) {
+        this.periodicExecutions = periodicExecutions;
     }
 
     /**
@@ -336,13 +329,5 @@ public class Execution implements Serializable {
     public void setTmsTestExecutionId(String tmsTestExecutionId) {
         this.tmsTestExecutionId = tmsTestExecutionId;
     }
-
-    //	public User getUser() {
-    //		return this.user;
-    //	}
-    //
-    //	public void setUser(User user) {
-    //		this.user = user;
-    //	}
 
 }

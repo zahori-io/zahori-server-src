@@ -12,23 +12,24 @@ package io.zahori.server.service;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
 import io.zahori.server.model.CaseExecution;
 import io.zahori.server.model.ClientTestRepo;
 import io.zahori.server.model.Configuration;
 import io.zahori.server.model.EvidenceType;
 import io.zahori.server.model.Execution;
+import io.zahori.server.model.PeriodicExecution;
 import io.zahori.server.model.Process;
+import io.zahori.server.model.Task;
 import io.zahori.server.repository.CaseExecutionsRepository;
 import io.zahori.server.repository.ConfigurationRepository;
 import io.zahori.server.repository.ExecutionsRepository;
@@ -40,9 +41,12 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.reactive.ReactorLoadBalancerExchangeFilterFunction;
 import org.springframework.data.domain.Page;
@@ -50,6 +54,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
@@ -62,13 +67,16 @@ public class ExecutionService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExecutionService.class);
 
-    private static final String PASSED = "Passed";
-    private static final String FAILED = "Failed";
+    private static final String PASSED = "PASSED";
+    private static final String FAILED = "FAILED";
     private static final String PENDING = "Pending";
     private static final String CREATED = "Created";
+    private static final String SCHEDULED = "Scheduled";
     private static final String RUNNING = "Running";
     private static final String SUCCESS = "SUCCESS";
     private static final String FAILURE = "FAILURE";
+    private static final String TRIGGER_MANUAL = "Manual";
+    private static final String TRIGGER_SCHEDULER = "Scheduler";
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     private ExecutionsRepository executionsRepository;
@@ -78,11 +86,12 @@ public class ExecutionService {
     private CaseExecutionsRepository caseExecutionsRepository;
     private ConfigurationRepository configurationRepository;
     private ReactorLoadBalancerExchangeFilterFunction reactorLoadBalancer;
+    private SchedulerService schedulerService;
 
     @Autowired
     public ExecutionService(ExecutionsRepository executionsRepository, ProcessesRepository processesRepository, ServiceRegistry serviceRegistry,
             SelenoidService selenoidService, CaseExecutionsRepository caseExecutionsRepository, ConfigurationRepository configurationRepository,
-            ReactorLoadBalancerExchangeFilterFunction reactorLoadBalancer) {
+            ReactorLoadBalancerExchangeFilterFunction reactorLoadBalancer, SchedulerService schedulerService) {
         this.executionsRepository = executionsRepository;
         this.processesRepository = processesRepository;
         this.serviceRegistry = serviceRegistry;
@@ -90,6 +99,7 @@ public class ExecutionService {
         this.caseExecutionsRepository = caseExecutionsRepository;
         this.configurationRepository = configurationRepository;
         this.reactorLoadBalancer = reactorLoadBalancer;
+        this.schedulerService = schedulerService;
     }
 
     public Iterable<Execution> getExecutions(Long clientId, Long processId) {
@@ -105,33 +115,104 @@ public class ExecutionService {
         return executionsRepository.findById(executionId);
     }
 
-    public Execution create(Execution execution) throws Exception {
+    public Execution runManualExecution(Execution execution) {
+        execution.setTrigger(TRIGGER_MANUAL);
+        return create(execution);
+    }
 
-        /* Get Process from database */
-        Optional<Process> processOpt = processesRepository.findById(execution.getProcess().getProcessId());
-        if (!processOpt.isPresent()) {
-            throw new RuntimeException("El proceso no existe en la base de datos");
+    public Execution runPeriodicExecution(UUID uuid) {
+        Execution executionFromDB = executionsRepository.findByPeriodicExecutionUuid(uuid);
+        if (executionFromDB == null) {
+            throw new RuntimeException("Periodic execution not found");
         }
-        Process process = processOpt.get();
+
+        Execution newExecution = new Execution();
+        BeanUtils.copyProperties(executionFromDB, newExecution);
+
+        newExecution.setExecutionId(null);
+        newExecution.setDate("");
+        newExecution.setTrigger(TRIGGER_SCHEDULER);
+
+        newExecution.setCasesExecutions(new ArrayList<>());
+        for (CaseExecution caseExecutionFromDB : executionFromDB.getCasesExecutions()) {
+            CaseExecution newCaseExecution = new CaseExecution();
+            BeanUtils.copyProperties(caseExecutionFromDB, newCaseExecution);
+            newCaseExecution.setCaseExecutionId(null);
+            newCaseExecution.setAttachments(null);
+            newExecution.getCasesExecutions().add(newCaseExecution);
+        }
+
+        Long processId = executionsRepository.getProcessIdByExecutionId(executionFromDB.getExecutionId());
+        Process process = new Process();
+        process.setProcessId(processId);
+        newExecution.setProcess(process);
+
+        return create(newExecution);
+    }
+
+    @Transactional
+    public Execution createPeriodicExecution(Execution execution) {
+        schedulerService.validateSchedulerIsUp();
+
+        List<Task> tasks = new ArrayList<>();
+        for (PeriodicExecution periodicExecution : execution.getPeriodicExecutions()) {
+            UUID uuid = UUID.randomUUID();
+            periodicExecution.setUuid(uuid);
+            Task task = new Task(periodicExecution.getUuid(), periodicExecution.getCronExpression());
+            tasks.add(task);
+        }
+
+        execution.setTotalFailed(0);
+        execution.setTotalPassed(0);
+        execution.setStatus(SCHEDULED);
+        execution.setDate(getTimestamp());
+        for (CaseExecution caseExecution : execution.getCasesExecutions()) {
+            caseExecution.setStatus(SCHEDULED);
+        }
+
+        Execution savedExecution = executionsRepository.save(execution);
+
+        for (Task task : tasks) {
+            schedulerService.create(task);
+        }
+
+        return savedExecution;
+    }
+
+    private Process getProcessFromDB(Long processId) {
+        Optional<Process> processOpt = processesRepository.findById(processId);
+        if (!processOpt.isPresent()) {
+            throw new RuntimeException("Process not found");
+        }
+        return processOpt.get();
+    }
+
+    public Execution create(Execution execution) {
+        Process process = getProcessFromDB(execution.getProcess().getProcessId());
 
         /* Verify if process is registered in the serviceRegistry */
         String serviceId = serviceRegistry.getServiceId(process);
         if (!serviceRegistry.isServiceRegistered(serviceId)) {
+
+            if (isPeriodicExecution(execution)) {
+                execution.setDurationSeconds(0);
+                execution.setDate(getTimestamp());
+                for (CaseExecution caseExecution : execution.getCasesExecutions()) {
+                    caseExecution.setDate(getTimestamp());
+                    caseExecution.setDurationSeconds(0);
+                }
+                return updateExecutionInDB(execution, FAILURE, FAILED, "Process is offline");
+            }
+
+            // TODO: i18n
             String processNotReadyError = "El proceso parece estar offline! Si el proceso se inició recientemente vuelve a intentarlo pasados unos segundos, sino revisa que el proceso esté arrancado.";
             throw new RuntimeException(processNotReadyError);
         }
 
-        /* Set execution details */
-        execution.setTotalFailed(0);
-        execution.setTotalPassed(0);
-        execution.setStatus(CREATED);
-        execution.setDate(new SimpleDateFormat(DATE_FORMAT).format(new Date()));
-        for (CaseExecution caseExecution : execution.getCasesExecutions()) {
-            caseExecution.setStatus(PENDING);
-        }
+        // TODO: Verify if process is running: the process is stopped or there is no connectivity
 
-        // Create execution in database
-        execution = executionsRepository.save(execution);
+        // Update execution in DB
+        updateExecutionInDB(execution, CREATED, PENDING);
 
         // Call process
         runProcess(serviceId, process, execution);
@@ -142,6 +223,30 @@ public class ExecutionService {
         }
 
         return execution;
+    }
+
+    private Execution updateExecutionInDB(Execution execution, String executionStatus, String caseStatus) {
+        return updateExecutionInDB(execution, executionStatus, caseStatus, "");
+    }
+
+    private Execution updateExecutionInDB(Execution execution, String executionStatus, String caseStatus, String caseNotes) {
+        /* Set execution details */
+        execution.setTotalFailed(0);
+        execution.setTotalPassed(0);
+        execution.setStatus(executionStatus);
+        execution.setDate(getTimestamp());
+        execution.setPeriodicExecutions(null);
+        if (StringUtils.isBlank(execution.getName())) {
+            execution.setName(getTimestamp());
+        }
+
+        for (CaseExecution caseExecution : execution.getCasesExecutions()) {
+            caseExecution.setStatus(caseStatus);
+            caseExecution.setNotes(caseNotes);
+        }
+
+        // Create execution in database
+        return executionsRepository.save(execution);
     }
 
     private void runProcess(String serviceId, Process process, Execution execution) {
@@ -163,7 +268,8 @@ public class ExecutionService {
         // Run process
         Flux.fromIterable(execution.getCasesExecutions()).parallel().runOn(Schedulers.boundedElastic()) //
                 .flatMap( //
-                        caseExecution -> //
+                        caseExecution
+                        -> //
                         // Without load balancing between processes:
                         // WebClient.create().post().uri(processUrl + "/run").bodyValue(caseExecution).retrieve().bodyToMono(CaseExecution.class) //
                         // With load balancing:
@@ -173,6 +279,7 @@ public class ExecutionService {
                                     String processCase = process.getName() + "' -> case '" + caseExecution.getCas().getName() + "' ("
                                             + caseExecution.getBrowser().getBrowserName() + ")";
                                     LOG.info("[-->] Start call to process '{}'", processCase);
+                                    // LOG.info(caseExecution.toString());
                                     caseExecution.setStatus(RUNNING);
                                     caseExecutionsRepository.save(caseExecution);
                                 }) //
@@ -204,6 +311,8 @@ public class ExecutionService {
                 }) //
                 .onErrorContinue( //
                         (e, v) -> {
+                            LOG.error("### Error running execution {}: {}", execution.getExecutionId(), e.getMessage());
+                            e.printStackTrace();
                         }) //
                 .doOnComplete( //
                         () -> {
@@ -282,4 +391,11 @@ public class ExecutionService {
         }
     }
 
+    private String getTimestamp() {
+        return new SimpleDateFormat(DATE_FORMAT).format(new Date());
+    }
+
+    public boolean isPeriodicExecution(Execution execution) {
+        return execution.getPeriodicExecutions() != null && !execution.getPeriodicExecutions().isEmpty();
+    }
 }

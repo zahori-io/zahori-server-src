@@ -1,5 +1,5 @@
 export class Timeout {
-    timeoutId: number;
+    timeoutId: number|null;
     active: boolean;
 
     constructor() {

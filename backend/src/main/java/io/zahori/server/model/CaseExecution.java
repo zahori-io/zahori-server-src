@@ -12,23 +12,24 @@ package io.zahori.server.model;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import io.zahori.model.process.Step;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,14 +41,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import io.zahori.model.process.Step;
 
 /**
  * The type Case execution.
@@ -116,6 +111,11 @@ public class CaseExecution implements Serializable {
      * Instantiates a new Case execution.
      */
     public CaseExecution() {
+    }
+
+    @Override
+    public String toString() {
+        return "CaseExecution{" + "caseExecutionId=" + caseExecutionId + ", date=" + date + ", status=" + status + ", screenResolution=" + screenResolution + ", browserVersion=" + browserVersion + ", browser=" + browser + ", cas=" + cas + ", configuration=" + configuration + '}';
     }
 
     /**

@@ -301,6 +301,8 @@
 					}
 				},
 				"trigger": "Disparador",
+				"triggerManual": "Manual",
+				"triggerScheduler": "Programador",
 				"type": "Disparador",
 				"video": "Video",
 				"videoStreaming": "Vídeo/Streaming",
@@ -387,7 +389,8 @@
 				"cases": "Casos",
 				"configurator": "Configuraciones",
 				"lastExecutions": "Últimas ejecuciones",
-				"trigger": "Disparador"
+				"trigger": "Disparador",
+				"scheduler": "Programador"
 			},
 			"trigger": {
 				"ErrorOnCreateExecution": "Error al crear la ejecución",
@@ -402,6 +405,8 @@
 				"execute": "Ejecutar",
 				"execution": "Ejecución",
 				"executionCreated": "Ejecución creada",
+				"executionScheduledOk": "Ejecución programada",
+				"executionScheduledOkDetail": "Puedes gestionarla en el ",
 				"here": "aquí",
 				"id": "Id",
 				"lastExecutions": "Últimas ejecuciones",
@@ -418,6 +423,37 @@
 				"time": "Tiempo",
 				"title": "Casos a ejecutar",
 				"unselectAllResolutions": "Desmarcar todas"
+			},
+			"scheduler": {
+				"actions": "Acciones",
+				"active": "Activa",
+				"browsers": "Navegadores",
+				"cases": "Casos",
+				"days": "Días",
+				"daysNotAvailable": "No hay días disponibles",
+				"daysPlaceholder": "Selecciona los días",
+				"daysSelectAll": "Marcar todos",
+				"daysUnselectAll": "Desmarcar todos",
+				"deleteButtonTitle": "Eliminar programación",
+				"deleteCancelButton": "Cancelar",
+				"deleteConfirmButton": "Eliminar",
+				"deleteMessageKo": "Error al eliminar la programación: ",
+				"deleteMessageOk": "Programación eliminada",
+				"deleteTitle": "Eliminar programación: ",
+				"deleteWarning": "Esta acción no podrá deshacerse",
+				"formError": "Rellena los campos obligatorios",
+				"moreCases": "más casos...",
+				"name": "Nombre",
+				"namePlaceholder": "yyyy-mm-dd hh:mm",
+				"nameTitle": "Dejar en blanco para usar el timestamp como nombre de la ejecución",
+				"noSchedules": "No hay ejecuciones programadas, puedes programar una con el ",
+				"noSchedulesAction": "disparador",
+				"resolutions": "Resoluciones",
+				"saveButton": "Guardar",
+				"saveMessageOk": "Programaciones actualizadas",
+				"saveMessageKo": "Error al guardar las programaciones: ",
+				"time": "Hora",
+				"title": "Ejecuciones programadas"
 			}
 		},
 		"profile": {

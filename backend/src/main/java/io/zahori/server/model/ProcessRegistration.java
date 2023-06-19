@@ -139,10 +139,11 @@ public class ProcessRegistration {
 
     /*
         Zahori process name:
+        - is case sensitive
         - must not be empty
         - must start with a letter,
         - must end with a letter or digit
-        - and have as interior characters only letters, digits, blanck spaces and hyphen
+        - and have as interior characters only letters, digits, blank spaces and hyphens
     */
     public boolean hasValidName() {
         final String regExp = "^[a-zA-Z](([a-zA-Z0-9\\-\\s])*[a-zA-Z0-9])*$";
