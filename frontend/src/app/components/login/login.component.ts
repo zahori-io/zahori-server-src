@@ -1,8 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
+import {Location} from '@angular/common';
 import {AutenticacionService} from '../../services/autenticacion.service';
-import {ViewEncapsulation} from '@angular/core';
-import {DataService} from '../../services/data.service';
+import { BannerOptions } from '../utils/banner/banner';
+
+const SUCCESS_COLOR = 'alert alert-success';
+const ERROR_COLOR = 'alert alert-danger';
 
 @Component({
   selector: 'app-login',
@@ -11,19 +14,23 @@ import {DataService} from '../../services/data.service';
 })
 export class LoginComponent implements OnInit {
 
+  banner: BannerOptions;
   loading = false;
   error = false;
 
   constructor(
     private router: Router,
-    private autenticacionService: AutenticacionService,
-    private dataService: DataService) {
+    private location: Location,
+    private autenticacionService: AutenticacionService,) {
   }
 
   ngOnInit(): void {
     if (this.autenticacionService.getUserLoggedIn()) {
       this.router.navigate(['/app']);
     }
+
+    this.initBanner();
+    this.displayState();
   }
 
   loginUser(e): boolean {
@@ -47,4 +54,18 @@ export class LoginComponent implements OnInit {
     return false;
   }
 
+  displayState(){
+    let state:any = this.location.getState();
+
+    if (state.message && state.message != ""){
+      this.banner = new BannerOptions('', state.message, SUCCESS_COLOR, true);
+    }
+    if (state.error && state.error != ""){
+      this.banner = new BannerOptions('', state.error, ERROR_COLOR, true);
+    }
+  }
+
+  initBanner() {
+    this.banner = new BannerOptions();
+  }
 }

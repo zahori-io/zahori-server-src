@@ -12,19 +12,19 @@ package io.zahori.server.security;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
+import com.sun.istack.NotNull;
+import io.zahori.server.model.Client;
 import java.util.Set;
-
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -36,16 +36,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.sun.istack.NotNull;
-
-import io.zahori.server.model.Client;
-
 /**
  * The type Account entity.
  */
 @Entity
 @Table(name = "accounts")
 public class AccountEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -62,6 +59,8 @@ public class AccountEntity {
     private boolean expired = false;
     @NotNull
     private boolean locked = false;
+
+    private String email;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "accounts_roles", joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id", insertable = false, updatable = false))
@@ -80,7 +79,7 @@ public class AccountEntity {
 
     @Override
     public String toString() {
-        return "AccountEntity [id=" + id + ", username=" + username + ", password=****, enabled=" + enabled + ", credentialsexpired=" + credentialsexpired
+        return "AccountEntity [id=" + id + ", username=" + username + ", email=" + email + ", enabled=" + enabled + ", credentialsexpired=" + credentialsexpired
                 + ", expired=" + expired + ", locked=" + locked + ", roles=" + roles + "]";
     }
 
@@ -118,6 +117,14 @@ public class AccountEntity {
      */
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     /**

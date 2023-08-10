@@ -24,12 +24,15 @@ import { ProcessAdminComponent } from './components/main/process/process-admin/p
 import { SignupComponent } from './components/signup/signup.component';
 import { AdminResolutionsComponent } from './components/main/process/process-admin/admin-resolutions/admin-resolutions.component';
 import { ProfileChangePasswordComponent } from './components/main/profile/profile-change-password/profile-change-password.component';
+import { ProfileChangeEmailComponent } from './components/main/profile/profile-change-email/profile-change-email.component';
 import { SchedulerComponent } from './components/main/process/scheduler/scheduler.component';
+import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
   { path: 'signup', component: SignupComponent },
+  { path: 'verify-email/:token', component: VerifyEmailComponent },
   {
     path: 'app', component: MainComponent, canActivate: [AuthGuard],
     children: [
@@ -71,6 +74,7 @@ const routes: Routes = [
         children: [
           { path: '', component: ProfileChangePasswordComponent },
           { path: 'change-password', component: ProfileChangePasswordComponent },
+          { path: 'change-email', component: ProfileChangeEmailComponent }
         ]
       }
     ]

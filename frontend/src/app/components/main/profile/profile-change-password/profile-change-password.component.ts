@@ -25,7 +25,8 @@ export class ProfileChangePasswordComponent implements OnInit {
   changePassword() {
     this.dataService.changePassword(this.currentPassword, this.newPassword, this.confirmPassword).subscribe(
       (result) => {
-        this.banner = new BannerOptions('', result, SUCCESS_COLOR, true);
+        this.banner = new BannerOptions('', "Password updated!", SUCCESS_COLOR, true);
+        this.cleanForm();
       },
       (error) => {
         this.banner = new BannerOptions('', error.error, ERROR_COLOR, true);
@@ -34,10 +35,16 @@ export class ProfileChangePasswordComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.banner = new BannerOptions();
+    this.initBanner();
   }
 
-  closeBanner() {
+  cleanForm(){
+    this.currentPassword = "";
+    this.newPassword = "";
+    this.confirmPassword = "";
+  }
+
+  initBanner() {
     this.banner = new BannerOptions();
   }
 

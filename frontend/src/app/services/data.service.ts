@@ -26,6 +26,7 @@ import { ServerVersions } from '../model/serverVersions';
 import {Resolution} from '../model/resolution';
 import { Router } from '@angular/router';
 import { PeriodicExecution } from '../model/periodic-execution';
+import { EmailDto } from '../model/emailDto';
 
 @Injectable({
   providedIn: 'root'
@@ -233,7 +234,7 @@ export class DataService {
   }
 
   public changePassword(currentPassword: string, newPassword: string, confirmPassword: string): Observable<string> {
-    return this.http.post(this.url + 'password',
+    return this.http.post(this.url + 'profile/password',
       JSON.stringify({
         currentPassword: currentPassword,
         newPassword: newPassword,
@@ -242,4 +243,17 @@ export class DataService {
       { responseType: 'text' }
     );
   }
+
+  public getEmail(): Observable<EmailDto> {
+    return this.http.get<EmailDto>(this.url + 'profile/email');
+  }
+
+  public updateEmail(newEmail: string): Observable<string> {
+    return this.http.post(this.url + 'profile/email', newEmail, { responseType: 'text' });
+  }
+
+  public verifyEmail(token: string): Observable<string> {
+    return this.http.get('./profile/verify-email/' + token, { responseType: 'text' });
+  }
+  
 }

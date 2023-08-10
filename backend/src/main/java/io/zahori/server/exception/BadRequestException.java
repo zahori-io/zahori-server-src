@@ -1,8 +1,8 @@
-package io.zahori.server.security;
+package io.zahori.server.exception;
 
 /*-
  * #%L
- * zahori-server
+ * zahori-framework
  * $Id:$
  * $HeadURL:$
  * %%
@@ -22,25 +22,13 @@ package io.zahori.server.security;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+public class BadRequestException extends RuntimeException {
 
-/**
- * The interface Account repository.
- */
-@Repository
-public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
+    public BadRequestException() {
+        super();
+    }
 
-    /**
-     * Find by username account entity.
-     *
-     * @param username the username
-     * @return the account entity
-     */
-    AccountEntity findByUsername(String username);
-
-    @Query("SELECT a FROM AccountEntity a WHERE a.username = :u or a.email = :u")
-    AccountEntity findByUsernameOrEmail(@Param("u") String usernameOrEmail);
+    public BadRequestException(String message) {
+        super(message);
+    }
 }

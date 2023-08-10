@@ -57,6 +57,8 @@ import { ProfileMenuComponent } from './components/main/profile/profile-menu/pro
 import { ProfileChangePasswordComponent } from './components/main/profile/profile-change-password/profile-change-password.component';
 import { PaginationComponent } from './components/utils/pagination/pagination.component';
 import { SchedulerComponent } from './components/main/process/scheduler/scheduler.component';
+import { ProfileChangeEmailComponent } from './components/main/profile/profile-change-email/profile-change-email.component';
+import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 
 @NgModule({
   declarations: [
@@ -103,7 +105,9 @@ import { SchedulerComponent } from './components/main/process/scheduler/schedule
     ProfileMenuComponent,
     ProfileChangePasswordComponent,
     PaginationComponent,
-    SchedulerComponent
+    SchedulerComponent,
+    ProfileChangeEmailComponent,
+    VerifyEmailComponent
   ],
   imports: [
     BrowserModule,

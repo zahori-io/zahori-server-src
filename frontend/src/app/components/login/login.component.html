@@ -41,7 +41,10 @@
             </div>
           </div>
         </div>
-        <div class="h-100 d-flex bg-white justify-content-center align-items-center col-md-12 col-lg-8">
+
+        <banner [banner]="banner" (click)="initBanner()"></banner>
+        
+        <div class="h-100 d-flex bg-white justify-content-center align-items-center col-md-12 col-lg-8">          
           <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-9">
             <div class="app-logo"><img alt="Zahorí 0.9 202011051320" src="assets/images/LOGOz.png" /></div>
 
