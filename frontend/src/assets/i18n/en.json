@@ -156,7 +156,7 @@
 				"text": "Language"
 			},
 			"logout": "Logout",
-            "profile": "My profile",
+            "account": "My account",
 			"notifications": "Notifications"
 		},
 		"notifications": {
@@ -456,7 +456,7 @@
 				"title": "Scheduled executions"
 			}
 		},
-		"profile": {
+		"account": {
             "changePassword": {
                 "confirmButton": "Confirm",
                 "confirmPassword": "Confirm new password",
@@ -467,7 +467,7 @@
             "menu": {
                 "changePassword": "Change password"
             },
-			"title": "My profile"
+			"title": "My account"
 		}
 	},
 	"signup": {

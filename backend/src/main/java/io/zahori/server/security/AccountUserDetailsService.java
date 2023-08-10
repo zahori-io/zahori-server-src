@@ -39,16 +39,16 @@ import org.springframework.stereotype.Service;
  * The type Servicio account user details.
  */
 @Service
-public class ServicioAccountUserDetails implements UserDetailsService {
+public class AccountUserDetailsService implements UserDetailsService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ServicioAccountUserDetails.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AccountUserDetailsService.class);
 
     @Autowired
     private AccountRepository accountRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        LOG.debug("ServicioAccountUserDetails.loadUserByUsername");
+        LOG.debug("AccountUserDetailsService.loadUserByUsername");
 
         if (StringUtils.isBlank(username)) {
             return null;

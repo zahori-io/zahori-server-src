@@ -35,7 +35,7 @@ export class VerifyEmailComponent implements OnInit {
         console.log(this.emailVerified);
 
         if (this.autenticacionService.getUserLoggedIn()) {
-          this.router.navigateByUrl('/app/profile/change-email', { state: { message: this.emailVerified, error: ""} });
+          this.router.navigateByUrl('/app/account/change-email', { state: { message: this.emailVerified, error: ""} });
         } else {
           this.router.navigateByUrl('/login', { state: { message: this.emailVerified, error: ""} });
         }
@@ -45,7 +45,7 @@ export class VerifyEmailComponent implements OnInit {
         console.log(this.emailVerified);
 
         if (this.autenticacionService.getUserLoggedIn()) {
-          this.router.navigateByUrl('/app/profile/change-email', { state: { message: "", error: this.emailVerified} });
+          this.router.navigateByUrl('/app/account/change-email', { state: { message: "", error: this.emailVerified} });
         } else {
           this.router.navigateByUrl('/login', { state: { message: "", error: this.emailVerified} });
         }

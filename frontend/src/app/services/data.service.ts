@@ -221,10 +221,6 @@ export class DataService {
     return this.http.get<ServerVersions>(this.url + 'version', {});
   }
 
-  public setSignUpUser(account: Account): Observable<Account> {
-    return this.http.post<Account>('./users/sign-up', JSON.stringify(account), { headers: this.headers });
-  }
-  
   public getResolutions(processId: number): Observable<Resolution[]> {
     return this.http.get<any>(this.url + 'resolutions/' + processId);
   }
@@ -233,8 +229,24 @@ export class DataService {
     return this.http.post(this.url + 'resolutions/' + processId, JSON.stringify(res));
   }
 
+  public setSignUpUser(account: Account): Observable<Account> {
+    return this.http.post<Account>('./account/sign-up', JSON.stringify(account), { headers: this.headers });
+  }
+
+  public verifyEmail(token: string): Observable<string> {
+    return this.http.get('./account/verify-email/' + token, { responseType: 'text' });
+  }
+  
+  public getEmail(): Observable<EmailDto> {
+    return this.http.get<EmailDto>(this.url + 'account/email');
+  }
+
+  public updateEmail(newEmail: string): Observable<string> {
+    return this.http.post(this.url + 'account/email', newEmail, { responseType: 'text' });
+  }
+
   public changePassword(currentPassword: string, newPassword: string, confirmPassword: string): Observable<string> {
-    return this.http.post(this.url + 'profile/password',
+    return this.http.post(this.url + 'account/password',
       JSON.stringify({
         currentPassword: currentPassword,
         newPassword: newPassword,
@@ -243,17 +255,4 @@ export class DataService {
       { responseType: 'text' }
     );
   }
-
-  public getEmail(): Observable<EmailDto> {
-    return this.http.get<EmailDto>(this.url + 'profile/email');
-  }
-
-  public updateEmail(newEmail: string): Observable<string> {
-    return this.http.post(this.url + 'profile/email', newEmail, { responseType: 'text' });
-  }
-
-  public verifyEmail(token: string): Observable<string> {
-    return this.http.get('./profile/verify-email/' + token, { responseType: 'text' });
-  }
-  
 }

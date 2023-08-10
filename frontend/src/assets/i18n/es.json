@@ -156,7 +156,7 @@
 				"text": "Idioma"
 			},
 			"logout": "Salir",
-            "profile": "Mi perfil",
+            "account": "Mi cuenta",
 			"notifications": "Notificaciones"
 		},
 		"notifications": {
@@ -456,7 +456,7 @@
 				"title": "Ejecuciones programadas"
 			}
 		},
-		"profile": {
+		"account": {
             "changePassword": {
                 "confirmButton": "Confirmar",
                 "confirmPassword": "Confirmar nueva contraseña",
@@ -467,7 +467,7 @@
             "menu": {
                 "changePassword": "Cambiar contraseña"
             },
-			"title": "Mi perfil"
+			"title": "Mi cuenta"
 		}
 	},
 	"signup": {

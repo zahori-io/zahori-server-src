@@ -1,4 +1,4 @@
-package io.zahori.server.controller;
+package io.zahori.server.security;
 
 /*-
  * #%L
@@ -23,8 +23,7 @@ package io.zahori.server.controller;
  * #L%
  */
 import io.zahori.server.email.EmailDto;
-import io.zahori.server.security.Passwords;
-import io.zahori.server.service.ProfileService;
+import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -32,42 +31,53 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/profile")
-public class ProfilController {
+public class AccountController {
 
-    private final ProfileService profileService;
+    private static final Logger LOG = LoggerFactory.getLogger(AccountController.class);
 
-    private static final Logger LOG = LoggerFactory.getLogger(ProfilController.class);
+    private final AccountService accountService;
 
-    public ProfilController(ProfileService profileService) {
-        this.profileService = profileService;
+    public AccountController(AccountService accountService) {
+        this.accountService = accountService;
     }
 
-    @PostMapping("/password")
-    public ResponseEntity<Object> changePassword(@RequestBody Passwords passwords) {
-        profileService.changePassword(passwords);
+    @PostMapping("/account/sign-up")
+    public ResponseEntity<Object> signUp(@RequestBody AccountEntity user) {
+        LOG.info("Create account: " + user);
+        accountService.createAccount(user);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/email")
+    @GetMapping("/account/verify-email/{token}")
+    public ResponseEntity<Object> verifyEmail(@PathVariable UUID token) {
+        accountService.verifyEmail(token);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/api/account/password")
+    public ResponseEntity<Object> changePassword(@RequestBody Passwords passwords) {
+        accountService.changePassword(passwords);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/api/account/email")
     public ResponseEntity<Object> getEmails() {
-        EmailDto emailDto = profileService.getEmails();
+        EmailDto emailDto = accountService.getEmails();
         return new ResponseEntity<>(emailDto, HttpStatus.OK);
     }
 
-    @PostMapping("/email")
+    @PostMapping("/api/account/email")
     public ResponseEntity<Object> changeEmail(@RequestBody String newEmail, HttpServletRequest request) {
         String host = StringUtils.substringBefore(request.getRequestURL().toString(), request.getContextPath());
         host = host + request.getContextPath();
 
-        profileService.createChangeEmailRequest(newEmail, host);
+        accountService.createChangeEmailRequest(newEmail, host);
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 }

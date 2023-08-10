@@ -8,11 +8,11 @@ const SUCCESS_COLOR = 'alert alert-success';
 const ERROR_COLOR = 'alert alert-danger';
 
 @Component({
-  selector: 'app-profile-change-email',
-  templateUrl: './profile-change-email.component.html',
-  styleUrls: ['./profile-change-email.component.css']
+  selector: 'app-account-change-email',
+  templateUrl: './account-change-email.component.html',
+  styleUrls: ['./account-change-email.component.css']
 })
-export class ProfileChangeEmailComponent implements OnInit {
+export class AccountChangeEmailComponent implements OnInit {
 
   banner: BannerOptions;
   currentEmail: string;
@@ -64,7 +64,6 @@ export class ProfileChangeEmailComponent implements OnInit {
   }
   
   isValidEmail(email: string) {
-    return true;
     if (/^[a-zA-Z0-9]+([\._-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([\.-]?[a-zA-Z0-9]+)*(\.[a-zA-Z0-9]{2,})+$/.test(email)) {
       this.validEmail = true;
     } else {

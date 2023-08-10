@@ -1,4 +1,4 @@
-package io.zahori.server.service;
+package io.zahori.server.security;
 
 /*-
  * #%L
@@ -28,9 +28,6 @@ import io.zahori.server.email.EmailService;
 import io.zahori.server.email.EmailVerification;
 import io.zahori.server.email.EmailVerificationRepository;
 import io.zahori.server.exception.BadRequestException;
-import io.zahori.server.security.AccountEntity;
-import io.zahori.server.security.AccountRepository;
-import io.zahori.server.security.Passwords;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -46,9 +43,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class ProfileService {
+public class AccountService {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ProfileService.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AccountService.class);
 
     private final EmailService emailService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -56,7 +53,7 @@ public class ProfileService {
     private final EmailVerificationRepository emailVerificationRepository;
 
     @Autowired
-    public ProfileService(EmailService emailService, BCryptPasswordEncoder bCryptPasswordEncoder, AccountRepository accountRepository, EmailVerificationRepository emailVerificationRepository) {
+    public AccountService(EmailService emailService, BCryptPasswordEncoder bCryptPasswordEncoder, AccountRepository accountRepository, EmailVerificationRepository emailVerificationRepository) {
         this.emailService = emailService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.accountRepository = accountRepository;
@@ -71,6 +68,12 @@ public class ProfileService {
         } catch (Exception e) {
             throw new BadRequestException("Invalid session");
         }
+    }
+
+    public void createAccount(AccountEntity user) {
+        // TODO validate user does not exist yet (validate username and email)
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+        accountRepository.save(user);
     }
 
     public void changePassword(Passwords passwords) {
@@ -164,7 +167,7 @@ public class ProfileService {
         Email emailDetails = new Email();
         emailDetails.setRecipient(newEmail);
         emailDetails.setSubject("Zahori - Email verification");
-        String verifyLink = host + "/#/verify-email/" + uuid;
+        String verifyLink = host + "/#/account/verify-email/" + uuid;
         emailDetails.setMsgText(getVerifyEmailText(verifyLink));
         emailDetails.setMsgHtml(getVerifyEmailHtml(verifyLink));
         emailService.send(emailDetails);

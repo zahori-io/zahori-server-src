@@ -6,11 +6,11 @@ const SUCCESS_COLOR = 'alert alert-success';
 const ERROR_COLOR = 'alert alert-danger';
 
 @Component({
-  selector: 'app-profile-change-password',
-  templateUrl: './profile-change-password.component.html',
-  styleUrls: ['./profile-change-password.component.css']
+  selector: 'app-account-change-password',
+  templateUrl: './account-change-password.component.html',
+  styleUrls: ['./account-change-password.component.css']
 })
-export class ProfileChangePasswordComponent implements OnInit {
+export class AccountChangePasswordComponent implements OnInit {
 
   currentPassword: string;
   newPassword: string;
