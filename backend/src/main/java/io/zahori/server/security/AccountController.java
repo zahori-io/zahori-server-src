@@ -47,8 +47,9 @@ public class AccountController {
         this.accountService = accountService;
     }
 
+    // Disabled for security until user management is implemented
     @PostMapping("/account/sign-up")
-    public ResponseEntity<Object> signUp(@RequestBody AccountEntity user) {
+    public ResponseEntity<Object> signUp(@RequestBody AccountDto user) {
         LOG.info("Create account: " + user);
         accountService.createAccount(user);
         return new ResponseEntity<>(HttpStatus.OK);

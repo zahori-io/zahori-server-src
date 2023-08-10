@@ -54,7 +54,7 @@ public class AccountUserDetailsService implements UserDetailsService {
             return null;
         }
 
-        AccountEntity account = accountRepository.findByUsernameOrEmail(username);
+        Account account = accountRepository.findByUsernameOrEmail(username);
         if (account == null) {
             // Cuenta no encontrada
             return null;

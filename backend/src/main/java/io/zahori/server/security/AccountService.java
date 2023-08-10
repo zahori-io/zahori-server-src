@@ -28,6 +28,7 @@ import io.zahori.server.email.EmailService;
 import io.zahori.server.email.EmailVerification;
 import io.zahori.server.email.EmailVerificationRepository;
 import io.zahori.server.exception.BadRequestException;
+import io.zahori.server.model.Client;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -60,20 +61,32 @@ public class AccountService {
         this.emailVerificationRepository = emailVerificationRepository;
     }
 
-    private AccountEntity getUser() {
+    private Account getUser() {
         try {
             UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-            AccountEntity user = accountRepository.findByUsername(authentication.getPrincipal().toString());
+            Account user = accountRepository.findByUsername(authentication.getPrincipal().toString());
             return user;
         } catch (Exception e) {
             throw new BadRequestException("Invalid session");
         }
     }
 
-    public void createAccount(AccountEntity user) {
-        // TODO validate user does not exist yet (validate username and email)
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        accountRepository.save(user);
+    public void createAccount(AccountDto accountDto) {
+        validateEmail(accountDto.getEmail());
+        accountDto.setEmail(accountDto.getEmail().trim().toLowerCase());
+
+        // TODO receive and validate username?
+        Account account = new Account();
+        account.setEmail(accountDto.getEmail());
+        account.setPassword(bCryptPasswordEncoder.encode(accountDto.getPassword()));
+
+        // Client
+        // TODO set clientId from user authenticated that created this user
+        Client client = new Client();
+        client.setClientId(1L);
+        account.setClient(client);
+
+        accountRepository.save(account);
     }
 
     public void changePassword(Passwords passwords) {
@@ -89,7 +102,7 @@ public class AccountService {
             throw new BadRequestException("Confirm password doesn't match New password");
         }
 
-        AccountEntity user = getUser();
+        Account user = getUser();
 
         if (!bCryptPasswordEncoder.matches(passwords.getCurrentPassword(), user.getPassword())) {
             throw new BadRequestException("Current password is incorrect");
@@ -103,7 +116,7 @@ public class AccountService {
         EmailDto emailDto = new EmailDto();
 
         // Get user and current email
-        AccountEntity user = getUser();
+        Account user = getUser();
         emailDto.setEmail(user.getEmail());
 
         // Get new email request (if exists)
@@ -125,30 +138,44 @@ public class AccountService {
         return emailDto;
     }
 
-    // TODO: metodo que haga: trim, toLower, regExp y buscar si ya existe en BD
-    public boolean isValidEmail(String email) {
+    public void validateEmail(String email) {
+        if (StringUtils.isBlank(email)) {
+            throw new BadRequestException("Invalid email");
+        }
+
+        email = email.trim().toLowerCase();
+
+        if (isInvalidEmailFormat(email)) {
+            throw new BadRequestException("Invalid email");
+        }
+
+        if (isEmailAlreadyRegistered(email)) {
+            LOG.info("Email already registered: {}", email);
+            throw new BadRequestException("Invalid email");
+        }
+    }
+
+    private boolean isEmailAlreadyRegistered(String email) {
+        Account account = accountRepository.findByEmail(email);
+        return account != null;
+    }
+
+    private boolean isInvalidEmailFormat(String email) {
         final String regExp = "^[a-z0-9]+([\\._-]?[a-z0-9]+)*@[a-z0-9]+([\\.-]?[a-z0-9]+)*(\\.[a-z0-9]{2,})+$";
 
         Pattern pattern = Pattern.compile(regExp);
-        Matcher matcher = pattern.matcher(StringUtils.trim(email));
-        return matcher.matches();
+        Matcher matcher = pattern.matcher(email);
+        return !matcher.matches();
     }
 
     @Transactional
     public void createChangeEmailRequest(String newEmail, String host) {
-        if (StringUtils.isBlank(newEmail)) {
-            throw new BadRequestException("Invalid email");
-        }
-
+        validateEmail(newEmail);
         newEmail = newEmail.trim().toLowerCase();
 
-        if (!isValidEmail(newEmail)) {
-            throw new BadRequestException("Invalid email");
-        }
+        Account user = getUser();
 
-        AccountEntity user = getUser();
-
-        // Verify if already exist an email change request, if so, remove it and generate a new one
+        // Verify if user already has an email change request, if so, remove it and generate a new one
         Optional<EmailVerification> emailVerificationOptional = emailVerificationRepository.findByAccountId(user.getId());
         if (emailVerificationOptional.isPresent()) {
             emailVerificationRepository.delete(emailVerificationOptional.get());
@@ -192,13 +219,13 @@ public class AccountService {
             throw new BadRequestException("Token has expired");
         }
 
-        Optional<AccountEntity> userOptional = accountRepository.findById(emailVerification.getAccountId());
+        Optional<Account> userOptional = accountRepository.findById(emailVerification.getAccountId());
         if (userOptional.isEmpty()) {
             throw new RuntimeException("User does not exist");
         }
 
         // Update user email
-        AccountEntity user = userOptional.get();
+        Account user = userOptional.get();
         user.setEmail(emailVerification.getNewEmail());
         accountRepository.save(user);
 

@@ -70,7 +70,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         LOG.debug("JWTAuthenticationFilter.attemptAuthentication");
 
         try {
-            AccountEntity creds = new ObjectMapper().readValue(req.getInputStream(), AccountEntity.class);
+            Account creds = new ObjectMapper().readValue(req.getInputStream(), Account.class);
 
             return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(creds.getUsername().toLowerCase(), creds.getPassword(), new ArrayList<>()));
         } catch (IOException e) {

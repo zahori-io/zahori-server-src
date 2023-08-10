@@ -41,7 +41,7 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "accounts")
-public class AccountEntity {
+public class Account {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -74,12 +74,12 @@ public class AccountEntity {
     /**
      * Instantiates a new Account entity.
      */
-    public AccountEntity() {
+    public Account() {
     }
 
     @Override
     public String toString() {
-        return "AccountEntity [id=" + id + ", username=" + username + ", email=" + email + ", enabled=" + enabled + ", credentialsexpired=" + credentialsexpired
+        return "Account [id=" + id + ", username=" + username + ", email=" + email + ", enabled=" + enabled + ", credentialsexpired=" + credentialsexpired
                 + ", expired=" + expired + ", locked=" + locked + ", roles=" + roles + "]";
     }
 
