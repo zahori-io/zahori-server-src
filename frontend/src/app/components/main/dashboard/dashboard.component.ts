@@ -6,8 +6,9 @@ import { CaseExecution } from '../../../model/caseExecution';
 import { ExecutionStats } from '../../../model/executionStats';
 import { BrowserExecutionStats } from '../../../model/browserExecutionsStats';
 import { ServerVersions } from '../../../model/serverVersions';
-import {TranslateService} from '@ngx-translate/core';
+import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
+import { AccountChangeEmailComponent } from '../account/account-change-email/account-change-email.component';
 
 const SUCCESS_COLOR = 'alert alert-success';
 @Component({
@@ -20,6 +21,12 @@ export class DashboardComponent implements OnInit {
   processes: Process[];
   serverVersions: ServerVersions;
 
+  // modal to ask the user to introduce the email if not present in DB.
+  titleModal: string;
+  componentModal: any;
+  displayModal = false;
+  dataModal: any;
+
   constructor(
     public dataService: DataService, 
     private translate: TranslateService,
@@ -29,6 +36,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     this.getClient();
     this.getLastServerVersion();
+    this.askForEmail();
   }
 
   getClient(): void {
@@ -132,5 +140,41 @@ export class DashboardComponent implements OnInit {
           }
         );
       }
+  }
+
+  askForEmail() {
+    this.dataService.getEmailServiceStatus().subscribe(
+      // email service is configured
+      () => {
+        this.dataService.getEmail().subscribe(
+          (emailDto) => {
+            // user has an email pending to be verified
+            if (emailDto.newEmail && emailDto.newEmail != ''){
+              return;
+            }
+            // user has no email, open modal to ask for it
+            if (!emailDto.email || emailDto.email == ''){
+              this.componentModal = AccountChangeEmailComponent;
+              this.displayModal = true;
+              this.titleModal = "Introduce tu email";
+              this.dataModal = {"error": "Rellena tu email para que puedas recuperar tu contraseña en caso de olvido"};
+            }
+          },
+          (error) => {
+            console.log("Error getting user email: " + error.error);
+          }
+        );
+      },
+      // email service is not configured
+      (error) => {
+        console.log("Email service status: " + error.error);
+      }
+    );
+  }
+
+  onModalCloseEvent() {
+    this.displayModal = false;
+    // Validate if user has filled the email
+    this.askForEmail();
   }
 }

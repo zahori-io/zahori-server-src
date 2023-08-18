@@ -1,0 +1,16 @@
+.modal {
+  /* margin-top: 50px; */
+}
+
+.modal-dialog {
+  box-shadow: 0px 0px 25px #888888;
+  margin-top: 65px;
+}
+
+.modal-content {
+  height: calc(100vh - 135px);
+}
+
+.modal-body {
+  overflow: auto;
+}

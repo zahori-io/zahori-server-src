@@ -59,6 +59,7 @@ import { AccountChangeEmailComponent } from './components/main/account/account-c
 import { PaginationComponent } from './components/utils/pagination/pagination.component';
 import { SchedulerComponent } from './components/main/process/scheduler/scheduler.component';
 import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
+import { ModalComponent } from './components/utils/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -107,7 +108,8 @@ import { VerifyEmailComponent } from './components/verify-email/verify-email.com
     SortDirective,
     TmsExecutionDetailsComponent,
     PaginationComponent,
-    SchedulerComponent
+    SchedulerComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,

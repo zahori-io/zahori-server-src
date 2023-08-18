@@ -47,8 +47,10 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String sender;
 
-    private boolean isEnabled() {
-        return enabled;
+    public void isEnabled() {
+        if (!enabled) {
+            throw new ServiceUnavailableException("Email service is not configured");
+        }
     }
 
     public void send(Email email) {
@@ -61,9 +63,7 @@ public class EmailService {
     }
 
     private void sendEmail(Email email) {
-        if (!isEnabled()) {
-            throw new ServiceUnavailableException("Email service is not configured");
-        }
+        isEnabled();
 
         try {
             MimeMessage message = javaMailSender.createMimeMessage();

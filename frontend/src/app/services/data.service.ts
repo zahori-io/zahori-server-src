@@ -255,4 +255,9 @@ export class DataService {
       { responseType: 'text' }
     );
   }
+
+  public getEmailServiceStatus(): Observable<any> {
+    return this.http.get(this.url + 'email-service/status');
+  }
+
 }

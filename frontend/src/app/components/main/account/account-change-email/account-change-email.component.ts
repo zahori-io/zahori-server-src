@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DataService } from '../../../../services/data.service';
 import { BannerOptions } from '../../../utils/banner/banner';
 import { EmailDto } from '../../../../model/emailDto';
@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 
 const SUCCESS_COLOR = 'alert alert-success';
 const ERROR_COLOR = 'alert alert-danger';
+const ERROR_EMAIL_SERVICE_UNAVAILABLE = "Email service is not enabled, contact your system administrator.";
 
 @Component({
   selector: 'app-account-change-email',
@@ -16,12 +17,14 @@ export class AccountChangeEmailComponent implements OnInit {
 
   banner: BannerOptions;
   currentEmail: string;
-  emailDto: EmailDto;
+  emailDto: EmailDto = new EmailDto();
   validEmail: boolean = true;
   message: string = "";
   error: string = "";
   processing: boolean = false;
 
+  data: any = {};
+  
   constructor(
     private dataService: DataService,
     private location: Location
@@ -38,28 +41,45 @@ export class AccountChangeEmailComponent implements OnInit {
     let state:any = this.location.getState();
 
     if (state.message && state.message != ""){
-      this.banner = new BannerOptions('', state.message, SUCCESS_COLOR, true);
+      this.data.message = state.message;
     }
     if (state.error && state.error != ""){
-      this.banner = new BannerOptions('', state.error, ERROR_COLOR, true);
+      this.data.error = state.error;
+    }
+
+    if (this.data.message && this.data.message != ''){
+      this.banner = new BannerOptions('', this.data.message, SUCCESS_COLOR, true);
+    }
+    if (this.data.error && this.data.error != ""){
+      this.banner = new BannerOptions('', this.data.error, ERROR_COLOR, true);
     }
   }
 
+
   getCurrentEmails() {
-    this.dataService.getEmail().subscribe(
-      (emailDto) => {
-        this.emailDto = emailDto;
-        this.currentEmail = emailDto.email;
-        // if user has no email but has a pending request
-        if (emailDto.email === "" && emailDto.newEmail !== ""){
-          this.emailDto.email = emailDto.newEmail;
-        } 
-        this.isValidEmail(this.emailDto.email);
+    this.dataService.getEmailServiceStatus().subscribe(
+      () => {
+        this.dataService.getEmail().subscribe(
+          (emailDto) => {
+            this.emailDto = emailDto;
+            this.currentEmail = emailDto.email;
+            // if user has no email but has a pending request
+            if (emailDto.email === "" && emailDto.newEmail !== ""){
+              this.emailDto.email = emailDto.newEmail;
+            } 
+            this.isValidEmail(this.emailDto.email);
+          },
+          (error) => {
+            this.banner = new BannerOptions('', 'Error getting email', ERROR_COLOR, true);
+            console.error('Error getting email: ' + error.error);
+          }
+        );
       },
       (error) => {
-        this.banner = new BannerOptions('', 'Error getting email', ERROR_COLOR, true);
-        console.error('Error getting email: ' + error.error);
-      }
+        if (error.status == 503){
+          this.banner = new BannerOptions('', ERROR_EMAIL_SERVICE_UNAVAILABLE, ERROR_COLOR, true);
+        }
+      } 
     );
   }
   
@@ -87,7 +107,7 @@ export class AccountChangeEmailComponent implements OnInit {
       (error) => {
         let errorMessage = error.error;
         if (error.status == 503){
-          errorMessage = "Email service is not enabled, contact your system administrator.";
+          errorMessage = ERROR_EMAIL_SERVICE_UNAVAILABLE;
         }
         this.banner = new BannerOptions('', 'Error updating email: ' + errorMessage, ERROR_COLOR, true);
         this.processing = false;
