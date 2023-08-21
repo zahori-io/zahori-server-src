@@ -57,18 +57,27 @@
               <form (submit)="loginUser($event)">
                 <div class="form-row">
                   <div class="col-md-6">
-                    <div class="position-relative form-group">
-                      <label for="password" class="">{{'login.user' | translate}}</label>
-                      <input name="username" id="username" ng-model="username"
-                             placeholder="Nombre de usuario o correo electrónico..." type="email"
+                      <div class="input-group">
+                        <input name="username" id="username" ng-model="username"
+                             placeholder="{{'login.user' | translate}}" type="email"
                              class="form-control">
-                    </div>
+                        <div class="input-group-prepend">
+                          <span id="inputGroupPrepend2" class="input-group-text">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                          </span>
+                        </div>
+                      </div>
                   </div>
+
                   <div class="col-md-6">
-                    <div class="position-relative form-group">
-                      <label for="password" class="">{{'login.password' | translate}}</label>
+                    <div class="input-group">
                       <input name="password" id="password" ng-model="password"
-                             placeholder="Contraseña..." type="password" class="form-control">
+                             placeholder="{{'login.password' | translate}}" type="password" class="form-control">
+                      <div class="input-group-prepend">
+                      <span id="inputGroupPrepend2" class="input-group-text">
+                        <i class="fa fa-key" aria-hidden="true"></i>
+                      </span>
+                    </div>
                     </div>
                   </div>
                 </div>
@@ -79,15 +88,15 @@
                 </div>
                 <div class="divider row"></div>
                 -->
-                <div class="text-right mb-2">
-                  <div *ngIf="error" class="ml-2 text-danger">{{'login.loginError' | translate}}</div>
+                <div class="text-center mb-2">
+                  <div [style.visibility]="error ? 'visible' : 'hidden'" class="ml-2 text-danger">{{'login.loginError' | translate}}</div>
                 </div>
-                <div class="d-flex align-items-center">
+                <div class="text-center">
                   <div class="ml-auto">
                     <!--
                     <a href="javascript:void(0);" class="btn-lg btn btn-link">{{'login.recoverPassword' | translate}}</a>
                     -->
-                    <button class="btn btn-primary btn-lg">{{'login.login' | translate}}</button>
+                    <button class="btn btn-lg btn-zahoriV">{{'login.login' | translate}}</button>
                   </div>
                 </div>
               </form>

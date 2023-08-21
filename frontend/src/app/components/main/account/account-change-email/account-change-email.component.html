@@ -5,14 +5,14 @@
     <div class="app-page-title">
         <div class="page-title-wrapper">
             <div class="page-title-heading">
-                <div>Email</div>
+                <div>{{'main.account.changeEmail.title'| translate}}</div>
             </div>
         </div>
     </div>
 
     <div class="row mt-3  form-group">
         <div class="col-12">
-            <label for="currentEmail">Con tu email puedes iniciar sesión, recuperar tu contraseña en caso de olvido y recibir notificaciones.</label>
+            <label for="currentEmail">{{'main.account.changeEmail.description'| translate}}</label>
         </div>
     </div>
 
@@ -22,27 +22,27 @@
                 <input [(ngModel)]="emailDto.email" name="email" id="email" (ngModelChange)="isValidEmail($event)" type="text" class="form-control">
 
                 <div class="input-group-prepend" *ngIf="isEmailVerified()">
-                    <span class="input-group-text" id="inputGroupPrepend2"><i class="fas fa-check text-success"> Verified</i></span>
+                    <span class="input-group-text" id="inputGroupPrepend2"><i class="fas fa-check text-success"> {{'main.account.changeEmail.verified'| translate}}</i></span>
                 </div>
             </div>
             <div *ngIf="!validEmail">
-                Introduce un email válido! 
+                {{'main.account.changeEmail.invalidEmail'| translate}}
             </div>
         </div>
     </div>
 
     <div>
         <button class="mt-3 btn-wide btn-icon btn btn-zahoriV btn-sm" (click)="updateEmail()" [disabled]="!emailDto || isEmailVerified() || !validEmail || emailDto.email === emailDto.newEmail">
-            Confirmar
+            {{'main.account.changeEmail.confirmButton'| translate}}
         </button>
 
-        <div *ngIf="processing" class="spinner-border spinner-border-sm text-secondary ml-3 mb-1" style="border: 0.15em solid currentColor; border-right-color: transparent; border-width: 0.1em;"><span class="sr-only">processing...</span></div>
+        <div *ngIf="processing" class="spinner-border spinner-border-sm text-secondary ml-3 mb-1" style="border: 0.15em solid currentColor; border-right-color: transparent; border-width: 0.1em;"><span class="sr-only"></span></div>
     </div>
 
     <div class="row mt-3  form-group" *ngIf="emailDto && emailDto.newEmail && emailDto.newEmail != ''">
         <div class="col-12 alert alert-success">
-            <div>Tienes una nueva dirección de correo pendiente de verificar: <strong>{{emailDto.newEmail}}</strong></div>
-            <div>Revisa tu bandeja de entrada y confirma la nueva dirección haciendo click en el enlace de verificación.</div>
+            <div>{{'main.account.changeEmail.emainPendingVerify-1'| translate}}<strong>{{emailDto.newEmail}}</strong></div>
+            <div>{{'main.account.changeEmail.emainPendingVerify-2'| translate}}</div>
         </div>
     </div>
 

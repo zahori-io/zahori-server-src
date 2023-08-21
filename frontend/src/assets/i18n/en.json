@@ -4,6 +4,9 @@
 		"error": "Error: ",
 		"serverVersion": "A new version of the server is available: {{latest}}"
 	},
+	"modal": {
+		"closeButton": "Close"
+	},
 	"formError": {
 		"empty": "This field can not be blank",
 		"invalidEmail": "The email is not valid",
@@ -20,7 +23,7 @@
 	},
 	"login": {
 		"login": "Login",
-		"loginError": "The username or password is incorrect",
+		"loginError": "Invalid username or password",
 		"noAccount": "Don't have an account yet?",
 		"password": "Password",
 		"recoverPassword": "Recover Password",
@@ -38,7 +41,13 @@
 			"text": "You will be able to apply DevOps and Continuous Integration practices, introducing automatic processes throughout the software development cycle, to accelerate the speed of putting new functionalities into production, and better adapt to the requests of your users. ",
 			"title": "Your application deployments"
 		},
-		"user": "User"
+		"user": "Username or email"
+	},
+	"verify-email": {
+		"emailVerified": "Email verified!",
+		"error": "Error verifying email: ",
+		"invalidToken": "Invalid token",
+		"tokenExpired": "Token has expired"
 	},
 	"main": {
 		"admin": {
@@ -142,6 +151,8 @@
 			"process": "Processes"
 		},
 		"dashboard": {
+			"askForEmailAlert": "Fill in your email so you can recover your password in case you forget it",
+			"askForEmailTitle": "Fill in your email",
 			"noProcessDefined": "There is no defined process for this computer",
 			"total": "Total"
 		},
@@ -457,6 +468,19 @@
 			}
 		},
 		"account": {
+			"changeEmail": {
+				"confirmButton": "Confirm",
+				"description": "With your email you can log in, recover your password in case you forget it and receive notifications.",
+				"emainPendingVerify-1":"You have a new email address pending to be verified: ",
+				"emainPendingVerify-2":"Check your inbox and confirm the new address by clicking on the verification link.",
+				"emailUpdated": "Email change requested, verify your email",
+				"errorGettingEmail": "Error getting email",
+				"errorUpdatingEmail": "Error updating email",
+				"invalidEmail": "Enter a valid email!",
+				"verified": "Verified",
+				"serviceUnavailable": "Email service is not enabled, contact your system administrator",
+				"title": "Email"
+			},
             "changePassword": {
                 "confirmButton": "Confirm",
                 "confirmPassword": "Confirm new password",

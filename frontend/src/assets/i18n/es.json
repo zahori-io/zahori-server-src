@@ -4,6 +4,9 @@
 		"error": "Error: ",
 		"serverVersion": "Hay disponible una nueva versión del servidor: {{latest}}"
 	},
+	"modal": {
+		"closeButton": "Cerrar"
+	},
 	"formError": {
 		"empty": "Este campo no puede estar vacío",
 		"invalidEmail": "El correo no es valido",
@@ -20,7 +23,7 @@
 	},
 	"login": {
 		"login": "Entrar",
-		"loginError": "El nombre del usuario o la contraseña son incorrectos",
+		"loginError": "Nombre de usuario o contraseña incorrectos",
 		"noAccount": "¿No tienes cuenta todavía?",
 		"password": "Contraseña",
 		"recoverPassword": "Recuperar contraseña",
@@ -38,7 +41,13 @@
 			"text": "Podrás aplicar prácticas DevOps y de Integración Continua, introduciendo procesos automáticos en todo el ciclo de desarrollo del software, para acelerar la velocidad de puesta en producción de nuevas funcionalidades, y adaptarte mejor a las peticiones de tus usuarios.",
 			"title": "Tus despliegues de aplicaciones"
 		},
-		"user": "Usuario"
+		"user": "Usuario o correo electrónico"
+	},
+	"verify-email": {
+		"emailVerified": "Email verificado!",
+		"error": "Error verificando el email: ",
+		"invalidToken": "Token inválido",
+		"tokenExpired": "Token expirado"
 	},
 	"main": {
 		"admin": {
@@ -142,6 +151,8 @@
 			"process": "Procesos"
 		},
 		"dashboard": {
+			"askForEmailAlert": "Rellena tu email para que puedas recuperar tu contraseña en caso de olvido",
+			"askForEmailTitle": "Introduce tu email",
 			"noProcessDefined": "No hay ningún proceso definido para este equipo",
 			"total": "Total"
 		},
@@ -457,6 +468,19 @@
 			}
 		},
 		"account": {
+			"changeEmail": {
+				"confirmButton": "Confirmar",
+				"description": "Con tu email puedes iniciar sesión, recuperar tu contraseña en caso de olvido y recibir notificaciones.",
+				"emainPendingVerify-1":"Tienes una nueva dirección de correo pendiente de verificar: ",
+				"emainPendingVerify-2":"Revisa tu bandeja de entrada y confirma la nueva dirección haciendo click en el enlace de verificación.",
+				"emailUpdated": "Cambio solicitado, verifica tu correo",
+				"errorGettingEmail": "Error obteniendo el email",
+				"errorUpdatingEmail": "Error actualizando el email",
+				"invalidEmail": "Introduce un email válido!",
+				"verified": "Verificado",
+				"serviceUnavailable": "El servicio de email no está activado, contacta con el administrador",
+				"title": "Email"
+			},
             "changePassword": {
                 "confirmButton": "Confirmar",
                 "confirmPassword": "Confirmar nueva contraseña",

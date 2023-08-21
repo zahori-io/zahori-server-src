@@ -156,8 +156,8 @@ export class DashboardComponent implements OnInit {
             if (!emailDto.email || emailDto.email == ''){
               this.componentModal = AccountChangeEmailComponent;
               this.displayModal = true;
-              this.titleModal = "Introduce tu email";
-              this.dataModal = {"error": "Rellena tu email para que puedas recuperar tu contraseña en caso de olvido"};
+              this.titleModal = this.translate.instant('main.dashboard.askForEmailTitle');
+              this.dataModal = {"error": this.translate.instant('main.dashboard.askForEmailAlert')};
             }
           },
           (error) => {

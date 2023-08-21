@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { DataService } from '../../../../services/data.service';
 import { BannerOptions } from '../../../utils/banner/banner';
 import { EmailDto } from '../../../../model/emailDto';
@@ -6,7 +7,6 @@ import { Location } from '@angular/common';
 
 const SUCCESS_COLOR = 'alert alert-success';
 const ERROR_COLOR = 'alert alert-danger';
-const ERROR_EMAIL_SERVICE_UNAVAILABLE = "Email service is not enabled, contact your system administrator.";
 
 @Component({
   selector: 'app-account-change-email',
@@ -14,6 +14,8 @@ const ERROR_EMAIL_SERVICE_UNAVAILABLE = "Email service is not enabled, contact y
   styleUrls: ['./account-change-email.component.css']
 })
 export class AccountChangeEmailComponent implements OnInit {
+
+  serviceUnavailable = this.translate.instant('main.account.changeEmail.serviceUnavailable');
 
   banner: BannerOptions;
   currentEmail: string;
@@ -27,7 +29,8 @@ export class AccountChangeEmailComponent implements OnInit {
   
   constructor(
     private dataService: DataService,
-    private location: Location
+    private location: Location,
+    private translate: TranslateService
   ) {
   }
 
@@ -70,14 +73,14 @@ export class AccountChangeEmailComponent implements OnInit {
             this.isValidEmail(this.emailDto.email);
           },
           (error) => {
-            this.banner = new BannerOptions('', 'Error getting email', ERROR_COLOR, true);
+            this.banner = new BannerOptions('', this.translate.instant('main.account.changeEmail.errorGettingEmail'), ERROR_COLOR, true);
             console.error('Error getting email: ' + error.error);
           }
         );
       },
       (error) => {
         if (error.status == 503){
-          this.banner = new BannerOptions('', ERROR_EMAIL_SERVICE_UNAVAILABLE, ERROR_COLOR, true);
+          this.banner = new BannerOptions('', this.serviceUnavailable, ERROR_COLOR, true);
         }
       } 
     );
@@ -100,16 +103,19 @@ export class AccountChangeEmailComponent implements OnInit {
     this.processing = true;
     this.dataService.updateEmail(newEmail).subscribe(
       () => {
-        this.banner = new BannerOptions('', 'Email change requested, verify your email', SUCCESS_COLOR, true);
+        this.banner = new BannerOptions('', this.translate.instant('main.account.changeEmail.emailUpdated'), SUCCESS_COLOR, true);
         this.getCurrentEmails();
         this.processing = false;
       },
       (error) => {
-        let errorMessage = error.error;
+        let errorMessage = "";
         if (error.status == 503){
-          errorMessage = ERROR_EMAIL_SERVICE_UNAVAILABLE;
+          errorMessage = this.serviceUnavailable;
+        } else {
+          errorMessage = this.translate.instant('main.account.changeEmail.errorUpdatingEmail');
         }
-        this.banner = new BannerOptions('', 'Error updating email: ' + errorMessage, ERROR_COLOR, true);
+        this.banner = new BannerOptions('', errorMessage, ERROR_COLOR, true);
+        console.error('Error getting email: ' + error.error);
         this.processing = false;
       }
     );
