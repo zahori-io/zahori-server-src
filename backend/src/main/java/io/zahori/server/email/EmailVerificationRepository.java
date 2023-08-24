@@ -1,4 +1,4 @@
-package io.zahori.server.security;
+package io.zahori.server.email;
 
 /*-
  * #%L
@@ -6,7 +6,7 @@ package io.zahori.server.security;
  * $Id:$
  * $HeadURL:$
  * %%
- * Copyright (C) 2021 PANEL SISTEMAS INFORMATICOS,S.L
+ * Copyright (C) 2021 - 2023 PANEL SISTEMAS INFORMATICOS,S.L
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -22,18 +22,15 @@ package io.zahori.server.security;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
+import java.util.Optional;
+import java.util.UUID;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AccountRepository extends JpaRepository<Account, Long> {
+public interface EmailVerificationRepository extends CrudRepository<EmailVerification, Long> {
 
-    Account findByUsername(String username);
+    Optional<EmailVerification> findByAccountId(Long accountId);
 
-    Account findByEmail(String email);
-
-    @Query("SELECT a FROM Account a WHERE a.username = :u or a.email = :u")
-    Account findByUsernameOrEmail(@Param("u") String usernameOrEmail);
+    Optional<EmailVerification> findByToken(UUID token);
 }

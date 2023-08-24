@@ -100,3 +100,5 @@
 
   </div>
 </div>
+
+<modal *ngIf="componentModal" [title]="titleModal" [componentType]="componentModal" [display]="displayModal" [data]="dataModal" [closable]="true" (onClose)="onModalCloseEvent()"></modal>

@@ -22,18 +22,38 @@ package io.zahori.server.security;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+import com.sun.istack.NotNull;
 
-@Repository
-public interface AccountRepository extends JpaRepository<Account, Long> {
+public class AccountDto {
 
-    Account findByUsername(String username);
+    @NotNull
+    private String email;
 
-    Account findByEmail(String email);
+    @NotNull
+    private String password;
 
-    @Query("SELECT a FROM Account a WHERE a.username = :u or a.email = :u")
-    Account findByUsernameOrEmail(@Param("u") String usernameOrEmail);
+    public AccountDto() {
+    }
+
+    @Override
+    public String toString() {
+        return "AccountDto{" + "email=" + email + '}';
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }

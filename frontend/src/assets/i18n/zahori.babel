@@ -5068,7 +5068,7 @@
                         </children>
                     </folder_node>
                     <folder_node>
-                        <name>profile</name>
+                        <name>account</name>
                         <children>
                             <concept_node>
                                 <name>title</name>

@@ -12,28 +12,32 @@ package io.zahori.server.security;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.SignatureException;
+import io.jsonwebtoken.UnsupportedJwtException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
-
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,14 +46,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
-
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.SignatureException;
-import io.jsonwebtoken.UnsupportedJwtException;
 
 /**
  * The type Jwt authorization filter.
@@ -92,12 +88,12 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
                 Claims claims = claimsJws.getBody();
 
-                LOG.info("clientId (from JWT): " + claims.get(SecurityConstants.CLIENT_ID));
-
                 Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
                 if (claims != null && claims.get(SecurityConstants.AUTHORITIES_KEY) != null) {
                     authorities = Arrays.stream(claims.get(SecurityConstants.AUTHORITIES_KEY).toString().split(",")).map(SimpleGrantedAuthority::new)
                             .collect(Collectors.toList());
+
+                    LOG.debug("clientId (from JWT): " + claims.get(SecurityConstants.CLIENT_ID));
                 }
 
                 if (StringUtils.isNotEmpty(username)) {

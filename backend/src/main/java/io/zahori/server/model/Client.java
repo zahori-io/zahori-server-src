@@ -38,7 +38,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import io.zahori.server.security.AccountEntity;
+import io.zahori.server.security.Account;
 
 /**
  * The type Client.
@@ -76,7 +76,7 @@ public class Client implements Serializable {
 
     @JsonIgnore
     @OneToMany(mappedBy = "client", fetch = FetchType.EAGER)
-    private Set<AccountEntity> accounts;
+    private Set<Account> accounts;
 
     /**
      * Instantiates a new Client.
@@ -215,7 +215,7 @@ public class Client implements Serializable {
      *
      * @return the accounts
      */
-    public Set<AccountEntity> getAccounts() {
+    public Set<Account> getAccounts() {
         return accounts;
     }
 
@@ -224,7 +224,7 @@ public class Client implements Serializable {
      *
      * @param accounts the accounts
      */
-    public void setAccounts(Set<AccountEntity> accounts) {
+    public void setAccounts(Set<Account> accounts) {
         this.accounts = accounts;
     }
 

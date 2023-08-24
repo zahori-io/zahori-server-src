@@ -22,12 +22,14 @@ package io.zahori.server.email;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
+import io.zahori.server.exception.ServiceUnavailableException;
+import javax.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -45,41 +47,53 @@ public class EmailService {
     @Value("${spring.mail.username}")
     private String sender;
 
-    public boolean isEnabled() {
-        return enabled;
+    public void isEnabled() {
+        if (!enabled) {
+            throw new ServiceUnavailableException("Email service is not configured");
+        }
     }
 
-    public void send(EmailDetails details) {
-        try {
-            sendEmail(details);
-        } catch (Exception e) {
-            LOG.error("Error sending email: {}", e.getMessage());
-            throw new RuntimeException("Error sending email");
-        }
+    public void send(Email email) {
+        sendEmail(email);
     }
 
     @Async
-    public void sendAsync(EmailDetails details) {
-        try {
-            sendEmail(details);
-        } catch (Exception e) {
-            LOG.error("Error sending email: {}", e.getMessage());
-        }
+    public void sendAsync(Email email) {
+        sendEmail(email);
     }
 
-    private void sendEmail(EmailDetails details) {
-        if (!isEnabled()) {
-            return;
+    private void sendEmail(Email email) {
+        isEnabled();
+
+        try {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            boolean multipartMode = true;
+            MimeMessageHelper helper = new MimeMessageHelper(message, multipartMode);
+
+            helper.setFrom(sender);
+            helper.setTo(email.getRecipient());
+            helper.setSubject(email.getSubject());
+
+            // HTML and plain text message
+            if (email.hasMsgText() && email.hasMsgHtml()) {
+                helper.setText(email.getMsgText(), email.getMsgHtml());
+            }
+
+            // Plain text message
+            if (email.hasMsgText() && !email.hasMsgHtml()) {
+                helper.setText(email.getMsgText());
+            }
+
+            // HTML message
+            if (!email.hasMsgText() && email.hasMsgHtml()) {
+                helper.setText(email.getMsgHtml(), true);
+            }
+
+            javaMailSender.send(message);
+            LOG.info("Email sent successfully");
+
+        } catch (Exception e) {
+            throw new RuntimeException(String.format("Error sending email: %s", e.getMessage()));
         }
-
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-
-        mailMessage.setFrom(sender);
-        mailMessage.setTo(details.getRecipient());
-        mailMessage.setText(details.getMsgBody());
-        mailMessage.setSubject(details.getSubject());
-
-        javaMailSender.send(mailMessage);
-        LOG.info("Email sent successfully");
     }
 }

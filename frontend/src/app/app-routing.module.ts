@@ -9,7 +9,6 @@ import { TriggerComponent } from './components/main/process/trigger/trigger.comp
 import { ConfiguratorComponent } from './components/main/process/configurator/configurator.component';
 import { CasesComponent } from './components/main/process/cases/cases.component';
 import { HelpComponent } from './components/main/help/help.component';
-import { ProfileComponent } from './components/main/profile/profile.component';
 import { AdminComponent } from './components/main/admin/admin.component';
 import { AdminPlatformsComponent } from './components/main/admin/admin-platforms/admin-platforms.component';
 import { AdminEnvironmentsComponent } from './components/main/process/process-admin/admin-environments/admin-environments.component';
@@ -23,13 +22,17 @@ import { ProcessComponent } from './components/main/process/process.component';
 import { ProcessAdminComponent } from './components/main/process/process-admin/process-admin.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { AdminResolutionsComponent } from './components/main/process/process-admin/admin-resolutions/admin-resolutions.component';
-import { ProfileChangePasswordComponent } from './components/main/profile/profile-change-password/profile-change-password.component';
+import { AccountComponent } from './components/main/account/account.component';
+import { AccountChangePasswordComponent } from './components/main/account/account-change-password/account-change-password.component';
+import { AccountChangeEmailComponent } from './components/main/account/account-change-email/account-change-email.component';
 import { SchedulerComponent } from './components/main/process/scheduler/scheduler.component';
+import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'signup', component: SignupComponent },
+  { path: 'account/signup', component: SignupComponent },
+  { path: 'account/verify-email/:token', component: VerifyEmailComponent },
   {
     path: 'app', component: MainComponent, canActivate: [AuthGuard],
     children: [
@@ -67,10 +70,11 @@ const routes: Routes = [
       },
       { path: 'help', component: HelpComponent },
       {
-        path: 'profile', component: ProfileComponent,
+        path: 'account', component: AccountComponent,
         children: [
-          { path: '', component: ProfileChangePasswordComponent },
-          { path: 'change-password', component: ProfileChangePasswordComponent },
+          { path: '', component: AccountChangePasswordComponent },
+          { path: 'change-password', component: AccountChangePasswordComponent },
+          { path: 'change-email', component: AccountChangeEmailComponent }
         ]
       }
     ]

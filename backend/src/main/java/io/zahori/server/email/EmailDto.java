@@ -1,4 +1,4 @@
-package io.zahori.server.security;
+package io.zahori.server.email;
 
 /*-
  * #%L
@@ -6,7 +6,7 @@ package io.zahori.server.security;
  * $Id:$
  * $HeadURL:$
  * %%
- * Copyright (C) 2021 PANEL SISTEMAS INFORMATICOS,S.L
+ * Copyright (C) 2021 - 2023 PANEL SISTEMAS INFORMATICOS,S.L
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -22,18 +22,33 @@ package io.zahori.server.security;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+public class EmailDto {
 
-@Repository
-public interface AccountRepository extends JpaRepository<Account, Long> {
+    private String email;
+    private String newEmail;
 
-    Account findByUsername(String username);
+    public EmailDto() {
+    }
 
-    Account findByEmail(String email);
+    @Override
+    public String toString() {
+        return "{email=" + email + ", newEmail=" + newEmail + "}";
+    }
 
-    @Query("SELECT a FROM Account a WHERE a.username = :u or a.email = :u")
-    Account findByUsernameOrEmail(@Param("u") String usernameOrEmail);
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getNewEmail() {
+        return newEmail;
+    }
+
+    public void setNewEmail(String newEmail) {
+        this.newEmail = newEmail;
+    }
+
 }

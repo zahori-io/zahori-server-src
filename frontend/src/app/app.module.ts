@@ -52,11 +52,14 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { SortDirective } from './directive/sort.directive';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { TmsExecutionDetailsComponent } from './components/main/process/tms-execution-details/tms-execution-details.component';
-import { ProfileComponent } from './components/main/profile/profile.component';
-import { ProfileMenuComponent } from './components/main/profile/profile-menu/profile-menu.component';
-import { ProfileChangePasswordComponent } from './components/main/profile/profile-change-password/profile-change-password.component';
+import { AccountComponent } from './components/main/account/account.component';
+import { AccountMenuComponent } from './components/main/account/account-menu/account-menu.component';
+import { AccountChangePasswordComponent } from './components/main/account/account-change-password/account-change-password.component';
+import { AccountChangeEmailComponent } from './components/main/account/account-change-email/account-change-email.component';
 import { PaginationComponent } from './components/utils/pagination/pagination.component';
 import { SchedulerComponent } from './components/main/process/scheduler/scheduler.component';
+import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
+import { ModalComponent } from './components/utils/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -68,7 +71,12 @@ import { SchedulerComponent } from './components/main/process/scheduler/schedule
     ConfiguratorComponent,
     CasesComponent,
     HelpComponent,
-    ProfileComponent,
+    AccountComponent,
+    AccountComponent,
+    AccountMenuComponent,
+    AccountChangePasswordComponent,
+    AccountChangeEmailComponent,
+    VerifyEmailComponent,
     AdminComponent,
     AdminGroupsComponent,
     AdminPlatformsComponent,
@@ -99,11 +107,9 @@ import { SchedulerComponent } from './components/main/process/scheduler/schedule
     ResolutionComponentComponent,
     SortDirective,
     TmsExecutionDetailsComponent,
-    ProfileComponent,
-    ProfileMenuComponent,
-    ProfileChangePasswordComponent,
     PaginationComponent,
-    SchedulerComponent
+    SchedulerComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,

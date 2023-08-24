@@ -1,5 +1,7 @@
 package io.zahori.server.email;
 
+import org.apache.commons.lang3.StringUtils;
+
 /*-
  * #%L
  * zahori-server
@@ -22,21 +24,35 @@ package io.zahori.server.email;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-public class EmailDetails {
+public class Email {
 
     private String recipient;
-    private String msgBody;
     private String subject;
+    private String msgText;
+    private String msgHtml;
     private String attachment;
 
-    public EmailDetails() {
-
+    public Email() {
     }
 
-    public EmailDetails(String recipient, String msgBody, String subject, String attachment) {
+    public Email(String recipient, String subject, String msgText) {
         this.recipient = recipient;
-        this.msgBody = msgBody;
         this.subject = subject;
+        this.msgText = msgText;
+    }
+
+    public Email(String recipient, String subject, String msgText, String msgHtml) {
+        this.recipient = recipient;
+        this.subject = subject;
+        this.msgText = msgText;
+        this.msgHtml = msgHtml;
+    }
+
+    public Email(String recipient, String subject, String msgText, String msgHtml, String attachment) {
+        this.recipient = recipient;
+        this.subject = subject;
+        this.msgText = msgText;
+        this.msgHtml = msgHtml;
         this.attachment = attachment;
     }
 
@@ -48,14 +64,6 @@ public class EmailDetails {
         this.recipient = recipient;
     }
 
-    public String getMsgBody() {
-        return msgBody;
-    }
-
-    public void setMsgBody(String msgBody) {
-        this.msgBody = msgBody;
-    }
-
     public String getSubject() {
         return subject;
     }
@@ -64,12 +72,36 @@ public class EmailDetails {
         this.subject = subject;
     }
 
+    public String getMsgText() {
+        return msgText;
+    }
+
+    public void setMsgText(String msgText) {
+        this.msgText = msgText;
+    }
+
+    public String getMsgHtml() {
+        return msgHtml;
+    }
+
+    public void setMsgHtml(String msgHtml) {
+        this.msgHtml = msgHtml;
+    }
+
     public String getAttachment() {
         return attachment;
     }
 
     public void setAttachment(String attachment) {
         this.attachment = attachment;
+    }
+
+    public boolean hasMsgText() {
+        return StringUtils.isNotBlank(msgText);
+    }
+
+    public boolean hasMsgHtml() {
+        return StringUtils.isNotBlank(msgHtml);
     }
 
 }

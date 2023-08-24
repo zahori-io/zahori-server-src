@@ -1,4 +1,4 @@
-package io.zahori.server.security;
+package io.zahori.server.email;
 
 /*-
  * #%L
@@ -22,18 +22,23 @@ package io.zahori.server.security;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Repository
-public interface AccountRepository extends JpaRepository<Account, Long> {
+@RestController
+@RequestMapping("/api/email-service/status")
+public class EmailController {
 
-    Account findByUsername(String username);
+    @Autowired
+    private EmailService emailService;
 
-    Account findByEmail(String email);
-
-    @Query("SELECT a FROM Account a WHERE a.username = :u or a.email = :u")
-    Account findByUsernameOrEmail(@Param("u") String usernameOrEmail);
+    @GetMapping()
+    public ResponseEntity<Object> getEmailServiceStatus() {
+        emailService.isEnabled();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

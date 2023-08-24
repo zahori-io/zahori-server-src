@@ -32,251 +32,254 @@
         </div>
         <!-- Fin cabecera con busqueda -->
 
-        <!-- Inicio de Tabla de Datos -->
-        <table class="mb-0 table table-hover">
+        <div *ngIf="dataService.processExecutions">
 
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>{{'main.process.executions.executionName'|translate}}</th>
-              <th>{{'main.process.executions.caseExecuted'|translate}}</th>
-              <th class="text-center">{{'main.process.executions.duration'|translate}}</th>
-              <th class="text-center">{{'main.process.executions.state'|translate}}</th>
-              <th class="text-center">{{'main.process.executions.correctTotals'|translate}}</th>
-              <th class="text-center" style="width: 110px;" *ngIf="dataService.isWebProcess()">
-                {{'main.process.executions.browsers'|translate}}
-              </th>
-              <th class="text-center" style="width: 110px;" *ngIf="dataService.isWebProcess()">
-                {{'main.process.executions.resolutions'|translate}}
-              </th>
-              <th class="text-center" style="width: 150px;">{{'main.process.executions.date'|translate}}</th>
-              <th class="text-center">{{'main.process.executions.configuration'|translate}}</th>
-              <th class="text-center">{{'main.process.executions.type'|translate}}</th>
-              <th class="text-center"></th>
-            </tr>
-          </thead>
+          <!-- Inicio de Tabla de Datos -->
+          <table class="mb-0 table table-hover">
 
-          <tbody>
-            <ng-template ngFor let-execution [ngForOf]="dataService.processExecutions.data.content" let-i="index">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>{{'main.process.executions.executionName'|translate}}</th>
+                <th>{{'main.process.executions.caseExecuted'|translate}}</th>
+                <th class="text-center">{{'main.process.executions.duration'|translate}}</th>
+                <th class="text-center">{{'main.process.executions.state'|translate}}</th>
+                <th class="text-center">{{'main.process.executions.correctTotals'|translate}}</th>
+                <th class="text-center" style="width: 110px;" *ngIf="dataService.isWebProcess()">
+                  {{'main.process.executions.browsers'|translate}}
+                </th>
+                <th class="text-center" style="width: 110px;" *ngIf="dataService.isWebProcess()">
+                  {{'main.process.executions.resolutions'|translate}}
+                </th>
+                <th class="text-center" style="width: 150px;">{{'main.process.executions.date'|translate}}</th>
+                <th class="text-center">{{'main.process.executions.configuration'|translate}}</th>
+                <th class="text-center">{{'main.process.executions.type'|translate}}</th>
+                <th class="text-center"></th>
+              </tr>
+            </thead>
 
-              <tr data-toggle="collapse" [attr.data-target]="'#group-of-rows-'+ execution.executionId" class="showOnHover">
-                <td>{{execution.executionId}}</td>
-                <td>{{execution.name}}</td>
-                <td>
-                  <ng-container *ngFor="let caseName of getCaseList(execution); let i = index">
-                    <button *ngIf="i < 3" class="mr-2 btn-pill btn btn-light disabled btn-sm">
-                      {{caseName}}
-                    </button>
-                    <button *ngIf="i == 3" title="más casos..."
-                      class="mr-2 btn-pill btn btn-light disabled btn-sm">...</button>
-                  </ng-container>
-                </td>
-                <td class="text-center">
-                  <span>{{execution.durationSeconds}}</span>
-                  <span *ngIf="execution.durationSeconds && execution.durationSeconds >= 0"> (s)</span>
-                </td>
-                <td class="text-center">
-                  <i title="{{execution.status}}" class="fas " [ngClass]="{
-                    'fa-check text-success': 'SUCCESS PASSED'.includes(execution.status),
-                    'fa-times text-danger': execution.status  === 'FAILURE',
-                    'fa-exclamation-triangle': execution.status  === 'Not executed'}">
-                  </i>
-                  <div title="Running" *ngIf="execution.status === 'Running'"
-                    class="spinner-border spinner-border-sm text-primary" role="status">
-                    <span class="sr-only">{{'main.process.executions.running'|translate}}</span>
-                  </div>
-                  <span *ngIf="execution.status === 'Created'">{{'main.process.executions.created'|translate}}</span>
-                </td>
-                <td class="text-center">{{execution.totalPassed}}/{{execution.totalPassed + execution.totalFailed}}</td>
-                <td class="text-center" *ngIf="dataService.isWebProcess()">
-                    <i *ngFor="let browserName of getBrowserList(execution)" title="{{browserName}}"
-                      class="mr-1 fab fa fa-{{browserName}}"></i>
-                </td>
-                <td class="text-center" *ngIf="dataService.isWebProcess()">
-                  <div *ngFor="let resolution of getScreenResolutionsList(execution)" class="badge-resolutions btn-zahoriPill-resolutions mr-1 mb-1">
-                    <span title="{{resolution}}">{{getScreenResolutionName(resolution)}}</span>
-                  </div>
-                </td>
-                <td class="text-center">{{execution.date}}</td>
-                <td class="text-center">{{execution.configuration.name}}</td>
-                <td class="text-center">
-                  <span *ngIf="execution.trigger == 'Scheduler'">
-                    <a routerLink="../scheduler" title="{{'main.process.executions.triggerScheduler'|translate}}" class="nav-link" style="display: block;"><i class="nav-link-icon fas fa-clock" style="margin:0px;"></i></a>
-                  </span>
-                  <span *ngIf="execution.trigger == 'Manual'">{{'main.process.executions.triggerManual'|translate}}</span>
-                  <!--
-                  <button *ngIf="execution.periodicExecution" id="sidebarProgramarCollapse"
-                    class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriV btn-sm">
-                    <i class="fas fa-clock"></i>
-                  </button>
-                  -->
-                </td>
-                <td class="text-center">
-                  <div *ngIf="execution.status !== 'Running'" class="btn-group dropleft">
-                    <button type="button" class="btn" data-toggle="dropdown">
-                      <i title="{{'main.process.executions.rerun.title'|translate}}" class="hide fas fa-undo-alt" style="color: grey;"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu-minimal">
-                      <ng-container *ngIf="!tms.isActivated(execution.configuration) || !tms.requiresTestExecutionId(execution.configuration)">
-                        <a class="dropdown-item" (click)="rerunCases(execution, 'ALL')">{{'main.process.executions.rerun.all'|translate}}</a>
-                        <a *ngIf="execution.status === 'FAILURE'" class="dropdown-item" (click)="rerunCases(execution, 'FAILED')">{{'main.process.executions.rerun.failed'|translate}}</a>
-                      </ng-container>
-                      <ng-container *ngIf="tms.isActivated(execution.configuration) && tms.requiresTestExecutionId(execution.configuration)">
-                        <a class="dropdown-item" (click)="prepareRerunCases(execution, 'ALL')" data-backdrop="false" data-toggle="modal" data-target="#tmsModal">{{'main.process.executions.rerun.all'|translate}}</a>
-                        <a *ngIf="execution.status === 'FAILURE'" class="dropdown-item" (click)="prepareRerunCases(execution, 'FAILED')" data-backdrop="false" data-toggle="modal" data-target="#tmsModal">{{'main.process.executions.rerun.failed'|translate}}</a>
-                      </ng-container>
+            <tbody>
+              <ng-template ngFor let-execution [ngForOf]="dataService.processExecutions.data.content" let-i="index">
+
+                <tr data-toggle="collapse" [attr.data-target]="'#group-of-rows-'+ execution.executionId" class="showOnHover">
+                  <td>{{execution.executionId}}</td>
+                  <td>{{execution.name}}</td>
+                  <td>
+                    <ng-container *ngFor="let caseName of getCaseList(execution); let i = index">
+                      <button *ngIf="i < 3" class="mr-2 btn-pill btn btn-light disabled btn-sm">
+                        {{caseName}}
+                      </button>
+                      <button *ngIf="i == 3" title="más casos..."
+                        class="mr-2 btn-pill btn btn-light disabled btn-sm">...</button>
+                    </ng-container>
+                  </td>
+                  <td class="text-center">
+                    <span>{{execution.durationSeconds}}</span>
+                    <span *ngIf="execution.durationSeconds && execution.durationSeconds >= 0"> (s)</span>
+                  </td>
+                  <td class="text-center">
+                    <i title="{{execution.status}}" class="fas " [ngClass]="{
+                      'fa-check text-success': 'SUCCESS PASSED'.includes(execution.status),
+                      'fa-times text-danger': execution.status  === 'FAILURE',
+                      'fa-exclamation-triangle': execution.status  === 'Not executed'}">
+                    </i>
+                    <div title="Running" *ngIf="execution.status === 'Running'"
+                      class="spinner-border spinner-border-sm text-primary" role="status">
+                      <span class="sr-only">{{'main.process.executions.running'|translate}}</span>
                     </div>
-                  </div>
-                </td>
-              </tr>
+                    <span *ngIf="execution.status === 'Created'">{{'main.process.executions.created'|translate}}</span>
+                  </td>
+                  <td class="text-center">{{execution.totalPassed}}/{{execution.totalPassed + execution.totalFailed}}</td>
+                  <td class="text-center" *ngIf="dataService.isWebProcess()">
+                      <i *ngFor="let browserName of getBrowserList(execution)" title="{{browserName}}"
+                        class="mr-1 fab fa fa-{{browserName}}"></i>
+                  </td>
+                  <td class="text-center" *ngIf="dataService.isWebProcess()">
+                    <div *ngFor="let resolution of getScreenResolutionsList(execution)" class="badge-resolutions btn-zahoriPill-resolutions mr-1 mb-1">
+                      <span title="{{resolution}}">{{getScreenResolutionName(resolution)}}</span>
+                    </div>
+                  </td>
+                  <td class="text-center">{{execution.date}}</td>
+                  <td class="text-center">{{execution.configuration.name}}</td>
+                  <td class="text-center">
+                    <span *ngIf="execution.trigger == 'Scheduler'">
+                      <a routerLink="../scheduler" title="{{'main.process.executions.triggerScheduler'|translate}}" class="nav-link" style="display: block;"><i class="nav-link-icon fas fa-clock" style="margin:0px;"></i></a>
+                    </span>
+                    <span *ngIf="execution.trigger == 'Manual'">{{'main.process.executions.triggerManual'|translate}}</span>
+                    <!--
+                    <button *ngIf="execution.periodicExecution" id="sidebarProgramarCollapse"
+                      class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriV btn-sm">
+                      <i class="fas fa-clock"></i>
+                    </button>
+                    -->
+                  </td>
+                  <td class="text-center">
+                    <div *ngIf="execution.status !== 'Running'" class="btn-group dropleft">
+                      <button type="button" class="btn" data-toggle="dropdown">
+                        <i title="{{'main.process.executions.rerun.title'|translate}}" class="hide fas fa-undo-alt" style="color: grey;"></i>
+                      </button>
+                      <div class="dropdown-menu dropdown-menu-minimal">
+                        <ng-container *ngIf="!tms.isActivated(execution.configuration) || !tms.requiresTestExecutionId(execution.configuration)">
+                          <a class="dropdown-item" (click)="rerunCases(execution, 'ALL')">{{'main.process.executions.rerun.all'|translate}}</a>
+                          <a *ngIf="execution.status === 'FAILURE'" class="dropdown-item" (click)="rerunCases(execution, 'FAILED')">{{'main.process.executions.rerun.failed'|translate}}</a>
+                        </ng-container>
+                        <ng-container *ngIf="tms.isActivated(execution.configuration) && tms.requiresTestExecutionId(execution.configuration)">
+                          <a class="dropdown-item" (click)="prepareRerunCases(execution, 'ALL')" data-backdrop="false" data-toggle="modal" data-target="#tmsModal">{{'main.process.executions.rerun.all'|translate}}</a>
+                          <a *ngIf="execution.status === 'FAILURE'" class="dropdown-item" (click)="prepareRerunCases(execution, 'FAILED')" data-backdrop="false" data-toggle="modal" data-target="#tmsModal">{{'main.process.executions.rerun.failed'|translate}}</a>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </td>
+                </tr>
 
-              <tr [attr.id]="'group-of-rows-'+ execution.executionId" class="collapse tr_no_Hover">
-                <td [attr.colspan]="getNumberOfTableColumns()">
-                  <table class="mb-0 table table-hover" style="width: 100%;">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>{{'main.process.executions.case'|translate}}</th>
-                        <th class="text-center">{{'main.process.executions.dateHour'|translate}}</th>
-                        <th class="text-center">{{'main.process.executions.duration'|translate}}</th>
-                        <th class="text-center">{{'main.process.executions.state'|translate}}</th>
-                        <th class="text-center" *ngIf="dataService.isWebProcess()">
-                          {{'main.process.executions.browser'|translate}}
-                        </th>
-                        <th class="text-center" *ngIf="dataService.isWebProcess()">
-                          {{'main.process.executions.resolution'|translate}}
-                        </th>
-                        <th class="text-center">{{'main.process.executions.evidences'|translate}}</th>
-                        <th class="text-center">{{'main.process.executions.videoStreaming'|translate}}</th>
-                        <th class="text-center">{{'main.process.executions.notes'|translate}}</th>
-                        <th class="text-center"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr data-toggle="collapse" data-target="" class="showOnHover"
-                        *ngFor="let caseExecution of execution.casesExecutions; index as l"
-                        [ngClass]="caseExecutionSelected && caseExecutionSelected.caseExecutionId == caseExecution.caseExecutionId ? 'caseSelected' : ''">
-                        <td>{{caseExecution.caseExecutionId}}</td>
-                        <td>{{caseExecution.cas.name}}</td>
-                        <td class="text-center">{{caseExecution.date}}</td>
-                        <td class="text-center">
-                          <span>{{caseExecution.durationSeconds}}</span>
-                          <span *ngIf="caseExecution.durationSeconds && caseExecution.durationSeconds >= 0"> (s)</span>
-                        </td>
-                        <td class="text-center">
-                          <i *ngIf="caseExecution.status !== 'Running' && caseExecution.status !== 'Pending'"
-                            class="fas " title="{{caseExecution.status}}" [ngClass]="{
-                                  'fa-check text-success': caseExecution.status === 'PASSED',
-                                  'fa-times text-danger': caseExecution.status === 'FAILED',
-                                  'fa-exclamation-triangle': caseExecution.status === 'Not executed',
-                                  'fa-flag-checkered': caseExecution.status === 'Finished'}">
-                          </i>
-                          <i *ngIf="caseExecution.status === 'Pending'" class="fas fa fa-clock-o"
-                            title="{{caseExecution.status}}"></i>
-                          <div title="Running" *ngIf="caseExecution.status === 'Running'"
-                            class="spinner-border spinner-border-sm text-primary" role="status">
-                            <span class="sr-only">{{'main.process.executions.running'|translate}}</span>
-                          </div>
-                        </td>
-                        <td class="text-center" *ngIf="dataService.isWebProcess()">
-                          <i title="{{caseExecution.browser.browserName}} {{caseExecution.browserVersion}}"
-                            class="mr-1 fab fa fa-{{caseExecution.browser.browserName}}"></i>
-                        </td>
-                        <td class="text-center" *ngIf="dataService.isWebProcess()">
-                          <div class="badge-resolutions btn-zahoriPill-resolutions mr-1 mb-1">
-                            <span title="{{caseExecution.screenResolution}}">{{getScreenResolutionName(caseExecution.screenResolution)}}</span>
-                          </div>
-                        </td>
-                        <td class="text-center">
-                          <button *ngIf="caseExecution.status === 'PASSED' || caseExecution.status === 'FAILED'"
-                            id="sidebarEvidenciasCollapsed" class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriV btn-sm"
-                            (click)="showCaseExecutionDetails(caseExecution)"
-                            title="{{'main.process.executions.show'|translate}}">
-                            <i class="far fa-eye"></i>
-                          </button>
-                        </td>
-                        <td class="text-center">
-                          <button *ngIf="caseExecution.selenoidId && caseExecution.status === 'Running'"
-                            (click)="startVideoStreaming(caseExecution)"
-                            class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriV btn-sm" data-backdrop="false"
-                            data-toggle="modal" data-target="#videoModal"
-                            title="{{'main.process.executions.show'|translate}}">
-                            <i class="fas fa-video"></i>
-                          </button>
-                        </td>
-                        <td>
-                          <span
-                            *ngIf="caseExecution.status === 'Not executed' && execution.status !== 'Running'">{{'main.process.executions.notExecuted'|translate}}</span>
-                          <span *ngIf="caseExecution.status !== 'Not executed'">
-                            {{caseExecution.notes}}
-                          </span>
-                        </td>
-                        <td class="text-center">
-                          <div *ngIf="execution.status !== 'Running'" class="btn-group dropleft">
-                            <button type="button" class="btn" data-toggle="dropdown">
-                              <i title="{{'main.process.executions.rerun.title'|translate}}" class="hide fas fa-undo-alt" style="color: grey;"></i>
-                            </button>
-                            <div class="dropdown-menu dropdown-menu-minimal">
-                              <ng-container *ngIf="!tms.isActivated(execution.configuration) || !tms.requiresTestExecutionId(execution.configuration)">
-                                <a class="dropdown-item" (click)="rerunCase(execution, caseExecution)">{{'main.process.executions.rerun.case'|translate}}</a>
-                              </ng-container>
-                              <ng-container *ngIf="tms.isActivated(execution.configuration) && tms.requiresTestExecutionId(execution.configuration)">
-                                <a class="dropdown-item" (click)="prepareRerunCase(execution, caseExecution)" data-backdrop="false" data-toggle="modal" data-target="#tmsModal">{{'main.process.executions.rerun.case'|translate}}</a>  
-                              </ng-container>
+                <tr [attr.id]="'group-of-rows-'+ execution.executionId" class="collapse tr_no_Hover">
+                  <td [attr.colspan]="getNumberOfTableColumns()">
+                    <table class="mb-0 table table-hover" style="width: 100%;">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>{{'main.process.executions.case'|translate}}</th>
+                          <th class="text-center">{{'main.process.executions.dateHour'|translate}}</th>
+                          <th class="text-center">{{'main.process.executions.duration'|translate}}</th>
+                          <th class="text-center">{{'main.process.executions.state'|translate}}</th>
+                          <th class="text-center" *ngIf="dataService.isWebProcess()">
+                            {{'main.process.executions.browser'|translate}}
+                          </th>
+                          <th class="text-center" *ngIf="dataService.isWebProcess()">
+                            {{'main.process.executions.resolution'|translate}}
+                          </th>
+                          <th class="text-center">{{'main.process.executions.evidences'|translate}}</th>
+                          <th class="text-center">{{'main.process.executions.videoStreaming'|translate}}</th>
+                          <th class="text-center">{{'main.process.executions.notes'|translate}}</th>
+                          <th class="text-center"></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr data-toggle="collapse" data-target="" class="showOnHover"
+                          *ngFor="let caseExecution of execution.casesExecutions; index as l"
+                          [ngClass]="caseExecutionSelected && caseExecutionSelected.caseExecutionId == caseExecution.caseExecutionId ? 'caseSelected' : ''">
+                          <td>{{caseExecution.caseExecutionId}}</td>
+                          <td>{{caseExecution.cas.name}}</td>
+                          <td class="text-center">{{caseExecution.date}}</td>
+                          <td class="text-center">
+                            <span>{{caseExecution.durationSeconds}}</span>
+                            <span *ngIf="caseExecution.durationSeconds && caseExecution.durationSeconds >= 0"> (s)</span>
+                          </td>
+                          <td class="text-center">
+                            <i *ngIf="caseExecution.status !== 'Running' && caseExecution.status !== 'Pending'"
+                              class="fas " title="{{caseExecution.status}}" [ngClass]="{
+                                    'fa-check text-success': caseExecution.status === 'PASSED',
+                                    'fa-times text-danger': caseExecution.status === 'FAILED',
+                                    'fa-exclamation-triangle': caseExecution.status === 'Not executed',
+                                    'fa-flag-checkered': caseExecution.status === 'Finished'}">
+                            </i>
+                            <i *ngIf="caseExecution.status === 'Pending'" class="fas fa fa-clock-o"
+                              title="{{caseExecution.status}}"></i>
+                            <div title="Running" *ngIf="caseExecution.status === 'Running'"
+                              class="spinner-border spinner-border-sm text-primary" role="status">
+                              <span class="sr-only">{{'main.process.executions.running'|translate}}</span>
                             </div>
-                          </div>          
-                        </td>
-                      </tr>
-                    </tbody>
-                    <tfoot>
-                      <tr>
-                        <th>#</th>
-                        <th>{{'main.process.executions.case'|translate}}</th>
-                        <th class="text-center">{{'main.process.executions.dateHour'|translate}}</th>
-                        <th class="text-center">{{'main.process.executions.duration'|translate}}</th>
-                        <th class="text-center">{{'main.process.executions.state'|translate}}</th>
-                        <th class="text-center" *ngIf="dataService.isWebProcess()">
-                          {{'main.process.executions.browser'|translate}}
-                        </th>
-                        <th class="text-center" *ngIf="dataService.isWebProcess()">
-                          {{'main.process.executions.resolution'|translate}}
-                        </th>
-                        <th class="text-center">{{'main.process.executions.evidences'|translate}}</th>
-                        <th class="text-center">{{'main.process.executions.videoStreaming'|translate}}</th>
-                        <th class="text-center">{{'main.process.executions.notes'|translate}}</th>
-                        <th class="text-center"></th>
-                      </tr>
-                    </tfoot>
-                  </table>
+                          </td>
+                          <td class="text-center" *ngIf="dataService.isWebProcess()">
+                            <i title="{{caseExecution.browser.browserName}} {{caseExecution.browserVersion}}"
+                              class="mr-1 fab fa fa-{{caseExecution.browser.browserName}}"></i>
+                          </td>
+                          <td class="text-center" *ngIf="dataService.isWebProcess()">
+                            <div class="badge-resolutions btn-zahoriPill-resolutions mr-1 mb-1">
+                              <span title="{{caseExecution.screenResolution}}">{{getScreenResolutionName(caseExecution.screenResolution)}}</span>
+                            </div>
+                          </td>
+                          <td class="text-center">
+                            <button *ngIf="caseExecution.status === 'PASSED' || caseExecution.status === 'FAILED'"
+                              id="sidebarEvidenciasCollapsed" class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriV btn-sm"
+                              (click)="showCaseExecutionDetails(caseExecution)"
+                              title="{{'main.process.executions.show'|translate}}">
+                              <i class="far fa-eye"></i>
+                            </button>
+                          </td>
+                          <td class="text-center">
+                            <button *ngIf="caseExecution.selenoidId && caseExecution.status === 'Running'"
+                              (click)="startVideoStreaming(caseExecution)"
+                              class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriV btn-sm" data-backdrop="false"
+                              data-toggle="modal" data-target="#videoModal"
+                              title="{{'main.process.executions.show'|translate}}">
+                              <i class="fas fa-video"></i>
+                            </button>
+                          </td>
+                          <td>
+                            <span
+                              *ngIf="caseExecution.status === 'Not executed' && execution.status !== 'Running'">{{'main.process.executions.notExecuted'|translate}}</span>
+                            <span *ngIf="caseExecution.status !== 'Not executed'">
+                              {{caseExecution.notes}}
+                            </span>
+                          </td>
+                          <td class="text-center">
+                            <div *ngIf="execution.status !== 'Running'" class="btn-group dropleft">
+                              <button type="button" class="btn" data-toggle="dropdown">
+                                <i title="{{'main.process.executions.rerun.title'|translate}}" class="hide fas fa-undo-alt" style="color: grey;"></i>
+                              </button>
+                              <div class="dropdown-menu dropdown-menu-minimal">
+                                <ng-container *ngIf="!tms.isActivated(execution.configuration) || !tms.requiresTestExecutionId(execution.configuration)">
+                                  <a class="dropdown-item" (click)="rerunCase(execution, caseExecution)">{{'main.process.executions.rerun.case'|translate}}</a>
+                                </ng-container>
+                                <ng-container *ngIf="tms.isActivated(execution.configuration) && tms.requiresTestExecutionId(execution.configuration)">
+                                  <a class="dropdown-item" (click)="prepareRerunCase(execution, caseExecution)" data-backdrop="false" data-toggle="modal" data-target="#tmsModal">{{'main.process.executions.rerun.case'|translate}}</a>  
+                                </ng-container>
+                              </div>
+                            </div>          
+                          </td>
+                        </tr>
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th>#</th>
+                          <th>{{'main.process.executions.case'|translate}}</th>
+                          <th class="text-center">{{'main.process.executions.dateHour'|translate}}</th>
+                          <th class="text-center">{{'main.process.executions.duration'|translate}}</th>
+                          <th class="text-center">{{'main.process.executions.state'|translate}}</th>
+                          <th class="text-center" *ngIf="dataService.isWebProcess()">
+                            {{'main.process.executions.browser'|translate}}
+                          </th>
+                          <th class="text-center" *ngIf="dataService.isWebProcess()">
+                            {{'main.process.executions.resolution'|translate}}
+                          </th>
+                          <th class="text-center">{{'main.process.executions.evidences'|translate}}</th>
+                          <th class="text-center">{{'main.process.executions.videoStreaming'|translate}}</th>
+                          <th class="text-center">{{'main.process.executions.notes'|translate}}</th>
+                          <th class="text-center"></th>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </td>
+                </tr>
+              </ng-template>
+
+              <tr *ngIf="!loading && dataService.processExecutions.data.content.length == 0">
+                <td [attr.colspan]="getNumberOfTableColumns()" class="text-center">
+                  <span>{{'main.process.executions.withoutExecutionsYet'|translate}}
+                    <a routerLink="../trigger"><strong>{{'main.process.executions.trigger'|translate}}</strong></a>
+                  </span>
                 </td>
               </tr>
-            </ng-template>
 
-            <tr *ngIf="!loading && dataService.processExecutions.data.content.length == 0">
-              <td [attr.colspan]="getNumberOfTableColumns()" class="text-center">
-                <span>{{'main.process.executions.withoutExecutionsYet'|translate}}
-                  <a routerLink="../trigger"><strong>{{'main.process.executions.trigger'|translate}}</strong></a>
-                </span>
-              </td>
-            </tr>
+              <tr *ngIf="loading">
+                <td [attr.colspan]="getNumberOfTableColumns()" class="text-center">{{'main.process.executions.loading'|translate}}</td>
+              </tr>
 
-            <tr *ngIf="loading">
-              <td [attr.colspan]="getNumberOfTableColumns()" class="text-center">{{'main.process.executions.loading'|translate}}</td>
-            </tr>
+            </tbody>
 
-          </tbody>
+          </table>
+          <!-- Fin de Tabla de Datos-->
 
-        </table>
-        <!-- Fin de Tabla de Datos-->
+          <!-- Table pagination -->
+          <pagination
+            [totalElements]="this.dataService.processExecutions.data.totalElements" 
+            [totalPages]="this.dataService.processExecutions.data.totalPages" 
+            [currentPage]="currentPage" 
+            (onPageClick)="goToPage($event)" >
+          </pagination>
 
-        <!-- Table pagination -->
-        <pagination 
-          [totalElements]="this.dataService.processExecutions.data.totalElements" 
-          [totalPages]="this.dataService.processExecutions.data.totalPages" 
-          [currentPage]="currentPage" 
-          (onPageClick)="goToPage($event)" >
-        </pagination>
-
+        </div>
       </div>
 
       <!-- SIDEBAR - PERIODIC EXECUTIONS -->
