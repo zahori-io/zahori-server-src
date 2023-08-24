@@ -1,4 +1,5 @@
 import {Client} from './client';
+import { Language } from './language';
 import {Role} from "./role";
 
 export class Account {
@@ -10,6 +11,8 @@ export class Account {
   locked: boolean;
   client: Client;
   roles: Role[];
+  email: string;
+  language: Language;
   
   constructor(username: string, password: string) {
     this.username = username;

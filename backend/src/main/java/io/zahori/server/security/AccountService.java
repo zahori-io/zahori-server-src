@@ -28,6 +28,7 @@ import io.zahori.server.email.EmailService;
 import io.zahori.server.email.EmailVerification;
 import io.zahori.server.email.EmailVerificationRepository;
 import io.zahori.server.exception.BadRequestException;
+import io.zahori.server.i18n.Language;
 import io.zahori.server.model.Client;
 import java.util.Optional;
 import java.util.UUID;
@@ -61,7 +62,17 @@ public class AccountService {
         this.emailVerificationRepository = emailVerificationRepository;
     }
 
-    private Account getUser() {
+    public AccountView getAccountView() {
+        try {
+            UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+            AccountView accountView = accountRepository.findAccountViewByUsernameOrEmail(authentication.getPrincipal().toString());
+            return accountView;
+        } catch (Exception e) {
+            throw new BadRequestException("Invalid session");
+        }
+    }
+
+    private Account getAccount() {
         try {
             UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
             Account user = accountRepository.findByUsername(authentication.getPrincipal().toString());
@@ -71,13 +82,14 @@ public class AccountService {
         }
     }
 
-    public void createAccount(AccountDto accountDto) {
+    public void createAccount(AccountSignupDto accountDto) {
         validateEmail(accountDto.getEmail());
         accountDto.setEmail(accountDto.getEmail().trim().toLowerCase());
 
-        // TODO receive and validate username?
         Account account = new Account();
         account.setEmail(accountDto.getEmail());
+        // TODO receive and validate username?
+        account.setUsername(accountDto.getEmail());
         account.setPassword(bCryptPasswordEncoder.encode(accountDto.getPassword()));
 
         // Client
@@ -102,7 +114,7 @@ public class AccountService {
             throw new BadRequestException("Confirm password doesn't match New password");
         }
 
-        Account user = getUser();
+        Account user = getAccount();
 
         if (!bCryptPasswordEncoder.matches(passwords.getCurrentPassword(), user.getPassword())) {
             throw new BadRequestException("Current password is incorrect");
@@ -116,7 +128,7 @@ public class AccountService {
         EmailDto emailDto = new EmailDto();
 
         // Get user and current email
-        Account user = getUser();
+        Account user = getAccount();
         emailDto.setEmail(user.getEmail());
 
         // Get new email request (if exists)
@@ -173,7 +185,7 @@ public class AccountService {
         validateEmail(newEmail);
         newEmail = newEmail.trim().toLowerCase();
 
-        Account user = getUser();
+        Account user = getAccount();
 
         // Verify if user already has an email change request, if so, remove it and generate a new one
         Optional<EmailVerification> emailVerificationOptional = emailVerificationRepository.findByAccountId(user.getId());
@@ -231,6 +243,12 @@ public class AccountService {
 
         // Remove change email request from DB
         emailVerificationRepository.delete(emailVerification);
+    }
+
+    public void changeLanguage(Language language) {
+        Account user = getAccount();
+        user.setLanguage(language);
+        accountRepository.save(user);
     }
 
     private String getVerifyEmailText(String verifyLink) {

@@ -8,7 +8,10 @@ import { Router } from '@angular/router';
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
-	constructor(public autenticacionService: AutenticacionService, private router: Router) {
+	constructor(
+		public autenticacionService: AutenticacionService, 
+		private router: Router
+		) {
 	}
 
 	intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -17,7 +20,7 @@ export class AuthInterceptor implements HttpInterceptor {
 			return next.handle(req);
 		}
 
-		const authHeaders: HttpHeaders = this.autenticacionService.crearCabeceraJwt();
+		const authHeaders: HttpHeaders = this.autenticacionService.getAuthHeader();
 		const authReq = req.clone({
 			headers: authHeaders
 		});

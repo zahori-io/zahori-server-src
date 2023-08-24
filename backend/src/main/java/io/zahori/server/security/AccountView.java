@@ -1,12 +1,14 @@
 package io.zahori.server.security;
 
+import io.zahori.server.i18n.Language;
+
 /*-
  * #%L
  * zahori-server
  * $Id:$
  * $HeadURL:$
  * %%
- * Copyright (C) 2021 PANEL SISTEMAS INFORMATICOS,S.L
+ * Copyright (C) 2021 - 2023 PANEL SISTEMAS INFORMATICOS,S.L
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -22,23 +24,11 @@ package io.zahori.server.security;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
+public abstract interface AccountView {
 
-@Repository
-public interface AccountRepository extends JpaRepository<Account, Long> {
+    String getUsername();
 
-    final static String LOGIN_QUERY = "SELECT a FROM Account a WHERE a.username = :u or a.email = :u";
+    String getEmail();
 
-    Account findByUsername(String username);
-
-    Account findByEmail(String email);
-
-    @Query(LOGIN_QUERY)
-    Account findByUsernameOrEmail(@Param("u") String usernameOrEmail);
-
-    @Query(LOGIN_QUERY)
-    AccountView findAccountViewByUsernameOrEmail(@Param("u") String usernameOrEmail);
+    Language getLanguage();
 }

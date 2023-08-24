@@ -3606,7 +3606,7 @@ Copyright (c) 2015 Daniel Eden
 .dropdown-menu.dropdown-menu-xl{min-width:25rem}
 .dropdown-menu .dropdown-menu-header,.dropdown-menu .menu-header-image,.dropdown-menu .dropdown-menu-header-inner{border-top-left-radius:.25rem;border-top-right-radius:.25rem}
 .dropdown-menu-header{color:#fff;margin-top:-.65rem;margin-bottom:.65rem;position:relative;z-index:6}
-.dropdown-menu-header .dropdown-menu-header-inner{margin:-1px -1px 0;padding:1.5rem .5rem;position:relative}
+.dropdown-menu-header .dropdown-menu-header-inner{margin:-1px -1px 0;padding:0.5rem 1.5rem;position:relative}
 .dropdown-menu-header .menu-header-image{position:absolute;left:0;top:0;height:100%;width:100%;z-index:8;opacity:.25;filter:grayscale(80%);background-size:cover}
 .dropdown-menu-header .menu-header-content{text-align:center;position:relative;z-index:10}
 .dropdown-menu-header .menu-header-content.text-left{padding-left:.5rem}

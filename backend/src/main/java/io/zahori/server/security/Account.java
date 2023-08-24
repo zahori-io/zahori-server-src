@@ -23,6 +23,7 @@ package io.zahori.server.security;
  * #L%
  */
 import com.sun.istack.NotNull;
+import io.zahori.server.i18n.Language;
 import io.zahori.server.model.Client;
 import java.util.Set;
 import javax.persistence.Entity;
@@ -61,6 +62,10 @@ public class Account {
     private boolean locked = false;
 
     private String email;
+
+    @ManyToOne
+    @JoinColumn(name = "language_id")
+    private Language language;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "accounts_roles", joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id", insertable = false, updatable = false))
@@ -251,6 +256,14 @@ public class Account {
      */
     public void setClient(Client client) {
         this.client = client;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 
 }

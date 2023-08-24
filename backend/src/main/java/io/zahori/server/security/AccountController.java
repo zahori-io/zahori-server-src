@@ -23,6 +23,8 @@ package io.zahori.server.security;
  * #L%
  */
 import io.zahori.server.email.EmailDto;
+import io.zahori.server.i18n.Language;
+import io.zahori.server.i18n.LanguagesRepository;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
@@ -42,14 +44,16 @@ public class AccountController {
     private static final Logger LOG = LoggerFactory.getLogger(AccountController.class);
 
     private final AccountService accountService;
+    private final LanguagesRepository languagesRepository;
 
-    public AccountController(AccountService accountService) {
+    public AccountController(AccountService accountService, LanguagesRepository languagesRepository) {
         this.accountService = accountService;
+        this.languagesRepository = languagesRepository;
     }
 
     // Disabled for security until user management is implemented
     // @PostMapping("/account/sign-up")
-    public ResponseEntity<Object> signUp(@RequestBody AccountDto user) {
+    public ResponseEntity<Object> signUp(@RequestBody AccountSignupDto user) {
         LOG.info("Create account: " + user);
         accountService.createAccount(user);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -59,6 +63,12 @@ public class AccountController {
     public ResponseEntity<Object> verifyEmail(@PathVariable UUID token) {
         accountService.verifyEmail(token);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/api/account")
+    public ResponseEntity<Object> getAccount() {
+        AccountView accountView = accountService.getAccountView();
+        return new ResponseEntity<>(accountView, HttpStatus.OK);
     }
 
     @PostMapping("/api/account/password")
@@ -79,6 +89,12 @@ public class AccountController {
         host = host + request.getContextPath();
 
         accountService.createChangeEmailRequest(newEmail, host);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/api/account/language")
+    public ResponseEntity<Object> changeLanguage(@RequestBody Language language, HttpServletRequest request) {
+        accountService.changeLanguage(language);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

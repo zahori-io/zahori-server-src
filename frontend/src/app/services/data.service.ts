@@ -4,7 +4,6 @@ import { map, catchError } from 'rxjs/operators';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
-import { AutenticacionService } from './autenticacion.service';
 import { Client } from '../model/client';
 import { Execution } from '../model/execution';
 import { Page } from '../model/page';
@@ -12,7 +11,7 @@ import { ApiResponse } from '../model/apiResponse';
 import { Process } from '../model/process';
 import { Team } from '../model/team';
 import { Case } from '../model/case';
-import {Account} from '../model/account';
+import { Account } from '../model/account';
 import { Configuration } from '../model/configuration';
 import { Browser } from '../model/browser';
 import { Environment } from '../model/environment';
@@ -23,10 +22,11 @@ import { Retry } from '../model/retry';
 import { Timeout } from '../model/timeout';
 import { EvidenceType } from '../model/evidence-type';
 import { ServerVersions } from '../model/serverVersions';
-import {Resolution} from '../model/resolution';
+import { Resolution } from '../model/resolution';
 import { Router } from '@angular/router';
 import { PeriodicExecution } from '../model/periodic-execution';
 import { EmailDto } from '../model/emailDto';
+import { Language } from '../model/language';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +49,6 @@ export class DataService {
 
   constructor(
     private http: HttpClient,
-    private autenticacionService: AutenticacionService,
     private router: Router
   ) { }
 
@@ -89,17 +88,22 @@ export class DataService {
     );
   }
 
-  isWebProcess():boolean {
+  isWebProcess(): boolean {
     return this.processSelected.processType.name === 'BROWSER';
   }
 
-  isDashboardPage(){
+  isDashboardPage() {
     return this.router.url === "/app/dashboard";
   }
 
   /*
     API CALLS
    */
+  
+  public getAccount(): Observable<Account> {
+    return this.http.get<Account>(this.url + 'account');
+  }
+
   public getClient(): Observable<Client> {
     return this.http.get<Client>(this.url + 'client', {});
   }
@@ -125,7 +129,7 @@ export class DataService {
   }
 
   public deletePeriodicExecution(execution: Execution): Observable<any> {
-    return this.http.delete<any>(this.url + 'process/' + this.processSelected.processId + '/periodic-executions/'+execution.executionId, {});
+    return this.http.delete<any>(this.url + 'process/' + this.processSelected.processId + '/periodic-executions/' + execution.executionId, {});
   }
 
   public getCases(): Observable<Case[]> {
@@ -236,7 +240,7 @@ export class DataService {
   public verifyEmail(token: string): Observable<string> {
     return this.http.get('./account/verify-email/' + token, { responseType: 'text' });
   }
-  
+
   public getEmail(): Observable<EmailDto> {
     return this.http.get<EmailDto>(this.url + 'account/email');
   }
@@ -251,13 +255,21 @@ export class DataService {
         currentPassword: currentPassword,
         newPassword: newPassword,
         confirmPassword: confirmPassword
-      }), 
+      }),
       { responseType: 'text' }
     );
   }
 
   public getEmailServiceStatus(): Observable<any> {
     return this.http.get(this.url + 'email-service/status');
+  }
+
+  public getAvailableLanguages(): Observable<Language[]> {
+    return this.http.get<Language[]>('./languages');
+  }
+
+  public saveUserLanguage(language: Language): Observable<any> {
+    return this.http.post<any>(this.url + 'account/language', JSON.stringify(language));
   }
 
 }

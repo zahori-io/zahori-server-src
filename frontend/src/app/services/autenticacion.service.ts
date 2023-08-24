@@ -1,19 +1,19 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { Account } from '../model/account';
 
 @Injectable()
 export class AutenticacionService {
 
-
   public token: string;
-  private isUserLoggedIn: boolean;
-  private username: string;
+  public account: Account;
+  private userLoggedIn: boolean;
   private headers = new HttpHeaders().set(
     'Content-Type', 'application/json');
   private loginUrl = './login';
 
   constructor(private http: HttpClient) {
-    this.isUserLoggedIn = false;
+    this.userLoggedIn = false;
     // Establecer el token si se ha guardado en el localStorage
     var currentUser;
     try {
@@ -26,7 +26,7 @@ export class AutenticacionService {
     this.token = currentUser && currentUser.token;
 
     if (currentUser) {
-      this.isUserLoggedIn = true;
+      this.userLoggedIn = true;
     }
   }
 
@@ -43,13 +43,16 @@ export class AutenticacionService {
           if (token) {
             // establecer la propiedad token
             this.token = token;
-            this.isUserLoggedIn = true;
+            this.userLoggedIn = true;
+
             // almacenar el nombre de usuario y el token jwt en el 
             // local storage para mantener al usuario logado 
             // entre refrescos de página
             localStorage.setItem('currentUser',
               JSON.stringify(
-                { username: username, token: token }));
+                { username: username, token: token }
+              )
+            );
 
             // retornar true para indicar un login exitoso
             return true;
@@ -65,14 +68,14 @@ export class AutenticacionService {
     // Remove token and clear the local storage
     this.token = null;
     localStorage.clear();
-    this.isUserLoggedIn = false;
+    this.userLoggedIn = false;
   }
 
-  getUserLoggedIn() {
-    return this.isUserLoggedIn;
+  isUserLoggedIn() {
+    return this.userLoggedIn;
   }
 
-  crearCabeceraJwt(): HttpHeaders {
+  getAuthHeader(): HttpHeaders {
     let headers = new HttpHeaders({
       'Authorization': this.token,
       'Content-Type': 'application/json'
@@ -81,10 +84,13 @@ export class AutenticacionService {
   }
 
   getUsername(): string {
-    if (this.isUserLoggedIn && localStorage.getItem('currentUser')) {
-      return JSON.parse(localStorage.getItem('currentUser')).username;
-    } else {
-      return "";
+    if (this.account && this.account.username.length > 0) {
+      return this.account.username;
     }
+    if (this.account && this.account.email.length > 0) {
+      return this.account.email;
+    }
+    return "";
   }
+
 }

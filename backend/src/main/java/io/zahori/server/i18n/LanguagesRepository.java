@@ -1,4 +1,4 @@
-package io.zahori.server.security;
+package io.zahori.server.i18n;
 
 /*-
  * #%L
@@ -22,38 +22,11 @@ package io.zahori.server.security;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-import com.sun.istack.NotNull;
+import io.zahori.server.i18n.Language;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public class AccountDto {
-
-    @NotNull
-    private String email;
-
-    @NotNull
-    private String password;
-
-    public AccountDto() {
-    }
-
-    @Override
-    public String toString() {
-        return "AccountDto{" + "email=" + email + '}';
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
+@Repository
+public interface LanguagesRepository extends CrudRepository<Language, Long> {
 
 }

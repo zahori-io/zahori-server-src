@@ -51,7 +51,7 @@
           <button type="button" data-toggle="dropdown" class="p-0 mr-2 btn btn-link">
             <span class="icon-wrapper icon-wrapper-alt rounded-circle">
               <span class="icon-wrapper-bg bg-primary"></span>
-              <span class="lang-icon flag E" [ngClass]="flag"></span>
+              <span class="lang-icon flag E" [ngClass]="i18nService.currentLanguage?.countryCode"></span>
               <i class="icon text-primary fas fa-globe  globe"></i>
 
             </span>
@@ -67,14 +67,14 @@
                 </div>
               </div>
             </div>
-            <button type="button" tabindex="0" class="dropdown-item" [class.lang-select] = "flag === 'ES'" (click)="useLanguage('es')" data-toggle="dropdown">
-              <span class="mr-3 opacity-8 flag large ES"></span>
-              {{'main.menu.language.es'| translate}}
-            </button>
-            <button type="button" tabindex="0" class="dropdown-item" [class.lang-select] = "flag === 'GB'" (click)="useLanguage('en')" data-toggle="dropdown">
-              <span class="mr-3 opacity-8 flag large GB"></span>
-              {{'main.menu.language.en'| translate}}
-            </button>
+
+            <ng-container *ngFor="let language of i18nService.languages;">
+              <button type="button" class="dropdown-item" [class.lang-select] = "flag === language.countryCode" (click)="i18nService.setCurrentLanguage(language);i18nService.saveUserLanguage(language);" data-toggle="dropdown">
+                <span class="mr-3 opacity-8 flag large {{language.countryCode}}"></span>
+                {{language.name}}
+              </button>
+            </ng-container>
+
           </div>
         </div>
 
@@ -108,23 +108,20 @@
                               <img width="42" class="rounded-circle" src="./assets/images/avatars/1.jpg" alt="">
                             </div>
                             <div class="widget-content-left">
-                              <div class="widget-heading">{{authService.getUsername().toLowerCase()}}
+                              <div class="widget-heading">{{authenticationService.getUsername()}}
                               </div>
                               <div class="widget-subheading opacity-8">Automation Engineer
                               </div>
                             </div>
-                            <div class="widget-content-right mr-2">
-                              <div>
-                                <a class="btn-pill btn-shadow btn-shine btn btn-focus mb-2 dropdown-item"
-                                  routerLink="account/change-password">{{'main.menu.account'| translate}}
-                                </a>
-                              </div>
-                              <div>
-                                <button class="btn-pill btn-shadow btn-shine btn btn-focus"
-                                  (click)="logout();$event.preventDefault();$event.stopPropagation();">{{'main.menu.logout'| translate}}
-                                </button>
-                              </div>
-                            </div>
+                          </div>
+
+                          <div class="widget-content-right mt-3 text-right">
+                            <a class="btn-pill btn-shadow btn-shine btn btn-focus mr-2"
+                              routerLink="account/change-password">{{'main.menu.account'| translate}}
+                            </a>
+                            <button class="btn-pill btn-shadow btn-shine btn btn-focus"
+                              (click)="logout();$event.preventDefault();$event.stopPropagation();">{{'main.menu.logout'| translate}}
+                            </button>
                           </div>
                         </div>
                       </div>
@@ -135,7 +132,7 @@
             </div>
             <div class="widget-content-left  ml-3 header-user-info">
               <div class="widget-heading">
-                {{authService.getUsername().toLowerCase()}}
+                {{authenticationService.getUsername()}}
               </div>
               <div class="widget-subheading">
                 Automation Engineer

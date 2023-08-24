@@ -26,9 +26,12 @@ import { AdminTagsComponent } from './components/main/process/process-admin/admi
 import { tagComponent } from './components/main/process/process-admin/admin-tags/tagComponent/tagComponent';
 import { AdminUsersComponent } from './components/main/admin/admin-users/admin-users.component';
 import { AdminTmsComponent } from './components/main/admin/admin-tms/admin-tms.component';
+import { DataService } from './services/data.service';
 import { AutenticacionService } from './services/autenticacion.service';
+import { I18nService } from './services/i18n.service';
 import { AuthGuard } from './guards/auth.guard';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { I18nInterceptor } from './interceptors/i18n.interceptor';
 import { ProcessComponent } from './components/main/process/process.component';
 import { ProcessMenuComponent } from './components/main/process/process-menu/process-menu.component';
 import { ProcessAdminComponent } from './components/main/process/process-admin/process-admin.component';
@@ -139,9 +142,12 @@ import { ModalComponent } from './components/utils/modal/modal.component';
     })
   ],
   providers: [
+    DataService,
     AutenticacionService,
+    I18nService,
     AuthGuard,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: I18nInterceptor, multi: true },
     AuthImagePipe
   ],
   bootstrap: [AppComponent]

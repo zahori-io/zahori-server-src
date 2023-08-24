@@ -48,7 +48,7 @@ export class VerifyEmailComponent implements OnInit {
   }
 
   redirectAndDisplay(message: string, error: string) {
-    if (this.autenticacionService.getUserLoggedIn()) {
+    if (this.autenticacionService.isUserLoggedIn()) {
       this.router.navigateByUrl('/app/account/change-email', { state: { message: message, error: error } });
     } else {
       this.router.navigateByUrl('/login', { state: { message: message, error: error } });
