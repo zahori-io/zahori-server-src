@@ -20,11 +20,16 @@ export class AuthInterceptor implements HttpInterceptor {
 			return next.handle(req);
 		}
 
-		const authHeaders: HttpHeaders = this.autenticacionService.getAuthHeader();
-		const authReq = req.clone({
-			headers: authHeaders
+		let headers = new HttpHeaders({
+			'Authorization': this.autenticacionService.token,
+			'Content-Type': 'application/json'
+		  });
+
+		req = req.clone({
+			headers: headers
 		});
-		return next.handle(authReq).pipe(catchError((error: HttpErrorResponse)=> this.handleAuthError(error)));
+
+		return next.handle(req).pipe(catchError((error: HttpErrorResponse)=> this.handleAuthError(error)));
 	}
 		
     private handleAuthError(error: HttpErrorResponse): Observable<any> {

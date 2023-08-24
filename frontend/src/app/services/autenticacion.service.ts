@@ -75,14 +75,6 @@ export class AutenticacionService {
     return this.userLoggedIn;
   }
 
-  getAuthHeader(): HttpHeaders {
-    let headers = new HttpHeaders({
-      'Authorization': this.token,
-      'Content-Type': 'application/json'
-    });
-    return headers;
-  }
-
   getUsername(): string {
     if (this.account && this.account.username.length > 0) {
       return this.account.username;
