@@ -13,9 +13,16 @@ export class I18nInterceptor implements HttpInterceptor {
 		
 		const language: Language = this.getStorageLanguage();
 		if (language) {
-			let headers = request.headers;
-			headers.set('Accept-Language', language.languageCode);
-		
+			
+			// Example sent by chrome: Accept-Language: es,es-ES;q=0.9
+			let acceptLanguage = language.languageCode + 
+				(language.countryCode ? 
+					',' + language.languageCode + '-' + language.countryCode 
+					: ''
+				);
+
+			let headers = request.headers.set('Accept-Language', acceptLanguage);
+
 			request = request.clone({
 				headers: headers
 			});
