@@ -1,0 +1,8 @@
+[[#{i18n.verify-email.content.greeting}]]
+
+[[#{i18n.verify-email.content.line1}]]
+[[${verifyLink}]]
+[[#{i18n.verify-email.content.line2}]]
+
+[[#{i18n.verify-email.content.thanks}]]
+[[#{i18n.verify-email.content.sign}]]

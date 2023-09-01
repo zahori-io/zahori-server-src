@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutenticacionService } from '../../../services/autenticacion.service';
 import { DataService } from '../../../services/data.service';
-import { TranslateService } from '@ngx-translate/core';
 import { I18nService } from 'src/app/services/i18n.service';
 
 @Component({
@@ -16,8 +15,7 @@ export class MenuComponent implements OnInit {
     public dataService: DataService,
     public authenticationService: AutenticacionService,
     public i18nService: I18nService,
-    private router: Router,
-    private translate: TranslateService
+    private router: Router
   ) {
   }
 

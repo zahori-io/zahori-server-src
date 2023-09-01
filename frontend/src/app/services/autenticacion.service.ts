@@ -15,19 +15,17 @@ export class AutenticacionService {
   constructor(private http: HttpClient) {
     this.userLoggedIn = false;
     // Establecer el token si se ha guardado en el localStorage
-    var currentUser;
-    try {
-      currentUser = JSON.parse(
-        localStorage.getItem('currentUser'));
-    } catch (e) {
-      // Valor invalido
-    }
+    let currentUser = this.getUserFromLocalStorage();
 
     this.token = currentUser && currentUser.token;
 
     if (currentUser) {
       this.userLoggedIn = true;
     }
+  }
+
+  getUserFromLocalStorage() {
+    return JSON.parse(localStorage.getItem('currentUser'));
   }
 
   login(username: string, password: string): Promise<boolean> {
@@ -76,6 +74,10 @@ export class AutenticacionService {
   }
 
   getUsername(): string {
+    let currentUser = this.getUserFromLocalStorage();
+    if (currentUser && currentUser.username){
+      return currentUser.username;
+    }
     if (this.account && this.account.username.length > 0) {
       return this.account.username;
     }

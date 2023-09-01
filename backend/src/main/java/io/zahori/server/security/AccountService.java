@@ -30,6 +30,7 @@ import io.zahori.server.email.EmailVerificationRepository;
 import io.zahori.server.exception.BadRequestException;
 import io.zahori.server.i18n.Language;
 import io.zahori.server.model.Client;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -38,11 +39,16 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.Model;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 @Service
 public class AccountService {
@@ -53,20 +59,23 @@ public class AccountService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AccountRepository accountRepository;
     private final EmailVerificationRepository emailVerificationRepository;
+    private final TemplateEngine templateEngine;
+    private final MessageSource messageSource;
 
     @Autowired
-    public AccountService(EmailService emailService, BCryptPasswordEncoder bCryptPasswordEncoder, AccountRepository accountRepository, EmailVerificationRepository emailVerificationRepository) {
+    public AccountService(EmailService emailService, BCryptPasswordEncoder bCryptPasswordEncoder, AccountRepository accountRepository, EmailVerificationRepository emailVerificationRepository, TemplateEngine templateEngine, MessageSource messageSource) {
         this.emailService = emailService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.accountRepository = accountRepository;
         this.emailVerificationRepository = emailVerificationRepository;
+        this.templateEngine = templateEngine;
+        this.messageSource = messageSource;
     }
 
     public AccountView getAccountView() {
         try {
             UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-            AccountView accountView = accountRepository.findAccountViewByUsernameOrEmail(authentication.getPrincipal().toString());
-            return accountView;
+            return accountRepository.findAccountViewByUsernameOrEmail(authentication.getPrincipal().toString());
         } catch (Exception e) {
             throw new BadRequestException("Invalid session");
         }
@@ -75,8 +84,7 @@ public class AccountService {
     private Account getAccount() {
         try {
             UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
-            Account user = accountRepository.findByUsername(authentication.getPrincipal().toString());
-            return user;
+            return accountRepository.findByUsername(authentication.getPrincipal().toString());
         } catch (Exception e) {
             throw new BadRequestException("Invalid session");
         }
@@ -151,19 +159,21 @@ public class AccountService {
     }
 
     public void validateEmail(String email) {
+        final String invalidEmail = "Invalid email";
+
         if (StringUtils.isBlank(email)) {
-            throw new BadRequestException("Invalid email");
+            throw new BadRequestException(invalidEmail);
         }
 
         email = email.trim().toLowerCase();
 
         if (isInvalidEmailFormat(email)) {
-            throw new BadRequestException("Invalid email");
+            throw new BadRequestException(invalidEmail);
         }
 
         if (isEmailAlreadyRegistered(email)) {
             LOG.info("Email already registered: {}", email);
-            throw new BadRequestException("Invalid email");
+            throw new BadRequestException(invalidEmail);
         }
     }
 
@@ -181,7 +191,7 @@ public class AccountService {
     }
 
     @Transactional
-    public void createChangeEmailRequest(String newEmail, String host) {
+    public void createChangeEmailRequest(String newEmail, String host, Model model) {
         validateEmail(newEmail);
         newEmail = newEmail.trim().toLowerCase();
 
@@ -203,20 +213,30 @@ public class AccountService {
         emailVerificationRepository.save(emailVerification);
 
         // Send verification email
-        Email emailDetails = new Email();
-        emailDetails.setRecipient(newEmail);
-        emailDetails.setSubject("Zahori - Email verification");
+        Locale locale = LocaleContextHolder.getLocale();
+        Context context = new Context(locale);
+
         String verifyLink = host + "/#/account/verify-email/" + uuid;
-        emailDetails.setMsgText(getVerifyEmailText(verifyLink));
-        emailDetails.setMsgHtml(getVerifyEmailHtml(verifyLink));
+        context.setVariable("verifyLink", verifyLink);
+        context.setVariable("locale", locale.getLanguage());
+
+        String emailContentTxt = templateEngine.process("verify-email.txt", context);
+        String emailContentHtml = templateEngine.process("verify-email.html", context);
+
+        Email emailDetails = new Email();
+        emailDetails.setSubject(messageSource.getMessage("i18n.verify-email.subject", null, locale));
+        emailDetails.setRecipient(newEmail);
+        emailDetails.setMsgText(emailContentTxt);
+        emailDetails.setMsgHtml(emailContentHtml);
         emailService.send(emailDetails);
     }
 
     @Transactional
     public void verifyEmail(UUID token) {
+        final String tokenExpired = "Token expired";
         Optional<EmailVerification> emailVerificationOptional = emailVerificationRepository.findByToken(token);
         if (emailVerificationOptional.isEmpty()) {
-            throw new BadRequestException("Token has expired");
+            throw new BadRequestException(tokenExpired);
         }
 
         EmailVerification emailVerification = emailVerificationOptional.get();
@@ -228,7 +248,7 @@ public class AccountService {
             // Remove change email request from DB
             emailVerificationRepository.delete(emailVerification);
 
-            throw new BadRequestException("Token has expired");
+            throw new BadRequestException(tokenExpired);
         }
 
         Optional<Account> userOptional = accountRepository.findById(emailVerification.getAccountId());
@@ -251,24 +271,4 @@ public class AccountService {
         accountRepository.save(user);
     }
 
-    private String getVerifyEmailText(String verifyLink) {
-        return "¡Hola!\n"
-                + "\n"
-                + "Hemos recibido una solicitud para actualizar tu dirección de correo electrónico en Zahori. Para completar el cambio, por favor haz clic en el siguiente enlace de verificación:\n"
-                + verifyLink + "\n"
-                + "Si no solicitaste este cambio, puedes ignorar este correo electrónico y tu dirección de correo actual permanecerá sin cambios.\n"
-                + "\n"
-                + "¡Gracias por ser parte de nuestra comunidad!\n"
-                + "El equipo Zahorí.";
-    }
-
-    private String getVerifyEmailHtml(String verifyLink) {
-        return "<p>&iexcl;Hola!</p>" //
-                + "<p>Hemos recibido una solicitud para actualizar tu direcci&oacute;n de correo electr&oacute;nico en Zahori. Para completar el cambio, por favor haz clic en el siguiente enlace de verificaci&oacute;n:</p>" //
-                + "<p><a href=\"" + verifyLink + "\" target=\"_blank\">Verificar Email</a></p>" //
-                + "<p>Si no solicitaste este cambio, puedes ignorar este correo electr&oacute;nico y tu direcci&oacute;n de correo actual permanecer&aacute; sin cambios.</p>" //
-                + "<p>&iexcl;Gracias por ser parte de nuestra comunidad!</p>" //
-                + "<p>El equipo Zahor&iacute;.</p>" //
-                + "<p>&nbsp;</p>";
-    }
 }

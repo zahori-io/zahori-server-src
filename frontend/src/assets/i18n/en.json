@@ -47,7 +47,7 @@
 		"emailVerified": "Email verified!",
 		"error": "Error verifying email: ",
 		"invalidToken": "Invalid token",
-		"tokenExpired": "Token has expired"
+		"tokenExpired": "Token expired"
 	},
 	"main": {
 		"admin": {

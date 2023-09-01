@@ -454,7 +454,6 @@ font-size: 1.2rem;
 .sidebarZahoricontent {
     width: 100%;
     padding: 20px;
-    min-height: 80vh;
     transition: all 0.3s;
 }
 		.vh-80{height:80vh}

@@ -40,6 +40,7 @@ export class LoginComponent implements OnInit {
 
   loginUser(e): boolean {
     e.preventDefault();
+    this.error = false;
     const username = e.target.elements[0].value;
     const password = e.target.elements[1].value;
     this.loading = true;

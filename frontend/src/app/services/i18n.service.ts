@@ -16,15 +16,17 @@ export class I18nService {
     private translate: TranslateService,
     private dataService: DataService
   ) {
-    this.setLanguage();
-    this.printDefaultLanguage();
-    this.printBrowserLanguage();
-    this.printStorageLanguage();
-    this.printCurrentLanguage();
   }
 
   setLanguage() {
     this.translate.setDefaultLang("en");
+    const browserLang = this.getBrowserLanguage();
+    const languageLocalStorage: Language = this.getStorageLanguage();
+    if (languageLocalStorage?.languageCode) {
+      this.setCurrentLanguage(languageLocalStorage);
+    } else {
+      this.translate.use(browserLang);
+    }
 
     this.dataService.getAvailableLanguages().subscribe(
       (languagesInDB: Language[]) => {
@@ -32,13 +34,7 @@ export class I18nService {
 
         console.log("Languages available: " + JSON.stringify(this.languages));
         
-        const languageLocalStorage: Language = this.getStorageLanguage();
-        const browserLang = this.getBrowserLanguage();
-
         for (let language of this.languages) {
-          if (languageLocalStorage?.languageCode == language.languageCode) {
-            this.setCurrentLanguage(languageLocalStorage);
-          }
           if (!languageLocalStorage && language.languageCode == browserLang) {
             this.setCurrentLanguage(language);
           }
@@ -54,14 +50,21 @@ export class I18nService {
         if (languageLocalStorage) {
           this.setCurrentLanguage(languageLocalStorage);
         }
+      },
+      () => {
+        this.printDefaultLanguage();
+        this.printBrowserLanguage();
+        this.printStorageLanguage();
+        this.printCurrentLanguage();
       }
+
     );
   }
 
   setCurrentLanguage(language: Language): void {
     this.currentLanguage = language;
     this.translate.use(language.languageCode);
-    console.log("User language: " + this.translate.currentLang);
+    this.printCurrentLanguage();
 
     this.setStorageLanguage(language);
   }
