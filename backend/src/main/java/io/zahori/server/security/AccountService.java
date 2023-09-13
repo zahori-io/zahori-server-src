@@ -30,23 +30,21 @@ import io.zahori.server.email.EmailVerificationRepository;
 import io.zahori.server.exception.BadRequestException;
 import io.zahori.server.i18n.Language;
 import io.zahori.server.model.Client;
+import io.zahori.server.utils.Validator;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.ui.Model;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 
@@ -58,15 +56,17 @@ public class AccountService {
     private final EmailService emailService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AccountRepository accountRepository;
+    private final ForgotPasswordRepository forgotPasswordRepository;
     private final EmailVerificationRepository emailVerificationRepository;
     private final TemplateEngine templateEngine;
     private final MessageSource messageSource;
 
     @Autowired
-    public AccountService(EmailService emailService, BCryptPasswordEncoder bCryptPasswordEncoder, AccountRepository accountRepository, EmailVerificationRepository emailVerificationRepository, TemplateEngine templateEngine, MessageSource messageSource) {
+    public AccountService(EmailService emailService, BCryptPasswordEncoder bCryptPasswordEncoder, AccountRepository accountRepository, ForgotPasswordRepository forgotPasswordRepository, EmailVerificationRepository emailVerificationRepository, TemplateEngine templateEngine, MessageSource messageSource) {
         this.emailService = emailService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.accountRepository = accountRepository;
+        this.forgotPasswordRepository = forgotPasswordRepository;
         this.emailVerificationRepository = emailVerificationRepository;
         this.templateEngine = templateEngine;
         this.messageSource = messageSource;
@@ -90,8 +90,17 @@ public class AccountService {
         }
     }
 
-    public void createAccount(AccountSignupDto accountDto) {
-        validateEmail(accountDto.getEmail());
+    // @Async
+    public void createAccount(AccountSignupDto accountDto, Locale locale) {
+        validateEmail(accountDto.getEmail(), locale);
+        accountDto.setEmail(accountDto.getEmail().trim().toLowerCase());
+
+        if (isEmailRegistered(accountDto.getEmail())) {
+            LOG.info("Email already registered: {}", accountDto.getEmail());
+            return; // No error to avoid user enumeration
+        }
+
+        // TODO send confirmation email before creating the account in the database
         accountDto.setEmail(accountDto.getEmail().trim().toLowerCase());
 
         Account account = new Account();
@@ -109,27 +118,116 @@ public class AccountService {
         accountRepository.save(account);
     }
 
-    public void changePassword(Passwords passwords) {
+    public void changePassword(Passwords passwords, Locale locale) {
         if (StringUtils.isBlank(passwords.getCurrentPassword())) {
-            throw new BadRequestException("Current password can't be empty");
+
+            throw new BadRequestException(messageSource.getMessage("i18n.change-password.currentPassword.empty", null, locale));
         }
 
-        if (StringUtils.isBlank(passwords.getNewPassword())) {
-            throw new BadRequestException("New password can't be empty");
+        if (!Validator.isValidPassword(passwords.getNewPassword())) {
+            throw new BadRequestException(messageSource.getMessage(Validator.INVALID_PASSWORD, null, locale));
         }
 
         if (!passwords.getNewPassword().equals(passwords.getConfirmPassword())) {
-            throw new BadRequestException("Confirm password doesn't match New password");
+            throw new BadRequestException(messageSource.getMessage("i18n.change-password.confirmPassword.match", null, locale));
         }
 
         Account user = getAccount();
 
         if (!bCryptPasswordEncoder.matches(passwords.getCurrentPassword(), user.getPassword())) {
-            throw new BadRequestException("Current password is incorrect");
+            throw new BadRequestException(messageSource.getMessage("i18n.change-password.currentPassword.incorrect", null, locale));
         }
 
         user.setPassword(bCryptPasswordEncoder.encode(passwords.getNewPassword()));
         accountRepository.save(user);
+    }
+
+    @Async
+    @Transactional
+    public void createForgotPasswordRequest(String email, String host, Locale locale) { // Locale from controller due to @Async creates new thread
+        validateEmail(email, locale);
+        email = email.trim().toLowerCase();
+
+        Account user = accountRepository.findByEmail(email);
+        if (user == null) {
+            LOG.info("Email not present: {}", email);
+            return;
+        }
+
+        // Verify if user already has a forgot password request, if so, remove it and generate a new one
+        Optional<ForgotPassword> forgotPasswordOptional = forgotPasswordRepository.findByAccountId(user.getId());
+        LOG.info("forgot password request present: {}", forgotPasswordOptional.isPresent());
+        if (forgotPasswordOptional.isPresent()) {
+            forgotPasswordRepository.delete(forgotPasswordOptional.get());
+        }
+
+        // Create new forgot password request in DB
+        ForgotPassword forgotPassword = new ForgotPassword();
+        forgotPassword.setAccountId(user.getId());
+        UUID uuid = UUID.randomUUID();
+        forgotPassword.setToken(uuid);
+        forgotPassword.setTokenExpiration(System.currentTimeMillis() + 600000L); // 600000ms = 10 minutes
+        forgotPasswordRepository.save(forgotPassword);
+
+        // Send email with link
+        Context context = new Context(locale);
+
+        String resetPasswordLink = host + "/#/account/forgot-password/" + uuid;
+        context.setVariable("resetPasswordLink", resetPasswordLink);
+        context.setVariable("locale", locale.getLanguage());
+
+        String emailContentTxt = templateEngine.process("forgot-password.txt", context);
+        String emailContentHtml = templateEngine.process("forgot-password.html", context);
+
+        Email emailDetails = new Email();
+        emailDetails.setSubject(messageSource.getMessage("i18n.forgot-password.email.subject", null, locale));
+        emailDetails.setRecipient(email);
+        emailDetails.setMsgText(emailContentTxt);
+        emailDetails.setMsgHtml(emailContentHtml);
+        emailService.send(emailDetails);
+    }
+
+    public void forgotPasswordReset(ForgotPasswordDto forgotPasswordDto, Locale locale) {
+        String tokenExpiredMessage = messageSource.getMessage("i18n.forgot-password.reset.tokenExpired", null, locale);
+
+        if (forgotPasswordDto.getToken() == null) {
+            throw new BadRequestException(tokenExpiredMessage);
+        }
+
+        if (!Validator.isValidPassword(forgotPasswordDto.getNewPassword())) {
+            throw new BadRequestException(messageSource.getMessage(Validator.INVALID_PASSWORD, null, locale));
+        }
+
+        if (!forgotPasswordDto.getNewPassword().equals(forgotPasswordDto.getConfirmPassword())) {
+            throw new BadRequestException(messageSource.getMessage("i18n.forgot-password.passwordsNotMatch", null, locale));
+        }
+
+        Optional<ForgotPassword> forgotPasswordOptional = forgotPasswordRepository.findByToken(forgotPasswordDto.getToken());
+        if (forgotPasswordOptional.isEmpty()) {
+            throw new BadRequestException(tokenExpiredMessage);
+        }
+        ForgotPassword forgotPassword = forgotPasswordOptional.get();
+
+        // Validate token expiration
+        long currentTimestamp = System.currentTimeMillis();
+        if (currentTimestamp > forgotPassword.getTokenExpiration()) {
+
+            // Remove forgot password request from DB
+            forgotPasswordRepository.delete(forgotPassword);
+
+            throw new BadRequestException(tokenExpiredMessage);
+        }
+
+        Optional<Account> userOptional = accountRepository.findById(forgotPassword.getAccountId());
+        if (userOptional.isEmpty()) {
+            throw new BadRequestException(tokenExpiredMessage);
+        }
+        Account user = userOptional.get();
+
+        user.setPassword(bCryptPasswordEncoder.encode(forgotPasswordDto.getNewPassword()));
+        accountRepository.save(user);
+
+        forgotPasswordRepository.delete(forgotPassword);
     }
 
     public EmailDto getEmails() {
@@ -158,42 +256,26 @@ public class AccountService {
         return emailDto;
     }
 
-    public void validateEmail(String email) {
-        final String invalidEmail = "Invalid email";
-
-        if (StringUtils.isBlank(email)) {
-            throw new BadRequestException(invalidEmail);
-        }
-
-        email = email.trim().toLowerCase();
-
-        if (isInvalidEmailFormat(email)) {
-            throw new BadRequestException(invalidEmail);
-        }
-
-        if (isEmailAlreadyRegistered(email)) {
-            LOG.info("Email already registered: {}", email);
-            throw new BadRequestException(invalidEmail);
+    public void validateEmail(String email, Locale locale) {
+        if (!Validator.isValidEmail(email)) {
+            throw new BadRequestException(messageSource.getMessage(Validator.INVALID_EMAIL, null, locale));
         }
     }
 
-    private boolean isEmailAlreadyRegistered(String email) {
+    private boolean isEmailRegistered(String email) {
         Account account = accountRepository.findByEmail(email);
         return account != null;
     }
 
-    private boolean isInvalidEmailFormat(String email) {
-        final String regExp = "^[a-z0-9]+([\\._-]?[a-z0-9]+)*@[a-z0-9]+([\\.-]?[a-z0-9]+)*(\\.[a-z0-9]{2,})+$";
-
-        Pattern pattern = Pattern.compile(regExp);
-        Matcher matcher = pattern.matcher(email);
-        return !matcher.matches();
-    }
-
     @Transactional
-    public void createChangeEmailRequest(String newEmail, String host, Model model) {
-        validateEmail(newEmail);
+    public void createChangeEmailRequest(String newEmail, String host, Locale locale) {
+        validateEmail(newEmail, locale);
         newEmail = newEmail.trim().toLowerCase();
+
+        if (isEmailRegistered(newEmail)) {
+            LOG.info("Email already registered: {}", newEmail);
+            return; // No error to avoid user enumeration
+        }
 
         Account user = getAccount();
 
@@ -209,11 +291,10 @@ public class AccountService {
         emailVerification.setAccountId(user.getId());
         UUID uuid = UUID.randomUUID();
         emailVerification.setToken(uuid);
-        emailVerification.setTokenExpiration(System.currentTimeMillis() + 1800000L);
+        emailVerification.setTokenExpiration(System.currentTimeMillis() + 1800000L); // 1800000ms = 30 minutes
         emailVerificationRepository.save(emailVerification);
 
         // Send verification email
-        Locale locale = LocaleContextHolder.getLocale();
         Context context = new Context(locale);
 
         String verifyLink = host + "/#/account/verify-email/" + uuid;
@@ -224,7 +305,7 @@ public class AccountService {
         String emailContentHtml = templateEngine.process("verify-email.html", context);
 
         Email emailDetails = new Email();
-        emailDetails.setSubject(messageSource.getMessage("i18n.verify-email.subject", null, locale));
+        emailDetails.setSubject(messageSource.getMessage("i18n.verify-email.email.subject", null, locale));
         emailDetails.setRecipient(newEmail);
         emailDetails.setMsgText(emailContentTxt);
         emailDetails.setMsgHtml(emailContentHtml);
@@ -253,7 +334,8 @@ public class AccountService {
 
         Optional<Account> userOptional = accountRepository.findById(emailVerification.getAccountId());
         if (userOptional.isEmpty()) {
-            throw new RuntimeException("User does not exist");
+            LOG.info("Account does not exist: {}", emailVerification.getAccountId());
+            throw new BadRequestException(tokenExpired);
         }
 
         // Update user email

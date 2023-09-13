@@ -4,31 +4,51 @@
 		"error": "Error: ",
 		"serverVersion": "Hay disponible una nueva versión del servidor: {{latest}}"
 	},
-	"modal": {
-		"closeButton": "Cerrar"
-	},
-	"formError": {
-		"empty": "Este campo no puede estar vacío",
-		"invalidEmail": "El correo no es valido",
-		"minLength": "El campo ha de tener al menos {{characters}} caracteres",
-		"misMatchEmail": "Los correos escritos no coinciden",
-		"misMatchPassword": "Las contraseñas escritas no coinciden",
-		"passwordConditions": {
-			"condition1": "Una letra mayúscula",
-			"condition2": "Una letra minúscula",
-			"condition3": "Un numero",
-			"condition4": "Un carácter especial",
-			"text": "La contraseña ha de tener al menos:"
-		}
-	},
-	"login": {
-		"login": "Entrar",
-		"loginError": "Nombre de usuario o contraseña incorrectos",
-		"noAccount": "¿No tienes cuenta todavía?",
-		"password": "Contraseña",
-		"recoverPassword": "Recuperar contraseña",
-		"register": "Registrate",
-		"rememberMe": "Recuérdame",
+	"home": {
+		"account": {
+			"forgot-password": {
+				"title": "Restablecer contraseña",
+				"newPassword": "Nueva contraseña",
+				"confirmPassword": "Repite la nueva contraseña",
+				"confirmButton": "Confirmar",
+				"passwordsNotMatch": "Las contraseñas no coinciden",
+				"reset.ok": "Contraseña actualizada"
+			},
+			"signup": {
+				"password": "Contraseña",
+				"passwordHolder": "Contraseña....",
+				"pleaseRegister": "Por favor, introduce tus datos para registrarte.",
+				"repeatPassword": "Repetir contraseña",
+				"repeatPasswordHolder": "Repetir contraseña...",
+				"return": "Volver",
+				"signup": "Registrarse",
+				"user": "Usuario",
+				"userHolder": "Nombre de usuario",
+				"welcome": "Bienvenido"
+			},
+			"verify-email": {
+				"emailVerified": "Email verificado!",
+				"error": "Error verificando el email: ",
+				"invalidToken": "Token inválido",
+				"tokenExpired": "Token expirado"
+			}
+		},
+		"login": {
+			"login": "Entrar",
+			"loginError": "Nombre de usuario o contraseña incorrectos",
+			"noAccount": "¿No tienes cuenta todavía?",
+			"password": "Contraseña",
+			"register": "Registrate",
+			"rememberMe": "Recuérdame",
+			"title": "Iniciar sesión",
+			"user": "Usuario o correo electrónico",
+			"forgot-password.link": "¿Has olvidado tu contraseña?",
+			"forgot-password.email": "Introduce tu correo electrónico",
+			"forgot-password.ok": "Revisa tu bandeja de entrada y sigue las instrucciones",
+			"forgot-password.error": "Error",
+			"forgot-password.submit": "Recuperar contraseña",
+			"forgot-password.emailServiceNotConfigured": "El servicio de envío de emails no está configurado, contacta con el administrador"
+		},
 		"slide1": {
 			"text": "Podrás probar tus aplicaciones software en cualquier plataforma y dispositivo, y reutilizar las pruebas automáticas para adaptarte de forma ágil a los avances funcionales del software. Podrás además realizar prototipados rápidos, regresivos y ágiles. Reutiliza fácilmente tus pruebas. Automatiza una vez y prueba tanto como necesites.",
 			"title": "Tus pruebas de software"
@@ -40,14 +60,7 @@
 		"slide3": {
 			"text": "Podrás aplicar prácticas DevOps y de Integración Continua, introduciendo procesos automáticos en todo el ciclo de desarrollo del software, para acelerar la velocidad de puesta en producción de nuevas funcionalidades, y adaptarte mejor a las peticiones de tus usuarios.",
 			"title": "Tus despliegues de aplicaciones"
-		},
-		"user": "Usuario o correo electrónico"
-	},
-	"verify-email": {
-		"emailVerified": "Email verificado!",
-		"error": "Error verificando el email: ",
-		"invalidToken": "Token inválido",
-		"tokenExpired": "Token expirado"
+		}
 	},
 	"main": {
 		"admin": {
@@ -483,10 +496,11 @@
 			},
             "changePassword": {
                 "confirmButton": "Confirmar",
-                "confirmPassword": "Confirmar nueva contraseña",
+                "confirmPassword": "Repite la nueva contraseña",
                 "currentPassword": "Contraseña actual",
-                "newPassword": "Contraseña nueva",
-                "title": "Cambiar contraseña"
+                "newPassword": "Nueva contraseña",
+                "title": "Cambiar contraseña",
+				"ok": "Contraseña actualizada!"
             },
             "menu": {
                 "changePassword": "Cambiar contraseña"
@@ -494,16 +508,25 @@
 			"title": "Mi cuenta"
 		}
 	},
-	"signup": {
-		"password": "Contraseña",
-		"passwordHolder": "Contraseña....",
-		"pleaseRegister": "Por favor, introduce tus datos para registrarte.",
-		"repeatPassword": "Repetir contraseña",
-		"repeatPasswordHolder": "Repetir contraseña...",
-		"return": "Volver",
-		"signup": "Registrarse",
-		"user": "Usuario",
-		"userHolder": "Nombre de usuario",
-		"welcome": "Bienvenido"
+	"modal": {
+		"closeButton": "Cerrar"
+	},
+	"formError": {
+		"empty": "Este campo no puede estar vacío",
+		"invalidEmail": "El correo no es valido",
+		"minLength": "El campo ha de tener al menos {{characters}} caracteres",
+		"misMatchEmail": "Los correos escritos no coinciden",
+		"misMatchPassword": "Las contraseñas escritas no coinciden",
+		"passwordConditions": {
+			"condition1": "Una letra mayúscula",
+			"condition2": "Una letra minúscula",
+			"condition3": "Un numero",
+			"condition4": "Un carácter especial",
+			"text": "La contraseña ha de tener al menos:"
+		}
+	},
+	"validator": {
+		"email" : "Introduce un email válido!",
+		"password" : "La contraseña debe contener al menos una letra minúscula, una mayúscula, un número, un carácter especial y tener una longitud mínima de 8 caracteres"
 	}
 }

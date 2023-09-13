@@ -24,14 +24,15 @@ package io.zahori.server.security;
  */
 import io.zahori.server.email.EmailDto;
 import io.zahori.server.i18n.Language;
+import java.util.Locale;
 import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -53,7 +54,19 @@ public class AccountController {
     // @PostMapping("/account/sign-up")
     public ResponseEntity<Object> signUp(@RequestBody AccountSignupDto user) {
         LOG.info("Create account: " + user);
-        accountService.createAccount(user);
+        accountService.createAccount(user, LocaleContextHolder.getLocale());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/account/forgot-password/request")
+    public ResponseEntity<Object> forgotPasswordRequest(@RequestBody String email, HttpServletRequest request) {
+        accountService.createForgotPasswordRequest(email, getRequestHost(request), LocaleContextHolder.getLocale());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping("/account/forgot-password/reset")
+    public ResponseEntity<Object> forgotPasswordReset(@RequestBody ForgotPasswordDto forgotPasswordDto) {
+        accountService.forgotPasswordReset(forgotPasswordDto, LocaleContextHolder.getLocale());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -71,7 +84,7 @@ public class AccountController {
 
     @PostMapping("/api/account/password")
     public ResponseEntity<Object> changePassword(@RequestBody Passwords passwords) {
-        accountService.changePassword(passwords);
+        accountService.changePassword(passwords, LocaleContextHolder.getLocale());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -82,11 +95,8 @@ public class AccountController {
     }
 
     @PostMapping("/api/account/email")
-    public ResponseEntity<Object> changeEmail(@RequestBody String newEmail, HttpServletRequest request, Model model) {
-        String host = StringUtils.substringBefore(request.getRequestURL().toString(), request.getContextPath());
-        host = host + request.getContextPath();
-
-        accountService.createChangeEmailRequest(newEmail, host, model);
+    public ResponseEntity<Object> changeEmail(@RequestBody String newEmail, HttpServletRequest request) {
+        accountService.createChangeEmailRequest(newEmail, getRequestHost(request), LocaleContextHolder.getLocale());
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -94,5 +104,10 @@ public class AccountController {
     public ResponseEntity<Object> changeLanguage(@RequestBody Language language, HttpServletRequest request) {
         accountService.changeLanguage(language);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    private String getRequestHost(HttpServletRequest request) {
+        String host = StringUtils.substringBefore(request.getRequestURL().toString(), request.getContextPath());
+        return host + request.getContextPath();
     }
 }

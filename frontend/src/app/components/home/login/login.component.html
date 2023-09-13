@@ -1,0 +1,81 @@
+<div class="app-page-title">
+  <div class="page-title-wrapper">
+      <div class="page-title-heading">
+          <div>{{'home.login.title' | translate}}</div>
+      </div>
+  </div>
+</div>
+
+<form (submit)="loginUser($event)">
+  <div class="form-row">
+    <div class="col-md-6">
+      <div class="input-group">
+        <input autofocus name="username" id="username" ng-model="username" placeholder="{{'home.login.user' | translate}}" type="email"
+          class="form-control">
+        <div class="input-group-prepend">
+          <span id="inputGroupPrepend2" class="input-group-text">
+            <i class="fa fa-user" aria-hidden="true"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="input-group">
+        <input name="password" id="password" ng-model="password" placeholder="{{'home.login.password' | translate}}"
+          type="password" class="form-control">
+        <div class="input-group-prepend">
+          <span id="inputGroupPrepend2" class="input-group-text">
+            <i class="fa fa-key" aria-hidden="true"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="text-center mb-2">
+    <div [style.visibility]="loginError ? 'visible' : 'hidden'" class="ml-2 text-danger">{{'home.login.loginError' |
+      translate}}</div>
+  </div>
+
+  <div class="text-center">
+    <div class="ml-auto">
+      <button class="btn btn-lg btn-zahoriV">{{'home.login.login' | translate}}</button>
+    </div>
+
+    <a (click)="showForgotPassword=true" href="javascript:void(0);"
+      class="mt-2 btn-lg btn btn-link">{{'home.login.forgot-password.link' | translate}}</a>
+  </div>
+
+</form>
+
+<!-- Forgot password -->
+<div [style.visibility]="showForgotPassword ? 'visible' : 'hidden'" class="mt-2">
+
+  <div class="form-row">
+    <div class="col-md-6">
+      <div class="input-group">
+
+        <input [(ngModel)]="forgotPasswordEmail" name="forgotPasswordEmail" id="forgotPasswordEmail"
+          placeholder="{{'home.login.forgot-password.email' | translate}}" type="email" class="form-control">
+        <div class="input-group-prepend">
+          <span id="inputGroupPrepend2" class="input-group-text">
+            <i class="fa fa-at" aria-hidden="true"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="input-group">
+        <button (click)="forgotPasswordRequest()" class="ml-2 btn btn-lg btn-zahoriV">{{'home.login.forgot-password.submit' | translate}}</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-2">
+    <div [style.visibility]="forgotPasswordMessage ? 'visible' : 'hidden'" class="ml-2 text-secondary">
+      <span>{{forgotPasswordMessage}}.</span>
+    </div>
+  </div>
+</div>

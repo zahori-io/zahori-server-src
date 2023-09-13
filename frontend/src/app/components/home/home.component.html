@@ -1,0 +1,54 @@
+<div class="app-container app-theme-white body-tabs-shadow">
+    <div class="app-container">
+      <div class="h-100">
+        <div class="h-100 no-gutters row">
+          <div class="d-none d-lg-block col-lg-4">
+            <div class="slider-light">
+              <div class="slick-slider">
+                <div>
+                  <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-premium-dark"
+                    tabindex="-1">
+                    <div class="slide-img-bg" style="background-image: url('assets/images/loginImg/login1.jpg');"></div>
+                    <div class="slider-content">
+                      <h3>{{'home.slide1.title' | translate}}</h3>
+                      <p>{{'home.slide1.text' | translate}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-premium-dark"
+                    tabindex="-1">
+                    <div class="slide-img-bg" style="background-image: url('assets/images/loginImg/login2.jpg');"></div>
+                    <div class="slider-content">
+                      <h3>{{'home.slide2.title' | translate}}</h3>
+                      <p>{{'home.slide2.text' | translate}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <div class="position-relative h-100 d-flex justify-content-center align-items-center bg-premium-dark"
+                    tabindex="-1">
+                    <div class="slide-img-bg" style="background-image: url('assets/images/loginImg/login3.jpg');"></div>
+                    <div class="slider-content">
+                      <h3>{{'home.slide3.title' | translate}}</h3>
+                      <p>{{'home.slide3.text' | translate}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+  
+          <banner [banner]="banner" (click)="initBanner()"></banner>
+  
+          <div class="h-100 d-flex bg-white justify-content-center align-items-center col-md-12 col-lg-8">
+            <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-9">
+              <div class="app-logo"><img alt="Zahorí 0.9 202011051320" src="assets/images/LOGOz.png" /></div>
+  
+              <router-outlet (activate)='onActivate($event)'></router-outlet>
+  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>

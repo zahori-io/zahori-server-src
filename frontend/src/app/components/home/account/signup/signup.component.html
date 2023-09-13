@@ -1,0 +1,63 @@
+<h4 class="mb-0">
+  <span class="d-block">{{'home.account.signup.welcome' | translate}}</span>
+  <span>{{'home.account.signup.pleaseRegister' | translate}}</span>
+</h4>
+
+<form [formGroup]="signupForm" (submit)="signup()">
+  <div class="form-row">
+    <div class="col-md-6"><!-- Usuario -->
+      <div class="position-relative form-group">
+        <label for="username" class="">{{'home.account.signup.user' | translate}}</label>
+        <input id="username" placeholder="{{'home.account.signup.userHolder' | translate}}" type="text" class="form-control" formControlName="username">
+      </div>
+      <div *ngIf="submitted" class="ml-2 text-danger">
+        <div *ngIf="signupForm.get('username').hasError('required')">{{'formError.empty' | translate}}</div>
+        <div *ngIf="signupForm.get('username').hasError('minlength')">{{'formError.minLength' | translate:{'characters':4} }}</div>
+      </div>
+    </div>
+    <div class="col-md-6"><!-- blank -->
+    </div>
+    <div class="col-md-6"><!-- password -->
+      <div class="position-relative form-group">
+        <label for="password" class="">{{'home.account.signup.password' | translate}}</label>
+        <input name="password" id="password"
+                placeholder="{{'home.account.signup.passwordHolder' | translate}}" type="password" class="form-control"
+                formControlName="password">
+      </div>
+      <div *ngIf="submitted" class="ml-2 text-danger">
+        <div *ngIf="signupForm.get('password').hasError('required')">{{'formError.empty' | translate}}</div>
+        <div *ngIf="signupForm.get('password').hasError('minlength')">{{'formError.minLength' | translate:{'characters':8} }}</div>
+        <div *ngIf="signupForm.get('password').hasError('pattern')">{{'formError.passwordConditions.text' | translate}}
+          <ul>
+            <li>{{'formError.passwordConditions.condition1' | translate}}</li>
+            <li>{{'formError.passwordConditions.condition2' | translate}}</li>
+            <li>{{'formError.passwordConditions.condition3' | translate}}</li>
+            <li>{{'formError.passwordConditions.condition4' | translate}}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6"><!-- repPassword -->
+      <div class="position-relative form-group">
+        <label for="reppassword" class="">{{'home.account.signup.repeatPassword' | translate}}</label>
+        <input name="reppassword" id="reppassword"
+                placeholder="{{'home.account.signup.repeatPasswordHolder' | translate}}" type="password" class="form-control"
+                formControlName="repPassword">
+      </div>
+      <div *ngIf="submitted" class="ml-2 text-danger">
+        <div *ngIf="signupForm.get('repPassword').hasError('required')">{{'formError.empty' | translate}}</div>
+        <div *ngIf="signupForm.get('repPassword').hasError('minlength')">{{'formError.minLength' | translate:{'characters':8} }}</div>
+        <div *ngIf="signupForm.get('repPassword').hasError('passwordValidator')">{{'formError.misMatchPassword' | translate}}</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="divider row"></div>
+  <div class="d-flex align-items-center">
+    <div class="ml-auto">
+      <button  class="btn btn-primary btn-lg button-sep" (click)="goBack()">{{'home.account.signup.return' | translate}}</button>
+      <button  class="btn btn-primary btn-lg">{{'home.account.signup.signup' | translate}}</button>
+      <div [style.visibility]="errorMessage ? 'visible' : 'hidden'" class="ml-2 text-danger">{{errorMessage}}</div>
+    </div>
+  </div>
+</form>

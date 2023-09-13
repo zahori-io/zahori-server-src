@@ -6,7 +6,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './components/app.component';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from './components/home/login/login.component';
 import { MainComponent } from './components/main/main.component';
 import { MenuComponent } from './components/main/menu/menu.component';
 import { DashboardComponent } from './components/main/dashboard/dashboard.component';
@@ -45,7 +45,7 @@ import { ClientTeamsProcessComponent } from './components/main/client-teams-proc
 import { NotificationsComponent } from './components/main/notifications/notifications.component';
 import { BannerComponent } from './components/utils/banner/banner.component';
 import { MatChipsModule } from '@angular/material/chips';
-import { SignupComponent } from './components/signup/signup.component';
+import { SignupComponent } from './components/home/account/signup/signup.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -61,8 +61,10 @@ import { AccountChangePasswordComponent } from './components/main/account/accoun
 import { AccountChangeEmailComponent } from './components/main/account/account-change-email/account-change-email.component';
 import { PaginationComponent } from './components/utils/pagination/pagination.component';
 import { SchedulerComponent } from './components/main/process/scheduler/scheduler.component';
-import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
+import { VerifyEmailComponent } from './components/home/account/verify-email/verify-email.component';
 import { ModalComponent } from './components/utils/modal/modal.component';
+import { ForgotPasswordComponent } from './components/home/account/forgot-password/forgot-password.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -112,7 +114,9 @@ import { ModalComponent } from './components/utils/modal/modal.component';
     TmsExecutionDetailsComponent,
     PaginationComponent,
     SchedulerComponent,
-    ModalComponent
+    ModalComponent,
+    ForgotPasswordComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

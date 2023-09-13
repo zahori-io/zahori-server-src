@@ -1,14 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
-import { AutenticacionService } from '../../services/autenticacion.service';
-import { BannerOptions } from '../utils/banner/banner';
+import { AutenticacionService } from '../../../services/autenticacion.service';
 import { DataService } from 'src/app/services/data.service';
-import { Language } from 'src/app/model/language';
 import { I18nService } from 'src/app/services/i18n.service';
-
-const SUCCESS_COLOR = 'alert alert-success';
-const ERROR_COLOR = 'alert alert-danger';
+import { Validator } from 'src/app/utils/validator';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
@@ -17,30 +14,32 @@ const ERROR_COLOR = 'alert alert-danger';
 })
 export class LoginComponent implements OnInit {
 
-  banner: BannerOptions;
   loading = false;
-  error = false;
+  loginError = false;
+
+  forgotPasswordEmail: string;
+  showForgotPassword = false;
+  forgotPasswordMessage: string;
 
   constructor(
     private router: Router,
     private location: Location,
     private autenticacionService: AutenticacionService,
     private dataService: DataService,
-    private i18nService: I18nService) {
+    private i18nService: I18nService,
+    private translate: TranslateService
+    ) {
   }
 
   ngOnInit(): void {
     if (this.autenticacionService.isUserLoggedIn()) {
       this.router.navigate(['/app']);
     }
-
-    this.initBanner();
-    this.displayState();
   }
 
   loginUser(e): boolean {
     e.preventDefault();
-    this.error = false;
+    this.loginError = false;
     const username = e.target.elements[0].value;
     const password = e.target.elements[1].value;
     this.loading = true;
@@ -64,7 +63,7 @@ export class LoginComponent implements OnInit {
 
           this.router.navigate(['/app/dashboard']);
         } else { // Login KO
-          this.error = true;
+          this.loginError = true;
           this.loading = false;
         }
       }
@@ -73,18 +72,34 @@ export class LoginComponent implements OnInit {
     return false;
   }
 
-  displayState() {
-    let state: any = this.location.getState();
+  forgotPasswordRequest(){
+    this.forgotPasswordMessage = null;
 
-    if (state.message && state.message != "") {
-      this.banner = new BannerOptions('', state.message, SUCCESS_COLOR, true);
+    if (!Validator.isValidEmail(this.forgotPasswordEmail)){
+      this.forgotPasswordMessage = this.translate.instant(Validator.invalidEmail);
+      return;
     }
-    if (state.error && state.error != "") {
-      this.banner = new BannerOptions('', state.error, ERROR_COLOR, true);
-    }
+
+    this.dataService.getEmailServiceStatus().subscribe(
+      // email service is configured
+      () => {
+
+        this.dataService.forgotPasswordRequest(this.forgotPasswordEmail).subscribe(
+          () => {
+            this.forgotPasswordMessage = this.translate.instant('home.login.forgot-password.ok');
+            this.forgotPasswordEmail = null;
+          },
+          (error) => {
+            this.forgotPasswordMessage = "Error";
+          }
+        );
+
+      },
+      // email service is not configured
+      (error) => {
+        this.forgotPasswordMessage = this.translate.instant('home.login.forgot-password.emailServiceNotConfigured');
+      }
+    );
   }
 
-  initBanner() {
-    this.banner = new BannerOptions();
-  }
 }

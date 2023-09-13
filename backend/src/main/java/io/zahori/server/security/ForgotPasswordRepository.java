@@ -6,7 +6,7 @@ package io.zahori.server.security;
  * $Id:$
  * $HeadURL:$
  * %%
- * Copyright (C) 2021 PANEL SISTEMAS INFORMATICOS,S.L
+ * Copyright (C) 2021 - 2023 PANEL SISTEMAS INFORMATICOS,S.L
  * %%
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License as published by
@@ -22,38 +22,15 @@ package io.zahori.server.security;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-import javax.validation.constraints.NotNull;
+import java.util.Optional;
+import java.util.UUID;
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
-public class AccountSignupDto {
+@Repository
+public interface ForgotPasswordRepository extends CrudRepository<ForgotPassword, Long> {
 
-    @NotNull
-    private String email;
+    Optional<ForgotPassword> findByAccountId(Long accountId);
 
-    @NotNull
-    private String password;
-
-    public AccountSignupDto() {
-    }
-
-    @Override
-    public String toString() {
-        return "AccountDto{" + "email=" + email + '}';
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
+    Optional<ForgotPassword> findByToken(UUID token);
 }

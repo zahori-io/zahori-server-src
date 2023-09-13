@@ -4,6 +4,7 @@ import { DataService } from '../../../../services/data.service';
 import { BannerOptions } from '../../../utils/banner/banner';
 import { EmailDto } from '../../../../model/emailDto';
 import { Location } from '@angular/common';
+import { Validator } from 'src/app/utils/validator';
 
 const SUCCESS_COLOR = 'alert alert-success';
 const ERROR_COLOR = 'alert alert-danger';
@@ -87,11 +88,7 @@ export class AccountChangeEmailComponent implements OnInit {
   }
   
   isValidEmail(email: string) {
-    if (/^[a-zA-Z0-9]+([\._-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([\.-]?[a-zA-Z0-9]+)*(\.[a-zA-Z0-9]{2,})+$/.test(email)) {
-      this.validEmail = true;
-    } else {
-      this.validEmail = false;
-    }
+    Validator.isValidEmail(email) ? this.validEmail = true : this.validEmail = false;
   }
 
   isEmailVerified(){

@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from './components/home/login/login.component';
 import { MainComponent } from './components/main/main.component';
 import { DashboardComponent } from './components/main/dashboard/dashboard.component';
 import { ExecutionsComponent } from './components/main/process/executions/executions.component';
@@ -20,21 +20,27 @@ import { AdminUsersComponent } from './components/main/admin/admin-users/admin-u
 import { AuthGuard } from './guards/auth.guard';
 import { ProcessComponent } from './components/main/process/process.component';
 import { ProcessAdminComponent } from './components/main/process/process-admin/process-admin.component';
-import { SignupComponent } from './components/signup/signup.component';
+import { SignupComponent } from './components/home/account/signup/signup.component';
 import { AdminResolutionsComponent } from './components/main/process/process-admin/admin-resolutions/admin-resolutions.component';
 import { AccountComponent } from './components/main/account/account.component';
 import { AccountChangePasswordComponent } from './components/main/account/account-change-password/account-change-password.component';
 import { AccountChangeEmailComponent } from './components/main/account/account-change-email/account-change-email.component';
 import { SchedulerComponent } from './components/main/process/scheduler/scheduler.component';
-import { VerifyEmailComponent } from './components/verify-email/verify-email.component';
+import { VerifyEmailComponent } from './components/home/account/verify-email/verify-email.component';
+import { ForgotPasswordComponent } from './components/home/account/forgot-password/forgot-password.component';
+import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
-  { path: '', component: LoginComponent },
-  { path: 'login', component: LoginComponent },
-  { path: 'account/signup', component: SignupComponent },
-  { path: 'account/verify-email/:token', component: VerifyEmailComponent },
-  {
-    path: 'app', component: MainComponent, canActivate: [AuthGuard],
+  { path: '', component: HomeComponent, 
+    children: [
+      { path: '', component: LoginComponent },
+      { path: 'login', component: LoginComponent },
+      { path: 'account/forgot-password/:token', component: ForgotPasswordComponent },
+      { path: 'account/signup', component: SignupComponent },
+      { path: 'account/verify-email/:token', component: VerifyEmailComponent }
+    ]
+  },
+  { path: 'app', component: MainComponent, canActivate: [AuthGuard],
     children: [
       { path: '', component: DashboardComponent },
       { path: 'dashboard', component: DashboardComponent },

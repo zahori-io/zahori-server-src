@@ -4,31 +4,51 @@
 		"error": "Error: ",
 		"serverVersion": "A new version of the server is available: {{latest}}"
 	},
-	"modal": {
-		"closeButton": "Close"
-	},
-	"formError": {
-		"empty": "This field can not be blank",
-		"invalidEmail": "The email is not valid",
-		"minLength": "The field must have at least {{characters}} characters",
-		"misMatchEmail": "Written emails do not match",
-		"misMatchPassword": "Written passwords do not match",
-		"passwordConditions": {
-			"condition1": "An uppercase letter",
-			"condition2": "A lowercase letter",
-			"condition3": "A number",
-			"condition4": "A special character",
-			"text": "The password must have at least:"
-		}
-	},
-	"login": {
-		"login": "Login",
-		"loginError": "Invalid username or password",
-		"noAccount": "Don't have an account yet?",
-		"password": "Password",
-		"recoverPassword": "Recover Password",
-		"register": "Sign up",
-		"rememberMe": "Remember me",
+	"home": {
+		"account": {
+			"forgot-password": {
+				"title": "Reset password",
+				"newPassword": "New password",
+				"confirmPassword": "Repeat new password",
+				"confirmButton": "Confirm",
+				"passwordsNotMatch": "Passwords do not match",
+				"reset.ok": "Password updated"
+			},
+			"signup": {
+				"password": "Password",
+				"passwordHolder": "Password....",
+				"pleaseRegister": "Please enter your details to register.",
+				"repeatPassword": "Repeat password",
+				"repeatPasswordHolder": "Repeat password...",
+				"return": "Return",
+				"signup": "check in",
+				"user": "User",
+				"userHolder": "Username",
+				"welcome": "You are welcome"
+			},
+			"verify-email": {
+				"emailVerified": "Email verified!",
+				"error": "Error verifying email: ",
+				"invalidToken": "Invalid token",
+				"tokenExpired": "Token expired"
+			}
+		},
+		"login": {
+			"login": "Login",
+			"loginError": "Invalid username or password",
+			"noAccount": "Don't have an account yet?",
+			"password": "Password",
+			"register": "Sign up",
+			"rememberMe": "Remember me",
+			"title": "Log in",
+			"user": "Username or email",
+			"forgot-password.link": "Forgot your password?",
+			"forgot-password.email": "Enter your email",
+			"forgot-password.ok": "Review your email inbox and follow the instructions",
+			"forgot-password.error": "Error",
+			"forgot-password.submit": "Recover password",
+			"forgot-password.emailServiceNotConfigured": "Email service is not configured, contact the administrator"
+		},
 		"slide1": {
 			"text": "You will be able to test your software applications on any platform and device, and reuse the automatic tests to adapt in an agile way to the functional advances of the software. You can also carry out rapid, regressive and agile prototyping. Easily reuse your tests. Automate once and test as much as you need. ",
 			"title": "Your software tests"
@@ -40,14 +60,7 @@
 		"slide3": {
 			"text": "You will be able to apply DevOps and Continuous Integration practices, introducing automatic processes throughout the software development cycle, to accelerate the speed of putting new functionalities into production, and better adapt to the requests of your users. ",
 			"title": "Your application deployments"
-		},
-		"user": "Username or email"
-	},
-	"verify-email": {
-		"emailVerified": "Email verified!",
-		"error": "Error verifying email: ",
-		"invalidToken": "Invalid token",
-		"tokenExpired": "Token expired"
+		}
 	},
 	"main": {
 		"admin": {
@@ -486,7 +499,8 @@
                 "confirmPassword": "Confirm new password",
                 "currentPassword": "Current password",
                 "newPassword": "New password",
-                "title": "Change password"
+                "title": "Change password",
+				"ok": "Password updated!"
             },
             "menu": {
                 "changePassword": "Change password"
@@ -494,16 +508,25 @@
 			"title": "My account"
 		}
 	},
-	"signup": {
-		"password": "Password",
-		"passwordHolder": "Password....",
-		"pleaseRegister": "Please enter your details to register.",
-		"repeatPassword": "Repeat password",
-		"repeatPasswordHolder": "Repeat password...",
-		"return": "Return",
-		"signup": "check in",
-		"user": "User",
-		"userHolder": "Username",
-		"welcome": "You are welcome"
+	"modal": {
+		"closeButton": "Close"
+	},
+	"formError": {
+		"empty": "This field can not be blank",
+		"invalidEmail": "The email is not valid",
+		"minLength": "The field must have at least {{characters}} characters",
+		"misMatchEmail": "Written emails do not match",
+		"misMatchPassword": "Written passwords do not match",
+		"passwordConditions": {
+			"condition1": "An uppercase letter",
+			"condition2": "A lowercase letter",
+			"condition3": "A number",
+			"condition4": "A special character",
+			"text": "The password must have at least:"
+		}
+	},
+	"validator": {
+		"email" : "Enter a valid email!",
+		"password" : "The password must contain at least one lowercase letter, one uppercase letter, one number, one special character, and have a minimum length of 8 characters"
 	}
 }

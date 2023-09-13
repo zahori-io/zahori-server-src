@@ -1,13 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import {Account} from '../../model/account';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {PasswordValidator} from '../../validators/passwordValidator';
-import {Router} from '@angular/router';
-import {DataService} from '../../services/data.service';
-import {BannerOptions} from '../utils/banner/banner';
-
-const SUCCESS_COLOR = 'alert alert-success';
-const ERROR_COLOR = 'alert alert-danger';
+import { Account } from '../../../../model/account';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { PasswordValidator } from '../../../../validators/passwordValidator';
+import { Router } from '@angular/router';
+import { DataService } from '../../../../services/data.service';
 
 @Component({
   selector: 'app-signup',
@@ -15,14 +11,18 @@ const ERROR_COLOR = 'alert alert-danger';
   styleUrls: ['./signup.component.css']
 })
 export class SignupComponent implements OnInit {
-  banner: BannerOptions;
+
   signupForm: FormGroup;
   submitted = false;
-  private passwordPattern = '^(?=.*\\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\\w\\d\\s:])([^\\s]){8,16}$';
+  errorMessage: string;
+
+  private passwordPattern = /^(?=.*[0-9].{0,})(?=.*[a-z].{0,})(?=.*[A-Z].{0,})(?=.*[*.!¡'`"ªº@çÇ#$%^&(){}[\]:;<>,.¿?/~_+\-=|\\].{0,}).{8,}$/;
+
   constructor(private formBuilder: FormBuilder, private router: Router, public dataService: DataService) {
     this.createForm();
   }
-  createForm(): void{
+
+  createForm(): void {
     this.signupForm = this.formBuilder.group({
       username: ['',
         [
@@ -43,12 +43,14 @@ export class SignupComponent implements OnInit {
           Validators.minLength(8)
         ]
       ]
-    },  {
+    }, {
       validators: [PasswordValidator('password', 'repPassword')]
     });
   }
+  
   ngOnInit(): void {
   }
+
   signup(): void {
     this.submitted = true;
     if (this.signupForm.invalid) {
@@ -58,15 +60,21 @@ export class SignupComponent implements OnInit {
     this.setSignUp(account);
     this.goBack();
   }
-  goBack(): void{
+  
+  goBack(): void {
     this.router.navigate(['']);
   }
+
   setSignUp(account: Account): void {
+    this.errorMessage = null;
+    
     this.dataService.setSignUpUser(account).subscribe(result => {
-      this.banner = new BannerOptions('Usuario creado', 'Usuario creado correctamente', SUCCESS_COLOR, true);
+      // TODO
+      this.router.navigateByUrl('/login', { state: { message: 'Revisa tu bandeja de entrada y confirma tu correo para terminar de crear tu cuenta', error: '' } });
     }, error => {
-      this.banner = new BannerOptions('Error', 'Error: ' + error.message, ERROR_COLOR, true);
+      this.errorMessage = error.message;
       console.log('Error: ' + error.message);
     });
   }
+
 }

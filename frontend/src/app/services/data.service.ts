@@ -27,6 +27,7 @@ import { Router } from '@angular/router';
 import { PeriodicExecution } from '../model/periodic-execution';
 import { EmailDto } from '../model/emailDto';
 import { Language } from '../model/language';
+import { ForgotPasswordDto } from '../model/forgotPasswordDto';
 
 @Injectable({
   providedIn: 'root'
@@ -239,6 +240,14 @@ export class DataService {
 
   public verifyEmail(token: string): Observable<string> {
     return this.http.get('./account/verify-email/' + token, { responseType: 'text' });
+  }
+
+  public forgotPasswordRequest(email: string): Observable<string> {
+    return this.http.post('./account/forgot-password/request', email, { responseType: 'text' });
+  }
+  
+  public forgotPasswordReset(forgotPasswordDto: ForgotPasswordDto): Observable<object> {
+    return this.http.post('./account/forgot-password/reset', JSON.stringify(forgotPasswordDto), { headers: this.headers });
   }
 
   public getEmail(): Observable<EmailDto> {

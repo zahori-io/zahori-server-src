@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../../services/data.service';
-import { AutenticacionService } from '../../services/autenticacion.service';
+import { DataService } from '../../../../services/data.service';
+import { AutenticacionService } from '../../../../services/autenticacion.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -25,29 +25,29 @@ export class VerifyEmailComponent implements OnInit {
 
   verifyEmail(token: string) {
     if (!token || token.trim() == "") {
-      this.redirectAndDisplay("", this.translate.instant('verify-email.invalidToken'));
+      this.redirect("", this.translate.instant('home.account.verify-email.invalidToken'));
       return;
     }
 
     this.dataService.verifyEmail(token).subscribe(
       () => {
-        this.redirectAndDisplay(this.translate.instant('verify-email.emailVerified'), "");
+        this.redirect(this.translate.instant('home.account.verify-email.emailVerified'), "");
       },
       (error) => {
-        let errorMessage = this.translate.instant('verify-email.error');
+        let errorMessage = this.translate.instant('home.account.verify-email.error');
         if (error.status == 400) {
-          errorMessage = errorMessage + this.translate.instant('verify-email.tokenExpired');
+          errorMessage = errorMessage + this.translate.instant('home.account.verify-email.tokenExpired');
         } else {
           errorMessage = errorMessage + error.error;
         }
         console.log(errorMessage);
 
-        this.redirectAndDisplay("", errorMessage);
+        this.redirect("", errorMessage);
       }
     );
   }
 
-  redirectAndDisplay(message: string, error: string) {
+  redirect(message: string, error: string) {
     if (this.autenticacionService.isUserLoggedIn()) {
       this.router.navigateByUrl('/app/account/change-email', { state: { message: message, error: error } });
     } else {

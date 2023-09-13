@@ -2,14 +2,14 @@
 <html th:attr="lang=${locale}">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title th:text="#{i18n.verify-email.subject}"></title>
+<title th:text="#{i18n.verify-email.email.subject}"></title>
 </head>
 <body>
-<p th:text="#{i18n.verify-email.content.greeting}"></p>
-<p th:text="#{i18n.verify-email.content.line1}"></p>
-<p><a th:href="${verifyLink}" target="_blank" th:text="#{i18n.verify-email.content.link}"></a></p>
-<p th:text="#{i18n.verify-email.content.line2}"></p>
-<p th:text="#{i18n.verify-email.content.thanks}"></p>
-<p th:text="#{i18n.verify-email.content.sign}"></p>
+<p th:text="#{i18n.verify-email.email.content.greeting}"></p>
+<p th:text="#{i18n.verify-email.email.content.line1}"></p>
+<p><a th:href="${verifyLink}" target="_blank" th:text="#{i18n.verify-email.email.content.link}"></a></p>
+<p th:text="#{i18n.verify-email.email.content.line2}"></p>
+<p th:text="#{i18n.verify-email.email.content.thanks}"></p>
+<p th:text="#{i18n.verify-email.email.content.sign}"></p>
 </body>
 </html>
