@@ -97,7 +97,7 @@ export class LoginComponent implements OnInit {
       },
       // email service is not configured
       (error) => {
-        this.forgotPasswordMessage = this.translate.instant('home.login.forgot-password.emailServiceNotConfigured');
+        this.forgotPasswordMessage = error.error;
       }
     );
   }

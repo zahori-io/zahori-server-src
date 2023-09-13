@@ -46,8 +46,7 @@
 			"forgot-password.email": "Enter your email",
 			"forgot-password.ok": "Review your email inbox and follow the instructions",
 			"forgot-password.error": "Error",
-			"forgot-password.submit": "Recover password",
-			"forgot-password.emailServiceNotConfigured": "Email service is not configured, contact the administrator"
+			"forgot-password.submit": "Recover password"
 		},
 		"slide1": {
 			"text": "You will be able to test your software applications on any platform and device, and reuse the automatic tests to adapt in an agile way to the functional advances of the software. You can also carry out rapid, regressive and agile prototyping. Easily reuse your tests. Automate once and test as much as you need. ",

@@ -270,7 +270,7 @@ export class DataService {
   }
 
   public getEmailServiceStatus(): Observable<any> {
-    return this.http.get(this.url + 'email-service/status');
+    return this.http.get('./email-service/status');
   }
 
   public getAvailableLanguages(): Observable<Language[]> {

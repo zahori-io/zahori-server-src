@@ -28,6 +28,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -41,6 +43,9 @@ public class EmailService {
     @Autowired
     private JavaMailSender javaMailSender;
 
+    @Autowired
+    private MessageSource messageSource;
+
     @Value("${zahori.email.enable}")
     private boolean enabled;
 
@@ -49,7 +54,7 @@ public class EmailService {
 
     public void isEnabled() {
         if (!enabled) {
-            throw new ServiceUnavailableException("Email service is not configured");
+            throw new ServiceUnavailableException(messageSource.getMessage("i18n.email-service.ko", null, LocaleContextHolder.getLocale()));
         }
     }
 

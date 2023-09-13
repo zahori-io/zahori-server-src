@@ -46,8 +46,7 @@
 			"forgot-password.email": "Introduce tu correo electrónico",
 			"forgot-password.ok": "Revisa tu bandeja de entrada y sigue las instrucciones",
 			"forgot-password.error": "Error",
-			"forgot-password.submit": "Recuperar contraseña",
-			"forgot-password.emailServiceNotConfigured": "El servicio de envío de emails no está configurado, contacta con el administrador"
+			"forgot-password.submit": "Recuperar contraseña"
 		},
 		"slide1": {
 			"text": "Podrás probar tus aplicaciones software en cualquier plataforma y dispositivo, y reutilizar las pruebas automáticas para adaptarte de forma ágil a los avances funcionales del software. Podrás además realizar prototipados rápidos, regresivos y ágiles. Reutiliza fácilmente tus pruebas. Automatiza una vez y prueba tanto como necesites.",
@@ -365,13 +364,13 @@
 					"allFieldsObligatory": "Todos los campos son obligatorios",
 					"height": "Alto",
 					"invalidResolution": "La resolución no es valida",
-                    "name": "Nombre (opcional)",
+                    "name": "Nombre",
 					"resolution": {
 						"cancel": "Cancelar",
 						"delete": "Eliminar",
 						"edit": "Editar",
 						"insertHeight": "Alto",
-                        "insertName": "Nombre",
+                        "insertName": "Nombre (opcional)",
 						"insertWidth": "Ancho",
 						"remove": "Eliminar",
 						"removeMessage": "Eliminar resolución: {{width}}x{{height}}",

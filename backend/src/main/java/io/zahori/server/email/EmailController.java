@@ -30,7 +30,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/email-service/status")
+@RequestMapping("/email-service/status")
 public class EmailController {
 
     @Autowired
