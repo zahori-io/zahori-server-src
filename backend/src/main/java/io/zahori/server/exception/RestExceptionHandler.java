@@ -49,7 +49,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     // 503
     @ExceptionHandler(value = {ServiceUnavailableException.class})
     protected ResponseEntity<Object> serviceUnavailable(Exception e, WebRequest request) {
-        return throwException(HttpStatus.SERVICE_UNAVAILABLE, e.getMessage(), "Service unavailable", e, request);
+        return throwException(HttpStatus.SERVICE_UNAVAILABLE, e.getMessage(), e.getMessage(), e, request);
     }
 
     // 500
