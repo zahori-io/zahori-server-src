@@ -28,6 +28,7 @@ import { PeriodicExecution } from '../model/periodic-execution';
 import { EmailDto } from '../model/emailDto';
 import { Language } from '../model/language';
 import { ForgotPasswordDto } from '../model/forgotPasswordDto';
+import { CaseExecution } from '../model/caseExecution';
 
 @Injectable({
   providedIn: 'root'
@@ -119,6 +120,10 @@ export class DataService {
 
   public getLastExecution(processId: number): Observable<ApiResponse<Page<Execution>>> {
     return this.http.get<ApiResponse<Page<Execution>>>(this.url + 'process/' + processId + '/executions/pageable?page=0&size=1', {});
+  }
+
+  public getCaseExecutions(caseId: number): Observable<CaseExecution[]> {
+    return this.http.get<CaseExecution[]>(this.url + 'process/' + this.processSelected.processId + '/executions/' + caseId, {});
   }
 
   public getPeriodicExecutions(): Observable<Execution[]> {

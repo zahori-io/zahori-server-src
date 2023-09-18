@@ -199,6 +199,7 @@ public class ExecutionService {
                 execution.setDate(getTimestamp());
                 for (CaseExecution caseExecution : execution.getCasesExecutions()) {
                     caseExecution.setDate(getTimestamp());
+                    caseExecution.setDateTimestamp(System.currentTimeMillis());
                     caseExecution.setDurationSeconds(0);
                 }
                 return updateExecutionInDB(execution, FAILURE, FAILED, "Process is offline");
@@ -210,7 +211,6 @@ public class ExecutionService {
         }
 
         // TODO: Verify if process is running: the process is stopped or there is no connectivity
-
         // Update execution in DB
         updateExecutionInDB(execution, CREATED, PENDING);
 

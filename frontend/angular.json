@@ -38,7 +38,8 @@
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/datatables.net/js/jquery.dataTables.min.js",
               "src/assets/scripts/circle-progress/circle-progress.js",
-              "src/assets/HAR-Viewer-dev/HarViewer.js"
+              "src/assets/HAR-Viewer-dev/HarViewer.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js"
             ]
           },
           "configurations": {
@@ -109,7 +110,8 @@
               "src/assets/scripts/circle-progress/circle-progress.js",
               "src/assets/scripts/fontawsome.js",
               "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/datatables.net/js/jquery.dataTables.min.js"
+              "node_modules/datatables.net/js/jquery.dataTables.min.js",
+              "node_modules/apexcharts/dist/apexcharts.min.js"
             ]
           }
         },

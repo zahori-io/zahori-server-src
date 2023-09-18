@@ -203,6 +203,8 @@
 				"httpRequest": "Petición http",
 				"loading": "Cargando...",
 				"log": "Log",
+				"step": "Paso",
+				"stepDurationUnit": "segundos",
 				"stepsExecuted": "Pasos ejecutados",
 				"stepsModal": {
 					"close": "Cerrar",

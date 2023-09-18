@@ -6,6 +6,7 @@ import { Step } from './step';
 export class CaseExecution {
     caseExecutionId: number;
     date: string;
+    dateTimestamp: number;
     log: string;
     notes: string;
     status: string;

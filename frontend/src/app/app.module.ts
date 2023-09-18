@@ -65,6 +65,7 @@ import { VerifyEmailComponent } from './components/home/account/verify-email/ver
 import { ModalComponent } from './components/utils/modal/modal.component';
 import { ForgotPasswordComponent } from './components/home/account/forgot-password/forgot-password.component';
 import { HomeComponent } from './components/home/home.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
 
 @NgModule({
   declarations: [
@@ -143,7 +144,8 @@ import { HomeComponent } from './components/home/home.component';
       showBackground: false,
       showUnits: false,
       showZeroOuterStroke: false
-    })
+    }),
+    NgApexchartsModule
   ],
   providers: [
     DataService,

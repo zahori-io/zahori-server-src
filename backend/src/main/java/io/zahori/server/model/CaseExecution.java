@@ -61,6 +61,9 @@ public class CaseExecution implements Serializable {
 
     private String date;
 
+    @Column(name = "date_timestamp")
+    private Long dateTimestamp;
+
     private String log;
 
     private String notes;
@@ -115,7 +118,7 @@ public class CaseExecution implements Serializable {
 
     @Override
     public String toString() {
-        return "CaseExecution{" + "caseExecutionId=" + caseExecutionId + ", date=" + date + ", status=" + status + ", screenResolution=" + screenResolution + ", browserVersion=" + browserVersion + ", browser=" + browser + ", cas=" + cas + ", configuration=" + configuration + '}';
+        return "CaseExecution{" + "caseExecutionId=" + caseExecutionId + ", date=" + date + ", dateTimestamp=" + dateTimestamp + ", status=" + status + ", screenResolution=" + screenResolution + ", browserVersion=" + browserVersion + ", browser=" + browser + ", cas=" + cas + ", configuration=" + configuration + '}';
     }
 
     /**
@@ -152,6 +155,14 @@ public class CaseExecution implements Serializable {
      */
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public Long getDateTimestamp() {
+        return dateTimestamp;
+    }
+
+    public void setDateTimestamp(Long dateTimestamp) {
+        this.dateTimestamp = dateTimestamp;
     }
 
     /**

@@ -9,6 +9,7 @@ export class Step {
     expected: string;
     actual: string;
     executionTime: string;
+    duration: number;
     runId: string;
     passed: boolean;
     messageText: string;
