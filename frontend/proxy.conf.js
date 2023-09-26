@@ -4,6 +4,7 @@ const PROXY_CONFIG = [
             "/zahori/api",
             "/zahori/login",
             "/zahori/account",
+            "/zahori/email-service",
             "/zahori/languages",
             "/zahori/assets"
         ],

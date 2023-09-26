@@ -1,10 +1,37 @@
-import {EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import { EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { CaseExecution } from '../../../../model/caseExecution';
 import { DataService } from '../../../../services/data.service';
-import {NgbCarousel, NgbCarouselConfig, NgbModal, NgbModalConfig} from '@ng-bootstrap/ng-bootstrap';
-import { Step } from '../../../../model/step';
+import { NgbCarousel, NgbCarouselConfig, NgbModal, NgbModalConfig } from '@ng-bootstrap/ng-bootstrap';
+import {
+  ChartComponent,
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexXAxis,
+  ApexDataLabels,
+  ApexYAxis,
+  ApexLegend,
+  ApexFill,
+  ApexTooltip,
+  ApexStroke
+} from "ng-apexcharts";
+import { Step } from 'src/app/model/step';
+
 declare var HarViewer: any;
+
+export type ChartOptions = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  dataLabels: ApexDataLabels;
+  yaxis: ApexYAxis;
+  colors: string[];
+  legend: ApexLegend;
+  fill: ApexFill;
+  tooltip: ApexTooltip,
+  stroke: ApexStroke
+};
+
 
 @Component({
   selector: 'app-case-execution-details',
@@ -22,16 +49,76 @@ export class CaseExecutionDetailsComponent implements OnInit {
   fileName: string;
   modalMaximized = false;
   stepSelected: Number;
-  
+
+  @ViewChild("historicalCaseExecutionChart") chart: ChartComponent;
+  public chartOptions: Partial<ChartOptions>;
+
   constructor(public dataService: DataService, private modalService: NgbModal, config: NgbCarouselConfig) {
     config.showNavigationArrows = true;
     config.showNavigationIndicators = false;
     config.interval = 15000;
     config.pauseOnFocus = true;
     config.pauseOnHover = true;
+
+    // historicalCaseExecutionChart
+    this.chartOptions = {
+      series: [],
+      chart: {
+        type: "area",
+        height: 300,
+        stacked: true,
+        events: {
+          selection: function (chart, e) {
+            //console.log(new Date(e.xaxis.min));
+          }
+        },
+        animations: {
+          enabled: false
+        }
+      },
+      stroke: {
+        curve: 'straight'
+      },
+      colors: ["#008FFB", "#00E396", "#CED4DC", "#DAFFC9", "#F97474"],
+      dataLabels: {
+        enabled: false
+      },
+      fill: {
+        type: "gradient",
+        gradient: {
+          opacityFrom: 0.6,
+          opacityTo: 0.8
+        }
+      },
+      legend: {
+        position: "bottom",
+        horizontalAlign: "center"
+      },
+      tooltip: {
+        enabled: true,
+        shared: true,
+        intersect: true,
+        inverseOrder: true,
+        onDatasetHover: {
+          highlightDataSeries: true,
+        },
+        x: {
+          show: true,
+          format: 'yyyy/MM/dd HH:mm'
+        }
+      },
+      xaxis: {
+        type: "datetime",
+        labels: {
+          datetimeUTC: false
+        }
+      }
+    };
   }
+
   ngOnInit(): void {
   }
+
   getTextFile(url: string): void {
     this.resetModalVariables();
     this.downloading = true;
@@ -114,11 +201,11 @@ export class CaseExecutionDetailsComponent implements OnInit {
   }
 
   getFileName(filePath: string): string {
-    if (filePath.includes('/')){
+    if (filePath.includes('/')) {
       const parts: string[] = filePath.split('/');
       return parts[parts.length - 1];
     }
-    if (filePath.includes('\\')){
+    if (filePath.includes('\\')) {
       const parts: string[] = filePath.split('\\');
       return parts[parts.length - 1];
     }
@@ -136,7 +223,7 @@ export class CaseExecutionDetailsComponent implements OnInit {
     a.click();
   }
 
-  hide(): void  {
+  hide(): void {
     this.caseExecution = new CaseExecution();
     this.onClose.next();
   }
@@ -158,16 +245,109 @@ export class CaseExecutionDetailsComponent implements OnInit {
     this.modalMaximized = !this.modalMaximized;
   }
 
-  getWidthFromResolution(resolution: string): string{
-    return resolution.substr(0, resolution.indexOf('x')); 
+  getWidthFromResolution(resolution: string): string {
+    return resolution.substr(0, resolution.indexOf('x'));
   }
 
   getScreenResolutionName(screenResolution: string): string {
     const resolutionName = this.resolutions.get(screenResolution);
-    if (resolutionName && resolutionName !== ''){
+    if (resolutionName && resolutionName !== '') {
       return resolutionName;
     } else {
       return screenResolution;
     }
   }
+
+  getCaseExecutions() {
+    this.dataService.getCaseExecutions(this.caseExecution.cas.caseId).subscribe(
+      (caseExecutions: CaseExecution[]) => {
+        let seriesData = this.getChartSeries(caseExecutions);
+        this.printHistoricalChart(seriesData);
+      },
+      error => {
+        console.log('Error getting case executions for caseId ' + this.caseExecution.cas.caseId + ': ' + error.message);
+      }
+    );
+  }
+
+  getStepTitle(step: Step): string {
+    let stepTitle = step.messageText;
+    const maxStepTitleLength: number = 25;
+    if (stepTitle.length > maxStepTitleLength) {
+      stepTitle = stepTitle.substring(0, maxStepTitleLength) + '...';
+    }
+    return stepTitle;
+  }
+
+  getChartSeries(caseExecutions: CaseExecution[]): any[] {
+    let series: any[] = [];
+
+    if (caseExecutions.length == 0) {
+      return series;
+    }
+
+    let lastPassedCaseExecutionSteps: Step[] = [];
+    let maxSteps = 0;
+    let maxStepsIndex = 0;
+    for (let i = caseExecutions.length - 1; i >= 0; i--) {
+      let caseExecution: CaseExecution = caseExecutions[i];
+      if (caseExecution.status == "Passed") {
+        lastPassedCaseExecutionSteps = caseExecutions[i].stepsJson;
+        break;
+      } else {
+        if (caseExecution.stepsJson.length > maxSteps) {
+          maxSteps = caseExecution.stepsJson.length;
+          maxStepsIndex = i;
+        }
+      }
+    }
+    // if all cases are failed, take as template the case with more steps
+    if (lastPassedCaseExecutionSteps.length == 0) {
+      lastPassedCaseExecutionSteps = caseExecutions[maxStepsIndex].stepsJson;
+    }
+
+    for (let i = 0; i < lastPassedCaseExecutionSteps.length; i++) {
+      let step: Step = lastPassedCaseExecutionSteps[i];
+      let serieStep = { "name": this.getStepTitle(step), "data": [] };
+      series.push(serieStep);
+    }
+
+    // cases
+    for (let caseIndex = 0; caseIndex < caseExecutions.length; caseIndex++) {
+      let caseExecution: CaseExecution = caseExecutions[caseIndex];
+
+      if (!caseExecution.dateTimestamp) {
+        continue;
+      }
+
+      // steps serie
+      for (let seriesStepIndex = 0; seriesStepIndex < series.length; seriesStepIndex++) {
+        let serieStepName = series[seriesStepIndex]["name"];
+
+        // steps
+        let data = [caseExecution.dateTimestamp, null];
+        for (let stepIndex = 0; stepIndex < caseExecution.stepsJson.length; stepIndex++) {
+          let step: Step = caseExecution.stepsJson[stepIndex];
+          let stepName = this.getStepTitle(step);
+          if (stepName == serieStepName && step.status == "Passed") {
+            data = [caseExecution.dateTimestamp, step.duration];
+            break;
+          }
+        }
+        series[seriesStepIndex]["data"].push(data);
+      }
+    }
+
+    // console.log("series: " + JSON.stringify(series));
+    return series;
+  }
+
+  cleanHistoricalChart() {
+    this.printHistoricalChart([]);
+  }
+
+  printHistoricalChart(seriesData: any[]) {
+    this.chartOptions.series = seriesData;
+  }
+
 }

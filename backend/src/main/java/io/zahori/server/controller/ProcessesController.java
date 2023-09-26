@@ -12,18 +12,18 @@ package io.zahori.server.controller;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
 import io.zahori.server.model.Case;
+import io.zahori.server.model.CaseExecution;
 import io.zahori.server.model.Client;
 import io.zahori.server.model.ClientEnvironment;
 import io.zahori.server.model.ClientTag;
@@ -31,6 +31,7 @@ import io.zahori.server.model.Configuration;
 import io.zahori.server.model.Execution;
 import io.zahori.server.model.HttpResponse;
 import io.zahori.server.model.Process;
+import io.zahori.server.repository.CaseExecutionsRepository;
 import io.zahori.server.repository.CasesRepository;
 import io.zahori.server.repository.ClientEnvironmentsRepository;
 import io.zahori.server.repository.ClientTagsRepository;
@@ -78,6 +79,9 @@ public class ProcessesController {
 
     @Autowired
     private CasesRepository casesRepository;
+
+    @Autowired
+    private CaseExecutionsRepository caseExecutionsRepository;
 
     @Autowired
     private ClientEnvironmentsRepository environmentsRepository;
@@ -285,6 +289,20 @@ public class ProcessesController {
             }
 
             return new ResponseEntity<>(execution, HttpStatus.OK);
+        } catch (Exception e) {
+            LOG.error(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping(path = "/{processId}/executions/{caseId}")
+    public ResponseEntity<Object> getCaseExecutions(@PathVariable Long processId, @PathVariable Long caseId, HttpServletRequest request) {
+        try {
+            LOG.info("get case executions controller");
+
+            Iterable<CaseExecution> caseExecutions = caseExecutionsRepository.findByCaseIdAndClientIdAndProcessId(caseId, JWTUtils.getClientId(request), processId);
+
+            return new ResponseEntity<>(caseExecutions, HttpStatus.OK);
         } catch (Exception e) {
             LOG.error(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);

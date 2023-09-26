@@ -203,6 +203,10 @@
 				"httpRequest": "Http request",
 				"loading": "Loading...",
 				"log": "Log",
+				"performance": "Performance",
+				"performance.historical": "Historical performance: ",
+				"step": "Step",
+				"stepDurationUnit": "seconds",
 				"stepsExecuted": "Steps executed",
 				"stepsModal": {
 					"close": "Close",

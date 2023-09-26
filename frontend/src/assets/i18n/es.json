@@ -203,6 +203,10 @@
 				"httpRequest": "Petición http",
 				"loading": "Cargando...",
 				"log": "Log",
+				"performance": "Rendimiento",
+				"performance.historical": "Rendimiento histótico: ",
+				"step": "Paso",
+				"stepDurationUnit": "segundos",
 				"stepsExecuted": "Pasos ejecutados",
 				"stepsModal": {
 					"close": "Cerrar",

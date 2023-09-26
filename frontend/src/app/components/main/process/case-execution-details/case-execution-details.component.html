@@ -36,10 +36,14 @@
                         </div>
 
                         <div class="mb-2 mt-2">
-                            <!-- Button trigger log modal -->
-                            <button type="button" *ngIf="caseExecution.log" (click)="getTextFile(caseExecution.log)"
+                            <button type="button" (click)="getTextFile(caseExecution.log)"
                                 class="mr-2 btn-pill btn btn-zahoriPill btn-sm" data-backdrop="false"
                                 data-toggle="modal" data-target="#logModal">{{'main.process.caseExecutionDetails.log'|translate}}</button>
+
+                            <!-- Button trigger log modal -->
+                            <button type="button" *ngIf="caseExecution.log" (click)="getCaseExecutions()"
+                                class="mr-2 btn-pill btn btn-zahoriPill btn-sm" data-backdrop="false"
+                                data-toggle="modal" data-target="#historicalChart">{{'main.process.caseExecutionDetails.performance'|translate}}</button>
 
                             <button *ngIf="caseExecution.doc" (click)="getFile(caseExecution.doc)"
                                 class="mr-2 btn-pill btn btn-zahoriPill btn-sm">{{'main.process.caseExecutionDetails.doc'|translate}}</button>
@@ -78,7 +82,10 @@
                                         'fa-exclamation-triangle': step.status  === 'Not executed',
                                         'fa-sync-alt': step.status  === 'Running'}">
                                     </i>
-                                    Paso {{step.name}}
+                                    {{'main.process.caseExecutionDetails.step'|translate}}&nbsp;{{step.name}}
+                                    <div *ngIf="caseExecution.dateTimestamp" class="badge-resolutions btn-zahoriPill-resolutions ml-1" title="{{step.duration}} {{'main.process.caseExecutionDetails.stepDurationUnit'|translate}}">
+                                        <span>{{step.duration}}''</span>
+                                    </div>
                                 </span>
 
                                 <p>{{step.messageText}}</p>
@@ -190,7 +197,10 @@
                                     'fa-times text-danger': step.status  === 'Failed',
                                     'fa-exclamation-triangle': step.status  === 'Not executed'}">
                                     </i>
-                                    Paso {{step.name}}
+                                    {{'main.process.caseExecutionDetails.step'|translate}}&nbsp;{{step.name}}
+                                    <div *ngIf="caseExecution.dateTimestamp" class="badge-resolutions btn-zahoriPill-resolutions ml-1" title="{{step.duration}} {{'main.process.caseExecutionDetails.stepDurationUnit'|translate}}">
+                                        <span>{{step.duration}}''</span>
+                                    </div>
                                 </span>
                             </h5>
                             <div class="paso mb-3">
@@ -247,6 +257,49 @@
                     <i class="fa fa-download mr-1 "></i>{{'main.process.caseExecutionDetails.download'|translate}}
                 </button>
                 <button type="button" class="btn btn-light" data-dismiss="modal">{{'main.process.caseExecutionDetails.close'|translate}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal - Historical case execution chart -->
+<div *ngIf="caseExecution" id="historicalChart" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="historicalChart" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-scrollable modal-xl" [ngClass]="modalMaximized ? 'modal-maximized' : ''"
+        role="document">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLongTitle">{{'main.process.caseExecutionDetails.performance.historical'|translate}}{{caseExecution.cas.name}}</h5>
+
+                <div class="ml-auto">
+                    <button type="button" (click)="maximizeModal()" class="btn btn-default" aria-label="Left Align">
+                        <span class="far fa-window-maximize fa-lg" style="color: grey;" aria-hidden="true"></span>
+                    </button>
+                    <button type="button" (click)="cleanHistoricalChart()" data-dismiss="modal" class="btn btn-default" aria-label="Left Align">
+                        <span class="fas fa-times fa-lg" style="color: grey;" aria-hidden="true"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div id="historicalCaseExecutionChart">
+                    <apx-chart
+                      [series]="chartOptions.series"
+                      [chart]="chartOptions.chart"
+                      [xaxis]="chartOptions.xaxis"
+                      [dataLabels]="chartOptions.dataLabels"
+                      [yaxis]="chartOptions.yaxis"
+                      [colors]="chartOptions.colors"
+                      [legend]="chartOptions.legend"
+                      [fill]="chartOptions.fill"
+                    ></apx-chart>
+                  </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" (click)="cleanHistoricalChart()" class="btn btn-light" data-dismiss="modal">
+                  {{'main.process.caseExecutionDetails.close'|translate}}
+                </button>
             </div>
         </div>
     </div>
