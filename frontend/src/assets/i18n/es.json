@@ -505,8 +505,30 @@
                 "title": "Cambiar contraseña",
 				"ok": "Contraseña actualizada!"
             },
+            "notifications": {
+                "title": "Notificaciones",
+				"eventTitle": "Evento",
+				"event": {
+					"execution.manual.success": "Ejecuciones manuales correctas",
+					"execution.manual.failure": "Ejecuciones manuales falladas",
+					"execution.scheduled.success": "Ejecuciones programadas correctas",
+					"execution.scheduled.failure": "Ejecuciones programadas falladas"
+				},
+				"media": {
+					"email": "Email",
+					"slack": "Slack"
+				},
+				"getError": "Error al obtener las notificaciones",
+				"getEventsError": "Error al obtener los eventos de notificación",
+				"getMediaError": "Error al obtener los medios de notificación",
+				"save": "Guardar",
+				"saveError": "Error al guardar las notificaciones",
+				"saveSuccess": "Notificaciones actualizadas"
+            },
             "menu": {
-                "changePassword": "Cambiar contraseña"
+                "changePassword": "Cambiar contraseña",
+				"email": "Email",
+				"notifications": "Notificaciones"
             },
 			"title": "Mi cuenta"
 		}

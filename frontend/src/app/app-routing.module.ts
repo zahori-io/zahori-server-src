@@ -29,6 +29,7 @@ import { SchedulerComponent } from './components/main/process/scheduler/schedule
 import { VerifyEmailComponent } from './components/home/account/verify-email/verify-email.component';
 import { ForgotPasswordComponent } from './components/home/account/forgot-password/forgot-password.component';
 import { HomeComponent } from './components/home/home.component';
+import { AccountNotificationsComponent } from './components/main/account/account-notifications/account-notifications.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, 
@@ -78,9 +79,10 @@ const routes: Routes = [
       {
         path: 'account', component: AccountComponent,
         children: [
-          { path: '', component: AccountChangePasswordComponent },
-          { path: 'change-password', component: AccountChangePasswordComponent },
-          { path: 'change-email', component: AccountChangeEmailComponent }
+          { path: '', component: AccountChangeEmailComponent },
+          { path: 'change-email', component: AccountChangeEmailComponent },
+          { path: 'notifications', component: AccountNotificationsComponent },
+          { path: 'change-password', component: AccountChangePasswordComponent }
         ]
       }
     ]

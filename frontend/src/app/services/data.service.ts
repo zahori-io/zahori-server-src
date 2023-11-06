@@ -29,6 +29,9 @@ import { EmailDto } from '../model/emailDto';
 import { Language } from '../model/language';
 import { ForgotPasswordDto } from '../model/forgotPasswordDto';
 import { CaseExecution } from '../model/caseExecution';
+import { Notification } from 'src/app/model/notification';
+import { NotificationEvent } from '../model/notificationEvent';
+import { NotificationMedia } from '../model/notificationMedia';
 
 @Injectable({
   providedIn: 'root'
@@ -284,6 +287,22 @@ export class DataService {
 
   public saveUserLanguage(language: Language): Observable<any> {
     return this.http.post<any>(this.url + 'account/language', JSON.stringify(language));
+  }
+
+  public getAccountNotifications(): Observable<Notification[]> {
+    return this.http.get<Notification[]>(this.url + 'notifications');
+  }
+
+  public saveAccountNotifications(notifications: Notification[]): Observable<any> {
+    return this.http.post<any>(this.url + 'notifications', JSON.stringify(notifications));
+  }
+
+  public getNotificationEvents(): Observable<NotificationEvent[]> {
+    return this.http.get<NotificationEvent[]>(this.url + 'notifications/events');
+  }
+
+  public getNotificationMedia(): Observable<NotificationMedia[]> {
+    return this.http.get<NotificationMedia[]>(this.url + 'notifications/media');
   }
 
 }

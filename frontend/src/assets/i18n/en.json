@@ -505,8 +505,30 @@
                 "title": "Change password",
 				"ok": "Password updated!"
             },
+            "notifications": {
+                "title": "Notifications",
+				"eventTitle": "Event",
+				"event": {
+					"execution.manual.success": "Manual executions passed",
+					"execution.manual.failure": "Manual executions failed",
+					"execution.scheduled.success": "Scheduled executions passed",
+					"execution.scheduled.failure": "Scheduled executions failed"
+				},
+				"media": {
+					"email": "Email",
+					"slack": "Slack"
+				},
+				"getError": "Error getting notifications",
+				"getEventsError": "Error getting notification events",
+				"getMediaError": "Error getting notification mediums",
+				"save": "Save",
+				"saveError": "Error saving notifications",
+				"saveSuccess": "Notifications updated"
+            },
             "menu": {
-                "changePassword": "Change password"
+                "changePassword": "Change password",
+				"email": "Email",
+				"notifications": "Notifications"
             },
 			"title": "My account"
 		}

@@ -1,0 +1,39 @@
+<banner [banner]="banner" (click)="initBanner()"></banner>
+
+<div class="sidebarZahoricontent">
+
+    <div class="app-page-title">
+        <div class="page-title-wrapper">
+            <div class="page-title-heading">
+                <div>{{'main.account.notifications.title'| translate}}</div>
+            </div>
+        </div>
+    </div>
+
+    <table class="mb-0 table">
+        <thead>
+            <tr>
+                <th>{{'main.account.notifications.eventTitle'| translate}}</th>
+                <th *ngFor="let media of notificationMedia">
+                    {{getMediaI18n(media.name)}}
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <ng-container *ngFor="let event of notificationEvents; index as indexEvent;">
+                <tr>
+                    <td>{{getEventI18n(event.name)}}</td>
+                    <td *ngFor="let media of notificationMedia; index as indexMedia;">
+                        <div class="ml-2 custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="notif-{{indexEvent}}-{{indexMedia}}" [checked]="getNotificationStatus(event, media)"
+                                (change)="toggleNotification(event, media)">
+                            <label class="custom-control-label" for="notif-{{indexEvent}}-{{indexMedia}}"></label>
+                        </div>
+                    </td>
+                </tr>
+            </ng-container>
+        </tbody>
+    </table>
+
+    <button (click)="saveNotifications()" class="mt-3 btn-wide btn-icon btn btn-zahoriV btn-sm">{{'main.account.notifications.save'| translate}}</button>
+</div>
