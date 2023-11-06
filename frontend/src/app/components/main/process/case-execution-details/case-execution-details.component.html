@@ -1,5 +1,5 @@
 <!-- SIDEBAR - EVIDENCES -->
-<div id="sidebarEvidencias" class="sidebarZahori active" *ngIf="caseExecution && caseExecution.caseExecutionId > 0">
+<div id="sidebarEvidencias" class="active" *ngIf="caseExecution && caseExecution.caseExecutionId > 0">
 
     <div class="drawer-content-wrapper">
         <div class="scroll-area">
@@ -36,12 +36,12 @@
                         </div>
 
                         <div class="mb-2 mt-2">
-                            <button type="button" (click)="getTextFile(caseExecution.log)"
+                            <button *ngIf="caseExecution.log" (click)="getTextFile(caseExecution.log)"
                                 class="mr-2 btn-pill btn btn-zahoriPill btn-sm" data-backdrop="false"
                                 data-toggle="modal" data-target="#logModal">{{'main.process.caseExecutionDetails.log'|translate}}</button>
 
                             <!-- Button trigger log modal -->
-                            <button type="button" *ngIf="caseExecution.log" (click)="getCaseExecutions()"
+                            <button *ngIf="caseExecution.log" (click)="getCaseExecutions()"
                                 class="mr-2 btn-pill btn btn-zahoriPill btn-sm" data-backdrop="false"
                                 data-toggle="modal" data-target="#historicalChart">{{'main.process.caseExecutionDetails.performance'|translate}}</button>
 
@@ -52,7 +52,7 @@
                                 class="mr-2 btn-pill btn btn-zahoriPill btn-sm">{{'main.process.caseExecutionDetails.video'|translate}}</button>
 
                             <!-- Button trigger HAR modal -->
-                            <button type="button" *ngIf="caseExecution.har" title="HTTP Archive"
+                            <button *ngIf="caseExecution.har" title="HTTP Archive"
                                 (click)="getHarFile(caseExecution.har)"
                                 class="mr-2 btn-pill btn btn-zahoriPill btn-sm" data-backdrop="false"
                                 data-toggle="modal" data-target="#harModal">{{'main.process.caseExecutionDetails.har'|translate}}</button>
@@ -69,12 +69,12 @@
 
                         <br />
 
-                        <h5>{{'main.process.caseExecutionDetails.stepsExecuted'|translate}}</h5>
+                        <h5 *ngIf="caseExecution.stepsJson.length > 0">{{'main.process.caseExecutionDetails.stepsExecuted'|translate}}</h5>
                         <div *ngFor="let step of caseExecution.stepsJson; index as i; first as first;">
 
                             <hr *ngIf="!first">
 
-                            <div class="paso mb-3">
+                            <div class="step mb-3">
                                 <span class="font-weight-bold">
                                     <i title="{{step.status}}" class="fas " [ngClass]="{
                                         'fa-times text-danger': step.status  === 'Failed',
@@ -186,7 +186,7 @@
 
             <!-- STEPS -->
             <div class="modal-body">
-                <div class="paso mb-3">
+                <div class="step mb-3">
                     <ngb-carousel #carousel class="text-center">
                         <ng-container *ngFor="let step of caseExecution.stepsJson; let index = index">
                         <ng-template ngbSlide id="slide-{{index}}">
@@ -203,7 +203,7 @@
                                     </div>
                                 </span>
                             </h5>
-                            <div class="paso mb-3">
+                            <div class="step mb-3">
                             <p>{{step.messageText}}</p>
 
                             <div #screenshotContainer *ngFor="let attachment of step.attachments" class="text-center">

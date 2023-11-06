@@ -69,3 +69,29 @@
     animation: none;
     padding: 0;
 }
+
+/*******************/
+.Zahoricontent {
+    width: 100%;
+    padding: 30px 30px 0;
+}
+.Zahoricontent.reduced {
+    width: 78%;
+    padding: 30px 5px 0px 30px;
+}
+
+.ZahoriZonaDcha {
+    display: none;
+    margin-top: 0px;
+    padding: 0px 10px 30px;
+    width: 22%;
+    font-size: .88rem;
+}
+.ZahoriZonaDcha.active {
+    display: block;
+}
+.ZahoriZonaDcha.active p{
+    overflow: hidden;
+    word-wrap: break-word;
+}
+
