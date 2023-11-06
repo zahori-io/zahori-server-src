@@ -22,14 +22,12 @@ package io.zahori.server.repository;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
 import io.zahori.server.model.Resolution;
 import java.util.Set;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-
 
 /**
  * The interface resolutions repository.
@@ -38,7 +36,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 public interface ResolutionsRepository extends CrudRepository<Resolution, Long> {
 
     /**
-     * Find cases by clientId and processId.
+     * Find resolutions by clientId and processId.
      *
      * @param clientId the client id
      * @param processId the process id
