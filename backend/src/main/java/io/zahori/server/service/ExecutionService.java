@@ -30,6 +30,7 @@ import io.zahori.server.model.Execution;
 import io.zahori.server.model.PeriodicExecution;
 import io.zahori.server.model.Process;
 import io.zahori.server.model.Task;
+import io.zahori.server.notifications.NotificationsService;
 import io.zahori.server.repository.CaseExecutionsRepository;
 import io.zahori.server.repository.ConfigurationRepository;
 import io.zahori.server.repository.ExecutionsRepository;
@@ -57,6 +58,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 /**
@@ -67,16 +69,16 @@ public class ExecutionService {
 
     private static final Logger LOG = LoggerFactory.getLogger(ExecutionService.class);
 
-    private static final String PASSED = "PASSED";
-    private static final String FAILED = "FAILED";
-    private static final String PENDING = "Pending";
-    private static final String CREATED = "Created";
-    private static final String SCHEDULED = "Scheduled";
-    private static final String RUNNING = "Running";
-    private static final String SUCCESS = "SUCCESS";
-    private static final String FAILURE = "FAILURE";
-    private static final String TRIGGER_MANUAL = "Manual";
-    private static final String TRIGGER_SCHEDULER = "Scheduler";
+    public static final String PASSED = "PASSED";
+    public static final String FAILED = "FAILED";
+    public static final String PENDING = "Pending";
+    public static final String CREATED = "Created";
+    public static final String SCHEDULED = "Scheduled";
+    public static final String RUNNING = "Running";
+    public static final String SUCCESS = "SUCCESS";
+    public static final String FAILURE = "FAILURE";
+    public static final String TRIGGER_MANUAL = "Manual";
+    public static final String TRIGGER_SCHEDULER = "Scheduler";
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     private ExecutionsRepository executionsRepository;
@@ -87,11 +89,12 @@ public class ExecutionService {
     private ConfigurationRepository configurationRepository;
     private ReactorLoadBalancerExchangeFilterFunction reactorLoadBalancer;
     private SchedulerService schedulerService;
+    private NotificationsService notificationsService;
 
     @Autowired
     public ExecutionService(ExecutionsRepository executionsRepository, ProcessesRepository processesRepository, ServiceRegistry serviceRegistry,
             SelenoidService selenoidService, CaseExecutionsRepository caseExecutionsRepository, ConfigurationRepository configurationRepository,
-            ReactorLoadBalancerExchangeFilterFunction reactorLoadBalancer, SchedulerService schedulerService) {
+            ReactorLoadBalancerExchangeFilterFunction reactorLoadBalancer, SchedulerService schedulerService, NotificationsService notificationsService) {
         this.executionsRepository = executionsRepository;
         this.processesRepository = processesRepository;
         this.serviceRegistry = serviceRegistry;
@@ -100,6 +103,7 @@ public class ExecutionService {
         this.configurationRepository = configurationRepository;
         this.reactorLoadBalancer = reactorLoadBalancer;
         this.schedulerService = schedulerService;
+        this.notificationsService = notificationsService;
     }
 
     public Iterable<Execution> getExecutions(Long clientId, Long processId) {
@@ -265,76 +269,76 @@ public class ExecutionService {
         List<CaseExecution> casesExecuted = new ArrayList<>();
         long startExecutionTime = System.currentTimeMillis();
 
-        // Run process
-        Flux.fromIterable(execution.getCasesExecutions()).parallel().runOn(Schedulers.boundedElastic()) //
-                .flatMap( //
-                        caseExecution
-                        -> //
-                        // Without load balancing between processes:
-                        // WebClient.create().post().uri(processUrl + "/run").bodyValue(caseExecution).retrieve().bodyToMono(CaseExecution.class) //
-                        // With load balancing:
-                        WebClient.builder().baseUrl("http://" + serviceId).filter(reactorLoadBalancer).build().post().uri("/run").bodyValue(caseExecution)
-                                .retrieve().bodyToMono(CaseExecution.class) //
-                                .doOnRequest(req -> {
-                                    String processCase = process.getName() + "' -> case '" + caseExecution.getCas().getName() + "' ("
-                                            + caseExecution.getBrowser().getBrowserName() + ")";
-                                    LOG.info("[-->] Start call to process '{}'", processCase);
-                                    // LOG.info(caseExecution.toString());
-                                    caseExecution.setStatus(RUNNING);
-                                    caseExecutionsRepository.save(caseExecution);
-                                }) //
-                                .doOnError(err -> {
+        Flux.fromIterable(execution.getCasesExecutions()).parallel().runOn(Schedulers.boundedElastic())
+                .flatMap(caseExecution -> {
+                    return WebClient.builder().baseUrl("http://" + serviceId).filter(reactorLoadBalancer).build().post().uri("/run").bodyValue(caseExecution)
+                            .exchangeToMono(response -> {
+                                if (response.statusCode().is2xxSuccessful()) {
+                                    return response.bodyToMono(CaseExecution.class)
+                                            .doOnSuccess(resultCaseExecution -> {
+                                                // Código en caso de éxito
+                                                String processCase = process.getName() + "' -> case '" + caseExecution.getCas().getName() + "' ("
+                                                        + caseExecution.getBrowser().getBrowserName() + ")";
+                                                LOG.info("[<--] Process finished '{}'", processCase);
+                                                CaseExecution savedCaseExecution = updateCaseExecution(resultCaseExecution);
+                                                updateTotals(execution, savedCaseExecution);
+                                                casesExecuted.add(savedCaseExecution);
+                                            });
+                                } else {
+                                    // Error
                                     String processCase = process.getName() + "' -> case '" + caseExecution.getCas().getName() + "' ("
                                             + caseExecution.getBrowser().getBrowserName() + ")";
                                     LOG.info("[<--] Process error '{}'", processCase);
-
                                     casesExecuted.add(caseExecution);
                                     execution.setTotalFailed(execution.getTotalFailed() + 1);
                                     caseExecution.setStatus(FAILED);
-                                    caseExecution.setNotes(err.getMessage());
-                                    caseExecutionsRepository.save(caseExecution);
-                                }) //
-                                .doOnSuccess(resultCaseExecution -> {
-                                    String processCase = process.getName() + "' -> case '" + caseExecution.getCas().getName() + "' ("
-                                            + caseExecution.getBrowser().getBrowserName() + ")";
-                                    LOG.info("[<--] Process finished '{}'", processCase);
-                                    CaseExecution savedCaseExecution = updateCaseExecution(resultCaseExecution);
-                                    updateTotals(execution, savedCaseExecution);
-                                    casesExecuted.add(savedCaseExecution);
-                                }) //
-                ) //
-                .sequential() //
+                                    return response.bodyToMono(String.class)
+                                            .doOnSuccess(errorBody -> {
+                                                caseExecution.setNotes(errorBody);
+                                                caseExecutionsRepository.save(caseExecution);
+                                            })
+                                            .then(Mono.error(new RuntimeException("Error en la respuesta HTTP"))); // Lanzar una excepción
+                                }
+                            })
+                            .doOnRequest(req -> {
+                                String processCase = process.getName() + "' -> case '" + caseExecution.getCas().getName() + "' ("
+                                        + caseExecution.getBrowser().getBrowserName() + ")";
+                                LOG.info("[-->] Start call to process '{}'", processCase);
+                                caseExecution.setStatus(RUNNING);
+                                caseExecutionsRepository.save(caseExecution);
+                            });
+                })
+                .sequential()
                 .doFirst(() -> {
                     LOG.info("[...] Start calls to process -> '{}'", process.getName());
                     execution.setStatus(RUNNING);
                     executionsRepository.save(execution);
-                }) //
-                .onErrorContinue( //
-                        (e, v) -> {
-                            LOG.error("### Error running execution {}: {}", execution.getExecutionId(), e.getMessage());
-                            e.printStackTrace();
-                        }) //
-                .doOnComplete( //
-                        () -> {
-                            LOG.info("[<--] All requests completed");
+                })
+                .onErrorContinue((e, v) -> {
+                    LOG.error("### Error running execution {}: {}", execution.getExecutionId(), e.getMessage());
+                    e.printStackTrace();
+                })
+                .doOnComplete(() -> {
+                    LOG.info("[<--] All requests completed");
 
-                            // Status
-                            if (execution.getTotalFailed() > 0) {
-                                execution.setStatus(FAILURE);
-                            } else {
-                                execution.setStatus(SUCCESS);
-                            }
+                    // Status
+                    if (execution.getTotalFailed() > 0) {
+                        execution.setStatus(FAILURE);
+                    } else {
+                        execution.setStatus(SUCCESS);
+                    }
 
-                            // Cases executed
-                            execution.setCasesExecutions(casesExecuted);
+                    // Cases executed
+                    execution.setCasesExecutions(casesExecuted);
 
-                            // Duration
-                            long testDurationLong = System.currentTimeMillis() - startExecutionTime;
-                            int executionDuration = (Long.valueOf(TimeUnit.MILLISECONDS.toSeconds(testDurationLong))).intValue();
-                            execution.setDurationSeconds(executionDuration);
+                    // Duration
+                    long testDurationLong = System.currentTimeMillis() - startExecutionTime;
+                    int executionDuration = (Long.valueOf(TimeUnit.MILLISECONDS.toSeconds(testDurationLong))).intValue();
+                    execution.setDurationSeconds(executionDuration);
 
-                            executionsRepository.save(execution);
-                        })//
+                    executionsRepository.save(execution);
+                    notificationsService.sendExecutionNotification(process, execution);
+                })
                 .subscribe();
     }
 
