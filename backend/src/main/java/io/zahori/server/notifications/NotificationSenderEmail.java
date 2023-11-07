@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +55,10 @@ public class NotificationSenderEmail implements NotificationSender {
     @Override
     public void sendNotification(Notification notification, Execution execution) {
         if (!emailService.isServiceEnabled()) {
+            return;
+        }
+
+        if (notification.getAccount() == null || StringUtils.isBlank(notification.getAccount().getEmail())) {
             return;
         }
 
