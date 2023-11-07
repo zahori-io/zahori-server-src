@@ -53,6 +53,10 @@ public class NotificationSenderEmail implements NotificationSender {
 
     @Override
     public void sendNotification(Notification notification, Execution execution) {
+        if (!emailService.isServiceEnabled()) {
+            return;
+        }
+
         LOG.info("Send email notification");
 
         Locale locale = new Locale(notification.getAccount().getLanguage().getLanguageCode());

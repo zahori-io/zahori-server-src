@@ -58,6 +58,10 @@ public class EmailService {
         }
     }
 
+    public boolean isServiceEnabled() {
+        return enabled;
+    }
+
     public void send(Email email) {
         sendEmail(email);
     }
