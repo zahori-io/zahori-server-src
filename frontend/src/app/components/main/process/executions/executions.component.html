@@ -101,7 +101,7 @@
                   <td>{{execution.configuration.name}}</td>
                   <td>
                     <span *ngIf="execution.trigger == 'Scheduler'">
-                      <a routerLink="../scheduler" title="{{'main.process.executions.triggerScheduler'|translate}}" class="nav-link" style="display: block;"><i class="nav-link-icon fas fa-clock" style="margin:0px;"></i></a>
+                      <a routerLink="../scheduler" title="{{'main.process.executions.triggerScheduler'|translate}}" class="nav-link" style="display: block; padding: 0px;"><i class="nav-link-icon fas fa-clock" style="margin:0px;"></i></a>
                     </span>
                     <span *ngIf="execution.trigger == 'Manual'">{{'main.process.executions.triggerManual'|translate}}</span>
                     <!--
