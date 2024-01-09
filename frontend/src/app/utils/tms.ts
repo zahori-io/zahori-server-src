@@ -6,7 +6,13 @@ import { Configuration } from "../model/configuration";
 })
 export class Tms {
 
-  repositoriesThatRequireExecutionId = new Set<string>(["Jira Xray"]);
+  public static readonly XRAY_SERVER: string = "Xray Server";
+  public static readonly XRAY_CLOUD: string = "Xray Cloud";
+  public static readonly TEST_LINK: string = "TestLink";
+  public static readonly HP_ALM: string = "Hp Alm";
+  public static readonly AZURE_TEST_PLANS: string = "Azure Test Plans";
+
+  repositoriesThatRequireExecutionId = new Set<string>([Tms.XRAY_SERVER, Tms.XRAY_CLOUD]);
 
   constructor() { }
 
