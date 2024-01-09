@@ -1,10 +1,41 @@
-
 <ng-container *ngIf="configuration">
     <div class="form-group">
-        <label>{{configuration.testRepository.name}} *</label>
-        <input type="search" list="latest-test-execution-ids" id="tmsTestExecutionId" [(ngModel)]="execution.tmsTestExecutionId" placeholder="execution Id" class="form-control"/>
+        <label>{{configuration.testRepository.name}}:</label>
+    </div>
+    <div class="form-group">
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" [(ngModel)]="execution.tmsCreateNewTestExecution" id="existingTE"
+                name="newTE" [value]="false">
+            <label class="form-check-label" for="existingTE">{{'main.process.tms.associateOption'|translate}}</label>
+        </div>
+        <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" [(ngModel)]="execution.tmsCreateNewTestExecution" id="newTE" name="newTE"
+                [value]="true">
+            <label class="form-check-label" for="newTE">{{'main.process.tms.createOption'|translate}}</label>
+        </div>
+    </div>
+    <div *ngIf="!execution.tmsCreateNewTestExecution" class="form-group">
+        <input type="search" list="latest-test-execution-ids" id="tmsTestExecutionId"
+            [(ngModel)]="execution.tmsTestExecutionId" placeholder="execution Id *" class="form-control" />
         <datalist id="latest-test-execution-ids">
-            <option *ngFor="let latestTestExecutionId of latestTestExecutionIds" value="{{latestTestExecutionId}}">{{latestTestExecutionId}}</option>
+            <option *ngFor="let latestTestExecutionId of latestTestExecutionIds" value="{{latestTestExecutionId}}">
+                {{latestTestExecutionId}}</option>
         </datalist>
+    </div>
+    <div *ngIf="execution.tmsCreateNewTestExecution">
+        <div class="form-group">
+            <input type="search" id="tmsTestExecutionSummary" [(ngModel)]="execution.tmsTestExecutionSummary"
+                placeholder="{{'main.process.tms.createSummary'|translate}} *" class="form-control" list="latest-execution-name" />
+                <datalist *ngIf="execution.name" id="latest-execution-name">
+                    <option value="{{execution.name}}">{{execution.name}}</option>
+                </datalist>
+        </div>
+        <div class="form-group">
+            <input type="search" list="latest-test-plan-id" id="tmsTestPlanId" [(ngModel)]="execution.tmsTestPlanId"
+                placeholder="test plan id {{'main.process.tms.optional'|translate}}" class="form-control" />
+            <datalist id="latest-test-plan-id">
+                <option *ngFor="let latestTestPlanId of latestTestPlanIds" value="{{latestTestPlanId}}">{{latestTestPlanId}}</option>
+            </datalist>
+        </div>
     </div>
 </ng-container>

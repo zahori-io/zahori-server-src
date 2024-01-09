@@ -65,12 +65,14 @@
       <div class="col-6">
         <div class="ml-2 custom-control custom-switch">
           <input [(ngModel)]="configuration.uploadResults" name="uploadResults" id="uploadResults" type="checkbox"
-            class="custom-control-input">
+            class="custom-control-input" (change)="activateRepository(configuration, $event)"
+          >
           <label for="uploadResults" class="custom-control-label" style="margin-bottom: .5rem;">{{'main.process.configurator.form.saveResultsRepo' | translate}}</label>
         </div>
         <select [(ngModel)]="configuration.testRepository.testRepoId" [disabled]="!configuration.uploadResults"
           name="testRepoId" class="form-control">
-          <option [value]="testRepo.testRepoId" *ngFor="let testRepo of testRepositories">{{testRepo.name}}</option>
+          <option *ngIf="clientRestRepositories.length == 0" [value]="0" selected disabled>{{'main.process.configurator.form.noRepositories' | translate}}</option>
+          <option [value]="clientTestRepo.testRepository.testRepoId" *ngFor="let clientTestRepo of clientRestRepositories">{{clientTestRepo.testRepository.name}}</option>
         </select>
       </div>
     </div>

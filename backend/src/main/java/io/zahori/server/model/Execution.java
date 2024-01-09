@@ -96,6 +96,12 @@ public class Execution implements Serializable {
     @Column(name = "tms_test_execution_id")
     private String tmsTestExecutionId;
 
+    @Column(name = "tms_test_execution_summary")
+    private String tmsTestExecutionSummary;
+
+    @Column(name = "tms_test_plan_id")
+    private String tmsTestPlanId;
+
     /**
      * Instantiates a new Execution.
      */
@@ -328,6 +334,22 @@ public class Execution implements Serializable {
      */
     public void setTmsTestExecutionId(String tmsTestExecutionId) {
         this.tmsTestExecutionId = tmsTestExecutionId;
+    }
+
+    public String getTmsTestExecutionSummary() {
+        return tmsTestExecutionSummary;
+    }
+
+    public void setTmsTestExecutionSummary(String tmsTestExecutionSummary) {
+        this.tmsTestExecutionSummary = tmsTestExecutionSummary;
+    }
+
+    public String getTmsTestPlanId() {
+        return tmsTestPlanId;
+    }
+
+    public void setTmsTestPlanId(String tmsTestPlanId) {
+        this.tmsTestPlanId = tmsTestPlanId;
     }
 
 }

@@ -9,6 +9,7 @@ import { TestRepository } from '../../../../../model/test-repository';
 import { Timeout } from '../../../../../model/timeout';
 import { DataService } from '../../../../../services/data.service';
 import { BannerOptions } from '../../../../utils/banner/banner';
+import { ClientTestRepo } from 'src/app/model/clientTestRepo';
 
 const SUCCESS_COLOR: string = 'alert alert-success';
 const ERROR_COLOR: string = 'alert alert-danger';
@@ -32,7 +33,7 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
     @Input()
     evidenceTypes: EvidenceType[];
     @Input()
-    testRepositories: TestRepository[];
+    clientRestRepositories: ClientTestRepo[];
     @Input()
     retries: Retry[] = [];
     @Input()
@@ -67,7 +68,7 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
             return;
         }
 
-        if (configuration.testRepository.testRepoId == 0){
+        if (configuration.testRepository?.testRepoId == 0){
             configuration.testRepository = null;
         }
 
@@ -131,6 +132,12 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
             }
         }
         return false;
+    }
+
+    activateRepository(configuration: Configuration, event: any): void {
+        if (!event.currentTarget.checked) {
+            configuration.testRepository = null;
+        }
     }
 
     closeBanner() {

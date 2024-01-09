@@ -110,6 +110,12 @@ public class CaseExecution implements Serializable {
     @Transient
     io.zahori.model.process.Configuration configuration;
 
+    @Transient
+    Long executionId;
+
+    @Transient
+    int executionTotalCases;
+
     /**
      * Instantiates a new Case execution.
      */
@@ -118,7 +124,7 @@ public class CaseExecution implements Serializable {
 
     @Override
     public String toString() {
-        return "CaseExecution{" + "caseExecutionId=" + caseExecutionId + ", date=" + date + ", dateTimestamp=" + dateTimestamp + ", status=" + status + ", screenResolution=" + screenResolution + ", browserVersion=" + browserVersion + ", browser=" + browser + ", cas=" + cas + ", configuration=" + configuration + '}';
+        return "CaseExecution{" + "caseExecutionId=" + caseExecutionId + ", date=" + date + ", dateTimestamp=" + dateTimestamp + ", log=" + log + ", notes=" + notes + ", status=" + status + ", steps=" + steps + ", stepsJson=" + stepsJson + ", video=" + video + ", doc=" + doc + ", har=" + har + ", attachments=" + attachments + ", durationSeconds=" + durationSeconds + ", selenoidId=" + selenoidId + ", screenResolution=" + screenResolution + ", browserVersion=" + browserVersion + ", browser=" + browser + ", cas=" + cas + ", configuration=" + configuration + ", executionId=" + executionId + ", executionTotalCases=" + executionTotalCases + '}';
     }
 
     /**
@@ -448,6 +454,22 @@ public class CaseExecution implements Serializable {
 
     public void setConfiguration(io.zahori.model.process.Configuration configuration) {
         this.configuration = configuration;
+    }
+
+    public Long getExecutionId() {
+        return executionId;
+    }
+
+    public void setExecutionId(Long executionId) {
+        this.executionId = executionId;
+    }
+
+    public int getExecutionTotalCases() {
+        return executionTotalCases;
+    }
+
+    public void setExecutionTotalCases(int executionTotalCases) {
+        this.executionTotalCases = executionTotalCases;
     }
 
 }

@@ -264,4 +264,13 @@ export class ExecutionsComponent implements OnInit, AfterViewInit, OnChanges {
     )
   };
 
+  disableTmsSubmit(){
+    if (this.newExecution.tmsCreateNewTestExecution && !this.newExecution.tmsTestExecutionSummary){
+      return true;
+    }
+    if (!this.newExecution.tmsCreateNewTestExecution && !this.newExecution.tmsTestExecutionId){
+      return true;
+    }
+    return false;
+  }
 }

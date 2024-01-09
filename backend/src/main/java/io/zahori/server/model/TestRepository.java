@@ -12,20 +12,19 @@ package io.zahori.server.model;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,8 +32,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * The type Test repository.
@@ -58,10 +55,6 @@ public class TestRepository implements Serializable {
 
     @Column(name = "\"order\"")
     private Long order;
-
-    // bi-directional many-to-one association to ClientTestRepo
-    @OneToMany(mappedBy = "testRepository")
-    private Set<ClientTestRepo> clientTestRepos;
 
     // bi-directional many-to-one association to Configuration
     @JsonBackReference(value = "configurations")
@@ -144,50 +137,6 @@ public class TestRepository implements Serializable {
      */
     public void setOrder(Long order) {
         this.order = order;
-    }
-
-    /**
-     * Gets client test repos.
-     *
-     * @return the client test repos
-     */
-    public Set<ClientTestRepo> getClientTestRepos() {
-        return this.clientTestRepos;
-    }
-
-    /**
-     * Sets client test repos.
-     *
-     * @param clientTestRepos the client test repos
-     */
-    public void setClientTestRepos(Set<ClientTestRepo> clientTestRepos) {
-        this.clientTestRepos = clientTestRepos;
-    }
-
-    /**
-     * Add client test repo client test repo.
-     *
-     * @param clientTestRepo the client test repo
-     * @return the client test repo
-     */
-    public ClientTestRepo addClientTestRepo(ClientTestRepo clientTestRepo) {
-        getClientTestRepos().add(clientTestRepo);
-        clientTestRepo.setTestRepository(this);
-
-        return clientTestRepo;
-    }
-
-    /**
-     * Remove client test repo client test repo.
-     *
-     * @param clientTestRepo the client test repo
-     * @return the client test repo
-     */
-    public ClientTestRepo removeClientTestRepo(ClientTestRepo clientTestRepo) {
-        getClientTestRepos().remove(clientTestRepo);
-        clientTestRepo.setTestRepository(null);
-
-        return clientTestRepo;
     }
 
     /**

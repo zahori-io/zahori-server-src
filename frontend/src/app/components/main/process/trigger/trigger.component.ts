@@ -228,11 +228,28 @@ export class TriggerComponent implements OnInit {
       || (this.dataService.isWebProcess() && !this.thereAreResolutionsSelected())
       || !this.execution.configuration.configurationId
       || this.loading
-      || (this.tms.isActivated(this.getSelectedConfiguration(this.execution.configuration.configurationId))
-        && this.tms.requiresTestExecutionId(this.getSelectedConfiguration(this.execution.configuration.configurationId))
-        && !this.execution.tmsTestExecutionId)
+      || this.invalidTmsFields()
       || (this.periodicExecutionActivated && (this.execution.periodicExecutions.length == 0 || this.execution.periodicExecutions[0].time == "" || this.execution.periodicExecutions[0].days.length == 0))
     );
+  }
+
+  invalidTmsFields(){
+    if (!this.tms.isActivated(this.getSelectedConfiguration(this.execution.configuration.configurationId))){
+      return false;
+    }
+
+    if (this.tms.requiresTestExecutionId(this.getSelectedConfiguration(this.execution.configuration.configurationId))){
+
+      if (this.execution.tmsCreateNewTestExecution && !this.execution.tmsTestExecutionSummary){
+        return true;
+      }
+      if (!this.execution.tmsCreateNewTestExecution && !this.execution.tmsTestExecutionId){
+        return true;
+      }
+
+    }
+
+    return false;
   }
 
   thereAreCasesSelected(): boolean {

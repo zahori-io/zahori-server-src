@@ -1,4 +1,5 @@
 import { ClientTestRepoId } from "./clientTestRepoId";
+import { TestRepository } from "./test-repository";
 
 export class ClientTestRepo {
     id: ClientTestRepoId;
@@ -6,6 +7,7 @@ export class ClientTestRepo {
     password: string;
     url: string;
     active: boolean;
+    testRepository: TestRepository;
 
     constructor() {
         this.id = new ClientTestRepoId();

@@ -10,6 +10,7 @@ import { EvidenceCase } from '../../../../model/evidence-case';
 import { TestRepository } from '../../../../model/test-repository';
 import Swal from 'sweetalert2';
 import {TranslateService} from '@ngx-translate/core';
+import { ClientTestRepo } from 'src/app/model/clientTestRepo';
 
 const SUCCESS_COLOR = 'alert alert-success';
 const ERROR_COLOR = 'alert alert-danger';
@@ -25,7 +26,7 @@ export class ConfiguratorComponent implements OnInit {
   envs: Environment[] = [];
   evidenceCases: EvidenceCase[] = [];
   evidenceTypes: EvidenceType[] = [];
-  testRepositories: TestRepository[] = [];
+  clientTestRepos: ClientTestRepo[] = [];
   retries: Retry[] = [];
   timeouts: Timeout[] = [];
 
@@ -40,7 +41,7 @@ export class ConfiguratorComponent implements OnInit {
     this.getEnvironments();
     this.getCases();
     this.getEvidenceTypes();
-    this.getTestRepos();
+    this.getClientTestRepos();
     this.getRetries();
     this.getTimeouts();
     this.dataService.getProcessConfigurations();
@@ -55,10 +56,10 @@ export class ConfiguratorComponent implements OnInit {
       });
   }
 
-  getTestRepos() {
-    this.dataService.getTestRepositories().subscribe(
-      (res: any) => {
-        this.testRepositories = res;
+  getClientTestRepos() {
+    this.dataService.getClientTestRepositories().subscribe(
+      (clientTestRepos) => {
+        this.clientTestRepos = clientTestRepos;
       });
   }
 

@@ -6,6 +6,8 @@ import { TestRepository } from '../../../../model/test-repository';
 import { BannerOptions } from '../../../../utils/banner/banner';
 import Swal from 'sweetalert2';
 import { Case } from '../../../../model/case';
+import { TranslateService } from '@ngx-translate/core';
+import { Tms } from 'src/app/utils/tms';
 
 const SUCCESS_COLOR = 'alert alert-success';
 const ERROR_COLOR = 'alert alert-danger';
@@ -16,124 +18,188 @@ const ERROR_COLOR = 'alert alert-danger';
   styleUrls: ['./admin-tms.component.css']
 })
 export class AdminTmsComponent implements OnInit {
-  
-  clientTestRepos: ClientTestRepo[];
-  testRepos: Map<number, TestRepository>;
-  newTest: number[];
-  loading = true;
+
+  clientTestRepositories: ClientTestRepo[] = [];
+  testRepositories: TestRepository[] = [];
+  availableTestRepositories: TestRepository[] = [];
   banner: BannerOptions;
 
+  XRAY_CLOUD = Tms.XRAY_CLOUD;
+  XRAY_SERVER = Tms.XRAY_SERVER;
+  TEST_LINK = Tms.TEST_LINK;
+  HP_ALM = Tms.HP_ALM;
+  AZURE_TEST_PLANS = Tms.AZURE_TEST_PLANS;
+
   constructor(
-    public dataService: DataService
+    public dataService: DataService,
+    private translate: TranslateService,
   ) { }
 
   ngOnInit(): void {
     this.banner = new BannerOptions();
-    this.dataService.getClientTestRepos().subscribe(
-      (clientTestRepos) => {
-        this.clientTestRepos = clientTestRepos;
+    this.getClientTestRepositories();
+  }
+
+  getClientTestRepositories() {
+    this.dataService.getClientTestRepositories().subscribe(
+      (clientTestRepositories) => {
+        this.clientTestRepositories = clientTestRepositories;
+        this.getAvailableTestRepositories();
       },
-      (error) => { },
-      () => {
-        this.testRepos = new Map<number, TestRepository>();
-        this.newTest = [];
-        this.clientTestRepos.forEach(clienttest => {
-          this.dataService.getTestRepository(clienttest.id.testRepoId).subscribe(
-            (testRepo) => {
-              this.testRepos.set(clienttest.id.testRepoId, testRepo);
-            },
-            (error) => {
-              this.banner = new BannerOptions('Error al cargar los repositorios:', error, ERROR_COLOR, true);
-            }
-          );
-        });
-        this.loading = false;
+      (error) => {
+        this.banner = new BannerOptions(this.translate.instant('main.admin.tms.error.getClientRepos'), error.message, ERROR_COLOR, true);
       }
     );
   }
 
-  newTestRepository(): void {
-    const clientTestRepo = new ClientTestRepo();
-    clientTestRepo.id.clientId = this.clientTestRepos.length > 0 ?
-      this.clientTestRepos[this.clientTestRepos.length - 1].id.clientId : 0;
-    clientTestRepo.id.testRepoId = this.clientTestRepos.length > 0 ?
-      this.clientTestRepos[this.clientTestRepos.length - 1].id.testRepoId + 1 : 0;
-    this.newTest.push(clientTestRepo.id.testRepoId);
-    this.clientTestRepos.push(clientTestRepo);
-    this.testRepos.set(clientTestRepo.id.testRepoId, new TestRepository());
-  }
-
-  activateSwitch(clientTestRepo: ClientTestRepo, event: any): void {
-    event.currentTarget.checked ? this.activate(clientTestRepo) : this.desactivate(clientTestRepo);
-  }
-
-  save(testRepoId: number, index: number): void {
-    const testRepo: TestRepository = this.testRepos.get(testRepoId);
-    if (this.newTest.includes(testRepoId)) {
-      testRepo.testRepoId = 0;
-    }
-    
-    testRepo.order = 1;
-    this.dataService.saveTestRepository(testRepo).subscribe(
-      (newTestRepo: TestRepository) => {
-        this.clientTestRepos[index].id.testRepoId = newTestRepo.testRepoId;
-        this.testRepos.delete(testRepoId);
-        this.testRepos.set(newTestRepo.testRepoId, newTestRepo);
-        this.newTest.splice(this.newTest.indexOf(testRepoId), 1);
-        this.dataService.saveClientTestRepo(this.clientTestRepos[index]).subscribe(
-          () => { },
-          (error) => {
-            this.banner = new BannerOptions('Error al guardar el repositorio:', error.message, ERROR_COLOR, true);
-          }, () => {
-            this.banner = new BannerOptions('Reposiotrio guardado', '', SUCCESS_COLOR, true);
-          }
-        );
+  getAvailableTestRepositories() {
+    this.dataService.getTestRepositories().subscribe(
+      (testRepositories) => {
+        this.testRepositories = testRepositories;
+        this.availableTestRepositories = JSON.parse(JSON.stringify(testRepositories));
+        this.filterAvailableRepositories();
       },
       (error) => {
-        this.banner = new BannerOptions('Error al guardar el repositorio:', error.message, ERROR_COLOR, true);
-      },
+        this.banner = new BannerOptions(this.translate.instant('main.admin.tms.error.getAvailableRepos'), error.message, ERROR_COLOR, true);
+      }
     );
   }
 
-  private activate(clientTestRepo: ClientTestRepo): void {
+  filterAvailableRepositories() {
+    if (this.clientTestRepositories.length == 0) {
+      return;
+    }
+
+    for (let clientRepository of this.clientTestRepositories) {
+      let testRepo = this.availableTestRepositories.find(testRepository => testRepository.testRepoId == clientRepository.id.testRepoId);
+      if (testRepo) {
+        this.availableTestRepositories.splice(this.availableTestRepositories.indexOf(testRepo), 1);
+      }
+    }
+  }
+
+  activateRepository(clientTestRepo: ClientTestRepo, event: any): void {
+    if (event.currentTarget.checked) {
+      // Repository has been activated
+      return;
+    }
+
     Swal.fire({
-      title: 'Activar Repositorio',
-      text: 'Esta acción reactivara el repositorio quedando disponible',
+      title: this.translate.instant('main.admin.tms.activateRepo.title', { repositoryName: clientTestRepo.testRepository.name }),
+      text: this.translate.instant('main.admin.tms.activateRepo.text', { repositoryName: clientTestRepo.testRepository.name }),
       icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Activar',
-      cancelButtonText: 'Cancelar',
+      showCancelButton: false,
+      confirmButtonText: this.translate.instant('main.admin.tms.activateRepo.confirmButton'),
+      //cancelButtonText: 'Entendido',
       backdrop: `
                 rgba(64, 69, 58,0.4)
                 left top
                 no-repeat`
     }).then((result) => {
       if (result.value) {
-        clientTestRepo.active = true;
-        this.dataService.saveClientTestRepo(clientTestRepo).subscribe(
-          (clientTestRepoReturned: ClientTestRepo) => {
-            clientTestRepo = clientTestRepoReturned;
-          },
-          (error) => {
-            this.banner = new BannerOptions('Error al activar el repositorio:', error.message, ERROR_COLOR, true);
-          }, () => {
-            this.banner = new BannerOptions('Reposiotrio activado', '', SUCCESS_COLOR, true);
-          }
-        );
       } else {
-        clientTestRepo.active = false;
       }
     });
   }
-  
-  private desactivate(clientTestRepo: ClientTestRepo): void {
+
+  addNewTestRepository(): void {
+    this.clientTestRepositories.push(new ClientTestRepo());
+  }
+
+  selectTestRepository(testRepoId: any, clientTestRepo: ClientTestRepo) {
+    let testRepo = this.availableTestRepositories.find(testRepository => testRepository.testRepoId == testRepoId.target.value);
+    clientTestRepo.testRepository = testRepo;
+    this.filterAvailableRepositories();
+  }
+
+  save(clientTestRepo: ClientTestRepo): void {
+    if (!this.isValidRepo(clientTestRepo)){
+      this.banner = new BannerOptions('', this.translate.instant('main.admin.tms.save.errorMandatoryFields'), ERROR_COLOR, true);
+      return;
+    }
+
+    this.dataService.saveClientTestRepository(clientTestRepo).subscribe(
+      (clientTestRepoSaved) => {
+        let clientTestRepoInList = this.clientTestRepositories.find(clientRepo => clientRepo.id.testRepoId == clientTestRepo.id.testRepoId);
+        if (clientTestRepoInList) {
+          let index = this.clientTestRepositories.indexOf(clientTestRepoInList);
+          this.clientTestRepositories[index] = clientTestRepoSaved;
+        }
+
+        this.banner = new BannerOptions(this.translate.instant('main.admin.tms.save.ok'), '', SUCCESS_COLOR, true);
+      },
+      (error) => {
+        this.banner = new BannerOptions(this.translate.instant('main.admin.tms.save.error'), error.message, ERROR_COLOR, true);
+      },
+    );
+  }
+
+  isValidRepo(clientTestRepo: ClientTestRepo): boolean {
+    if (!clientTestRepo.testRepository){
+      return false;
+    }
+    if (clientTestRepo.testRepository.name == this.XRAY_CLOUD) {
+      return this.isNotEmpty(clientTestRepo.user) && this.isValidPassword(clientTestRepo);
+    }
+    if (clientTestRepo.testRepository.name == this.XRAY_SERVER) {
+      return this.isNotEmpty(clientTestRepo.url) && this.isNotEmpty(clientTestRepo.user) && this.isValidPassword(clientTestRepo);
+    }
+    if (clientTestRepo.testRepository.name == this.TEST_LINK) {
+      return this.isNotEmpty(clientTestRepo.url) && this.isValidPassword(clientTestRepo);
+    }
+    if (clientTestRepo.testRepository.name == this.HP_ALM) {
+      return this.isNotEmpty(clientTestRepo.url) && this.isNotEmpty(clientTestRepo.user) && this.isValidPassword(clientTestRepo);
+    }
+    if (clientTestRepo.testRepository.name == this.AZURE_TEST_PLANS) {
+      return this.isNotEmpty(clientTestRepo.url) && this.isNotEmpty(clientTestRepo.user) && this.isValidPassword(clientTestRepo);
+    }
+    return false;
+  }
+
+  isValidPassword(clientTestRepo: ClientTestRepo): boolean {
+    if (clientTestRepo.id.clientId > 0) {
+      // repo already saved, change password is optional, can be empty
+      return true;
+    } 
+    if (clientTestRepo.id.clientId == 0 && this.isNotEmpty(clientTestRepo.password)){
+      return true;
+    }
+    return false;
+  }
+
+  isEmpty(value: string): boolean {
+    if (!value){
+      return true;
+    }
+    return value.trim().length == 0;
+  }
+
+  isNotEmpty(value: string): boolean {
+    return !this.isEmpty(value);
+  }
+
+  delete(clientTestRepo: ClientTestRepo): void {
+    // Local delete
+    if (clientTestRepo.id.clientId == 0) {
+      const index = this.clientTestRepositories.indexOf(clientTestRepo);
+      this.clientTestRepositories.splice(index, 1);
+
+      if (clientTestRepo.id.testRepoId > 0) {
+        let testRepo = this.testRepositories.find(testRepository => testRepository.testRepoId == clientTestRepo.id.testRepoId);
+        this.availableTestRepositories.push(testRepo);
+      }
+
+      return;
+    }
+
+    // Backend delete
     Swal.fire({
-      title: 'Desactivar Repositorio',
-      text: 'Esta acción desactivara el repositorio',
+      title: this.translate.instant('main.admin.tms.delete.title', { repositoryName: clientTestRepo.testRepository.name }),
+      text: this.translate.instant('main.admin.tms.delete.text'),
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonText: 'Desactivar',
-      cancelButtonText: 'Cancelar',
+      confirmButtonText: this.translate.instant('main.admin.tms.delete.confirmButton'),
+      cancelButtonText: this.translate.instant('main.admin.tms.delete.cancelButton'),
       backdrop: `
                 rgba(64, 69, 58,0.4)
                 left top
@@ -141,14 +207,24 @@ export class AdminTmsComponent implements OnInit {
     }).then((result) => {
       if (result.value) {
         clientTestRepo.active = false;
-        this.dataService.saveClientTestRepo(clientTestRepo).subscribe(
-          (clientTestRepoReturned: ClientTestRepo) => {
-            clientTestRepo = clientTestRepoReturned;
+
+        this.dataService.deleteClientTestRepository(clientTestRepo.id.testRepoId).subscribe(
+          () => {
+            const index = this.clientTestRepositories.indexOf(clientTestRepo);
+            this.clientTestRepositories.splice(index, 1);
+
+            let testRepo = this.testRepositories.find(testRepository => testRepository.testRepoId == clientTestRepo.id.testRepoId);
+            this.availableTestRepositories.push(testRepo);
           },
           (error) => {
-            this.banner = new BannerOptions('Error al desactivar el repositorio:', error.message, ERROR_COLOR, true);
+
+            if (error.status == 409) {
+              this.banner = new BannerOptions('', this.translate.instant('main.admin.tms.delete.error409'), ERROR_COLOR, true);  
+            } else {
+              this.banner = new BannerOptions(this.translate.instant('main.admin.tms.delete.error'), error.message, ERROR_COLOR, true);
+            }
           }, () => {
-            this.banner = new BannerOptions('Reposiotrio desactivado', '', SUCCESS_COLOR, true);
+            this.banner = new BannerOptions(this.translate.instant('main.admin.tms.delete.ok'), '', SUCCESS_COLOR, true);
           }
         );
       } else {
@@ -162,4 +238,5 @@ export class AdminTmsComponent implements OnInit {
     // tslint:disable-next-line:new-parens
     this.banner = new BannerOptions;
   }
+
 }

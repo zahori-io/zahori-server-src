@@ -67,10 +67,10 @@ const routes: Routes = [
       {
         path: 'admin', component: AdminComponent,
         children: [
-          { path: '', component: AdminPlatformsComponent },
+          { path: '', component: AdminTmsComponent },
+          { path: 'tms', component: AdminTmsComponent },
           { path: 'platforms', component: AdminPlatformsComponent },
           { path: 'executions', component: AdminExecutionsComponent },
-          { path: 'tms', component: AdminTmsComponent },
           { path: 'groups', component: AdminGroupsComponent },
           { path: 'users', component: AdminUsersComponent }
         ]

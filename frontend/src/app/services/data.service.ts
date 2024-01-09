@@ -210,24 +210,20 @@ export class DataService {
   }
 
   // TMS
-  public getClientTestRepos(): Observable<ClientTestRepo[]> {
+  public getClientTestRepositories(): Observable<ClientTestRepo[]> {
     return this.http.get<ClientTestRepo[]>(this.url + 'clientTestRepos', {});
   }
 
-  public saveClientTestRepo(clientTestRepo: ClientTestRepo): Observable<ClientTestRepo> {
+  public saveClientTestRepository(clientTestRepo: ClientTestRepo): Observable<ClientTestRepo> {
     return this.http.post<ClientTestRepo>(this.url + 'clientTestRepos', JSON.stringify(clientTestRepo));
   }
 
-  public getTestRepositories() {
-    return this.http.get(this.url + 'testRepositories');
+  public deleteClientTestRepository(testRepoId: number): Observable<any> {
+    return this.http.delete<any>(this.url + 'clientTestRepos/' + testRepoId, {});
   }
 
-  public getTestRepository(testRepoId: number): Observable<TestRepository> {
-    return this.http.get<TestRepository>(this.url + 'testRepositories/' + testRepoId, {});
-  }
-
-  public saveTestRepository(testRepo: TestRepository): Observable<TestRepository> {
-    return this.http.post<TestRepository>(this.url + 'testRepositories', JSON.stringify(testRepo));
+  public getTestRepositories(): Observable<TestRepository[]> {
+    return this.http.get<TestRepository[]>(this.url + 'testRepositories', {});
   }
 
   public getServerVersions(): Observable<ServerVersions> {

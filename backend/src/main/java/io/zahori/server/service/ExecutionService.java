@@ -22,6 +22,7 @@ package io.zahori.server.service;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
+import io.zahori.model.process.Tms;
 import io.zahori.server.model.CaseExecution;
 import io.zahori.server.model.ClientTestRepo;
 import io.zahori.server.model.Configuration;
@@ -32,13 +33,14 @@ import io.zahori.server.model.Process;
 import io.zahori.server.model.Task;
 import io.zahori.server.notifications.NotificationsService;
 import io.zahori.server.repository.CaseExecutionsRepository;
+import io.zahori.server.repository.ClientTestRepository;
 import io.zahori.server.repository.ConfigurationRepository;
 import io.zahori.server.repository.ExecutionsRepository;
 import io.zahori.server.repository.ProcessesRepository;
+import io.zahori.server.security.JWTUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -56,6 +58,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -87,13 +91,14 @@ public class ExecutionService {
     private SelenoidService selenoidService;
     private CaseExecutionsRepository caseExecutionsRepository;
     private ConfigurationRepository configurationRepository;
+    private ClientTestRepository clientTestRepository;
     private ReactorLoadBalancerExchangeFilterFunction reactorLoadBalancer;
     private SchedulerService schedulerService;
     private NotificationsService notificationsService;
 
     @Autowired
     public ExecutionService(ExecutionsRepository executionsRepository, ProcessesRepository processesRepository, ServiceRegistry serviceRegistry,
-            SelenoidService selenoidService, CaseExecutionsRepository caseExecutionsRepository, ConfigurationRepository configurationRepository,
+            SelenoidService selenoidService, CaseExecutionsRepository caseExecutionsRepository, ConfigurationRepository configurationRepository, ClientTestRepository clientTestRepository,
             ReactorLoadBalancerExchangeFilterFunction reactorLoadBalancer, SchedulerService schedulerService, NotificationsService notificationsService) {
         this.executionsRepository = executionsRepository;
         this.processesRepository = processesRepository;
@@ -101,6 +106,7 @@ public class ExecutionService {
         this.selenoidService = selenoidService;
         this.caseExecutionsRepository = caseExecutionsRepository;
         this.configurationRepository = configurationRepository;
+        this.clientTestRepository = clientTestRepository;
         this.reactorLoadBalancer = reactorLoadBalancer;
         this.schedulerService = schedulerService;
         this.notificationsService = notificationsService;
@@ -255,16 +261,8 @@ public class ExecutionService {
 
     private void runProcess(String serviceId, Process process, Execution execution) {
 
-        // Enrich caseExecution
-        io.zahori.model.process.Configuration execConfig = getExecutionConfiguration(execution);
-        for (CaseExecution caseExecution : execution.getCasesExecutions()) {
-            // Configuration
-            caseExecution.setConfiguration(execConfig);
-            // TMS
-            Map<String, String> caseData = caseExecution.getCas().getDataMap();
-            caseData.put("TMS_TE_ID", execution.getTmsTestExecutionId());
-            caseExecution.getCas().setData(caseData);
-        }
+        // Enrich caseExecutions with configuration and test repository details
+        setCaseExecutionsConfiguration(execution);
 
         List<CaseExecution> casesExecuted = new ArrayList<>();
         long startExecutionTime = System.currentTimeMillis();
@@ -342,38 +340,66 @@ public class ExecutionService {
                 .subscribe();
     }
 
-    private io.zahori.model.process.Configuration getExecutionConfiguration(Execution execution) {
+    private void setCaseExecutionsConfiguration(Execution execution) {
+
         Long configurationId = execution.getConfiguration().getConfigurationId();
-        Optional<Configuration> configOpt = configurationRepository.findById(configurationId);
-        Configuration configuration = configOpt.get();
+        Long clientId = JWTUtils.getClientId(((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
 
-        // Create configuration DTO for the process
-        io.zahori.model.process.Configuration execConfiguration = new io.zahori.model.process.Configuration();
-        execConfiguration.setName(configuration.getName());
-        execConfiguration.setEnvironmentName(configuration.getClientEnvironment().getName());
-        execConfiguration.setEnvironmentUrl(configuration.getClientEnvironment().getUrl());
-        execConfiguration.setRetries(configuration.getRetry().getRetryId());
-        execConfiguration.setTimeout(configuration.getTimeout().getTimeoutId());
-
-        execConfiguration.setGenerateEvidences(configuration.getEvidenceCase().getName());
-        for (EvidenceType evidenceType : configuration.getEvidenceTypes()) {
-            execConfiguration.getGenerateEvidencesTypes().add(evidenceType.getName());
+        Configuration configuration = configurationRepository.findByIdAndClientId(configurationId, clientId);
+        if (configuration == null) {
+            throw new RuntimeException("Invalid configuration id");
         }
 
-        execConfiguration.setUploadResults(configuration.getUploadResults());
-        if (execConfiguration.isUploadResults()) {
-            execConfiguration.setUploadRepositoryName(configuration.getTestRepository().getName());
-            if (configuration.getTestRepository().getClientTestRepos() != null && !configuration.getTestRepository().getClientTestRepos().isEmpty()) {
-                Iterator<ClientTestRepo> iterator = configuration.getTestRepository().getClientTestRepos().iterator();
-                ClientTestRepo firstClientTestRepo = iterator.next();
+        ClientTestRepo clientTestRepo = null;
+        if (configuration.getTestRepository() != null && configuration.getTestRepository().getTestRepoId() > 0) {
+            clientTestRepo = clientTestRepository.findByClientIdAndTestRepoId(clientId, configuration.getTestRepository().getTestRepoId());
+        }
 
-                execConfiguration.setUploadRepositoryUrl(firstClientTestRepo.getUrl());
-                execConfiguration.setUploadRepositoryUser(firstClientTestRepo.getUser());
-                execConfiguration.setUploadRepositoryPass(firstClientTestRepo.getPassword());
+        for (CaseExecution caseExecution : execution.getCasesExecutions()) {
+
+            // Create configuration DTO for the process
+            io.zahori.model.process.Configuration execConfiguration = new io.zahori.model.process.Configuration();
+            execConfiguration.setName(configuration.getName());
+            execConfiguration.setEnvironmentName(configuration.getClientEnvironment().getName());
+            execConfiguration.setEnvironmentUrl(configuration.getClientEnvironment().getUrl());
+            execConfiguration.setRetries(configuration.getRetry().getRetryId());
+            execConfiguration.setTimeout(configuration.getTimeout().getTimeoutId());
+
+            execConfiguration.setGenerateEvidences(configuration.getEvidenceCase().getName());
+            for (EvidenceType evidenceType : configuration.getEvidenceTypes()) {
+                execConfiguration.getGenerateEvidencesTypes().add(evidenceType.getName());
             }
-        }
 
-        return execConfiguration;
+            Map<String, String> caseData = caseExecution.getCas().getDataMap();
+            //caseData.put("CUSTOM_FIELD", "value");
+            //caseExecution.getCas().setData(caseData);
+
+            // TMS
+            if (clientTestRepo != null) {
+                Tms tms = new Tms();
+                tms.setUploadResults(clientTestRepo.getTestRepository().getActive() && configuration.getUploadResults());
+
+                if (tms.isUploadResults()) {
+                    tms.setName(clientTestRepo.getTestRepository().getName());
+                    tms.setUrl(clientTestRepo.getUrl());
+                    tms.setUser(clientTestRepo.getUser());
+                    tms.setPassword(clientTestRepo.getPassword());
+                    tms.setTestExecutionId(execution.getTmsTestExecutionId());
+                    tms.setTestExecutionSummary(execution.getTmsTestExecutionSummary());
+                    tms.setTestPlanId(execution.getTmsTestPlanId());
+                    tms.setTestCaseId(caseData.get("TMS_TC_ID"));
+                }
+                execConfiguration.setTms(tms);
+            }
+
+            // Configuration
+            caseExecution.setConfiguration(execConfiguration);
+
+            // Execution Id
+            caseExecution.setExecutionId(execution.getExecutionId());
+            // Execution total cases
+            caseExecution.setExecutionTotalCases(execution.getCasesExecutions().size());
+        }
 
     }
 

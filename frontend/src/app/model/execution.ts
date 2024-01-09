@@ -16,5 +16,8 @@ export class Execution {
     configuration: Configuration;
     process: Process;
     periodicExecutions: PeriodicExecution[] = [];
+    tmsCreateNewTestExecution: boolean = false;
     tmsTestExecutionId: string;
+    tmsTestExecutionSummary: string;
+    tmsTestPlanId: string;
 }

@@ -1,4 +1,5 @@
 <banner [banner]="banner" (click)="closeBanner()"></banner>
+
 <div class="sidebarZahoricontent">
 
     <div class="app-page-title">
@@ -9,86 +10,126 @@
         </div>
     </div>
 
-    <div class="col-12" *ngIf="clientTestRepos.length == 0">
-      {{'main.admin.tms.noRepo'|translate}}
+    <div class="row mt-3" *ngIf="clientTestRepositories.length == 0">
+        <div class="col-11 text-center mt-3">
+            {{'main.admin.tms.noRepo'|translate}}
+        </div>
     </div>
 
-    <div *ngIf="clientTestRepos.length > 0">
+    <ng-container *ngIf="clientTestRepositories.length > 0">
 
-        <div class="row ml-1">
-            <div class="col-2">
+        <!-- Headers -->
+        <div class="row">
+            <div class="col-1">
                 <h6>{{'main.admin.tms.active'|translate}}</h6>
             </div>
             <div class="col-2">
                 <h6>{{'main.admin.tms.name'|translate}}</h6>
             </div>
-            <!--<div class="col-1">
-            <h6>Orden</h6>
-        </div>-->
-            <div class="col-4">
+            <div class="col-3">
                 <h6>{{'main.admin.tms.url'|translate}}</h6>
             </div>
             <div class="col-2">
-                <h6>{{'main.admin.tms.user'|translate}}</h6>
+                <h6>{{'main.admin.tms.credentials'|translate}}</h6>
             </div>
             <div class="col-2">
-                <h6>{{'main.admin.tms.key'|translate}}</h6>
+                <h6><!-- {{'main.admin.tms.password'|translate}} --></h6>
             </div>
-            <div class="col-1">
+            <div class="col-2">
                 <h6></h6>
             </div>
         </div>
 
-        <div *ngFor="let clientTestRepo of clientTestRepos; let i = index" class="row ml-1  mb-2">
+        <div *ngFor="let clientTestRepo of clientTestRepositories; let i = index" class="row mb-2">
 
-            <div class="col-1 d-flex custom-control custom-switch">
+            <!-- Active -->
+            <div class="col-1 mt-2 custom-control custom-switch">
                 <input [(ngModel)]="clientTestRepo.active" type="checkbox"
-                    id="active-{{clientTestRepo.id.testRepoId}}" (change)="activateSwitch(clientTestRepo, $event)"
-                    class="custom-control-input">
+                    id="active-{{clientTestRepo.id.testRepoId}}" class="custom-control-input"
+                    (change)="activateRepository(clientTestRepo, $event)"
+                    >
                 <label for="active-{{clientTestRepo.id.testRepoId}}" class="custom-control-label"></label>
             </div>
-            <div class="col-2 d-flex">
-                <select name="reponame" id="{{'reponame-' + clientTestRepo.id.testRepoId}}" class="form-control"
-                    [disabled]="!clientTestRepo.active"
-                    [(ngModel)]="testRepos.get(clientTestRepo.id.testRepoId).name">
-                    <option [selected]="testRepos.get(clientTestRepo.id.testRepoId).name == 'Jira Xray'">Jira Xray</option>
-                    <option [selected]="testRepos.get(clientTestRepo.id.testRepoId).name == 'Azure Test Plans'">Azure Test Plans</option>
-                    <option [selected]="testRepos.get(clientTestRepo.id.testRepoId).name == 'TestLink'">TestLink</option>
-                    <option [selected]="testRepos.get(clientTestRepo.id.testRepoId).name == 'Hp Alm'">Hp Alm</option>
+
+            <!-- Name -->
+            <div class="col-2 mt-2" *ngIf="clientTestRepo.id.testRepoId > 0">
+                <span>
+                    <strong>{{clientTestRepo.testRepository?.name}}</strong>
+                </span>
+            </div>
+            <div class="col-2" *ngIf="!clientTestRepo.id.testRepoId || clientTestRepo.id.testRepoId == 0">
+                <select name="testRepoId" id="{{'testRepoId-' + clientTestRepo.id.testRepoId}}"
+                    [(ngModel)]="clientTestRepo.id.testRepoId" class="form-control"
+                    (change)="selectTestRepository($event, clientTestRepo)">
+                    <option [value]="testRepository.testRepoId"
+                        *ngFor="let testRepository of availableTestRepositories">
+                        {{testRepository.name}}
+                    </option>
                 </select>
             </div>
-            <!--<div class="col-1 d-flex">
-                <input name="order" id="{{'order-'+clientTestRepo.id.testRepoId}}" placeholder="{{testRepos.get(clientTestRepo.id.testRepoId).order}}" [disabled]="!testRepos.get(clientTestRepo.id.testRepoId).active" [(ngModel)]="testRepos.get(clientTestRepo.id.testRepoId).order" type="number"min="1" max="99" class="form-control">
-            </div>-->
-            <div class="col-4 d-flex">
-                <input name="url" id="{{'url-'+clientTestRepo.id.testRepoId}}" placeholder="{{clientTestRepo.url}}"
-                    [disabled]="!clientTestRepo.active" [(ngModel)]="clientTestRepo.url" type="text"
-                    class="form-control">
+
+            <!-- Url -->
+            <div class="col-3">
+                <input name="url" id="{{'url-'+clientTestRepo.id.testRepoId}}"
+                    [(ngModel)]="clientTestRepo.url" type="text" class="form-control"
+                    [disabled]="clientTestRepo.testRepository?.name == this.XRAY_CLOUD"
+                    [placeholder]="clientTestRepo.testRepository?.name == this.XRAY_CLOUD ? '' : ('main.admin.tms.url'|translate)"
+                >
             </div>
-            <div class="col-2 d-flex">
-                <input name="user" id="{{'user-'+clientTestRepo.id.testRepoId}}" placeholder="{{clientTestRepo.user}}"
-                    [disabled]="!clientTestRepo.active" [(ngModel)]="clientTestRepo.user" type="text"
-                    class="form-control">
+
+            <!-- User -->
+            <div class="col-2">
+                <input name="user" id="{{'user-'+clientTestRepo.id.testRepoId}}"
+                    [(ngModel)]="clientTestRepo.user" type="text" class="form-control"
+                    [disabled]="clientTestRepo.testRepository?.name == this.TEST_LINK"
+                    [placeholder]="
+                        clientTestRepo.testRepository?.name == this.TEST_LINK ? '' :
+                        clientTestRepo.testRepository?.name == this.XRAY_CLOUD ? ('main.admin.tms.clientid'|translate) : ('main.admin.tms.user'|translate)"
+                    [title]="
+                        clientTestRepo.testRepository?.name == this.XRAY_CLOUD ? ('main.admin.tms.clientid'|translate) : ('main.admin.tms.user'|translate)"
+                    >
             </div>
-            <div class="col-2 d-flex">
-                <input name="password" id="{{'password-'+clientTestRepo.id.testRepoId}}"
-                    [disabled]="!clientTestRepo.active" [(ngModel)]="clientTestRepo.password"
-                    type="password" class="form-control">
+
+            <!-- Pass -->
+            <div class="col-2">
+                <input name="password" id="{{'password-' + clientTestRepo.id.testRepoId}}"
+                    [(ngModel)]="clientTestRepo.password" type="password" class="form-control"
+                    [placeholder]="
+                        clientTestRepo.id.clientId > 0 ? '**********' :
+                        clientTestRepo.testRepository?.name == this.TEST_LINK ? ('main.admin.tms.apikey'|translate) : 
+                        clientTestRepo.testRepository?.name == this.XRAY_SERVER ? ('main.admin.tms.token'|translate) : 
+                        clientTestRepo.testRepository?.name == this.XRAY_CLOUD ? ('main.admin.tms.clientsecret'|translate) : ('main.admin.tms.password'|translate)"
+                    [title]="
+                        clientTestRepo.testRepository?.name == this.TEST_LINK ? ('main.admin.tms.apikey'|translate) : 
+                        clientTestRepo.testRepository?.name == this.XRAY_SERVER ? ('main.admin.tms.token'|translate) : 
+                        clientTestRepo.testRepository?.name == this.XRAY_CLOUD ? ('main.admin.tms.clientsecret'|translate)  : ('main.admin.tms.password'|translate)"
+                >
             </div>
-            <div class="col-1 d-flex p-2 mt-1">
-                <a (click)="save(clientTestRepo.id.testRepoId, i)" title="{{'main.admin.tms.save'|translate}}"
-                    [hidden]="!clientTestRepo.active">
-                    <i class="fas fa-save mr-2"></i>
-                </a>
+
+            <!-- Buttons -->
+            <div class="col-2 mt-1">
+                <!-- Save -->
+                <button class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriV btn-sm mr-2" (click)="save(clientTestRepo)"
+                    title="{{'main.admin.tms.save.action'|translate}}">
+                    <i class="fas fa-save" aria-hidden="true"></i>
+                </button>
+                
+                <!-- Delete -->
+                <button class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriAz btn-sm" (click)="delete(clientTestRepo)"
+                    title="{{'main.admin.tms.remove'|translate}}">
+                    <i class="fas fa-trash" aria-hidden="true"></i>
+                </button>
             </div>
         </div>
 
-    </div>
+    </ng-container>
 
-    <div class="row mt-3 pl-1">
+    <!-- Add button -->
+    <div class="row mt-3" *ngIf="clientTestRepositories.length < testRepositories.length">
         <div class="col-11 text-center mt-3">
-            <button class="btn-wide mb-4 btn-icon btn btn-zahoriV btn-sm sidebarGreyCollapse" (click)="newTestRepository()">
-              {{'main.admin.tms.add'|translate}}
+            <button class="btn-wide mb-4 btn-icon btn btn-zahoriV btn-sm sidebarGreyCollapse"
+                (click)="addNewTestRepository()">
+                {{'main.admin.tms.add'|translate}}
             </button>
         </div>
     </div>

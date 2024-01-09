@@ -253,7 +253,7 @@
               </ng-template>
 
               <tr *ngIf="!loading && dataService.processExecutions.data.content.length == 0">
-                <td [attr.colspan]="getNumberOfTableColumns()">
+                <td [attr.colspan]="getNumberOfTableColumns()" class="text-center">
                   <span>{{'main.process.executions.withoutExecutionsYet'|translate}}
                     <a routerLink="../trigger"><strong>{{'main.process.executions.trigger'|translate}}</strong></a>
                   </span>
@@ -417,7 +417,7 @@
               <button type="button" class="btn btn-light" data-dismiss="modal">
                 {{'main.process.executions.tmsModal.button.cancel'|translate}}
               </button>
-              <button class="btn-widemr-2 btn-icon btn btn-zahoriV" (click)="rerunTmsModal()" [disabled]="tms.isActivated(newExecution.configuration) && tms.requiresTestExecutionId(newExecution.configuration) && !newExecution.tmsTestExecutionId" data-dismiss="modal">
+              <button class="btn-widemr-2 btn-icon btn btn-zahoriV" (click)="rerunTmsModal()" [disabled]="disableTmsSubmit()" data-dismiss="modal">
                 {{'main.process.executions.tmsModal.button.execute'|translate}}
               </button>
           </div>
