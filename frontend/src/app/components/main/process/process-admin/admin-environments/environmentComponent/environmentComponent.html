@@ -32,17 +32,25 @@
             required>
         </div>
 
-        <a *ngIf= "!isNew(environment); else newEnv">
-            <i class="fas fa-save mr-2" title="{{'main.process.processAdmin.environments.environment.save'|translate}}" style="cursor: pointer;" (click)="updateEnv(environment)"></i>
-            <i class="fas fa-times mt-2" title="{{'main.process.processAdmin.environments.environment.remove'|translate}}" style="cursor: pointer;" (click)="deleteEnv(environment)"></i>
-        </a>
+        <div class="col-2 mt-1">
+            <ng-container *ngIf= "!isNew(environment); else newEnv">
+                <button class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriV btn-sm" (click)="updateEnv(environment)" title="{{'main.process.processAdmin.environments.environment.save'|translate}}">
+                    <i class="fas fa-save"></i>
+                </button>
+                <button class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriAz btn-sm" (click)="deleteEnv(environment)" title="{{'main.process.processAdmin.environments.environment.remove'|translate}}">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </ng-container>
 
-        <ng-template #newEnv>
-            <a>
-                <i class="fas fa-save mr-2" title="{{'main.process.processAdmin.environments.environment.save'|translate}}" style="cursor: pointer;" (click)="createEnv(environment); textInputId.value=''; textInputUrl.value='';"></i>
-                <i class="fas fa-times mt-2" title="{{'main.process.processAdmin.environments.environment.remove'|translate}}" style="cursor: pointer;" (click)="deleteFromArray(environment)"></i>
-            </a>
-        </ng-template>
+            <ng-template #newEnv>
+                <button class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriV btn-sm" (click)="createEnv(environment)" title="{{'main.process.processAdmin.environments.environment.save'|translate}}">
+                    <i class="fas fa-save"></i>
+                </button>
+                <button class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriAz btn-sm" (click)="deleteFromArray(environment)" title="{{'main.process.processAdmin.environments.environment.remove'|translate}}">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </ng-template>
+        </div>
     </div>
 
     <div class="row mt-1">
@@ -53,7 +61,7 @@
     </div>
 
     <div class="col-6">
-        <div *ngIf="url.invalid && submitted"class="alert">
+        <div *ngIf="url.invalid && submitted" class="alert">
           {{'formError.empty'|translate}}
         </div>
     </div>

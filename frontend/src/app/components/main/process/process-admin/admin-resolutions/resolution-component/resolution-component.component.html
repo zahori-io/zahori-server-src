@@ -43,17 +43,25 @@
            required>
   </div>
 
-  <a *ngIf= "!isNew(resolution); else newEnv">
-    <i class="fas fa-save mr-2" title="{{'main.process.processAdmin.resolutions.resolution.save'|translate}}" style="cursor: pointer;" (click)="updateEnv(resolution)"></i>
-    <i class="fas fa-times mt-2" title="{{'main.process.processAdmin.resolutions.resolution.remove'|translate}}" style="cursor: pointer;" (click)="deleteEnv(resolution)"></i>
-  </a>
+  <div class="col-2 mt-1">
+    <ng-container *ngIf= "!isNew(resolution); else newRes">
+      <button class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriV btn-sm" (click)="updateEnv(resolution)" title="{{'main.process.processAdmin.resolutions.resolution.save'|translate}}">
+        <i class="fas fa-save"></i>
+      </button>
+      <button class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriAz btn-sm" (click)="deleteEnv(resolution)" title="{{'main.process.processAdmin.resolutions.resolution.remove'|translate}}">
+        <i class="fas fa-trash"></i>
+      </button>
+    </ng-container>
 
-  <ng-template #newEnv>
-    <a>
-      <i class="fas fa-save mr-2" title="{{'main.process.processAdmin.resolutions.resolution.save'|translate}}" style="cursor: pointer;" (click)="createEnv(resolution); textInputId.value=''; textInputUrl.value='';"></i>
-      <i class="fas fa-times mt-2" title="{{'main.process.processAdmin.resolutions.resolution.remove'|translate}}" style="cursor: pointer;" (click)="deleteFromArray(resolution)"></i>
-    </a>
-  </ng-template>
+    <ng-template #newRes>
+      <button class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriV btn-sm" (click)="createEnv(resolution)" title="{{'main.process.processAdmin.resolutions.resolution.save'|translate}}">
+        <i class="fas fa-save"></i>
+      </button>
+      <button class="btn-wide mb-2 mr-2 btn-icon btn btn-zahoriAz btn-sm" (click)="deleteFromArray(resolution)" title="{{'main.process.processAdmin.resolutions.resolution.remove'|translate}}">
+        <i class="fas fa-trash"></i>
+      </button>
+    </ng-template>
+  </div>
 </div>
 
 <div class="row mt-1">
