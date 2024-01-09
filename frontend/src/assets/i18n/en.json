@@ -124,21 +124,43 @@
 			},
 			"tms": {
 				"user": "User",
+				"clientid": "client id",
 				"active": "Active",
 				"add": "Add",
-				"key": "Password",
+				"credentials": "Credentials",
+				"password": "Password",
+				"apikey": "api key",
+				"token": "token",
+				"clientsecret": "client secret",
 				"name": "Name",
 				"noRepo": "There are no repositories defined yet.",
-				"save": "Save",
-				"testRepoOps": {
-					"HP_ALM": "HP ALM",
-					"azureTestPlans": "Azure Test Plans",
-					"testLink": "TestLink",
-					"xrayCloud": "Xray Cloud",
-					"xrayServer": "Xray Server"
-				},
+				"remove": "Remove",
 				"title": "Repositories management",
-				"url": "Url"
+				"url": "Url",
+				"error": {
+					"getClientRepos": "Error retrieving repositories: ",
+					"getAvailableRepos": "Error retrieving available repositories: "
+				},
+				"activateRepo": {
+					"title": "Deactivate {{repositoryName}}",
+					"text": "If you save the repository with this option deactivated, any process using this repository will not upload results to {{repositoryName}} until this option is reactivated.",
+					"confirmButton": "Ok"
+				},
+				"save": {
+					"action": "Save",
+					"errorMandatoryFields": "Fill in empty fields",
+					"ok": "Repository saved",
+					"error": "Error saving repository: "
+				},
+				"delete": {
+					"title": "Delete {{repositoryName}}",
+					"text": "This action will delete the repository",
+					"confirmButton": "Delete",
+					"cancelButton": "Cancel",
+					"ok": "Repository deleted",
+					"error": "Error deleting repository: ",
+					"error409": "The repository cannot be deleted because there are processes using it in their configuration"
+				}				
 			},
 			"users": {
 				"editNewUser": "Edit/Create user",
@@ -269,6 +291,7 @@
 					"generateEvidences": "Generate evidence",
 					"name": "Name",
 					"noEnvironments": "There are no environments, create one",
+					"noRepositories": "There are no repositories",
 					"retries": "Retries",
 					"save": "Save",
 					"saveResultsRepo": "Save results to repository",
@@ -321,7 +344,7 @@
 				"state": "State",
 				"tmsModal": {
 					"description": "The <strong>{{configurationName}}</strong> configuration associated with this execution has enabled the results upload to <strong>{{repositoryName}}</strong> repository.",
-					"enterId": "Select or enter the execution Id to associate the execution with:",
+					"enterId": "Select how to update the results:",
 					"button": {
 						"cancel": "Cancel",
 						"execute": "Execute"
@@ -481,6 +504,12 @@
 				"saveMessageKo": "Error saving schedules: ",
 				"time": "Hour",
 				"title": "Scheduled executions"
+			},
+			"tms": {
+				"associateOption": "Associate to test execution",
+				"createOption": "Create new test execution",
+				"createSummary": "execution summary",
+				"optional": "(optional)"
 			}
 		},
 		"account": {

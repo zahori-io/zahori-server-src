@@ -124,21 +124,43 @@
 			},
 			"tms": {
 				"user": "Usuario",
+				"clientid": "client id",
 				"active": "Activo",
 				"add": "Añadir",
-				"key": "Contraseña",
+				"credentials": "Credenciales",
+				"password": "Contraseña",
+				"apikey": "api key",
+				"token": "token",
+				"clientsecret": "client secret",
 				"name": "Nombre",
 				"noRepo": "Aún no hay repositorios definidos.",
-				"save": "Guardar",
-				"testRepoOps": {
-					"HP_ALM": "HP ALM",
-					"azureTestPlans": "Azure Test Plans",
-					"testLink": "TestLink",
-					"xrayCloud": "Xray Cloud",
-					"xrayServer": "Xray Server"
-				},
+				"remove": "Eliminar",
 				"title": "Gestión de Repositorios",
-				"url": "Url"
+				"url": "Url",
+				"error": {
+					"getClientRepos": "Error al recuperar los repositorios: ",
+					"getAvailableRepos": "Error al recuperar los repositorios disponibles: "
+				},
+				"activateRepo": {
+					"title": "Desactivar {{repositoryName}}",
+					"text": "Si guardas el repositorio con esta opción desactivada ningún proceso que use este repositorio subirá los resultados a {{repositoryName}} hasta que esta opción se vuelva a activar.",
+					"confirmButton": "Ok"
+				},
+				"save": {
+					"action": "Save",
+					"errorMandatoryFields": "Rellena los campos vacíos",
+					"ok": "Reposiotrio guardado",
+					"error": "Error al guardar el repositorio: "
+				},
+				"delete": {
+					"title": "Eliminar {{repositoryName}}",
+					"text": "Esta acción eliminará el repositorio",
+					"confirmButton": "Eliminar",
+					"cancelButton": "Cancelar",
+					"ok": "Reposiotrio eliminado",
+					"error": "Error al eliminar el repositorio: ",
+					"error409": "No se puede eliminar el repositorio porque hay procesos que lo están usando en su configuración"
+				}
 			},
 			"users": {
 				"editNewUser": "Editar/Crear usuario",
@@ -269,6 +291,7 @@
 					"generateEvidences": "Generar evidencias",
 					"name": "Nombre",
 					"noEnvironments": "No hay entornos, crea uno",
+					"noRepositories": "No hay repositorios configurados",
 					"retries": "Reintentos",
 					"save": "Guardar",
 					"saveResultsRepo": "Guardar resultados en repositorio",
@@ -321,7 +344,7 @@
 				"state": "Estado",
 				"tmsModal": {
 					"description": "La configuración <strong>{{configurationName}}</strong> asociada a esta ejecución tiene activado la publicación de resultados en el repositorio <strong>{{repositoryName}}</strong>.",
-					"enterId": "Selecciona o introduce el Id de ejecución al que asociar esta ejecución:",
+					"enterId": "Selecciona como actualizar los resultados:",
 					"button": {
 						"cancel": "Cancelar",
 						"execute": "Ejecutar"
@@ -481,6 +504,12 @@
 				"saveMessageKo": "Error al guardar las programaciones: ",
 				"time": "Hora",
 				"title": "Ejecuciones programadas"
+			},
+			"tms": {
+				"associateOption": "Asociar a test execution",
+				"createOption": "Crear nuevo test execution",
+				"createSummary": "título",
+				"optional": "(opcional)"
 			}
 		},
 		"account": {
