@@ -211,6 +211,7 @@ export class TriggerComponent implements OnInit {
         this.created = !this.periodicExecutionActivated;
 
         this.newExecution();
+        this.selectedTags = [];
         this.error = '';
       },
       (error) => {
