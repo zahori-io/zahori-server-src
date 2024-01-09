@@ -47,6 +47,8 @@ export class LoginComponent implements OnInit {
       result => {
         if (result === true) {  // Login OK
 
+          this.dataService.initializeData();
+          
           // Get user account details
           this.dataService.getAccount().subscribe(
             account => {

@@ -55,7 +55,21 @@ export class DataService {
   constructor(
     private http: HttpClient,
     private router: Router
-  ) { }
+  ) {
+    this.initializeData();
+  }
+
+  initializeData(){
+    this.client = new Client();
+    this.teamSelectedInSelector = new Team();
+    this.teamSelected = new Team();
+    this.processSelected = new Process();
+    this.processSelectedChange = new Subject<boolean>();
+    this.processExecutions = null;
+    this.processCases = [];
+    this.processConfigurations = [];
+    this.showNotificationsWindow = false;
+  }
 
   setFirstTeam() {
     if (this.client.clientTeams && this.client.clientTeams.length > 0) {
@@ -221,7 +235,7 @@ export class DataService {
   public deleteClientTestRepository(testRepoId: number): Observable<any> {
     return this.http.delete<any>(this.url + 'clientTestRepos/' + testRepoId, {});
   }
-
+  
   public getTestRepositories(): Observable<TestRepository[]> {
     return this.http.get<TestRepository[]>(this.url + 'testRepositories', {});
   }
