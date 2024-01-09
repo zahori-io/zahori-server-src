@@ -8,13 +8,14 @@
 					<div>{{'main.process.trigger.title'|translate}}</div>
 				</div>
 				<div class="page-title-actions d-flex">
-					<div class="menuPills m-auto" *ngFor="let tag of tags">
-						<button id="tag" class="mr-2 btn-pill btn btn-info btn-sm"
+					<div class="menuPills" *ngFor="let tag of tags">
+						<button id="tag" class="mr-2 mb-2 btn-pill btn btn-info btn-sm"
 							[ngClass]="{'tagSelected':selectedTags.includes(tag)}"
 							[ngStyle]="{backgroundColor: tag.color, borderColor: '#fff'}" style="color: #3d4246"
 							(click)="onTagClick(tag)">{{tag.name}}</button>
 					</div>
 
+					<!-- Search filter 
 					<div class="search-wrapper ml-3">
 						<div class="input-holder">
 							<input type="text" class="search-input"
@@ -25,6 +26,7 @@
 						</div>
 						<button class="close"></button>
 					</div>
+					-->
 				</div>
 			</div>
 		</div>
@@ -37,7 +39,7 @@
 							<input type="checkbox" [(ngModel)]="massiveSelected" name="massiveSelected"
 								id="massiveSelected" [checked]="massiveSelected" (change)="massiveChangeState()"
 								class="custom-control-input">
-							<label _ngcontent-scw-c70="" class="custom-control-label" for="massiveSelected"></label>
+							<label class="custom-control-label" for="massiveSelected"></label>
 						</div>
 					</th>
 					<th>{{'main.process.trigger.id'|translate}}</th>

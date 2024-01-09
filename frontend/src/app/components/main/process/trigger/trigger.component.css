@@ -107,3 +107,7 @@ ng-multiselect-dropdown {
 [data-order="desc"]:hover::after {
   content: "\25bc";
 }
+
+.d-flex {
+  flex-wrap: wrap;
+}
