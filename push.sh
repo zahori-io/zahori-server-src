@@ -1,2 +1,2 @@
 #!/bin/bash
-docker push zahoriaut/zahori-server:0.1.19
+docker push zahoriaut/zahori-server:0.1.20
