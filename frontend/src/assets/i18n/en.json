@@ -479,6 +479,7 @@
 				"active": "Active",
 				"browsers": "Browsers",
 				"cases": "Cases",
+				"configuration": "Configuration",
 				"days": "Days",
 				"daysNotAvailable": "No days available",
 				"daysPlaceholder": "Select weekdays",

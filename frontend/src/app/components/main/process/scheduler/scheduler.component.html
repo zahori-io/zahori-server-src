@@ -18,9 +18,10 @@
                 <th>{{'main.process.scheduler.cases'|translate}}</th>
                 <th *ngIf="dataService.isWebProcess()">{{'main.process.scheduler.browsers'|translate}}</th>
                 <th *ngIf="dataService.isWebProcess()">{{'main.process.scheduler.resolutions'|translate}}</th>
+                <th>{{'main.process.scheduler.configuration'|translate}}</th>
                 <th>{{'main.process.scheduler.time'|translate}}*</th>
                 <th>{{'main.process.scheduler.days'|translate}}*</th>
-                <th>{{'main.process.scheduler.actions'|translate}}</th>
+                <th class="text-center">{{'main.process.scheduler.actions'|translate}}</th>
             </tr>
         </thead>
         <tbody>
@@ -56,14 +57,17 @@
                             class="mr-2 btn-pill btn btn-light disabled btn-sm">...</button>
                     </ng-container>
                 </td>
-                <td *ngIf="dataService.isWebProcess()" class="text-center">
+                <td *ngIf="dataService.isWebProcess()">
                     <i *ngFor="let browserName of getBrowserList(execution)" title="{{browserName}}"
                       class="mr-1 fab fa fa-{{browserName}}"></i>
                 </td>
-                <td *ngIf="dataService.isWebProcess()" class="text-center">
+                <td *ngIf="dataService.isWebProcess()">
                   <div *ngFor="let resolution of getScreenResolutionsList(execution)" class="badge-resolutions btn-zahoriPill-resolutions mr-1 mb-1">
                     <span title="{{resolution}}">{{getScreenResolutionName(resolution)}}</span>
                   </div>
+                </td>
+                <td>
+                    {{execution.configuration.name}}
                 </td>
                 <td>
                     <input name="time" id="periodicTime"
