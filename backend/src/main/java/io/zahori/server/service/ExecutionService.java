@@ -152,9 +152,7 @@ public class ExecutionService {
             newExecution.getCasesExecutions().add(newCaseExecution);
         }
 
-        Long processId = executionsRepository.getProcessIdByExecutionId(executionFromDB.getExecutionId());
-        Process process = new Process();
-        process.setProcessId(processId);
+        Process process = executionsRepository.getProcessByExecutionId(executionFromDB.getExecutionId());
         newExecution.setProcess(process);
 
         return create(newExecution);
@@ -344,10 +342,13 @@ public class ExecutionService {
 
         Long configurationId = execution.getConfiguration().getConfigurationId();
         Long clientId = JWTUtils.getClientId(((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest());
+        if (clientId == null) {
+            clientId = execution.getProcess().getClient().getClientId();
+        }
 
         Configuration configuration = configurationRepository.findByIdAndClientId(configurationId, clientId);
         if (configuration == null) {
-            throw new RuntimeException("Invalid configuration id");
+            throw new RuntimeException("Configuration is null");
         }
 
         ClientTestRepo clientTestRepo = null;

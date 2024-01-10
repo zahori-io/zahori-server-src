@@ -12,18 +12,18 @@ package io.zahori.server.repository;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
 import io.zahori.server.model.Execution;
+import io.zahori.server.model.Process;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,7 +57,7 @@ public interface ExecutionsRepository extends PagingAndSortingRepository<Executi
     @Query("select e from Execution e inner join e.periodicExecutions pe where pe.uuid = :uuid")
     Execution findByPeriodicExecutionUuid(@Param("uuid") UUID uuid);
 
-    @Query("select e.process.processId from Execution e where e.executionId = :executionId")
-    Long getProcessIdByExecutionId(@Param("executionId") Long executionId);
+    @Query("select e.process from Execution e where e.executionId = :executionId")
+    Process getProcessByExecutionId(@Param("executionId") Long executionId);
 
 }
