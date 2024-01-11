@@ -541,8 +541,8 @@
 				"event": {
 					"execution.manual.success": "Manual executions passed",
 					"execution.manual.failure": "Manual executions failed",
-					"execution.scheduled.success": "Scheduled executions passed",
-					"execution.scheduled.failure": "Scheduled executions failed"
+					"execution.scheduler.success": "Scheduled executions passed",
+					"execution.scheduler.failure": "Scheduled executions failed"
 				},
 				"media": {
 					"email": "Email",

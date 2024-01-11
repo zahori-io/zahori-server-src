@@ -541,8 +541,8 @@
 				"event": {
 					"execution.manual.success": "Ejecuciones manuales correctas",
 					"execution.manual.failure": "Ejecuciones manuales falladas",
-					"execution.scheduled.success": "Ejecuciones programadas correctas",
-					"execution.scheduled.failure": "Ejecuciones programadas falladas"
+					"execution.scheduler.success": "Ejecuciones programadas correctas",
+					"execution.scheduler.failure": "Ejecuciones programadas falladas"
 				},
 				"media": {
 					"email": "Email",
