@@ -63,7 +63,7 @@ public class EvidencesController {
      */
     // TODO review security issue using path as request param
     @PostMapping
-    public String uploadEvidence(@RequestParam String path, @RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+    public String uploadEvidence(@RequestParam String path, @RequestParam MultipartFile file, RedirectAttributes redirectAttributes) {
 
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Please select a file to upload");

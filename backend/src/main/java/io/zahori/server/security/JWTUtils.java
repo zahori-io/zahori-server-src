@@ -23,7 +23,7 @@ package io.zahori.server.security;
  * #L%
  */
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 

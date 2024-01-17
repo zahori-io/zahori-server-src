@@ -22,9 +22,9 @@ package io.zahori.server.service;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
+import jakarta.annotation.PostConstruct;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import javax.annotation.PostConstruct;
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;

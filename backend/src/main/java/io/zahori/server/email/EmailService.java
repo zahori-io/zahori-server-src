@@ -23,7 +23,7 @@ package io.zahori.server.email;
  * #L%
  */
 import io.zahori.server.exception.ServiceUnavailableException;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,7 +102,7 @@ public class EmailService {
             LOG.info("Email sent successfully");
 
         } catch (Exception e) {
-            throw new RuntimeException(String.format("Error sending email: %s", e.getMessage()));
+            throw new RuntimeException("Error sending email: %s".formatted(e.getMessage()));
         }
     }
 }

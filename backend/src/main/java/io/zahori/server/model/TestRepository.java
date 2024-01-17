@@ -25,13 +25,13 @@ package io.zahori.server.model;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 /**
  * The type Test repository.
@@ -58,7 +58,8 @@ public class TestRepository implements Serializable {
 
     // bi-directional many-to-one association to Configuration
     @JsonBackReference(value = "configurations")
-    @OneToMany(mappedBy = "clientEnvironment")
+    // Actual @OneToMany(mappedBy = "clientEnvironment")
+    @OneToMany(mappedBy = "testRepository")
     private Set<Configuration> configurations;
 
     /**

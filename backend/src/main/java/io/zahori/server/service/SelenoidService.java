@@ -36,7 +36,6 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -68,7 +67,6 @@ public class SelenoidService {
      *
      * @param caseExecutionsRepository the case executions repository
      */
-    @Autowired
     public SelenoidService(CaseExecutionsRepository caseExecutionsRepository) {
         this.caseExecutionsRepository = caseExecutionsRepository;
     }

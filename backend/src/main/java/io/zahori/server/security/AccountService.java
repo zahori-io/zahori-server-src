@@ -37,7 +37,6 @@ import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -61,7 +60,6 @@ public class AccountService {
     private final TemplateEngine templateEngine;
     private final MessageSource messageSource;
 
-    @Autowired
     public AccountService(EmailService emailService, BCryptPasswordEncoder bCryptPasswordEncoder, AccountRepository accountRepository, ForgotPasswordRepository forgotPasswordRepository, EmailVerificationRepository emailVerificationRepository, TemplateEngine templateEngine, MessageSource messageSource) {
         this.emailService = emailService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -239,7 +237,7 @@ public class AccountService {
 
         // Get new email request (if exists)
         Optional<EmailVerification> emailVerificationOptional = emailVerificationRepository.findByAccountId(user.getId());
-        if (!emailVerificationOptional.isPresent()) {
+        if (emailVerificationOptional.isEmpty()) {
             return emailDto;
         }
 

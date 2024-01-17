@@ -19,3 +19,5 @@ backend/nbactions.xml
 
 
 frontend/.snyk
+logs/
+frontend/package-lock.json

@@ -50,7 +50,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.loadbalancer.reactive.ReactorLoadBalancerExchangeFilterFunction;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -96,7 +95,6 @@ public class ExecutionService {
     private SchedulerService schedulerService;
     private NotificationsService notificationsService;
 
-    @Autowired
     public ExecutionService(ExecutionsRepository executionsRepository, ProcessesRepository processesRepository, ServiceRegistry serviceRegistry,
             SelenoidService selenoidService, CaseExecutionsRepository caseExecutionsRepository, ConfigurationRepository configurationRepository, ClientTestRepository clientTestRepository,
             ReactorLoadBalancerExchangeFilterFunction reactorLoadBalancer, SchedulerService schedulerService, NotificationsService notificationsService) {
@@ -189,7 +187,7 @@ public class ExecutionService {
 
     private Process getProcessFromDB(Long processId) {
         Optional<Process> processOpt = processesRepository.findById(processId);
-        if (!processOpt.isPresent()) {
+        if (processOpt.isEmpty()) {
             throw new RuntimeException("Process not found");
         }
         return processOpt.get();

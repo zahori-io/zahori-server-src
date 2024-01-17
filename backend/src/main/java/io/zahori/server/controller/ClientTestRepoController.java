@@ -29,7 +29,7 @@ import io.zahori.server.repository.ConfigurationRepository;
 import io.zahori.server.security.JWTUtils;
 import io.zahori.server.service.ZahoriCipherService;
 import java.util.Set;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

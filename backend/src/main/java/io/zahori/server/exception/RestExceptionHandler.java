@@ -66,7 +66,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     // 404
     @ExceptionHandler(value = {NotFoundException.class})
     protected ResponseEntity<Object> notFound(Exception e, WebRequest request) {
-        return throwException(HttpStatus.NOT_FOUND, String.format("Resource not found: %s", e.getMessage()), "", e, request);
+        return throwException(HttpStatus.NOT_FOUND, "Resource not found: %s".formatted(e.getMessage()), "", e, request);
     }
 
     // 503

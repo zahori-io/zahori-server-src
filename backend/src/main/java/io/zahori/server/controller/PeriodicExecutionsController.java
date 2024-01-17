@@ -28,7 +28,7 @@ import io.zahori.server.service.ExecutionService;
 import io.zahori.server.service.PeriodicExecutionService;
 import java.util.List;
 import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

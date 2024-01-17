@@ -26,7 +26,7 @@ import io.zahori.server.email.EmailDto;
 import io.zahori.server.i18n.Language;
 import java.util.Locale;
 import java.util.UUID;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

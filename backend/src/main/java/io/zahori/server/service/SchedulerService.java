@@ -43,7 +43,6 @@ public class SchedulerService {
     @Value("${zahori.scheduler.url:}")
     private String zahoriSchedulerUrl;
 
-    @Autowired
     public SchedulerService(RestTemplate restTemplate) {
 
     }
