@@ -1,0 +1,45 @@
+<configuration>
+
+  <!-- Properties -->
+  <property name="basePath" value="${ZAHORI_SERVER_LOGS_PATH:-./logs}" />
+  <property name="fileName" value="zahori-server" />
+  <property name="deleteAfter" value="${ZAHORI_SERVER_LOGS_DELETE_AFTER:-7D}" />
+  <property name="zipExtension" value="${ZAHORI_SERVER_LOGS_ZIP_EXTENSION:-.gz}" />
+
+  <!-- Declare loggers -->
+  <logger name="LoggingConfig" level="info">
+    <appender-ref ref="console"/>
+    <!-- appender-ref ref="rolling"/ -->
+  </logger>
+
+  <!-- CONSOLE logger -->
+  <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder>
+      <pattern>%d{yyyy-MM-dd} %d{HH:mm:ss.SSS} [%-5level] %-35.35logger # %m%n</pattern>
+    </encoder>
+  </appender>
+
+  <!-- FILE logger -->
+<!--
+  <appender name="rolling" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${basePath}/${fileName}.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${basePath}/${fileName}-%d{yyyy-MM-dd}.%i.log${zipExtension}</fileNamePattern>
+      <maxHistory>7</maxHistory>
+      <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+        <maxFileSize>10MB</maxFileSize>
+      </timeBasedFileNamingAndTriggeringPolicy>
+    </rollingPolicy>
+    <encoder>
+      <pattern>%d{yyyy-MM-dd} %d{HH:mm:ss.SSS} [%-5level] %-35.35logger # %m%n</pattern>
+    </encoder>
+  </appender>
+-->
+
+  <!-- Root logger -->
+  <root level="info">
+    <appender-ref ref="console"/>
+    <!-- appender-ref ref="rolling"/ -->
+  </root>
+
+</configuration>
