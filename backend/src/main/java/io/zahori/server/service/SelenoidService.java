@@ -166,7 +166,7 @@ public class SelenoidService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<SelenoidStatus> response = restTemplate.exchange(selenoidUiUrl, HttpMethod.GET, requestEntity, SelenoidStatus.class);
 
-        printStatus(response.getStatusCodeValue());
+        printStatus(response.getStatusCode().value());
 
         SelenoidStatus status = response.getBody();
 

@@ -12,21 +12,22 @@ package io.zahori.server.service;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
+import io.zahori.server.model.jenkins.Build;
+import io.zahori.server.model.jenkins.Builds;
+import io.zahori.server.model.jenkins.JobFileParameter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,10 +43,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
-
-import io.zahori.server.model.jenkins.Build;
-import io.zahori.server.model.jenkins.Builds;
-import io.zahori.server.model.jenkins.JobFileParameter;
 
 /**
  * The type Jenkins service.
@@ -63,8 +60,8 @@ public class JenkinsService {
     /**
      * Trigger job.
      *
-     * @param jobUrl         the job url
-     * @param authToken      the auth token
+     * @param jobUrl the job url
+     * @param authToken the auth token
      * @param fileParameters the file parameters
      */
     public void triggerJob(String jobUrl, String authToken, List<JobFileParameter> fileParameters) {
@@ -86,14 +83,14 @@ public class JenkinsService {
 
         ResponseEntity<String> response = restTemplate.postForEntity(jobUrl, requestEntity, String.class);
 
-        printStatus(response.getStatusCodeValue());
+        printStatus(response.getStatusCode().value());
     }
 
     /**
      * Trigger job.
      *
-     * @param jobUrl        the job url
-     * @param authToken     the auth token
+     * @param jobUrl the job url
+     * @param authToken the auth token
      * @param fileParameter the file parameter
      */
     public void triggerJob(String jobUrl, String authToken, JobFileParameter fileParameter) {
@@ -105,9 +102,9 @@ public class JenkinsService {
     /**
      * Trigger job.
      *
-     * @param jobUrl    the job url
+     * @param jobUrl the job url
      * @param authToken the auth token
-     * @param body      the body
+     * @param body the body
      */
     public void triggerJob(String jobUrl, String authToken, MultiValueMap<String, Object> body) {
         jobUrl = jobUrl + "/buildWithParameters";
@@ -120,13 +117,13 @@ public class JenkinsService {
 
         ResponseEntity<String> response = restTemplate.postForEntity(jobUrl, requestEntity, String.class);
 
-        printStatus(response.getStatusCodeValue());
+        printStatus(response.getStatusCode().value());
     }
 
     /**
      * Gets builds.
      *
-     * @param jobUrl    the job url
+     * @param jobUrl the job url
      * @param authToken the auth token
      * @return the builds
      */
@@ -147,7 +144,7 @@ public class JenkinsService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Builds> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, Builds.class);
 
-        printStatus(response.getStatusCodeValue());
+        printStatus(response.getStatusCode().value());
 
         Builds responseBuilds = response.getBody();
         for (Build build : responseBuilds.getBuilds()) {
@@ -160,8 +157,8 @@ public class JenkinsService {
     /**
      * Gets build.
      *
-     * @param jobUrl      the job url
-     * @param authToken   the auth token
+     * @param jobUrl the job url
+     * @param authToken the auth token
      * @param buildNumber the build number
      * @return the build
      */
@@ -173,7 +170,7 @@ public class JenkinsService {
     /**
      * Gets last build.
      *
-     * @param jobUrl    the job url
+     * @param jobUrl the job url
      * @param authToken the auth token
      * @return the last build
      */
@@ -196,7 +193,7 @@ public class JenkinsService {
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<Build> response = restTemplate.exchange(url, HttpMethod.GET, requestEntity, Build.class);
 
-        printStatus(response.getStatusCodeValue());
+        printStatus(response.getStatusCode().value());
 
         Build build = response.getBody();
         build.setUrlExcelOut();
@@ -208,7 +205,7 @@ public class JenkinsService {
     /**
      * Get file byte [ ].
      *
-     * @param url       the url
+     * @param url the url
      * @param authToken the auth token
      * @return the byte [ ]
      */
