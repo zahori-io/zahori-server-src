@@ -380,6 +380,38 @@
                     <goals>deploy</goals>
                 </configuration>
             </plugin>
+            
+            <!-- 
+                https://graalvm.github.io/native-build-tools/latest/maven-plugin.html
+                ./mvnw clean -Pnative spring-boot:build-image
+            -->
+            <plugin>
+                <groupId>org.graalvm.buildtools</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+                <configuration>
+                    <metadataRepository>
+                        <enabled>true</enabled>
+                    </metadataRepository>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+                        <name>zahoriaut/${project.artifactId}:${project.version}</name>
+                    </image>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <!-- goal>repackage</goal -->
+                            <goal>build-image</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -404,6 +436,7 @@
                     </execution>
                 </executions>
             </plugin>
+            -->
             <plugin>
                 <groupId>org.openrewrite.maven</groupId>
                 <artifactId>rewrite-maven-plugin</artifactId>
