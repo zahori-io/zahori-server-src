@@ -69,10 +69,10 @@
           >
           <label for="uploadResults" class="custom-control-label" style="margin-bottom: .5rem;">{{'main.process.configurator.form.saveResultsRepo' | translate}}</label>
         </div>
-        <select [(ngModel)]="configuration.testRepository.testRepoId" [disabled]="!configuration.uploadResults"
-          name="testRepoId" class="form-control">
-          <option *ngIf="clientRestRepositories.length == 0" [value]="0" selected disabled>{{'main.process.configurator.form.noRepositories' | translate}}</option>
-          <option [value]="clientTestRepo.testRepository.testRepoId" *ngFor="let clientTestRepo of clientRestRepositories">{{clientTestRepo.testRepository.name}}</option>
+        <select [(ngModel)]="configuration.clientTestRepo.repoInstanceId" [disabled]="!configuration.uploadResults"
+          name="repoInstanceId" class="form-control">
+          <option *ngIf="clientTestRepositories.length == 0" [value]="0" selected disabled>{{'main.process.configurator.form.noRepositories' | translate}}</option>
+          <option [value]="clientTestRepo.repoInstanceId" *ngFor="let clientTestRepo of clientTestRepositories">{{clientTestRepo.name}}</option>
         </select>
       </div>
     </div>

@@ -50,8 +50,8 @@ public class TestRepository implements Serializable {
 
     private Boolean active;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "type")
+    private String type;
 
     @Column(name = "\"order\"")
     private Long order;
@@ -104,21 +104,21 @@ public class TestRepository implements Serializable {
     }
 
     /**
-     * Gets name.
+     * Gets type.
      *
-     * @return the name
+     * @return the type
      */
-    public String getName() {
-        return this.name;
+    public String getType() {
+        return this.type;
     }
 
     /**
-     * Sets name.
+     * Sets type.
      *
-     * @param name the name
+     * @param type the type
      */
-    public void setName(String name) {
-        this.name = name;
+    public void setType(String type) {
+        this.type = type;
     }
 
     /**

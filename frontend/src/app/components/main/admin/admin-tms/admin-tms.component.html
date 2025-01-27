@@ -24,15 +24,18 @@
                 <h6>{{'main.admin.tms.active'|translate}}</h6>
             </div>
             <div class="col-2">
+                <h6>{{'main.admin.tms.type'|translate}}</h6>
+            </div>
+            <div class="col-2">
                 <h6>{{'main.admin.tms.name'|translate}}</h6>
             </div>
-            <div class="col-3">
+            <div class="col-2">
                 <h6>{{'main.admin.tms.url'|translate}}</h6>
             </div>
             <div class="col-2">
                 <h6>{{'main.admin.tms.credentials'|translate}}</h6>
             </div>
-            <div class="col-2">
+            <div class="col-1">
                 <h6><!-- {{'main.admin.tms.password'|translate}} --></h6>
             </div>
             <div class="col-2">
@@ -45,64 +48,73 @@
             <!-- Active -->
             <div class="col-1 mt-2 custom-control custom-switch">
                 <input [(ngModel)]="clientTestRepo.active" type="checkbox"
-                    id="active-{{clientTestRepo.id.testRepoId}}" class="custom-control-input"
+                    id="active-{{clientTestRepo.repoInstanceId}}" class="custom-control-input"
                     (change)="activateRepository(clientTestRepo, $event)"
                     >
-                <label for="active-{{clientTestRepo.id.testRepoId}}" class="custom-control-label"></label>
+                <label for="active-{{clientTestRepo.repoInstanceId}}" class="custom-control-label"></label>
             </div>
 
-            <!-- Name -->
-            <div class="col-2 mt-2" *ngIf="clientTestRepo.id.testRepoId > 0">
+            <!-- Type -->
+            <div class="col-2 mt-2" *ngIf="clientTestRepo.repoInstanceId > 0">
                 <span>
-                    <strong>{{clientTestRepo.testRepository?.name}}</strong>
+                    <strong>{{clientTestRepo.testRepository?.type}}</strong>
                 </span>
             </div>
-            <div class="col-2" *ngIf="!clientTestRepo.id.testRepoId || clientTestRepo.id.testRepoId == 0">
-                <select name="testRepoId" id="{{'testRepoId-' + clientTestRepo.id.testRepoId}}"
-                    [(ngModel)]="clientTestRepo.id.testRepoId" class="form-control"
+            <div class="col-2" *ngIf="!clientTestRepo.repoInstanceId || clientTestRepo.repoInstanceId == 0">
+                <select name="testRepoId" id="{{'repoInstanceId-' + clientTestRepo.repoInstanceId}}"
+                    [(ngModel)]="clientTestRepo.testRepository.testRepoId" class="form-control"
                     (change)="selectTestRepository($event, clientTestRepo)">
                     <option [value]="testRepository.testRepoId"
-                        *ngFor="let testRepository of availableTestRepositories">
-                        {{testRepository.name}}
+                        *ngFor="let testRepository of testRepositories">
+                        {{testRepository.type}}
                     </option>
                 </select>
             </div>
 
+            <!-- Name -->
+            <div class="col-2">
+                <input name="name" id="{{'name-'+clientTestRepo.repoInstanceId}}"
+                    [(ngModel)]="clientTestRepo.name" type="text" class="form-control"
+                    placeholder="{{'main.admin.tms.name'|translate}}"
+                    title="{{'main.admin.tms.name'|translate}}"
+                    >
+            </div>
+
             <!-- Url -->
-            <div class="col-3">
-                <input name="url" id="{{'url-'+clientTestRepo.id.testRepoId}}"
+            <div class="col-2">
+                <input name="url" id="{{'url-'+clientTestRepo.repoInstanceId}}"
                     [(ngModel)]="clientTestRepo.url" type="text" class="form-control"
-                    [disabled]="clientTestRepo.testRepository?.name == this.XRAY_CLOUD"
-                    [placeholder]="clientTestRepo.testRepository?.name == this.XRAY_CLOUD ? '' : ('main.admin.tms.url'|translate)"
+                    [disabled]="clientTestRepo.testRepository?.type == this.XRAY_CLOUD"
+                    [placeholder]="clientTestRepo.testRepository?.type == this.XRAY_CLOUD ? '' : ('main.admin.tms.url'|translate)"
                 >
             </div>
 
             <!-- User -->
             <div class="col-2">
-                <input name="user" id="{{'user-'+clientTestRepo.id.testRepoId}}"
+                <input name="user" id="{{'user-'+clientTestRepo.repoInstanceId}}"
                     [(ngModel)]="clientTestRepo.user" type="text" class="form-control"
-                    [disabled]="clientTestRepo.testRepository?.name == this.TEST_LINK"
+                    [disabled]="clientTestRepo.testRepository?.type == this.TEST_LINK"
                     [placeholder]="
-                        clientTestRepo.testRepository?.name == this.TEST_LINK ? '' :
-                        clientTestRepo.testRepository?.name == this.XRAY_CLOUD ? ('main.admin.tms.clientid'|translate) : ('main.admin.tms.user'|translate)"
+                        clientTestRepo.testRepository?.type == this.TEST_LINK ? '' :
+                        clientTestRepo.testRepository?.type == this.XRAY_CLOUD ? ('main.admin.tms.clientid'|translate) : ('main.admin.tms.user'|translate)"
                     [title]="
-                        clientTestRepo.testRepository?.name == this.XRAY_CLOUD ? ('main.admin.tms.clientid'|translate) : ('main.admin.tms.user'|translate)"
+                        clientTestRepo.testRepository?.type == this.XRAY_CLOUD ? ('main.admin.tms.clientid'|translate) : ('main.admin.tms.user'|translate)"
                     >
             </div>
 
             <!-- Pass -->
-            <div class="col-2">
-                <input name="password" id="{{'password-' + clientTestRepo.id.testRepoId}}"
+            <div class="col-1">
+                <input name="password" id="{{'password-' + clientTestRepo.repoInstanceId}}"
                     [(ngModel)]="clientTestRepo.password" type="password" class="form-control"
                     [placeholder]="
-                        clientTestRepo.id.clientId > 0 ? '**********' :
-                        clientTestRepo.testRepository?.name == this.TEST_LINK ? ('main.admin.tms.apikey'|translate) : 
-                        clientTestRepo.testRepository?.name == this.XRAY_SERVER ? ('main.admin.tms.token'|translate) : 
-                        clientTestRepo.testRepository?.name == this.XRAY_CLOUD ? ('main.admin.tms.clientsecret'|translate) : ('main.admin.tms.password'|translate)"
+                        clientTestRepo.repoInstanceId > 0 ? '**********' :
+                        clientTestRepo.testRepository?.type == this.TEST_LINK ? ('main.admin.tms.apikey'|translate) : 
+                        clientTestRepo.testRepository?.type == this.XRAY_SERVER ? ('main.admin.tms.token'|translate) : 
+                        clientTestRepo.testRepository?.type == this.XRAY_CLOUD ? ('main.admin.tms.clientsecret'|translate) : ('main.admin.tms.password'|translate)"
                     [title]="
-                        clientTestRepo.testRepository?.name == this.TEST_LINK ? ('main.admin.tms.apikey'|translate) : 
-                        clientTestRepo.testRepository?.name == this.XRAY_SERVER ? ('main.admin.tms.token'|translate) : 
-                        clientTestRepo.testRepository?.name == this.XRAY_CLOUD ? ('main.admin.tms.clientsecret'|translate)  : ('main.admin.tms.password'|translate)"
+                        clientTestRepo.testRepository?.type == this.TEST_LINK ? ('main.admin.tms.apikey'|translate) : 
+                        clientTestRepo.testRepository?.type == this.XRAY_SERVER ? ('main.admin.tms.token'|translate) : 
+                        clientTestRepo.testRepository?.type == this.XRAY_CLOUD ? ('main.admin.tms.clientsecret'|translate)  : ('main.admin.tms.password'|translate)"
                 >
             </div>
 
@@ -125,7 +137,7 @@
     </ng-container>
 
     <!-- Add button -->
-    <div class="row mt-3" *ngIf="clientTestRepositories.length < testRepositories.length">
+    <div class="row mt-3">
         <div class="col-11 text-center mt-3">
             <button class="btn-wide mb-4 btn-icon btn btn-zahoriV btn-sm sidebarGreyCollapse"
                 (click)="addNewTestRepository()">

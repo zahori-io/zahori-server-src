@@ -22,6 +22,7 @@ package io.zahori.server.controller;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
+import io.zahori.server.model.Client;
 import io.zahori.server.model.ClientTestRepo;
 import io.zahori.server.model.Configuration;
 import io.zahori.server.repository.ClientTestRepository;
@@ -83,9 +84,9 @@ public class ClientTestRepoController {
             Long clientId = JWTUtils.getClientId(request);
 
             // Retrieve old password and compare if user has changed it. If password has changed, encrypt it.
-            ClientTestRepo clientTestRepoDB = clientTestRepository.findByClientIdAndTestRepoId(clientId, clientTestRepo.getId().getTestRepoId());
+            ClientTestRepo clientTestRepoDB = clientTestRepository.findByClientIdAndRepoInstanceId(clientId, clientTestRepo.getRepoInstanceId());
             if (clientTestRepoDB != null) {
-                clientTestRepo.setId(clientTestRepoDB.getId());
+                clientTestRepo.setRepoInstanceId(clientTestRepoDB.getRepoInstanceId());
                 clientTestRepo.setClient(clientTestRepoDB.getClient());
                 if (StringUtils.isBlank(clientTestRepo.getPassword())) {
                     clientTestRepo.setPassword(clientTestRepoDB.getPassword());
@@ -94,7 +95,9 @@ public class ClientTestRepoController {
                 }
             }
             if (clientTestRepoDB == null) {
-                clientTestRepo.getId().setClientId(clientId);
+                Client client = new Client();
+                client.setClientId(clientId);
+                clientTestRepo.setClient(client);
                 clientTestRepo.setPassword(zahoriCipherService.encode(clientTestRepo.getPassword()));
             }
 
@@ -106,18 +109,18 @@ public class ClientTestRepoController {
         }
     }
 
-    @DeleteMapping("/{testRepoId}")
-    public ResponseEntity<Object> deleteClientTestRepository(@PathVariable Long testRepoId, HttpServletRequest request) {
+    @DeleteMapping("/{repoInstanceId}")
+    public ResponseEntity<Object> deleteClientTestRepository(@PathVariable Long repoInstanceId, HttpServletRequest request) {
         try {
             LOG.info("delete client test repository");
             Long clientId = JWTUtils.getClientId(request);
 
-            Set<Configuration> configurations = configurationRepository.findByClientIdAndTestRepoId(clientId, testRepoId);
+            Set<Configuration> configurations = configurationRepository.findByClientIdAndRepoInstanceId(clientId, repoInstanceId);
             if (!configurations.isEmpty()) {
                 return new ResponseEntity<>("", HttpStatus.CONFLICT);
             }
 
-            clientTestRepository.deleteByClientIdAndTestRepoId(clientId, testRepoId);
+            clientTestRepository.deleteByClientIdAndRepoInstanceId(clientId, repoInstanceId);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
             LOG.error(e.getMessage());

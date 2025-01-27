@@ -48,7 +48,7 @@ public interface ConfigurationRepository extends CrudRepository<Configuration, L
     @Query("SELECT c FROM Configuration c WHERE c.configurationId = :configurationId and c.process.client.clientId = :clientId")
     Configuration findByIdAndClientId(@Param("configurationId") Long configurationId, @Param("clientId") Long clientId);
 
-    @Query("SELECT c FROM Configuration c WHERE c.process.client.clientId = :clientId and c.testRepository.testRepoId = :testRepoId")
-    Set<Configuration> findByClientIdAndTestRepoId(@Param("clientId") Long clientId, @Param("testRepoId") Long testRepoId);
+    @Query("SELECT c FROM Configuration c WHERE c.process.client.clientId = :clientId and c.clientTestRepo.repoInstanceId = :repoInstanceId")
+    Set<Configuration> findByClientIdAndRepoInstanceId(@Param("clientId") Long clientId, @Param("repoInstanceId") Long repoInstanceId);
 
 }

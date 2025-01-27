@@ -214,7 +214,7 @@ public class ExecutionService {
             }
 
             // TODO: i18n
-            String processNotReadyError = "El proceso parece estar offline! Si el proceso se inició recientemente vuelve a intentarlo pasados unos segundos, sino revisa que el proceso esté arrancado.";
+            String processNotReadyError = "El proceso parece estar offline! Revisa que el proceso esté arrancado y tenga conectividad con el servidor.";
             throw new RuntimeException(processNotReadyError);
         }
 
@@ -352,8 +352,8 @@ public class ExecutionService {
         }
 
         ClientTestRepo clientTestRepo = null;
-        if (configuration.getTestRepository() != null && configuration.getTestRepository().getTestRepoId() > 0) {
-            clientTestRepo = clientTestRepository.findByClientIdAndTestRepoId(clientId, configuration.getTestRepository().getTestRepoId());
+        if (configuration.getClientTestRepo() != null && configuration.getClientTestRepo().getRepoInstanceId() > 0) {
+            clientTestRepo = clientTestRepository.findByClientIdAndRepoInstanceId(clientId, configuration.getClientTestRepo().getRepoInstanceId());
         }
 
         for (CaseExecution caseExecution : execution.getCasesExecutions()) {
@@ -381,7 +381,7 @@ public class ExecutionService {
                 tms.setUploadResults(clientTestRepo.getTestRepository().getActive() && configuration.getUploadResults());
 
                 if (tms.isUploadResults()) {
-                    tms.setName(clientTestRepo.getTestRepository().getName());
+                    tms.setName(clientTestRepo.getTestRepository().getType());
                     tms.setUrl(clientTestRepo.getUrl());
                     tms.setUser(clientTestRepo.getUser());
                     tms.setPassword(clientTestRepo.getPassword());

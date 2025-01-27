@@ -33,7 +33,7 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
     @Input()
     evidenceTypes: EvidenceType[];
     @Input()
-    clientRestRepositories: ClientTestRepo[];
+    clientTestRepositories: ClientTestRepo[];
     @Input()
     retries: Retry[] = [];
     @Input()
@@ -54,8 +54,8 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
     }
 
     ngOnChanges() {
-        if (!this.configuration.testRepository){
-            this.configuration.testRepository = new TestRepository();
+        if (!this.configuration.clientTestRepo) {
+            this.configuration.clientTestRepo = new ClientTestRepo();
         }
         this.closeBanner();
     }
@@ -68,8 +68,8 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
             return;
         }
 
-        if (configuration.testRepository?.testRepoId == 0){
-            configuration.testRepository = null;
+        if (configuration.clientTestRepo?.repoInstanceId == 0){
+            configuration.clientTestRepo = null;
         }
 
         let configurations: Configuration[] = [configuration];
@@ -103,7 +103,7 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
             return "Selecciona cuando se generarán evidencias";
         }
 
-        if (configuration.uploadResults && configuration.testRepository.testRepoId == 0){
+        if (configuration.uploadResults && configuration.clientTestRepo?.repoInstanceId == 0){
             return "Selecciona un repositorio";
         }
 
@@ -136,7 +136,7 @@ export class ConfiguratorFormComponent implements OnInit, OnChanges {
 
     activateRepository(configuration: Configuration, event: any): void {
         if (!event.currentTarget.checked) {
-            configuration.testRepository = null;
+            configuration.clientTestRepo = null;
         }
     }
 

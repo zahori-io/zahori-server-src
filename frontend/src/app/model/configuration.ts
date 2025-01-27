@@ -1,9 +1,9 @@
 import { Environment } from "./environment";
 import { EvidenceType } from "./evidence-type";
 import { Retry } from "./retry";
-import { TestRepository } from "./test-repository";
 import { EvidenceCase } from "./evidence-case";
 import { Timeout } from "./timeout";
+import { ClientTestRepo } from "./clientTestRepo";
 
 export class Configuration {
   processType: string;
@@ -15,7 +15,7 @@ export class Configuration {
   retry: Retry;
   timeout: Timeout;
   evidenceTypes: EvidenceType[];
-  testRepository: TestRepository;
+  clientTestRepo: ClientTestRepo;
   evidenceCase : EvidenceCase;
 
   constructor() {
@@ -28,7 +28,7 @@ export class Configuration {
     this.retry = new Retry();
     this.timeout = new Timeout();
     this.evidenceTypes = [];
-    this.testRepository = new TestRepository();
+    this.clientTestRepo = new ClientTestRepo();
     this.evidenceCase = new EvidenceCase();
   }
 }

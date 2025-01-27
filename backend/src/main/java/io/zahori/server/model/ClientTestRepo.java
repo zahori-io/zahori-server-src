@@ -22,12 +22,13 @@ package io.zahori.server.model;
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
@@ -41,12 +42,17 @@ public class ClientTestRepo implements Serializable {
 
     private static final long serialVersionUID = -8047179212309181277L;
 
-    @EmbeddedId
-    private ClientTestRepoPK id;
+    @Id
+    @Column(name = "repo_instance_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long repoInstanceId;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password")
     private String password;
+
+    @Column(name = "name")
+    private String name;
 
     @Column(name = "url")
     private String url;
@@ -57,14 +63,13 @@ public class ClientTestRepo implements Serializable {
     private Boolean active;
 
     // bi-directional many-to-one association to Client
-    @JsonBackReference(value = "client")
     @ManyToOne
-    @JoinColumn(name = "client_id", insertable = false, updatable = false)
+    @JoinColumn(name = "client_id", insertable = true, updatable = false)
     private Client client;
 
     // bi-directional many-to-one association to TestRepository
     @ManyToOne
-    @JoinColumn(name = "test_repo_id", insertable = false, updatable = false)
+    @JoinColumn(name = "test_repo_id", insertable = true, updatable = false)
     private TestRepository testRepository;
 
     /**
@@ -74,21 +79,21 @@ public class ClientTestRepo implements Serializable {
     }
 
     /**
-     * Gets id.
+     * Gets repoInstanceId.
      *
-     * @return the id
+     * @return the repoInstanceId
      */
-    public ClientTestRepoPK getId() {
-        return this.id;
+    public Long getRepoInstanceId() {
+        return repoInstanceId;
     }
 
     /**
-     * Sets id.
+     * Sets repoInstanceId.
      *
-     * @param id the id
+     * @param repoInstanceId the repoInstanceId
      */
-    public void setId(ClientTestRepoPK id) {
-        this.id = id;
+    public void setRepoInstanceId(Long repoInstanceId) {
+        this.repoInstanceId = repoInstanceId;
     }
 
     /**
@@ -107,6 +112,24 @@ public class ClientTestRepo implements Serializable {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
     /**

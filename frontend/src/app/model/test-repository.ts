@@ -2,13 +2,13 @@ import { ClientTestRepo } from "./clientTestRepo";
 
 export class TestRepository {
     testRepoId: number;
-    name: string;
+    type: string;
     order: number;
     active: boolean;
 
     constructor() {
         this.testRepoId = 0;
-        this.name = "";
+        this.type = "";
         this.order = 0;
         this.active = true;
     }

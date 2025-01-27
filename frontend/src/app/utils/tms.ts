@@ -21,7 +21,7 @@ export class Tms {
   } 
 
   public requiresTestExecutionId(configuration: Configuration): boolean {
-    return this.repositoriesThatRequireExecutionId.has(configuration.testRepository.name);
+    return this.repositoriesThatRequireExecutionId.has(configuration.clientTestRepo.testRepository.type);
   } 
 
 }

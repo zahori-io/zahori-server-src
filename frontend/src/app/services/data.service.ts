@@ -232,8 +232,8 @@ export class DataService {
     return this.http.post<ClientTestRepo>(this.url + 'clientTestRepos', JSON.stringify(clientTestRepo));
   }
 
-  public deleteClientTestRepository(testRepoId: number): Observable<any> {
-    return this.http.delete<any>(this.url + 'clientTestRepos/' + testRepoId, {});
+  public deleteClientTestRepository(repoInstanceId: number): Observable<any> {
+    return this.http.delete<any>(this.url + 'clientTestRepos/' + repoInstanceId, {});
   }
   
   public getTestRepositories(): Observable<TestRepository[]> {

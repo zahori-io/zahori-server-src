@@ -136,6 +136,7 @@
 				"noRepo": "Aún no hay repositorios definidos.",
 				"remove": "Eliminar",
 				"title": "Gestión de Repositorios",
+				"type": "Tipo",
 				"url": "Url",
 				"error": {
 					"getClientRepos": "Error al recuperar los repositorios: ",

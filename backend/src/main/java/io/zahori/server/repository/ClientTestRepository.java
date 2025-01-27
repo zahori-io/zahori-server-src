@@ -34,15 +34,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface ClientTestRepository extends CrudRepository<ClientTestRepo, Long> {
 
-    @Query("SELECT c FROM ClientTestRepo c WHERE c.id.clientId = :clientId")
+    @Query("SELECT ctr FROM ClientTestRepo ctr WHERE ctr.client.clientId = :clientId")
     Set<ClientTestRepo> findByClientId(@Param("clientId") Long clientId);
 
-    @Query("SELECT c FROM ClientTestRepo c WHERE c.id.clientId = :clientId and c.id.testRepoId = :testRepoId")
-    ClientTestRepo findByClientIdAndTestRepoId(@Param("clientId") Long clientId, @Param("testRepoId") Long testRepoId);
+    @Query("SELECT ctr FROM ClientTestRepo ctr WHERE ctr.client.clientId = :clientId and ctr.repoInstanceId = :repoInstanceId")
+    ClientTestRepo findByClientIdAndRepoInstanceId(@Param("clientId") Long clientId, @Param("repoInstanceId") Long repoInstanceId);
 
     @Transactional
     @Modifying
-    @Query("DELETE FROM ClientTestRepo c WHERE c.id.clientId = :clientId AND c.id.testRepoId = :testRepoId")
-    void deleteByClientIdAndTestRepoId(@Param("clientId") Long clientId, @Param("testRepoId") Long testRepoId);
+    @Query("DELETE FROM ClientTestRepo ctr WHERE ctr.client.clientId = :clientId AND ctr.repoInstanceId = :repoInstanceId")
+    void deleteByClientIdAndRepoInstanceId(@Param("clientId") Long clientId, @Param("repoInstanceId") Long repoInstanceId);
 
 }

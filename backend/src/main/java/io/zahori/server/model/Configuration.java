@@ -12,20 +12,20 @@ package io.zahori.server.model;
  * it under the terms of the GNU Affero General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  * #L%
  */
-
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import io.zahori.server.model.Process;
 import java.io.Serializable;
 import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -36,8 +36,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 /**
  * The type Configuration.
@@ -71,10 +69,10 @@ public class Configuration implements Serializable {
     @JoinColumn(name = "evi_case_id")
     private EvidenceCase evidenceCase;
 
-    // bi-directional many-to-one association to EvidenceCas
+    // bi-directional many-to-one association to ClientTestRepos
     @ManyToOne
-    @JoinColumn(name = "test_repo_id")
-    private TestRepository testRepository;
+    @JoinColumn(name = "repo_instance_id")
+    private ClientTestRepo clientTestRepo;
 
     // bi-directional many-to-one association to Process
     @JsonBackReference(value = "process")
@@ -94,8 +92,9 @@ public class Configuration implements Serializable {
 
     // bi-directional many-to-many association to EvidenceType
     @ManyToMany
-    @JoinTable(name = "configurations_evidence_types", joinColumns = { @JoinColumn(name = "configuration_id") }, inverseJoinColumns = {
-            @JoinColumn(name = "evi_type_id") })
+    @JoinTable(name = "configurations_evidence_types", joinColumns = {
+        @JoinColumn(name = "configuration_id")}, inverseJoinColumns = {
+        @JoinColumn(name = "evi_type_id")})
     private Set<EvidenceType> evidenceTypes;
 
     /**
@@ -201,7 +200,6 @@ public class Configuration implements Serializable {
     //    public void setEvidenceCas(EvidenceCas evidenceCas) {
     //        this.evidenceCas = evidenceCas;
     //    }
-
     /**
      * Gets process.
      *
@@ -264,12 +262,12 @@ public class Configuration implements Serializable {
         this.evidenceCase = evidenceCase;
     }
 
-    public TestRepository getTestRepository() {
-        return testRepository;
+    public ClientTestRepo getClientTestRepo() {
+        return clientTestRepo;
     }
 
-    public void setTestRepository(TestRepository testRepository) {
-        this.testRepository = testRepository;
+    public void setClientTestRepo(ClientTestRepo clientTestRepo) {
+        this.clientTestRepo = clientTestRepo;
     }
 
     public Timeout getTimeout() {

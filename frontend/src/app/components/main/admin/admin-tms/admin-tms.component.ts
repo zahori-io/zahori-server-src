@@ -21,7 +21,6 @@ export class AdminTmsComponent implements OnInit {
 
   clientTestRepositories: ClientTestRepo[] = [];
   testRepositories: TestRepository[] = [];
-  availableTestRepositories: TestRepository[] = [];
   banner: BannerOptions;
 
   XRAY_CLOUD = Tms.XRAY_CLOUD;
@@ -56,26 +55,11 @@ export class AdminTmsComponent implements OnInit {
     this.dataService.getTestRepositories().subscribe(
       (testRepositories) => {
         this.testRepositories = testRepositories;
-        this.availableTestRepositories = JSON.parse(JSON.stringify(testRepositories));
-        this.filterAvailableRepositories();
       },
       (error) => {
         this.banner = new BannerOptions(this.translate.instant('main.admin.tms.error.getAvailableRepos'), error.message, ERROR_COLOR, true);
       }
     );
-  }
-
-  filterAvailableRepositories() {
-    if (this.clientTestRepositories.length == 0) {
-      return;
-    }
-
-    for (let clientRepository of this.clientTestRepositories) {
-      let testRepo = this.availableTestRepositories.find(testRepository => testRepository.testRepoId == clientRepository.id.testRepoId);
-      if (testRepo) {
-        this.availableTestRepositories.splice(this.availableTestRepositories.indexOf(testRepo), 1);
-      }
-    }
   }
 
   activateRepository(clientTestRepo: ClientTestRepo, event: any): void {
@@ -85,8 +69,8 @@ export class AdminTmsComponent implements OnInit {
     }
 
     Swal.fire({
-      title: this.translate.instant('main.admin.tms.activateRepo.title', { repositoryName: clientTestRepo.testRepository.name }),
-      text: this.translate.instant('main.admin.tms.activateRepo.text', { repositoryName: clientTestRepo.testRepository.name }),
+      title: this.translate.instant('main.admin.tms.activateRepo.title', { repositoryName: clientTestRepo.name }),
+      text: this.translate.instant('main.admin.tms.activateRepo.text', { repositoryName: clientTestRepo.name }),
       icon: 'warning',
       showCancelButton: false,
       confirmButtonText: this.translate.instant('main.admin.tms.activateRepo.confirmButton'),
@@ -107,9 +91,29 @@ export class AdminTmsComponent implements OnInit {
   }
 
   selectTestRepository(testRepoId: any, clientTestRepo: ClientTestRepo) {
-    let testRepo = this.availableTestRepositories.find(testRepository => testRepository.testRepoId == testRepoId.target.value);
-    clientTestRepo.testRepository = testRepo;
-    this.filterAvailableRepositories();
+    let testRepo = this.testRepositories.find(testRepository => testRepository.testRepoId == testRepoId.target.value);
+    clientTestRepo.testRepository = JSON.parse(JSON.stringify(testRepo));
+    this.setClientTestRepoName(clientTestRepo);
+  }
+
+  setClientTestRepoName(clientTestRepo: ClientTestRepo): void {
+    if (this.clientTestRepositories.length == 0) {
+      clientTestRepo.name = clientTestRepo.testRepository.type;
+      return;
+    } 
+
+    let numReposOfSameTypeDefined = 0;
+    for (let clientRepository of this.clientTestRepositories) {
+      if (clientTestRepo.testRepository.type === clientRepository.testRepository.type) {
+        numReposOfSameTypeDefined += 1;
+      }
+    }
+
+    if (numReposOfSameTypeDefined == 1) {
+      clientTestRepo.name = clientTestRepo.testRepository.type;
+    } else {
+      clientTestRepo.name = clientTestRepo.testRepository.type + " " + numReposOfSameTypeDefined;
+    }
   }
 
   save(clientTestRepo: ClientTestRepo): void {
@@ -120,7 +124,7 @@ export class AdminTmsComponent implements OnInit {
 
     this.dataService.saveClientTestRepository(clientTestRepo).subscribe(
       (clientTestRepoSaved) => {
-        let clientTestRepoInList = this.clientTestRepositories.find(clientRepo => clientRepo.id.testRepoId == clientTestRepo.id.testRepoId);
+        let clientTestRepoInList = this.clientTestRepositories.find(clientRepo => clientRepo.repoInstanceId == clientTestRepo.repoInstanceId);
         if (clientTestRepoInList) {
           let index = this.clientTestRepositories.indexOf(clientTestRepoInList);
           this.clientTestRepositories[index] = clientTestRepoSaved;
@@ -135,33 +139,38 @@ export class AdminTmsComponent implements OnInit {
   }
 
   isValidRepo(clientTestRepo: ClientTestRepo): boolean {
-    if (!clientTestRepo.testRepository){
+    if (!clientTestRepo.testRepository || this.isEmpty(clientTestRepo.testRepository.type)){
       return false;
     }
-    if (clientTestRepo.testRepository.name == this.XRAY_CLOUD) {
+
+    if (this.isEmpty(clientTestRepo.name)) {
+      return false;
+    }
+
+    if (clientTestRepo.testRepository.type == this.XRAY_CLOUD) {
       return this.isNotEmpty(clientTestRepo.user) && this.isValidPassword(clientTestRepo);
     }
-    if (clientTestRepo.testRepository.name == this.XRAY_SERVER) {
+    if (clientTestRepo.testRepository.type == this.XRAY_SERVER) {
       return this.isNotEmpty(clientTestRepo.url) && this.isNotEmpty(clientTestRepo.user) && this.isValidPassword(clientTestRepo);
     }
-    if (clientTestRepo.testRepository.name == this.TEST_LINK) {
+    if (clientTestRepo.testRepository.type == this.TEST_LINK) {
       return this.isNotEmpty(clientTestRepo.url) && this.isValidPassword(clientTestRepo);
     }
-    if (clientTestRepo.testRepository.name == this.HP_ALM) {
+    if (clientTestRepo.testRepository.type == this.HP_ALM) {
       return this.isNotEmpty(clientTestRepo.url) && this.isNotEmpty(clientTestRepo.user) && this.isValidPassword(clientTestRepo);
     }
-    if (clientTestRepo.testRepository.name == this.AZURE_TEST_PLANS) {
+    if (clientTestRepo.testRepository.type == this.AZURE_TEST_PLANS) {
       return this.isNotEmpty(clientTestRepo.url) && this.isNotEmpty(clientTestRepo.user) && this.isValidPassword(clientTestRepo);
     }
     return false;
   }
 
   isValidPassword(clientTestRepo: ClientTestRepo): boolean {
-    if (clientTestRepo.id.clientId > 0) {
+    if (clientTestRepo.repoInstanceId > 0) {
       // repo already saved, change password is optional, can be empty
       return true;
     } 
-    if (clientTestRepo.id.clientId == 0 && this.isNotEmpty(clientTestRepo.password)){
+    if (clientTestRepo.repoInstanceId == 0 && this.isNotEmpty(clientTestRepo.password)){
       return true;
     }
     return false;
@@ -180,21 +189,16 @@ export class AdminTmsComponent implements OnInit {
 
   delete(clientTestRepo: ClientTestRepo): void {
     // Local delete
-    if (clientTestRepo.id.clientId == 0) {
+    if (clientTestRepo.repoInstanceId == 0) {
       const index = this.clientTestRepositories.indexOf(clientTestRepo);
       this.clientTestRepositories.splice(index, 1);
-
-      if (clientTestRepo.id.testRepoId > 0) {
-        let testRepo = this.testRepositories.find(testRepository => testRepository.testRepoId == clientTestRepo.id.testRepoId);
-        this.availableTestRepositories.push(testRepo);
-      }
 
       return;
     }
 
     // Backend delete
     Swal.fire({
-      title: this.translate.instant('main.admin.tms.delete.title', { repositoryName: clientTestRepo.testRepository.name }),
+      title: this.translate.instant('main.admin.tms.delete.title', { repositoryName: clientTestRepo.name }),
       text: this.translate.instant('main.admin.tms.delete.text'),
       icon: 'warning',
       showCancelButton: true,
@@ -208,13 +212,10 @@ export class AdminTmsComponent implements OnInit {
       if (result.value) {
         clientTestRepo.active = false;
 
-        this.dataService.deleteClientTestRepository(clientTestRepo.id.testRepoId).subscribe(
+        this.dataService.deleteClientTestRepository(clientTestRepo.repoInstanceId).subscribe(
           () => {
             const index = this.clientTestRepositories.indexOf(clientTestRepo);
             this.clientTestRepositories.splice(index, 1);
-
-            let testRepo = this.testRepositories.find(testRepository => testRepository.testRepoId == clientTestRepo.id.testRepoId);
-            this.availableTestRepositories.push(testRepo);
           },
           (error) => {
 
