@@ -1,1 +1,1 @@
-docker push zahoriaut/zahori-server:0.1.20
+docker push zahoriaut/zahori-server:0.1.21
