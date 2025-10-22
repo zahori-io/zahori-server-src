@@ -1,4 +1,4 @@
-FROM bellsoft/liberica-openjdk-alpine:17.0.6 as javabuilder
+FROM bellsoft/liberica-openjdk-alpine:17.0.17 as javabuilder
 
 WORKDIR /code
 COPY .mvn .mvn
