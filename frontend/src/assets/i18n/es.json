@@ -316,6 +316,10 @@
 				"date": "Fecha",
 				"dateHour": "Fecha",
 				"duration": "Duración",
+				"durationUnit": {
+					"seconds": "segundos",
+					"minutes": "minutos"
+				},
 				"evidences": "Evidencias",
 				"executionName": "Nombre",
 				"hour": "Hora",

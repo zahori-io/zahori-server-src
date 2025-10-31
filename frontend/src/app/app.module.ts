@@ -67,6 +67,7 @@ import { ForgotPasswordComponent } from './components/home/account/forgot-passwo
 import { HomeComponent } from './components/home/home.component';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { AccountNotificationsComponent } from './components/main/account/account-notifications/account-notifications.component';
+import { DurationFormatPipe } from './pipes/duration-format.pipe';
 
 @NgModule({
   declarations: [
@@ -119,7 +120,8 @@ import { AccountNotificationsComponent } from './components/main/account/account
     SchedulerComponent,
     ModalComponent,
     ForgotPasswordComponent,
-    HomeComponent
+    HomeComponent,
+    DurationFormatPipe
   ],
   imports: [
     BrowserModule,

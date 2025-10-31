@@ -72,8 +72,9 @@
                     </ng-container>
                   </td>
                   <td>
-                    <span>{{execution.durationSeconds}}</span>
-                    <span *ngIf="execution.durationSeconds && execution.durationSeconds >= 0"> (s)</span>
+                    <ng-container *ngIf="execution.durationSeconds | durationFormat as durationFormatted">
+                      <span [title]="durationFormatted.value + ' ' + ('main.process.executions.durationUnit.' + durationFormatted.unit | translate)">{{durationFormatted.display}}</span>
+                    </ng-container>
                   </td>
                   <td>
                     <i title="{{execution.status}}" class="fas " [ngClass]="{
@@ -160,8 +161,9 @@
                           <td>{{caseExecution.cas.name}}</td>
                           <td>{{caseExecution.date}}</td>
                           <td>
-                            <span>{{caseExecution.durationSeconds}}</span>
-                            <span *ngIf="caseExecution.durationSeconds && caseExecution.durationSeconds >= 0"> (s)</span>
+                            <ng-container *ngIf="caseExecution.durationSeconds | durationFormat as dur">
+                              <span [title]="dur.value + ' ' + ('main.process.executions.durationUnit.' + dur.unit | translate)">{{dur.display}}</span>
+                            </ng-container>
                           </td>
                           <td>
                             <i *ngIf="caseExecution.status !== 'Running' && caseExecution.status !== 'Pending'"
