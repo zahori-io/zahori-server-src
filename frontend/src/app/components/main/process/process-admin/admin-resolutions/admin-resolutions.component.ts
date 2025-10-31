@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, OnDestroy} from '@angular/core';
 import {BannerOptions} from '../../../../utils/banner/banner';
 import {Resolution} from '../../../../../model/resolution';
 import {DataService} from '../../../../../services/data.service';
@@ -14,7 +14,9 @@ const ERROR_COLOR = 'alert alert-danger';
   templateUrl: './admin-resolutions.component.html',
   styleUrls: ['./admin-resolutions.component.css']
 })
-export class AdminResolutionsComponent implements OnInit {
+export class AdminResolutionsComponent implements OnInit, OnDestroy {
+  
+  processSelectedSubscription: any;
   banner: BannerOptions;
   resolutions: Resolution[] = [];
   newResolutions: Resolution[] = [];
@@ -24,6 +26,15 @@ export class AdminResolutionsComponent implements OnInit {
 
   ngOnInit(): void {
     this.refresh();
+    this.processSelectedSubscription = this.dataService.processSelectedChange.subscribe(() => {
+      this.refresh();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.processSelectedSubscription) {
+      this.processSelectedSubscription.unsubscribe();
+    }
   }
 
   refresh(): void {

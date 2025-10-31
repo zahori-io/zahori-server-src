@@ -46,6 +46,13 @@ export class ConfiguratorComponent implements OnInit {
     this.getTimeouts();
     this.dataService.getProcessConfigurations();
 
+    if (this.dataService.processSelectedChange) {
+      this.dataService.processSelectedChange.subscribe(() => {
+        this.selectedConfiguration = new Configuration();
+        this.getEnvironments();
+      });
+    }
+
     this.banner = new BannerOptions();
   }
 

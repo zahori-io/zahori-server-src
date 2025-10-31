@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Tag } from '../../../../../model/tag';
 import { DataService } from '../../../../../services/data.service'
 import { BannerOptions } from '../../../../../utils/banner/banner'
@@ -14,7 +14,9 @@ const ERROR_COLOR : string = "alert alert-danger";
   templateUrl: './admin-tags.component.html',
   styleUrls: ['./admin-tags.component.css']
 })
-export class AdminTagsComponent implements OnInit {
+export class AdminTagsComponent implements OnInit, OnDestroy {
+  
+  processSelectedSubscription: any;
 
   tags : Tag[] = [];
   myTags : Tag[] = [];
@@ -27,13 +29,27 @@ export class AdminTagsComponent implements OnInit {
   ngOnInit() {
     this.refresh();
     this.banner = new BannerOptions();
+    this.processSelectedSubscription = this.dataService.processSelectedChange.subscribe(() => {
+      this.refresh();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.processSelectedSubscription) {
+      this.processSelectedSubscription.unsubscribe();
+    }
   }  
  
   refresh(){
-    this.dataService.getTags(this.dataService.processSelected.processId).subscribe(
-      (res : any) => {
-        this.tags = res;
-      });
+    const processId = this.dataService.processSelected?.processId;
+    if (processId) {
+      this.dataService.getTags(processId).subscribe(
+        (res: any) => {
+          this.tags = res;
+        });
+    } else {
+      this.tags = [];
+    }
   }
 
   deleteTag(tag: Tag){

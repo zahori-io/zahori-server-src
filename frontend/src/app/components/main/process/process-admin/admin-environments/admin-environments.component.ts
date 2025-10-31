@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Environment } from '../../../../../model/environment';
 import { DataService } from '../../../../../services/data.service';
@@ -15,33 +15,54 @@ const ERROR_COLOR = 'alert alert-danger';
   styleUrls: ['./admin-environments.component.css']
 })
 
-export class AdminEnvironmentsComponent implements OnInit {
+export class AdminEnvironmentsComponent implements OnInit, OnDestroy {
+  processSelectedSubscription: any;
   envs: Environment[] = [];
   myEnvs: Environment[] = [];
   banner: BannerOptions;
 
   eventOpenComponentSubscription: Subscription;
+
   @Input() eventOpenComponent: Observable<void>;
+  
   ngOnInit(): void {
     this.refresh();
-    this.eventOpenComponentSubscription = this.eventOpenComponent.subscribe(
-      () => {
-          console.log('detected component opened');
-          this.refresh();
-          this.myEnvs = [];
-        }
-    );
+    if (this.eventOpenComponent) {
+      this.eventOpenComponentSubscription = this.eventOpenComponent.subscribe(
+        () => {
+            console.log('detected component opened');
+            this.refresh();
+            this.myEnvs = [];
+          }
+      );
+    }
+    this.processSelectedSubscription = this.dataService.processSelectedChange.subscribe(() => {
+      this.refresh();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.processSelectedSubscription) {
+      this.processSelectedSubscription.unsubscribe();
+    }
+    if (this.eventOpenComponentSubscription) {
+      this.eventOpenComponentSubscription.unsubscribe();
+    }
   }
 
   constructor(public dataService: DataService, private translate: TranslateService) {
   }
 
   refresh(): void{
-    this.dataService.getEnvironments(this.dataService.processSelected.processId).subscribe(
-      (res: any) => {
-        this.envs = res;
-      });
-
+    const processId = this.dataService.processSelected?.processId;
+    if (processId) {
+      this.dataService.getEnvironments(processId).subscribe(
+        (res: any) => {
+          this.envs = res;
+        });
+    } else {
+      this.envs = [];
+    }
     this.banner = new BannerOptions();
   }
 

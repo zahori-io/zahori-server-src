@@ -35,6 +35,13 @@ export class SchedulerComponent implements OnInit {
     this.getPeriodicExecutions();
     this.getResolutions();
 
+    if (this.dataService.processSelectedChange) {
+      this.dataService.processSelectedChange.subscribe(() => {
+        this.getPeriodicExecutions();
+        this.getResolutions();
+      });
+    }
+
     this.selectWeekdaysPlaceholder = this.translate.instant('main.process.scheduler.daysPlaceholder');
     this.periodicDropdownSettings = {
       idField: 'widthAndHeight',

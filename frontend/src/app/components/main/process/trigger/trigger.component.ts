@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Browser } from '../../../../model/browser';
 import { Case } from '../../../../model/case';
@@ -19,7 +19,9 @@ import { PeriodicExecution } from '../../../../model/periodic-execution';
   templateUrl: './trigger.component.html',
   styleUrls: ['./trigger.component.css']
 })
-export class TriggerComponent implements OnInit {
+export class TriggerComponent implements OnInit, OnDestroy {
+  
+  processSelectedSubscription: any;
 
   error: string;
   loading: boolean;
@@ -76,6 +78,16 @@ export class TriggerComponent implements OnInit {
       selectAllText: this.translate.instant('main.process.scheduler.daysSelectAll'),
       unSelectAllText: this.translate.instant('main.process.scheduler.daysUnselectAll')
     };
+    this.processSelectedSubscription = this.dataService.processSelectedChange.subscribe(() => {
+      this.getTags();
+      this.getResolutions();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.processSelectedSubscription) {
+      this.processSelectedSubscription.unsubscribe();
+    }
   }
 
   getTags(): void {

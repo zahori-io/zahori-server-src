@@ -89,12 +89,14 @@
 						class="text-danger">{{'main.process.trigger.selectCaseToExecute'|translate}}</span>
 
 					<mat-chip-list class="example-chip" cdkDropList cdkDropListOrientation="horizontal">
-						<mat-chip class="example-box" *ngFor="let case of dataService.processCases">
-							<div *ngIf="case.selected" class="badge btn-zahoriPill">
-								{{case.name}}
-								<i class="fas fa-times-circle ml-1" (click)="deselectCase(case)"></i>
-							</div>
-						</mat-chip>
+						<ng-container *ngFor="let case of dataService.processCases">
+							<mat-chip class="example-box" *ngIf="case.selected">
+								<div class="badge btn-zahoriPill">
+									{{case.name}}
+									<i class="fas fa-times-circle ml-1" (click)="deselectCase(case)"></i>
+								</div>
+							</mat-chip>
+						</ng-container>
 					</mat-chip-list>
 				</div>
 

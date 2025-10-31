@@ -15,6 +15,7 @@ const ERROR_COLOR = 'alert alert-danger';
   styleUrls: ['./cases.component.css']
 })
 export class CasesComponent implements OnInit {
+  private processSelectedSubscription: any;
 
   fixedFields: string[] = [];
   tags: Tag[];
@@ -34,6 +35,17 @@ export class CasesComponent implements OnInit {
     this.getCases();
     this.banner = new BannerOptions();
     this.getTags();
+    
+    this.processSelectedSubscription = this.dataService.processSelectedChange.subscribe(() => {
+      this.getCases();
+      this.getTags();
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.processSelectedSubscription) {
+      this.processSelectedSubscription.unsubscribe();
+    }
   }
 
   getTags(): void {
