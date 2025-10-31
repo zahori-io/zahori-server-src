@@ -148,6 +148,7 @@ export class CaseExecutionDetailsComponent implements OnInit {
 
   getHarFile(url: string): void {
     this.resetModalVariables();
+    this.maximizeModal();
     this.downloading = true;
     this.fileName = url.split('/').pop();
 
@@ -161,12 +162,12 @@ export class CaseExecutionDetailsComponent implements OnInit {
         reader.onload = e => {
           const content: any = e.target.result;
 
+          this.downloading = false;
+
           // Set HAR content
           const harContent = JSON.parse(content);
           const harviewer = new HarViewer('HarViewer');
           harviewer.loadHar(harContent);
-
-          this.downloading = false;
         };
       },
       error => {

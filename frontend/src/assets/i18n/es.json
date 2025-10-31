@@ -223,7 +223,7 @@
 				"downloadFile": "Descargando fichero...",
 				"evidences": "Evidencias",
 				"har": "HAR",
-				"httpRequest": "Petición http",
+				"httpRequest": "Peticiones HTTP: ",
 				"loading": "Cargando...",
 				"log": "Log",
 				"performance": "Rendimiento",

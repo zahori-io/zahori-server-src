@@ -1,3 +1,101 @@
+#HarViewerDetailsSelectorBar {
+    display: flex;
+    gap: 0;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #c2c2c2;
+}
+.HarViewerTabSelector {
+    display: inline-block;
+    padding: 3px 10px;
+    border: 2px solid #c2c2c2;
+    border-bottom: 1px solid #c2c2c2;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    background: #f6f7f8;
+    font-weight: normal;
+    color: #6a6a6a;
+    cursor: pointer;
+    margin-right: 2px;
+    margin-bottom: -1px;
+    position: relative;
+    z-index: 1;
+}
+.HarViewerTabSelector.active {
+    color: #222;
+    background: #f6f7f8;
+    border-bottom: none;
+    z-index: 2;
+    position: relative;
+}
+.HarViewerTabSelector.active::after {
+    content: '';
+    display: block;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -2px;
+    height: 2px;
+    background: #f6f7f8;
+    z-index: 3;
+}
+#HarViewerRightPanel {
+    position: relative;
+}
+#HarViewerDetails {
+    position: fixed !important;
+    /* top: 200px; */
+    /*right: 0;*/
+    width: 100%;
+    max-width: 600px;
+    height: 100%;
+    max-height: 100%;
+    background: #fff;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.12);
+    z-index: 1000;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    border-radius: 8px;
+    padding: 18px 24px;
+}
+/* Forzar wrap en todo el contenido de HarViewerDetails */
+#HarViewerDetails, #HarViewerDetails * {
+    white-space: pre-wrap !important;
+    word-break: break-all !important;
+}
+.HarViewerAllTimingBlock {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+/* Hover sincronizado entre fila y waterfall */
+.HarViewerRowHovered {
+    background-color: #e0f3ff !important;
+}
+/* Hover sincronizado entre fila y waterfall timings */
+.HarViewerTableRow:hover ~ .HarViewerWaterFallRow,
+.HarViewerWaterFallRow:hover,
+.HarViewerTableRow:hover + .HarViewerWaterFallRow {
+    background-color: #e0f3ff !important;
+}
+/* Hover y selección en filas y timings */
+.HarViewerTableRow:hover,
+.HarViewerTableRow.HarViewerRowSelected {
+    background-color: #e0f3ff !important;
+}
+
+.HarViewerWaterFallRow:hover,
+.HarViewerWaterFallRow.HarViewerRowSelected {
+    background-color: #e0f3ff !important;
+}
+
+.HarViewerAllTimingBlock:hover,
+.HarViewerAllTimingBlock.HarViewerRowSelected {
+    background-color: #e0f3ff !important;
+}
+/* Barra visual para tiempo SSL en waterfall */
+.HarViewerTimingSsl{
+    background-color: #9ebfd7;
+}
 body {
 
     padding: 0%;
@@ -12,12 +110,16 @@ body {
 }
 
 #HarViewerForm {
-    display: block;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     width: 100%;
+    height: 100%;
+    box-sizing: border-box;
     padding: 5px;
     margin: 0%;
-    /* Zahorí: modified value */
-    background-color: #e9ecef;
+    background-color: #f6f7f8;
+    border-radius: .25rem;
 }
 
 #HarViewerActions {
@@ -32,13 +134,16 @@ body {
 }
 
 #HarViewerSearch {
-    margin: auto;
-    float: left;
+    margin-right: 16px;
     background-color: white;
     padding: 5px;
     padding-left: 20px;
     font-size: 1em;
-    clear: left;
+}
+#HarViewerInfoBar {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 1em;
 }
 
 #HarViewerContent {
@@ -46,7 +151,8 @@ body {
     padding: 0%;
     margin: 0%;
     width: 100%;
-    background-color: #F2F2F2;
+    height: 100%;
+    box-sizing: border-box;
 }
 
 #HarViewerLeftPanel {
@@ -88,7 +194,7 @@ body {
 
 #HarViewerFilters {
     /* Zahorí: modified */
-    background-color: #e9ecef;
+    background-color: #f6f7f8;
     font-size: 1.1em;
 }
 
@@ -124,20 +230,24 @@ p {
     width: 30%;
 }
 
-.HarViewerFiltersURL {
-    width: 21%;
-}
-
-.HarViewerFiltersMethod {
-    width: 8%;
-}
-
-.HarViewerFiltersStatus {
+.HarViewerFiltersHour {
     width: 7%;
 }
 
+.HarViewerFiltersURL {
+    width: 50%;
+}
+
+.HarViewerFiltersMethod {
+    width: 5%;
+}
+
+.HarViewerFiltersStatus {
+    width: 5%;
+}
+
 .HarViewerFiltersType {
-    width: 14%;
+    width: 10%;
 }
 
 .HarViewerFiltersSize {
@@ -199,7 +309,7 @@ p {
     border-color:  	#000000;
     border-width: 0px;
     /* Zahorí: modified */
-    background-color: #e9ecef;
+    background-color: #f6f7f8;
     z-index: 3;
 }
 
@@ -208,10 +318,10 @@ p {
     padding: 0%;
     margin: 0%;
     border-style: solid;
-    border-radius: 5px;
-    border-color: #000000;
+    border-radius: 3px;
+    /* border-color: #000000; */
     border-width: 0px;
-    height: 100%;
+    height: 70%;
     overflow: hidden;
 
 }
@@ -239,34 +349,34 @@ p {
 }
 
 .HarViewerTimingBlocked{
-    background-color: #87CEEB;
+    background-color: #525252;
 }
 .HarViewerTimingDns{
-    background-color:  	#00BFFF;
+    background-color:  	#82bcff;
 }
 .HarViewerTimingConnect{
-    background-color:  	#F0E68C;
+    background-color:  	#e9d4ff;
 }
 .HarViewerTimingSend{
     background-color: #BDB76B;
 }
 .HarViewerTimingWait{
-    background-color:  	#FA8072;
+    background-color:  	#6391bf;
 }
 .HarViewerTimingReceive{
-    background-color: #D2691E;
+    background-color: #d2ebc6;
 }
 
 #HarViewerDetails {
     padding: 0%;
     padding-left: 5px;
     margin: 0%;
-    width: 100%;
+    width: 37%;
     overflow-y: scroll;
     border-bottom: solid;
     border-color:  	#000000;
     border-width: 0px;
-    background-color: #F2F2F2;
+    background-color: #f6f7f8;
 }
 
 #HarViewerActions {
