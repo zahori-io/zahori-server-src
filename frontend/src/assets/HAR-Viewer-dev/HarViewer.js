@@ -435,6 +435,11 @@ function HarViewer(id, additionnalIndicators) {
 
     this.initTime = function () {
 
+        if (!this.showedEntries || this.showedEntries.length === 0) {
+            this.time = 0;
+            this.firstDate = 0;
+            return;
+        }
         var a = this.showedEntries[0].date;
         var b = 0;
         var c = 0;
