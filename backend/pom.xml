@@ -50,7 +50,7 @@
         <license.licenseName>agpl_v3</license.licenseName>
         <license.licenseResolver>${project.baseUri}/src/license</license.licenseResolver>
 
-        <jackson.version>2.14.2</jackson.version>
+        <jackson.version>2.15.0</jackson.version>
 
         <sonar.projectKey>zahori-io_zahori-server</sonar.projectKey>
         <sonar.organization>zahoriio</sonar.organization>
