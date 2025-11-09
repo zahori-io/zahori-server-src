@@ -8,7 +8,7 @@ RUN ./mvnw dependency:go-offline package -B
 COPY . ./
 RUN ./mvnw clean package
 
-FROM eclipse-temurin:17.0.6_10-jre-alpine
+FROM eclipse-temurin:17.0.17_10-jre-alpine
 
 COPY --from=javabuilder /code/target/app.jar /usr/app/app.jar
 WORKDIR /usr/app
